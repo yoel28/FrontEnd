@@ -1,0 +1,41 @@
+.form-login,.login-box-body,.header-login{
+    background-color: rgba(255, 255, 255, 0.35);
+    overflow: hidden;
+}
+.input-control{
+    background-color: rgba(255, 255, 255, 0.35);
+    color: #6d6a6a;
+    border: 1px solid #fff;
+}
+.header-login .login-box-body h4{
+    font-weight: bolder;
+}
+.login-content{
+    background: url('assets/img/default/background-desktop.png') no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+.img-logo{
+    margin-left: -17px;
+}
+.wrapper{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+div, table, section, .modal-dialog > .modal-content {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+}
+
+.btn-green-a80{
+    background-color: rgba(0,84,37,0.8);
+    color: white;
+}
+.padding-top{
+    padding: 5px 0px;
+}

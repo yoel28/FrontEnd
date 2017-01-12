@@ -1,0 +1,54 @@
+<div class="wrapper login-content">
+    <div class="login-box">
+        <div class="row form-content">
+            <div class="header-login text-center">
+                <div class="login-box-body">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-4 col-lg-offset-3 col-md-offset-3">
+                            <img [attr.src]="db.pathElements.logoBlanco" class="img-responsive img-logo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-login" [@animation_0]="'true'">
+                <div class="login-box-body">
+                    <form role="form" [formGroup]="form" (submit)="login($event)">
+                        <fieldset>
+                            <div class="form-group input-icon right" *ngIf="!context.company">
+                                <i class="fa fa-industry text-white"></i>
+                                <input formControlName="company" class="form-control input-control"
+                                       placeholder="Compañia" type="text">
+                            </div>
+                            <div class="form-group input-icon right">
+                                <i class="fa fa-user text-white"></i>
+                                <input formControlName="username" class="form-control input-control"
+                                       placeholder="Usuario / Email" type="text">
+                            </div>
+                            <div class="form-group input-icon right">
+                                <i class="fa fa-lock text-white"></i>
+                                <input formControlName="password" class="form-control input-control"
+                                       placeholder="Contraseña" type="password">
+                            </div>
+                            <button type="submit" [disabled]="!form.valid || submitForm"
+                                    class="btn  btn-green-a80 btn-block">
+                                ENVIAR
+                            </button>
+
+                                <button *ngIf="context.company" (click)="loginSocial($event,'fb')" class="btn  btn-green-a80 btn-block"><i
+                                        class="fa fa-facebook"></i>&nbsp;Login con Facebook
+                                </button>
+                                <!--<button *ngIf="context.company" (click)="loginSocial($event,'tw')" class="btn  btn-green-a80 btn-block"><i-->
+                                        <!--class="fa fa-twitter"></i>&nbsp;Login con Twitter-->
+                                <!--</button>-->
+                                <button *ngIf="context.company" (click)="loginSocial($event,'go')" class="btn  btn-green-a80 btn-block"><i
+                                        class="fa fa-google"></i>&nbsp;Login con Google
+                                </button>
+
+                        </fieldset>
+                    </form>
+                    <p><a href="#" class="pull-right" (click)="onRecover($event)">{{db.msg.recoverPassword}}</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

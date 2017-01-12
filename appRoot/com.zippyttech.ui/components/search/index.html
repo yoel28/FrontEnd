@@ -1,0 +1,64 @@
+<div class="modal fade" id="{{params.idModal}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center bg-green-club">
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" [attr.title]="db.msg.close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="myModalLabel">{{params.title}}</h3>
+            </div>
+            <div class="modal-body row">
+                <form role="form" (submit)="getSearch(search.value)">
+                    <div class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}} form-margin">
+                        <div class="input-group input-group-sm">
+                            <input #search type="text" class="form-control" placeholder="{{params.placeholder}}">
+                            <span class="input-group-btn">
+                                <button (click)="getSearch(search.value)" type="button" class="btn btn-green-club" [attr.title]="db.msg.find">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">
+                    <i class="fa fa-spinner fa-spin"></i>
+                    {{db.msg.findData}}
+                </div>
+                <div *ngIf="dataList.count" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">
+                    <table class="table table-hover">
+                        <tbody>
+                        <tr *ngFor="let data of dataList.list" [attr.title]="db.msg.select" class="cursor-pointer">
+                            <td>
+                                <img [src]="data.image || params.imageGuest" style="display: inline-block" class="img-responsive img-search">
+                                <i *ngIf="data.icon" class="i-search {{data.icon}}" ></i>
+                            </td>
+                            <td>
+                                <strong>{{params.label.title}} {{data.title}}</strong><br>
+                                <span *ngIf="data.detail">{{params.label.detail}} {{data.detail}}</span>
+                            </td>
+                            <td style="vertical-align: middle;">
+                                <button (click)="getData(data)" data-dismiss="modal" type="button" class="btn btn-green-club">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="!dataList.count && !findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">
+                    <span *ngIf="dataList.count==0">
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg.notFound}}
+                    </span>
+                    <span *ngIf="dataList.count==null">
+                        <i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg.introValueFind}}
+                    </span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                    <div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0" class="btn-group pull-right">
+                        <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)" *ngFor="let val of dataList.page" type="button" class="btn btn-default">
+                            {{val}}
+                        </button>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

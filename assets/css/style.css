@@ -1,0 +1,54 @@
+.ng-valid[required].ng-touched.ng-dirty {
+  border-left: 3px solid #42A948; /* green */
+}
+
+.ng-invalid.ng-touched.ng-dirty {
+  border-left: 3px solid #a94442; /* red */
+}
+
+.page-form .input-icon i {
+  margin-top: 12px;
+}
+.panel > .panel-heading .toolbars .input-icon i {
+  margin-top: 8px;
+}
+.input-icon {
+  position: relative;
+}
+.input-icon input {
+  padding-left: 33px !important;
+  color: #999999;
+}
+.input-icon i {
+  color: #999999;
+  display: block;
+  position: absolute;
+  margin: 10px 2px 4px 10px;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  text-align: center;
+}
+.input-icon.right input {
+  padding-left: 12px !important;
+  padding-right: 33px !important;
+}
+.input-icon.right i {
+  right: 8px;
+  float: right;
+}
+.has-success .input-icon i {
+  color: #5cb85c;
+}
+.has-warning .input-icon i {
+  color: #f0ad4e;
+}
+.input-icon i > .ng-invalid {
+  color: #d9534f;
+}
+.dropdown-menu {
+  z-index: 10000 !important;
+}
+.object-invalid{
+  border-left: 3px solid #a94442 !important; /* red */
+}

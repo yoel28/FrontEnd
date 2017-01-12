@@ -1,0 +1,153 @@
+<div class="modal fade" [attr.id]="params.idModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" [class.modal-lg]="search.object" >
+        <div class="modal-content">
+            <div class="modal-header bg-green-club text-center">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" [attr.title]="db.msg.close"><span
+                        aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title" id="myModalLabel">{{params.title}}</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="{{db.classCol()}} margin-bottom">
+                        <form role="form" [formGroup]="form" class="{{search.object?db.classCol(5,5,5,5):db.classCol()}}">
+                            <div *ngFor="let key of keys">
+                                <div *ngIf="rules[key].search">
+                                    <div class="{{db.classCol()}}">
+                                        <div class="form-group input-icon right row">
+                                            <div class="{{db.classCol(8,8,8,8)}}">
+                                                <div class="row">
+                                                    <div class="{{db.classCol(10,10,10,10)}}">
+
+                                                        <div *ngIf="rules[key].type=='text' || rules[key].type=='number' || rules[key].type=='time' || rules[key].type=='textarea' " class="row">
+                                                            <i class="{{rules[key].icon || 'fa fa-list'}}"></i>
+                                                            <input  *ngIf="rules[key].type!='time'"
+                                                                    formControlName="{{key}}" class="form-control"
+                                                                    placeholder="{{rules[key].placeholder}}"
+                                                                    type="{{rules[key].type}}">
+                                                            <input  *ngIf="rules[key].type=='time'"
+                                                                    formControlName="{{key}}" class="form-control"
+                                                                    placeholder="{{rules[key].placeholder}}"
+                                                                    type="number">
+
+                                                            <div [hidden]="data[key].valid ||data[key].pristine"
+                                                                 class="alert alert-danger">
+                                                                {{db.msg.error}}
+                                                            </div>
+                                                        </div>
+
+                                                        <div *ngIf="rules[key].type=='date'" class="row">
+                                                            <div date-range-picker [params]="paramsDate" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" (fecha)="assignDate($event,key)">
+                                                                <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+                                                                <span *ngIf="data[key].value && data[key].value.start && data[key].value.end">{{(data[key].value.start || 'Inicio') +' - '+ (data[key].value.end || 'Fin') }}</span>
+                                                                <span *ngIf="!data[key].value">{{rules[key].title}}</span> <b class="caret"></b>
+                                                            </div>
+                                                        </div>
+
+                                                        <div *ngIf="rules[key].type=='select' || rules[key].type=='boolean' || rules[key].type=='filter'" class="row">
+                                                            <select formControlName="{{key}}" sm-dropdown class="ui fluid search selection dropdown">
+                                                                <option value="-1">{{rules[key].placeholder || 'Seleccione una opción'}}</option>
+                                                                <option *ngFor="let n of rules[key].source"  [attr.value]="n.id || n.value" >{{n.text}}</option>
+                                                            </select>
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div class="{{db.classCol(2,2,2,2)}} padding-top-4">
+                                                        <button *ngIf="rules[key].object" type="button"
+                                                                class="btn btn-box-tool fa fa-search text-blue" [attr.title]="db.msg.find"
+                                                                (click)="getLoadSearch($event,rules[key])">
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="{{db.classCol(4,4,4,4)}}" *ngIf="cond[rules[key].object?'object':rules[key].type]">
+                                                <select formControlName="{{key+'Cond'}}" sm-dropdown class="ui fluid search selection dropdown">
+                                                    <option *ngFor="let n of cond[rules[key].object?'object':rules[key].type]"
+                                                            [attr.value]="n.id">{{n.text}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                        <div class="{{search.object?db.classCol(7,7,7,7):''}}" *ngIf="search.object">
+                            <form role="form" (submit)="getSearch($event,find.value)">
+                                <div class="{{db.classCol()}} form-margin">
+                                    <strong>{{search.title}}</strong><br/>
+                                    <div class="input-group input-group-sm">
+                                        <input #find type="text" class="form-control"
+                                               placeholder="{{ search.placeholder}}" value="{{findControl}}">
+                                            <span class="input-group-btn">
+                                                <button (click)="getSearch($event,find.value)" type="button"
+                                                        class="btn btn-green-club" [attr.title]="db.msg.find">
+                                                    <i class="fa fa-search"></i>
+                                                </button>
+                                                <button (click)="searchQuit($event)" type="button"
+                                                        class="btn btn-red-club" [attr.title]="db.msg.close">
+                                                    <i class="fa fa-close"></i>
+                                                </button>
+                                            </span>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <div *ngIf="findData" class="{{db.classCol()}}">
+                                <i class="fa fa-spinner fa-spin"></i>
+                                {{db.msg.findData}}
+                            </div>
+                            <div *ngIf="dataList.count" class="{{db.classCol()}}">
+                                <table class="table table-hover">
+                                    <tbody>
+                                    <tr *ngFor="let data of dataList.list" (click)="getDataSearch(data)" [attr.title]="db.msg.select" class="cursor-pointer">
+                                        <td>
+                                            <img [src]=" data.image || search.paramsSearch.imageGuest " style="display: inline-block" class="img-responsive img-search">
+                                        </td>
+                                        <td>
+                                            <strong>{{search.paramsSearch.label.title}} {{data.title}}</strong><br>
+                                            {{search.paramsSearch.label.detail}} {{data.detail}}
+                                        </td>
+                                        <td style="vertical-align: middle;">
+                                            <i class="btn btn-box-tool text-green fa fa-check"></i>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div *ngIf="!dataList.count && !findData" class="{{db.classCol()}}">
+                                <span *ngIf="dataList.count==0">
+                                    <i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg.notFound}}
+                                </span>
+                                            <span *ngIf="dataList.count==null">
+                                    <i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg.introValueFind}}
+                                </span>
+                            </div>
+                            <div class="col-lg-12">
+                                <div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"
+                                     class="btn-group pull-right">
+                                    <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)" *ngFor="let val of dataList.page"
+                                            type="button" class="btn btn-default">
+                                        {{val}}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button (click)="onReset($event)"type="reset" data-dismiss="modal" class="btn btn-primary">
+                    <i class="fa fa-filter"></i>
+                    Sin filtro
+                </button>
+                <button (click)="submitForm($event)" data-dismiss="modal" type="button" class="btn btn-success"
+                        id="cntrlsubmit" [disabled]="!form.valid">
+                    <i class="fa fa-filter"></i>
+                    Filtrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

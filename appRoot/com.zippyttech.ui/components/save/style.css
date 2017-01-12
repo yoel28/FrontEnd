@@ -1,0 +1,21 @@
+.padding-error{
+    padding: 5pt;
+}
+.padding-top-4{
+    padding-top: 4pt;
+}
+.img-search{
+    width: 28pt;
+}
+.form-margin{
+    margin-bottom: 10pt;
+}
+.z-index{
+    z-index:1;
+}
+.alert{
+    margin-bottom: 0px !important;
+}
+.modal-header{
+    border-radius: 0px !important;
+}

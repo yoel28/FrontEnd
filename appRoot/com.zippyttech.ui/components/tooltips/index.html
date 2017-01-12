@@ -1,0 +1,13 @@
+<button *ngIf="data && data.id" data-html="true"  class="btn btn-box-tool noprint" title="Ver ayuda"
+        [attr.id]="configId"
+        [attr.data-placement]="data.position"
+        [attr.title]="data.title"
+        [attr.data-content]="data.detail"
+        data-toggle="popover"
+
+>
+    <i class="{{data.size}} {{data.icon}}" [style.color]="'#'+data.color"></i>
+</button>
+<button *ngIf="permissions.update && data.enabled &&  db.myglobal.objectInstance &&  db.myglobal.objectInstance['INFO']" class="btn btn-box-tool  noprint" title="Editar ayuda">
+    <i class="fa fa-pencil-square-o {{data.size}}" [style.color]="'#'+data.color" (click)="edit($event,data)" data-toggle="modal" [attr.data-target]="'#'+ db.myglobal.objectInstance['INFO'].params.idModal"></i>&nbsp;
+</button>

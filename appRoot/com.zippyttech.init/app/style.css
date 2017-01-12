@@ -1,0 +1,160 @@
+.blue .main-sidebar{
+  background-color: #222d32 !important;
+}
+
+.wrapper{
+  background-color: #ecf0f5 !important;
+}
+
+.content-wrapper{
+  border-radius: 0px !important;
+}
+
+.main-footer-container{
+  background-color: #222d32 !important;
+}
+
+.truncate{
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.treeview-menu{
+  margin-top: -2px !important;
+  display: block;
+  overflow: hidden;
+}
+
+.tab-content {
+  background: black;
+}
+
+.control-sidebar-dark{
+  background: transparent;
+}
+
+.cargar{
+  color: white;
+  font-size: 16pt;
+  margin: 10pt;
+}
+
+.padding-error{
+  padding: 5pt;
+}
+
+.padding-top-4{
+  padding-top: 4pt;
+}
+
+.img-search{
+  width: 28pt;
+}
+
+.form-margin{
+  margin-bottom: 10pt;
+}
+
+.z-index{
+  z-index:1;
+}
+
+.alert{
+  margin-bottom: 0px !important;
+}
+
+/*////////////////////////////////////////////////////////////////
+.modal-transparent {
+  background: transparent;
+}
+.modal-transparent .modal-content {
+  background: transparent;
+}
+.modal-backdrop.modal-backdrop-transparent {
+  background: #ffffff;
+}
+.modal-backdrop.modal-backdrop-transparent.in {
+  opacity: .9;
+  filter: alpha(opacity=90);
+}
+
+/* .modal-fullscreen */
+
+.modal-fullscreen {
+  background: transparent;
+}
+
+.modal-fullscreen .modal-content {
+  background: transparent;
+  border: 0;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+}
+
+.modal-backdrop.modal-backdrop-fullscreen {
+  background: #FFF;
+}
+
+.modal-backdrop.modal-backdrop-fullscreen.in {
+  opacity: .97;
+  filter: alpha(opacity=97);
+}
+
+/* .modal-fullscreen size: we use Bootstrap media query breakpoints */
+
+.modal-fullscreen .modal-dialog {
+  margin: 0;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .modal-fullscreen .modal-dialog {
+    width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .modal-fullscreen .modal-dialog {
+    width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .modal-fullscreen .modal-dialog {
+    width: 1170px;
+  }
+}
+
+.version{
+  background-color: rgb(165, 165, 165);
+  font-weight: 100;
+  font-size: small;
+  color: white;
+}
+
+.modal .modal-dialog .modal-content {
+  background: #FFF;
+}
+
+.modal.in .modal-dialog {
+  width: 80%;
+}
+
+.a-menu-modal{
+  color: #fff;
+}
+
+.menu-modal .col-lg-2.col-md-2 {
+  height: 100px;
+  text-align: center;
+}
+
+.menu-modal i{
+  font-size: 50pt;
+}
+
+.subir-top{
+  /*margin-top: -50px;*/
+}

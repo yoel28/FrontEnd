@@ -1,0 +1,30 @@
+<div class="row text-right image-profile">
+    <figure>
+        <div [imageSrc]="image" x-cropit [attr.id]="configId+'_IMAGE'" (saveImagen)="changeImage($event)">
+            <div [hidden]="!image" class="cropit-preview center-block"></div>
+            <div *ngIf="!image">
+                <img [attr.src]="pathElements.warning" class="img-responsive center-block">
+            </div>
+            <div class="col-lg-12 margenes">
+                <div class="col-lg-6 rotate">
+                    <button class="btn btn-box-tool fa fa-rotate-left rotate-ccw" title="Girar a la izquiera" [disabled]="!image && !edit"></button>
+                    <button class="btn btn-box-tool fa fa-rotate-right rotate-cw" title="Girar a la derecha"  [disabled]="!image && !edit"></button>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="col-lg-5">
+                    <input type="range" class="cropit-image-zoom-input"  [disabled]="!image && !edit"/>
+                </div>
+                <div class="col-lg-7 group-btn">
+                    <button class="input-file"><input x-file type="file" class="cropit-image-input" [disabled]="!edit"/></button>
+                    <button class="redondo btn btn-green-club" title="Guardar" type="button" (click)="saveImage($event)" [disabled]="!edit">
+                        <i class="fa fa-save fa-lg"></i>
+                    </button>&nbsp;
+                    <button  class="redondo btn btn-green-club" title="Eliminar" type="button" (click)="changeImage()" [disabled]="!image && !edit">
+                        <i class="fa fa-trash fa-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </figure>
+</div>

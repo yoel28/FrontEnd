@@ -1,0 +1,74 @@
+<div class="panel-group" id="accordion">
+    <div *ngFor="let data of dataList.list " class="panel panel-default">
+        <div class="panel-heading">
+            <h4 class="panel-title row">
+                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                    <a data-toggle="collapse" data-parent="#accordion" [attr.href]="'#collapse'+data.id">
+                        <span *ngFor="let key of params.headers">
+                            <label class="title" *ngIf="model.rules[key].type == 'text' || model.rules[key].type == 'number'"><strong>{{model.rules[key].title }}:&nbsp;</strong>{{data[key] || 'N/A'}}&nbsp;</label>
+
+                            <label class="title" *ngIf="model.rules[key].type == 'date'"><strong>{{model.rules[key].title }}:&nbsp;</strong>
+                                {{formatDate(data[key],'DD/MM/YYYY, LT',false,data.id)}}
+                                <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn no-print" (click)="changeFormatDate(data.id)"></i>
+                            </label>
+                        </span>
+                    </a>
+                </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+                    <div class="btn-group">
+                        <div *ngFor="let key of actionPermissionKey()">
+                            <a *ngIf="key == 'delete'"
+                               data-toggle="modal" [attr.data-target]="'#'+params.actions[key].idModal"
+                               (click)="dataSelect = data" href="#">
+                                <i class="{{params.actions[key].icon}}"></i>
+                                &nbsp;{{params.actions[key].title}}
+                            </a>
+                            <a *ngIf="key == 'onPatch' && params.actions[key].type=='boolean'"
+                               (click)="onPatch(params.actions[key].field,data)">
+                                <span class="{{params.actions[key].icon}}"></span>
+                                {{data[key]?params.actions[key].titleTrue:params.actions[key].titleFalse}}
+                            </a>
+                            <a *ngIf="key == 'onLock'"
+                               (click)="onLock('enabled',data)">
+                                <span class="{{params.actions[key].icon}}"></span>
+                                {{data.enabled?params.actions[key].titleTrue:params.actions[key].titleFalse}}
+                            </a>
+                            <a *ngIf="key == 'print'"
+                               (click)="onPrint(params.actions[key].element)">
+                                <span class="{{params.actions[key].icon}}"></span>
+                                &nbsp;{{params.actions[key].title}}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </h4>
+        </div>
+        <div [attr.id]="'collapse'+data.id" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="col-lg-12">
+                    <span *ngFor="let key of getObjectKey(model.rules)">
+                        <div *ngIf="(data[key] || data[key]===undefined) && !model.rules[key].object" class="col-lg-4">
+                            <label class="title" *ngIf="model.rules[key].type == 'text' || model.rules[key].type == 'number'"><strong>{{model.rules[key].title }}:&nbsp;</strong>{{data[key] || 'N/A'}}&nbsp;</label>
+
+                            <label class="title" *ngIf="model.rules[key].type == 'date'"><strong>{{model.rules[key].title }}:&nbsp;</strong>
+                                {{formatDate(data[key],'DD/MM/YYYY, LT',false,data.id)}}
+                                <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn no-print" (click)="changeFormatDate(data.id)"></i>
+                            </label>
+
+                            <label class="title" *ngIf="model.rules[key].type == 'time'"><strong>{{model.rules[key].title }}:&nbsp;</strong>
+                                {{formatTime(data[key])}}
+                            </label>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="dataList && dataList.page && dataList.page.length > 1">
+        <div class="btn-group pull-right">
+            <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)" *ngFor="let val of dataList.page" type="button" class="btn btn-default">
+                {{val}}
+            </button>
+        </div>
+    </div>
+</div>

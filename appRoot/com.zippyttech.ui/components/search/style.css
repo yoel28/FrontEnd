@@ -1,0 +1,16 @@
+.img-search{
+    width: 30pt;
+}
+.i-search{
+    font-size: 60pt;
+}
+.form-margin{
+    margin-bottom: 10pt;
+}
+.modal-header{
+    border-radius: 0px !important;
+}
+.input-group-btn > .btn{
+    border-radius: 0px 5px 5px 0px !important;
+    border: none !important;
+}

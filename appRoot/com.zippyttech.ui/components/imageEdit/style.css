@@ -1,0 +1,23 @@
+.image-profile{
+    background-color: rgba(128, 128, 128, 0.06);
+    padding: 2pt 0pt 10pt;
+    border-radius: 5pt;
+    margin-bottom: 10pt;
+}
+.margenes{
+    margin-bottom: 10pt;
+    margin-top: 10pt;
+}
+.rotate button.btn, button.redondo.btn{
+    margin: 0px !important;
+}
+.rotate {
+    margin-left:35px;
+}
+.input-file{
+    background: transparent;
+    border: none;
+}
+.group-btn{
+    margin-top:-25px;
+}

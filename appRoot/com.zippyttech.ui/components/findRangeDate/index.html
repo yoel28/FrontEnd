@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="form-group input-icon right col-lg-2">
+        Lapso
+        <div class="input-icon right">
+            <select [(ngModel)]="fechaSelect" (ngModelChange)="setFecha($event)" sm-dropdown class="ui fluid search selection dropdown">
+                <option data-hidden="true" value="-1"></option>
+                <option *ngFor="let n of itemsDate" [attr.value]="n.id">{{n.text}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-lg-5">
+        Rango
+        <div date-range-picker [params]="paramsDate" class="form-control rango" (fecha)="assignDate($event)">
+            <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
+            <span *ngIf="control.value.start && control.value.end">
+                {{(control.value.start || 'Inicio') +' - '+ (control.value.end || 'Fin') }}
+            </span>
+            <span *ngIf="!control.value.start">
+                Seleccione un periodo
+            </span>
+            <b class="caret"></b>
+        </div>
+    </div>
+</div>

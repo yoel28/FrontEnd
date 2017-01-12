@@ -1,0 +1,94 @@
+before_script:
+  - pwd
+  - echo $CI_BUILD_REF_NAME
+after_script:
+    - echo 'after'
+
+stages:
+    - pre_install
+    - build
+    - deploy
+    - reset
+    - clean
+
+pre_install_job_1:
+  stage: pre_install
+  script:
+    - mkdir -p /tmp/build
+    - mkdir -p /home/ubuntu/node_modules/
+    - cp -rf /home/ubuntu/node_modules /tmp/build/
+    - cp -rf ./* /tmp/build
+    - cd /tmp/build
+    - npm install
+  when: on_success
+  tags:
+    - dev_club
+  only :
+    - dev
+
+build_job_2:
+  stage: build
+  script:
+    - cd /tmp/build
+    - export epoch=$(date +%s)
+    - sed -i -e 's;\=\"\(http\)s\?://[a-zA-Z0-9.]\+\([:][0-9]\+\)\?\"\;;\=\"https://cdg.zippyttech.com:8080\"\;;g' appRoot/com.zippyttech.init/app/app.component.ts
+    - sed -i -e "s;appRoot;${epoch};g" ./system-config.ts
+    - sed -i -e "s;appRoot;${epoch};g" ./tsconfig-aot.json
+    - sed -i -e "s;appRoot;${epoch};g" ./tsconfig.json
+    - sed -i -e "s;appRoot;${epoch};g" ./rollup-config.js
+    - mv appRoot ${epoch}
+    - npm run only-run
+  when: on_success
+  tags:
+    - dev_club
+  only :
+    - dev
+
+deploy_job_3:
+  stage: deploy
+  script:
+    - cd /tmp/build
+    - cp -rf ./node_modules /home/ubuntu/
+    - find ./ -type f -name '*.ts' -delete
+    - cd /var/www/
+    - sudo tar -cf html.tar html/
+    - sudo rm -rf /var/www/html/*
+    - sudo cp -rf /tmp/build/* /var/www/html/
+    - sh /home/ubuntu/script/conn.sh
+  when: on_success 
+  tags:
+    - dev_club
+  only :
+    - dev
+
+reset_job_4:
+  stage: reset
+  script:
+    - sudo rm -rf /tmp/build
+    - sudo rm -rf /var/www/html/build
+    - sudo rm -rf /var/www/html/typings
+    - sudo rm -rf /var/www/html/.git
+    - sudo rm -f /var/www/html/.gitignore
+    - sudo rm -f /var/www/html/.gitlab-ci.yml
+    - sudo rm -f /var/www/html/bs-config.json
+    - sudo rm -f /var/www/html/package.json
+    - sudo rm -f /var/www/html/tsconfig.json
+    - sudo rm -f /var/www/html/typings.json
+    - sudo chown ubuntu.ubuntu -R /var/www/html/
+  when: on_success
+  tags:
+    - dev_club
+  only :
+    - dev
+
+clean_job_:
+  stage: clean
+  script:
+    - rm -rf /tmp/build
+    - sudo rm -rf /var/www/html/*
+    - sudo tar -xf /var/www/html.tar -C /var/www/
+  when: on_failure
+  tags:
+    - dev_club
+  only :
+    - dev

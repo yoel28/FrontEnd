@@ -1,0 +1,92 @@
+.checkbox-inline{
+    padding-left: 20px;
+}
+.modulo{
+    border: 1px solid #ded6d6;
+    padding: 10pt;
+    border-radius: 5pt;
+}
+.margin-bottom{
+    margin-bottom: 10pt;
+}
+
+.material-switch > input[type="checkbox"] {
+    display: none;
+}
+
+.material-switch > label {
+    cursor: pointer;
+    height: 0px;
+    position: relative;
+    width: 40px;
+}
+
+.material-switch > label::before {
+    background: rgb(255, 0, 0);
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    content: '';
+    height: 16px;
+    margin-top: -12px;
+    position:absolute;
+    opacity: 0.3;
+    transition: all 0.4s ease-in-out;
+    width: 40px;
+}
+.material-switch > label::after {
+    background: rgb(255, 0, 0);
+    border-radius: 16px;
+    box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.3);
+    content: '';
+    height: 24px;
+    left: -4px;
+    margin-top: -12px;
+    position: absolute;
+    top: -4px;
+    transition: all 0.3s ease-in-out;
+    width: 24px;
+}
+.material-switch > input[type="checkbox"]:checked + label::before {
+    background: inherit;
+    opacity: 0.5;
+}
+.material-switch > input[type="checkbox"]:checked + label::after {
+    background: inherit;
+    left: 20px;
+}
+
+.padding-bottom{
+    padding-bottom: 5pt;
+}
+.padding-error{
+    padding: 5pt;
+}
+.bold {
+    font-weight: 600;
+    font-style: oblique;
+}
+tbody tr, thead tr {
+    cursor: pointer;
+}
+.block-module {
+    margin-bottom: 15px;
+    padding: 5px;
+    border: 2px solid rgb(232, 231, 231);
+}
+.btn.redondo {
+    -webkit-border-radius: 30px!important;
+    -moz-border-radius: 30px!important;
+    border-radius: 30px!important;
+    padding-top: 9px;
+    padding-bottom: 9px;
+}
+.block-float{
+    position: fixed;
+    z-index: 2000;
+    bottom: 6%;
+    right: 1.5%;
+}
+.border-head{
+    background-color: rgba(20, 31, 11, 0.53);
+    color: white;
+}

@@ -1,0 +1,10 @@
+.modal-header{
+    border-radius: 0px !important;
+}
+th.check{
+    background: rgba(13, 86, 40, 0.77) !important;
+    color: white !important;
+}
+td.check{
+    background: rgba(0, 187, 0, 0.18);
+}
