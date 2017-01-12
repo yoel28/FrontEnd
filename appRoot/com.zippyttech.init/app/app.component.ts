@@ -1,53 +1,46 @@
-import {
-    Component, OnInit, ChangeDetectorRef, AfterViewInit, AfterContentChecked, HostListener,
-    DoCheck
-} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef, AfterViewInit, AfterContentChecked, HostListener, DoCheck } from '@angular/core';
 import {RestController} from "../../com.zippyttech.rest/restController";
-import {StaticValues} from "../../com.zippyttech.utils/catalog/staticValues";
-import {Router, RoutesRecognized, NavigationStart} from "@angular/router";
-import {Http} from "@angular/http";
-import {globalService} from "../../com.zippyttech.utils/globalService";
+import {RoutesRecognized, NavigationStart} from "@angular/router";
 import {contentHeaders} from "../../com.zippyttech.rest/headers";
 import {FormControl} from "@angular/forms";
 import {componentsPublic} from "../../app-routing.module";
 import {InfoModel} from "../../com.zippyttech.business/info/info.model";
-import {ToastyService, ToastyConfig} from "ng2-toasty";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-declare var jQuery:any;
-declare var SystemJS:any;
+declare var jQuery: any;
+declare var SystemJS: any;
 @Component({
     selector: 'my-app',
-    templateUrl: SystemJS.map.app+'com.zippyttech.init/app/index.html',
-    styleUrls: [ SystemJS.map.app+'com.zippyttech.init/app/style.css'],
-    animations: AnimationsManager.getTriggers("d-fade|expand_down",150)
+    templateUrl: SystemJS.map.app + 'com.zippyttech.init/app/index.html',
+    styleUrls: [SystemJS.map.app + 'com.zippyttech.init/app/style.css'],
+    animations: AnimationsManager.getTriggers("d-fade|expand_down", 150)
 })
-export class AppComponent extends RestController implements OnInit,AfterViewInit,AfterContentChecked,DoCheck{
+export class AppComponent extends RestController implements OnInit,AfterViewInit,AfterContentChecked,DoCheck {
 
-    public menuType:FormControl;
-    public menuItems:FormControl;
+    public menuType: FormControl;
+    public menuItems: FormControl;
 
     public activeMenuId: string;
 
-    public info:any;
+    public info: any;
 
-    constructor(public db:DependenciesBase, private cdRef:ChangeDetectorRef) {
+    constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef) {
         super(db);
 
         let that = this;
-        let url="https://cdg.zippyttech.com:8080";
+        let url = "https://cdg.zippyttech.com:8080";
 
         localStorage.setItem('urlAPI', url + '/api');
         localStorage.setItem('url', url);
 
         db.router.events.subscribe((event: any) => {
-            if(event instanceof NavigationStart){
-                that.db.myglobal.navigationStart= true;
+            if (event instanceof NavigationStart) {
+                that.db.myglobal.navigationStart = true;
             }
             if (event instanceof RoutesRecognized) {
-                that.db.myglobal.navigationStart= false;
-                let componentName =  event.state.root.children[0].component['name'];
+                that.db.myglobal.navigationStart = false;
+                let componentName = event.state.root.children[0].component['name'];
                 let isPublic = that.isPublic(componentName);
 
                 if (isPublic && that.db.myglobal.dataSesion.valid) {
@@ -55,16 +48,15 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     that.db.router.navigate(link);
                 }
                 else if (!isPublic && !that.db.myglobal.dataSesion.valid) {
-                    let link:any;
-                    if(localStorage.getItem('bearer')){
-                        if(componentName!='LoadComponent')
-                        {
+                    let link: any;
+                    if (localStorage.getItem('bearer')) {
+                        if (componentName != 'LoadComponent') {
                             that.db.myglobal.saveUrl = event.url;
                             link = ['/init/load', {}];
                             that.db.router.navigate(link);
                         }
                     }
-                    else{
+                    else {
                         that.db.myglobal.saveUrl = event.url;
                         link = ['/auth/login', {}];
                         that.db.router.navigate(link);
@@ -84,37 +76,41 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         });
     }
 
-    ngOnInit():void{
-        this.menuType=new FormControl(null);
-        this.menuItems=new FormControl([]);
+    ngOnInit(): void {
+        this.menuType = new FormControl(null);
+        this.menuItems = new FormControl([]);
     }
-    initModels(){
+
+    initModels() {
         this.info = new InfoModel(this.db);
-        this.info.rules['code'].readOnly=true;
-        this.info.paramsSave.updateField=true;
+        this.info.rules['code'].readOnly = true;
+        this.info.paramsSave.updateField = true;
     }
+
     public ngAfterViewInit() {
 
     }
-    ngDoCheck(){
+
+    ngDoCheck() {
         this.cdRef.detectChanges();
     }
-    ngAfterContentChecked(){
+
+    ngAfterContentChecked() {
 
     }
 
-    @HostListener('window:resize' , ['$event'])
+    @HostListener('window:resize', ['$event'])
     onResize(event) {
         //TODO:Cambiar menu
         this.db.myglobal.visualData.height = event.target.innerWidth;
     }
 
     public isPublic(component: string) {
-        return componentsPublic.indexOf(component)>-1?true:false;
+        return componentsPublic.indexOf(component) > -1 ? true : false;
     }
 
     public validToken(): boolean {
-        return localStorage.getItem('bearer')?true:false;
+        return localStorage.getItem('bearer') ? true : false;
     }
 
     logout(event: Event) {
@@ -138,8 +134,8 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         return data.replace(/;/g, ' ');
     }
 
-    onProfile(event?:Event):void {
-        if(event)
+    onProfile(event?: Event): void {
+        if (event)
             event.preventDefault();
         let link = ['/access/user/profile', {}];
         this.db.router.navigate(link);
@@ -148,16 +144,15 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     activeMenu(event, id) {
 
-        this.menuItems.value.forEach((v)=>
-        {
-            if(this.activeMenuId === v.key && this.activeMenuId !== id)
+        this.menuItems.value.forEach((v) => {
+            if (this.activeMenuId === v.key && this.activeMenuId !== id)
                 v.select = false;
 
-            if(id === v.key)
+            if (id === v.key)
                 v.select = !v.select;
         });
 
-        if(event)
+        if (event)
             event.preventDefault();
 
         if (this.activeMenuId == id) {
@@ -168,14 +163,14 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         }
 
     }
+
     loadPage() {
-        if(!this.menuType.value)
-        {
+        if (!this.menuType.value) {
             this.loadMenu();
             this.initModels();
             this.menuType.setValue({
-                'list':this.db.myglobal.getParams('MENU_LIST')=='1'?true:false,
-                'modal':this.db.myglobal.getParams('MENU_MODAL')=='1'?true:false,
+                'list': this.db.myglobal.getParams('MENU_LIST') == '1' ? true : false,
+                'modal': this.db.myglobal.getParams('MENU_MODAL') == '1' ? true : false,
             });
 
             if (!this.menuType.value.list) {
@@ -183,6 +178,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             }
         }
     }
+
     loadMenu() {
         if (this.menuItems.value && this.menuItems.value.length == 0) {
 
@@ -194,11 +190,11 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
             });
             this.menuItems.value.push({
-                'visible': this.db.myglobal.existsPermission(['MEN_USERS','MEN_ACL','MEN_PERM','MEN_ROLE','MEN_ACCOUNT']),
+                'visible': this.db.myglobal.existsPermission(['MEN_USERS', 'MEN_ACL', 'MEN_PERM', 'MEN_ROLE', 'MEN_ACCOUNT']),
                 'icon': 'fa fa-gears',
                 'title': 'Acceso',
                 'key': 'Acceso',
-                'select' : false,
+                'select': false,
                 'treeview': [
                     {
                         'visible': this.db.myglobal.existsPermission(['MEN_USERS']),
@@ -233,11 +229,11 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 ]
             });
             this.menuItems.value.push({
-                'visible': this.db.myglobal.existsPermission(['MEN_EVENT','MEN_INFO','MEN_PARAM','MEN_RULE','MEN_NOTIFY']),
+                'visible': this.db.myglobal.existsPermission(['MEN_EVENT', 'MEN_INFO', 'MEN_PARAM', 'MEN_RULE', 'MEN_NOTIFY']),
                 'icon': 'fa fa-gears',
                 'title': 'Configuración',
                 'key': 'Configuracion',
-                'select' : false,
+                'select': false,
                 'treeview': [
                     {
                         'visible': this.db.myglobal.existsPermission(['MEN_EVENT']),
@@ -270,7 +266,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     menuItemsVisible(menu) {
         let data = [];
-        menu.forEach(obj=> {
+        menu.forEach(obj => {
             if (obj.visible)
                 data.push(obj)
         });
@@ -280,7 +276,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     menuItemsTreeview(menu) {
         let data = [];
         let datatemp = [];
-        menu.forEach(obj=> {
+        menu.forEach(obj => {
             if (obj.treeview)
                 data.push(obj);
             else
@@ -295,8 +291,9 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             this.db.myglobal.objectInstance[prefix] = {};
         this.db.myglobal.objectInstance[prefix] = instance;
     }
-    goPage(event,url){
-        if(event)
+
+    goPage(event, url) {
+        if (event)
             event.preventDefault();
         let link = [url, {}];
         this.db.router.navigate(link);
