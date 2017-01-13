@@ -1,4 +1,4 @@
-import {RestController} from "../com.zippyttech.rest/restController";
+import {RestController, IRest} from "../com.zippyttech.rest/restController";
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {OnInit} from "@angular/core";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
@@ -177,7 +177,7 @@ export abstract class ControllerBase extends RestController implements OnInit {
     public get getHora(){
         return moment().format('LT');
     }
-    public setWhere(where:Object):void{
+    public setWhere(where:IRest | Object):void{
         this.where = "&where="+encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
     }
     public getKeys(data){
