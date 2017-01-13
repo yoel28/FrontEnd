@@ -21,7 +21,7 @@ export abstract class BaseViewInstance  implements OnInit {
         this.initModel();
         this.initViewOptions();
         this.loadParamsTable();
-
+        this._loadWhereInParamsFilter();
         this._loadInstance();
     }
 
@@ -32,6 +32,9 @@ export abstract class BaseViewInstance  implements OnInit {
             'paramsTable':this.paramsTable,
             'rest':this.rest
         };
+    }
+    protected _loadWhereInParamsFilter(){
+        this.model.paramsSearch.where = this.rest.where;
     }
 
 }
