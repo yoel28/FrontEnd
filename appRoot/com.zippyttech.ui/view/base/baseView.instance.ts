@@ -1,5 +1,5 @@
 import {OnInit} from '@angular/core';
-import {Rest} from "../../../com.zippyttech.rest/restController";
+import {IRest} from "../../../com.zippyttech.rest/restController";
 
 export abstract class BaseViewInstance  implements OnInit {
 
@@ -7,7 +7,7 @@ export abstract class BaseViewInstance  implements OnInit {
     public paramsTable:any={};
     public model:any;
     public viewOptions:any={};
-    public rest:Rest={
+    public rest:IRest={
         where:[],
         max:15,
         offset:0,
