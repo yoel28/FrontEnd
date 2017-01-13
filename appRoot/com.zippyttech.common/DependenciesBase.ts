@@ -23,4 +23,8 @@ export class DependenciesBase {
                 public toastyConfig:ToastyConfig,
                 public ws:WebSocket
     ){}
+
+    public debugLog(log){
+        console.log(log);
+    }
 }
