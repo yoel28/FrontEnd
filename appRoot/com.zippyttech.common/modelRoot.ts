@@ -117,7 +117,7 @@ export abstract class ModelRoot extends RestController{
                     'noAuthorized': this.db.msg.noAuthorized,
                 },
             },
-            'where': '',
+            'where': [],
             'imageGuest': StaticValues.pathElements.isotipoMini,
             'field':'any',
             'count':0
