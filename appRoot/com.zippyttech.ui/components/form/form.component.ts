@@ -92,6 +92,18 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                 if(that.rules[key].customValidator){
                     validators.push(that.rules[key].customValidator);
                 }
+                if(that.rules[key].type=='select' || that.rules[key].type=='boolean'){
+                    validators.push(
+                        (c:FormControl)=> {
+                            if(c.value && c.value.length > 0){
+                                if(c.value!='-1'){
+                                        return null;
+                                }
+                                return {error: {valid: false}};
+                            }
+                            return null;
+                        });
+                }
 
                 that.data[key] = new FormControl('',Validators.compose(validators));
                 if(that.rules[key].value)
