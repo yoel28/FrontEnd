@@ -89,6 +89,10 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                             return null;
                         });
                 }
+                if(that.rules[key].customValidator){
+                    validators.push(that.rules[key].customValidator);
+                }
+
                 that.data[key] = new FormControl('',Validators.compose(validators));
                 if(that.rules[key].value)
                     that.data[key].setValue(that.rules[key].value);
