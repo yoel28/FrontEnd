@@ -46,6 +46,11 @@ export class RestController implements OnInit {
     }
     ngOnInit() {
     }
+    loadRest(){
+        this.setWhere(this.rest.where);
+        this.max  = this.rest.max;
+        this.offset  = this.rest.offset;
+    }
 
     setEndpoint(endpoint:string) {
         this.endpoint = endpoint;
