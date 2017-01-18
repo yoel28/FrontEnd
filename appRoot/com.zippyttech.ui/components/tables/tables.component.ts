@@ -10,7 +10,7 @@ declare var moment:any;
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/components/tables/style.css'],
-    inputs:['params','model','dataList','where','deleted'],
+    inputs:['params','model','dataList','deleted','findData','rest'],
     outputs:['getInstance'],
 })
 
@@ -43,6 +43,7 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
     ngOnInit()
     {
         this.keyActions=[];
+        this.loadRest();
         if(this.params && this.params.actions)
             this.keyActions=Object.keys(this.params.actions);
         this.getInstance = new EventEmitter();
@@ -277,7 +278,7 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
     }
 
     changeOrder(sort){
-        if(sort && this.model && this.model.rules[sort] && this.model.rules[sort].permissions.search){
+        if(sort && this.model && this.model.rules[sort] && this.model.rules[sort].search){
             if(sort ==  this.sort){
                 this.order = this.order=='asc'?'desc':'asc';
             }
