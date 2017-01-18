@@ -7,6 +7,7 @@ import {componentsPublic} from "../../app-routing.module";
 import {InfoModel} from "../../com.zippyttech.business/info/info.model";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {AngularFire} from "angularfire2";
 
 declare var jQuery: any;
 declare var SystemJS: any;
@@ -25,7 +26,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     public info: any;
 
-    constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef) {
+    constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire) {
         super(db);
 
         let that = this;
@@ -120,6 +121,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             this.db.myglobal.dataSesionInit();
             localStorage.removeItem('bearer');
             contentHeaders.delete('Authorization');
+            that.af.auth.logout();
             this.menuItems.setValue([]);
             this.menuType.setValue(null);
             this.activeMenuId = "";
@@ -250,7 +252,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     {
                         'visible': this.db.myglobal.existsPermission(['MEN_PARAM']),
                         'icon': 'fa fa-user',
-                        'title': 'Parametros',
+                        'title': 'Parámetros',
                         'routerLink': '/business/param'
                     },
                     {
