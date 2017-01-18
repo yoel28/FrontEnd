@@ -3345,7 +3345,7 @@ ul.nav.nav-tabs.ul-edit li.active a {
   color: #fff;
 }
 .bg-info {
-  background-color: #5bc0de;
+  background-color: #5bc0de !important;
   color: #fff;
 }
 .bg-warning {
@@ -3357,7 +3357,7 @@ ul.nav.nav-tabs.ul-edit li.active a {
   color: #fff;
 }
 .bg-red {
-  background-color: #bf4346;
+  background-color: #bf4346 !important;
   color: #fff;
 }
 .bg-green {
