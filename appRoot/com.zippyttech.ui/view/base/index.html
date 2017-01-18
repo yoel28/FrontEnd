@@ -1,13 +1,16 @@
-<div *ngIf="!model.permissions.warning || !modalIn" >
+<div *ngIf="model.permissions.warning || !modalIn" >
     <div class="main-view-container">
         <div [@animation_0]='(dataList && dataList.list)?"true":"false"'>
             <section class="content">
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">
-                            {{viewOptions.title | translate }}<tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
+                            {{viewOptions.title | translate }}
+                            <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
+                            &nbsp;<i *ngIf="findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                         </h4>
                         <div class="box-tools pull-right header-tools">
+
                             <button *ngFor="let buttom of getViewOptionsButtons('modal')"
                                     class="btn btn-box-tool {{buttom.class}}" type="button" data-toggle="modal"
                                     [attr.data-target]="'#'+buttom.modal"
@@ -23,6 +26,13 @@
                                     (click)="changeDeleted($event)"
                             >
                                 <i class="{{buttom.icon}}"></i>
+                            </button>
+                            <button class="btn btn-box-tool" type="button"
+                                    [attr.title]="db.msg.refresh | translate"
+                                    (click)="loadWhere('',$event)"
+                            >
+                                <i *ngIf="!findData" class="fa fa-refresh"></i>
+                                <i *ngIf="findData" class="fa fa-spinner fa-spin"></i>
                             </button>
 
                             <div class="btn-group">
@@ -56,7 +66,7 @@
                     </div>
                     <div *ngIf="model.permissions.list" class="box-body">
                         <div *ngIf="dataList && dataList.count>0">
-                            <tables-view [dataList]="dataList" [model]="model" [params]="paramsTable" [where]="where" [deleted]="deleted"></tables-view>
+                            <tables-view [dataList]="dataList" [model]="model" [params]="paramsTable" [where]="where" [deleted]="deleted" [findData]="findData"></tables-view>
                         </div>
                         <div *ngIf="dataList && dataList.count == 0">
                             <div class="alert alert-warning alert-dismissable">
@@ -93,7 +103,7 @@
 </div>
 
 
-<div [@animation_1]="(modalIn)?'true':'false'" *ngIf="model.permissions.warning && modalIn" class="modal" [class.in]="modalIn" tabindex="-1" role="dialog"
+<div [@animation_1]="(modalIn)?'true':'false'" *ngIf="!model.permissions.warning && modalIn" class="modal" [class.in]="modalIn" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" [style.display]="modalIn?'block':'none'">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
