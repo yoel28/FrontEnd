@@ -176,6 +176,7 @@ export class StaticValues {
         msg.notAuthorized="Acceso no autorizado";
         msg.select="Seleccionar";
         msg.config="Configuración";
+        msg.refresh="Actualizar";
 
         return msg;
 
