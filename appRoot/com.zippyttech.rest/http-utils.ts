@@ -57,7 +57,7 @@ export class HttpUtils {
             this.http.get(endpoint, {headers: contentHeaders})
                 .subscribe(
                     response => {
-                        localStorage.setItem('VERSION_CACHE_HEADER',response.headers.get('Cookie'));
+                        that.setCookie(response.headers.get('Cookie'));
                         that.valideVersion();
                         if (successCallback != null)
                             successCallback(response);
@@ -79,7 +79,7 @@ export class HttpUtils {
             this.http.delete(endpoint, {headers: contentHeaders})
                 .subscribe(
                     response => {
-                        localStorage.setItem('VERSION_CACHE_HEADER',response.headers.get('Cookie'));
+                        that.setCookie(response.headers.get('Cookie'));
                         that.valideVersion();
                         if (successCallback != null)
                             successCallback(response);
@@ -103,7 +103,7 @@ export class HttpUtils {
                     response => {
                         try
                         {
-                            localStorage.setItem('VERSION_CACHE_HEADER',response.headers.get('Cookie'));
+                            that.setCookie(response.headers.get('Cookie'));
                             that.valideVersion();
                             if (successCallback != null)
                                 successCallback(response);
@@ -129,7 +129,7 @@ export class HttpUtils {
             this.http.put(endpoint,body, {headers: contentHeaders})
                 .subscribe(
                     response => {
-                        localStorage.setItem('VERSION_CACHE_HEADER',response.headers.get('Cookie'));
+                        that.setCookie(response.headers.get('Cookie'));
                         that.valideVersion();
                         if (successCallback != null)
                             successCallback(response);
@@ -183,15 +183,22 @@ export class HttpUtils {
             if (that.toastyService)
                 that.addToast('Notificacion','Actualizado con éxito');
         };
-       return this.doPut(endpoint,body,successCallback,errorCallback,isEndpointAbsolute)
+        return this.doPut(endpoint,body,successCallback,errorCallback,isEndpointAbsolute)
     }
-    
+
     valideVersion(){
-        if(localStorage.getItem('VERSION_CACHE') && localStorage.getItem('VERSION_CACHE_HEADER'))
+        if(localStorage.getItem('VERSION_CACHE') && localStorage.getItem('VERSION_CACHE_HEADER')!='null')
             if(localStorage.getItem('bearer') && (localStorage.getItem('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE_HEADER')))
             {
                 localStorage.setItem('VERSION_CACHE',localStorage.getItem('VERSION_CACHE_HEADER'));
                 location.reload(true);
             }
+    }
+    setCookie(cookie?){
+        if(cookie && cookie!='null')
+        {
+            localStorage.setItem('VERSION_CACHE_HEADER',cookie);
+        }
+
     }
 }
