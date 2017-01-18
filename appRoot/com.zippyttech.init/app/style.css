@@ -138,7 +138,7 @@
   background: #FFF;
 }
 
-.modal.in .modal-dialog {
+.modal.in .modal-dialog:not(.send){
   width: 80%;
 }
 
