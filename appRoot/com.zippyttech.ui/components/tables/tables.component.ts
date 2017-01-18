@@ -10,7 +10,7 @@ declare var moment:any;
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/components/tables/style.css'],
-    inputs:['params','model','dataList','where'],
+    inputs:['params','model','dataList','where','deleted'],
     outputs:['getInstance'],
 })
 
@@ -265,12 +265,29 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
             Object.keys(data[key][0]).forEach(subkey=>{
                 if(that.model.rules[key].rulesSave[subkey])
                     that.viewListData['label'][subkey] = that.model.rules[key].rulesSave[subkey].title;
-            })
+            });
         this.viewListData['data'] =  data[key];
+        if(typeof data[key] === 'string'){
+            this.viewListData['data'] = JSON.parse(data[key])
+        }
     }
 
     public getObjectKeys(data){
         return Object.keys(data || {});
+    }
+
+    changeOrder(sort){
+        if(sort && this.model && this.model.rules[sort] && this.model.rules[sort].permissions.search){
+            if(sort ==  this.sort){
+                this.order = this.order=='asc'?'desc':'asc';
+            }
+            else
+            {
+                this.sort =  sort;
+                this.order = 'desc'
+            }
+            this.loadData();
+        }
     }
 
 
