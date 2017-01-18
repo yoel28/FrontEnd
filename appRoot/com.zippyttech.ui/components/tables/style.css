@@ -8,3 +8,12 @@ th.check{
 td.check{
     background: rgba(0, 187, 0, 0.18);
 }
+table {
+    overflow: visible;
+}
+.deleted:nth-of-type(odd){
+    background: rgba(255, 0, 0, 0.17);
+}
+.deleted:nth-of-type(even){
+    background: rgba(255, 0, 0, 0.37);
+}
