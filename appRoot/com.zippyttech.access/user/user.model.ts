@@ -54,8 +54,8 @@ export class UserModel extends ModelBase{
             'search':this.permissions.filter,
             'visible':this.permissions.visible,
             'key': 'email',
-            'title': 'Correo electronico',
-            'placeholder': 'Correo electronico',
+            'title': 'Correo electrónico',
+            'placeholder': 'Correo electrónico',
         };
         this.rules['phone']={
             'type': 'text',
@@ -125,7 +125,9 @@ export class UserModel extends ModelBase{
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
         delete this.rules['detail'];
     }
-    initPermissions() {}
+    initPermissions() {
+        this.permissions['roleSave']=this.db.myglobal.existsPermission(['USER_ROLE_SAVE'])
+    }
     initParamsSearch() {
         this.paramsSearch.title="Buscar usuario";
         this.paramsSearch.placeholder="Ingrese el usuario";
