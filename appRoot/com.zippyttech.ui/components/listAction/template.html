@@ -1,0 +1,95 @@
+<div class="box collapsed-box" *ngIf="data.model">
+    <div [class]="'box-header with-border '+((!permissionValid('list'))?'bg-red':
+                                            ((existData() && data.model.dataList.list.length <= 0))?'bg-info':
+                                            '')"
+         onclick="jQuery(this).find('#btn-toogle').click(); jQuery(this).find('#btn-toogle-w').click(); "
+    >
+        <h3 class="box-title">
+            {{data.model.ruleObject.title}}
+            <a *ngIf="!permissionValid('list')" id="btn-toogle-w" data-widget="collapse"><i class="fa fa-warning"></i></a>
+            <span *ngIf="(existData() && data.model.dataList.list.length > 0)" class="badge">{{data.model.dataList.list.length}}</span>
+            <span *ngIf="(existData() && data.model.dataList.list.length <= 0)">
+                <h3>No hay elementos para mostrar</h3>
+            </span>
+            <div *ngIf="!existData() && permissionValid('list')" class="loader">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
+        </h3>
+        <div class="box-tools pull-right" *ngIf="permissionValid('list') && existData()">
+            <button type="button" class="btn btn-box-tool" [routerLink]="data.routerLink"><i class="fa fa-external-link"></i></button>
+            <button id="btn-toogle" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+        </div>
+    </div>
+
+    <div class="box-body">
+        <ul class="list-group" *ngIf="permissionValid('list') && existData() && (data.model.dataList.list.length>0)">
+            <li class="list-group-item list-group-item-heading {{db.classCol(12,12,12,12)}}">
+                <div class="{{db.classCol(11,11,11,11)}} data-detail">
+                    <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}" *ngFor="let key of visibleKeys">
+                        {{data.model.rules[key].title}}
+                    </div>
+                </div>
+            </li>
+
+            <li class="{{db.classCol(12,12,12,12)}} list-group-item" *ngFor="let elem of data.model.dataList.list">
+                <div class="{{db.classCol(12,12,12,12)}} item-content">
+                    <div class="{{db.classCol(11,11,11,11)}} data-detail">
+                        <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}" *ngFor="let key of visibleKeys">
+                            <!--CAMBIAR Y CREAR UN ARREGLO DE VIEWS-->
+                            <span *ngIf="data.model.rules[key].type =='date'">
+                                {{formatDate(elem[key],data.model.rules[key].format?data.model.rules[key].format.formatView:'DD/MM/YYYY',false,elem.id)}}
+                            </span>
+                            <span *ngIf="data.model.rules[key].type =='number'">
+                                {{elem[key]}}
+                            </span>
+                            <span *ngIf="data.model.rules[key].object">
+                                {{(elem[data.model.rules[key].keyDisplay])?elem[data.model.rules[key].keyDisplay]:"N/A"}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="data-detail-item">
+                        <button *ngIf="data.actions!==undefined && getActionKeys(data.actions).length" class="{{db.classCol(1,1,1,1)}} btn btn-box-tool text-green text-center" (click)="dataSelect = (dataSelect==elem)?{}:elem" data-toggle="collapse" data-target="#edit">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="edit" class="item-content-edit collapse" *ngIf="data.actions!==undefined && (actionSelect==action || getKeys(data.actions).length == 1) && dataSelect == elem">
+                    <ul class="list-actions list-group">
+                        <li class="list-actions-item" *ngFor="let action of getActionKeys(data.actions)">
+                            <div class="box action">
+                                <div class="box-header action-header">
+                                    <h4 class="box-title action-title">{{data.actions[action].title}}</h4>
+                                    <button (click)="actionSelect = (actionSelect==action)?'':action" type="button" class="btn btn-box-tool pull-right" data-widget="collapse" data-toggle="tooltip">
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <div class="box-body action-body">
+                                    <form-view class="action-form"
+                                               (getInstance)="setForm($event)"
+                                               [params]="getModelAction(action).paramsSave"
+                                               [rules]="filterRules(action)">
+                                        >
+                                    </form-view>
+                                </div>
+                                <div class="box-footer action-footer">
+                                    <button class="btn btn-green pull-right"
+                                            (click)="submit($event,action)"
+                                            [disabled] = "!formValid()"
+                                    >Procesar</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+        <span class="error-info" *ngIf="!permissionValid('list')">
+            <h3>
+            {{ (db.msg.notAuthorized || 'Acceso no autorizado') | translate}},&nbsp;
+            {{db.msg.contactAdminPermission | translate}} {{data.model.prefix}}_LIST
+            </h3>
+        </span>
+    </div>
+    <div class="box-footer">
+    </div>
+</div>
