@@ -4,13 +4,13 @@
             <div class="box-header with-border">
                 <h1>{{db.msg.profile}}</h1>
             </div>
-            <div class="box-body">
+            <div class="box-body" *ngIf="model.completed">
                 <div *ngIf="db.myglobal.user.id" class="col-lg-12">
                     <div class="panel">
                         <div class="panel-body">
                             <div class="profile">
                                 <div style="margin-bottom: 15px" class="row">
-                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="{{db.classCol(4,4,6,6)}}">
                                         <image-edit-view *ngIf="model.rules.image"
                                                          [image]="db.myglobal.user.image"
                                                          [default]="model.rules.image.default"
@@ -18,7 +18,7 @@
                                                          (out)="saveImage($event)"
                                         ></image-edit-view>
                                     </div>
-                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <div class="{{db.classCol(4,4,6,6)}}">
                                         <div *ngFor="let key of getObjectKeys(model.rules)">
                                             <h2 *ngIf="model.rules[key].protected" class="truncate">
                                                 <strong>{{model.rules[key].title}}:</strong>&nbsp;
@@ -34,8 +34,15 @@
                                                 </a>
                                             </p>
                                         </div>
-                                    </div>
+                                        <strong>Rol:</strong>
+                                        <a x-editable
+                                           [disabled]="!model.permissions.update || !model.rules['roles'].permissions.list || !model.permissions.roleSave"
+                                           [endpoint]="'/users/'+db.myglobal.user.id+'/roles'"
+                                           [function]="onEditableRole" [data]="db.myglobal.user" [rules]="model.rules"
+                                           field="roles">
 
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
