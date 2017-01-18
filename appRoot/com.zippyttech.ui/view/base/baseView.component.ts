@@ -42,12 +42,13 @@ export class BaseViewComponent extends ControllerBase implements OnInit {
     initViewOptions() {
         this.viewOptions["title"] = this.instance.viewOptions.title;
         this.viewOptions["buttons"] = [];
-        
+
         this.viewOptions["buttons"].push({
             'visible': this.model.permissions.add,
             'title': 'Agregar',
             'class': 'text-green',
             'icon': 'fa fa-plus',
+            'type':'modal',
             'modal': this.model.paramsSave.idModal
         });
         this.viewOptions["buttons"].push({
@@ -55,8 +56,17 @@ export class BaseViewComponent extends ControllerBase implements OnInit {
             'title': 'Filtrar',
             'class': 'text-blue',
             'icon': 'fa fa-filter',
+            'type':'modal',
             'modal': this.model.paramsSearch.idModal
         });
+        this.viewOptions["buttons"].push({
+            'visible': this.model.permissions.list && this.model.permissions.showDelete,
+            'title': 'Ver eliminados',
+            'class': 'text-red',
+            'type':'showDeleted',
+            'icon': 'fa fa-trash'
+        });
+
     }
     loadParamsTable(){
         this.paramsTable.endpoint=this.endpoint;
@@ -81,7 +91,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit {
             }
 
         }
-        
+
     }
 
     setVisibleField(event,data)
