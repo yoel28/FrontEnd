@@ -19,7 +19,7 @@ export abstract class ModelRoot extends RestController{
     private rulesDefault:any = {};
     public rules:Object={};
 
-    public dataList={};
+    public dataList:any={};
 
 
     constructor(public db:DependenciesBase,prefix,endpoint,useGlobal=true){
@@ -57,6 +57,7 @@ export abstract class ModelRoot extends RestController{
 
     abstract initPermissions();
     private _initPermissions() {
+        this.permissions['showDelete'] = this.db.myglobal.existsPermission([this.prefix + '_SHOW_DELETED']);
         this.permissions['list'] = this.db.myglobal.existsPermission([this.prefix + '_LIST']);
         this.permissions['add'] = this.db.myglobal.existsPermission([this.prefix + '_ADD']);
         this.permissions['update'] = this.db.myglobal.existsPermission([this.prefix + '_UPDATE']);
@@ -84,7 +85,7 @@ export abstract class ModelRoot extends RestController{
             "type": "textarea",
             "key": "detail",
             "title": "Detalle",
-            "placeholder": "ingrese el detalle",
+            "placeholder": "Ingrese el detalle",
         };
         this.rulesDefault["enabled"] = {
             "update": (this.permissions.update && this.permissions.lock),
@@ -111,7 +112,7 @@ export abstract class ModelRoot extends RestController{
             'idModal': this.prefix + '_' + this.configId + '_search',
             'endpoint': "/search" + this.endpoint,
             'placeholder': "Placeholder default",
-            'label': {'title': "titulo: ", 'detail': "detalle: "},
+            'label': {'title': "título: ", 'detail': "detalle: "},
             'msg': {
                 'errors': {
                     'noAuthorized': this.db.msg.noAuthorized,
@@ -213,5 +214,19 @@ export abstract class ModelRoot extends RestController{
         Object.keys(this.rules).forEach(key=>{
             that.rules[key].check =  false;
         })
+    }
+    public spliceId(id:string)
+    {
+        if(this.dataList['list']) {
+            let index = this.dataList['list'].findIndex(obj => obj.id == id);
+            if (index != -1)
+                this.dataList['list'].splice(index,1);
+        }
+    }
+
+    public getIndexById(id:string)
+    {
+        if(this.dataList['list'])
+            return this.dataList['list'].findIndex(obj => obj.id == id);
     }
 }
