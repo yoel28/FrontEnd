@@ -20,12 +20,12 @@ export class InfoComponent extends BaseViewInstance{
         this.model= new InfoModel(this.db);
     }
     initViewOptions() {
-        this.viewOptions["title"] = 'Informacion (Ayudas)';
+        this.viewOptions["title"] = 'Información (Ayudas)';
     }
     loadParamsTable(){
         this.paramsTable.actions={};
         this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar la accion : ',
+            'message': '¿ Esta seguro de eliminar la acción : ',
             'keyAction':'code'
         };
     }

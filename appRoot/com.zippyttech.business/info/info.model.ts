@@ -19,8 +19,8 @@ export class InfoModel extends ModelBase{
             'visible':this.permissions.visible,
             'key': 'code',
             'icon': 'fa fa-key',
-            'title': 'Codigo',
-            'placeholder': 'Ingrese el codigo',
+            'title': 'Código',
+            'placeholder': 'Ingrese el código',
         }
         this.rules['title']={
             'type': 'text',
@@ -58,7 +58,7 @@ export class InfoModel extends ModelBase{
             ],
             'key': 'position',
             'title': 'Posición',
-            'placeholder': 'Selecccione una posición',
+            'placeholder': 'Seleccione una posición',
         }
         this.rules['size']={
             'type': 'select',
@@ -77,7 +77,7 @@ export class InfoModel extends ModelBase{
             ],
             'key': 'size',
             'title': 'Tamaño',
-            'placeholder': 'Selecccione un tamaño',
+            'placeholder': 'Seleccione un tamaño',
         }
         this.rules['icon']={
             'type': 'select',
@@ -91,9 +91,9 @@ export class InfoModel extends ModelBase{
             ],
             'key': 'icon',
             'title': 'Icono',
-            'placeholder': 'Selecccione un icono',
+            'placeholder': 'Seleccione un icono',
         }
-        
+
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
     initPermissions() {}

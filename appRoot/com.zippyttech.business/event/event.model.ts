@@ -36,7 +36,7 @@ export class EventModel extends ModelBase{
             'source': [],
             'key': 'actionType',
             'title': 'Tipo de acción',
-            'placeholder': 'Selecccione un tipo de accción',
+            'placeholder': 'Seleccione un tipo de accción',
         }
         this.rules['way']={
             'type': 'select',
@@ -47,7 +47,7 @@ export class EventModel extends ModelBase{
             'source': [],
             'key': 'way',
             'title': 'Canal',
-            'placeholder': 'Selecccione un canal',
+            'placeholder': 'Seleccione un canal',
         }
         this.rules['over']={
             'type': 'select',

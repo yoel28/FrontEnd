@@ -24,8 +24,8 @@ export class NotificationModel extends ModelRoot{
             'visible':this.permissions.visible,
             'search' :this.permissions.filter,
             'key': 'title',
-            'title': 'Titulo',
-            'placeholder': 'Titulo',
+            'title': 'Título',
+            'placeholder': 'Título',
         };
         this.rules['icon']={
             'type': 'select',

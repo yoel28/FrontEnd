@@ -36,8 +36,8 @@ export class PermissionModel extends ModelRoot{
             'search':this.permissions.filter,
             'visible':this.permissions.visible,
             'key': 'module',
-            'title': 'Modulo',
-            'placeholder': 'Modulo',
+            'title': 'Módulo',
+            'placeholder': 'Módulo',
         };
         this.rules['controlador']={
             'type': 'text',
