@@ -351,7 +351,9 @@ export class RestController implements OnInit {
         return (this.httputils.onUpdate(this.endpoint + dataSelect.id, body, dataSelect, this.error));
     }
 
-    loadWhere(where) {
+    loadWhere(where,event?) {
+        if(event)
+            event.preventDefault();
         this.where = where;
         this.loadData();
     }
