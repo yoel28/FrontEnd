@@ -35,6 +35,11 @@ export class RestController implements OnInit {
     where:string = "";
     whereObject:IWhere=[];
     findData:boolean=false;
+    rest:IRest=[
+        'where':[],
+        'max':15,
+        'offset':0,
+    ]
 
     constructor(public db:DependenciesBase | any) {
         this.httputils = new HttpUtils(db.http,db.toastyService,db.toastyConfig);
@@ -44,6 +49,11 @@ export class RestController implements OnInit {
 
     setEndpoint(endpoint:string) {
         this.endpoint = endpoint;
+    }
+    public setWhere(where:IRest | Object):void{
+        if(where){
+            this.where = "&where="+encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
+        }
     }
 
     addToast(title,message,type='info',time=10000) {
