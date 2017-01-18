@@ -188,3 +188,13 @@
 .check{
     background: rgba(0, 187, 0, 0.18);
 }
+.deleted-all{
+    background: rgba(0, 0, 0, 0.38);
+    border-radius: 4px !important;
+    color: white !important;
+}
+.deleted-only{
+    background: rgba(0, 0, 0, 0.38);
+    border-radius: 4px !important;
+    color: red !important;
+}
