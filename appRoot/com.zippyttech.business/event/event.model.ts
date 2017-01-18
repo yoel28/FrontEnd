@@ -8,7 +8,7 @@ export class EventModel extends ModelBase{
     public rule:any={};
 
     constructor(public db:DependenciesBase){
-        super(db,'EVENT','/events/');
+        super(db,'EVENT','/events/',true,false);
         this.initModel(false);
         this.loadDataExternal();
     }
