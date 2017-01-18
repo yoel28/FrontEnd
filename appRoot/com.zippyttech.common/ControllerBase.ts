@@ -42,14 +42,15 @@ export abstract class ControllerBase extends RestController implements OnInit {
     
     abstract initModel();
 
-    public getViewOptionsButtons() {
+    public getViewOptionsButtons(type:string) {
         let visible = [];
         this.viewOptions['buttons'].forEach(obj=> {
-            if (obj.visible)
+            if (obj.visible && obj.type == type)
                 visible.push(obj);
         })
         return visible;
     }
+
     public getViewOptionsActions() {
         let visible = [];
         Object.keys(this.viewOptions.actions).forEach(obj=> {
@@ -182,6 +183,21 @@ export abstract class ControllerBase extends RestController implements OnInit {
     }
     public getKeys(data){
         return Object.keys(data || {})
+    }
+    public getKeysDataVisible()
+    {
+        let data=[];
+        let that=this;
+        Object.keys(this.model.rules).forEach((key)=>{
+            if(that.model.rules[key].visible)
+                data.push(key)
+        });
+        return data;
+    }
+    public objectToString(data){
+        if(typeof data === 'object')
+            return JSON.stringify(data);
+        return '';
     }
 
 }
