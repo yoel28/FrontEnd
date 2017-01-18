@@ -106,7 +106,7 @@ export abstract class ControllerBase extends RestController implements OnInit {
         if(event)
             event.preventDefault();
 
-        if (!this.model.permissions.warning || accept) {
+        if (this.model.permissions.warning || accept) {
             this.modalIn=false;
             if(this.model.permissions.list)
                 this.loadData();
@@ -177,9 +177,6 @@ export abstract class ControllerBase extends RestController implements OnInit {
     }
     public get getHora(){
         return moment().format('LT');
-    }
-    public setWhere(where:IRest | Object):void{
-        this.where = "&where="+encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
     }
     public getKeys(data){
         return Object.keys(data || {})
