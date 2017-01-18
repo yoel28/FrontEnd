@@ -10,7 +10,7 @@
                         <div class="panel-body">
                             <div class="profile">
                                 <div style="margin-bottom: 15px" class="row">
-                                    <div class="{{db.classCol(4,4,6,6)}}">
+                                    <div class="{{db.classCol(6,6)}}">
                                         <image-edit-view *ngIf="model.rules.image"
                                                          [image]="db.myglobal.user.image"
                                                          [default]="model.rules.image.default"
@@ -18,7 +18,7 @@
                                                          (out)="saveImage($event)"
                                         ></image-edit-view>
                                     </div>
-                                    <div class="{{db.classCol(4,4,6,6)}}">
+                                    <div class="{{db.classCol(6,6)}}">
                                         <div *ngFor="let key of getObjectKeys(model.rules)">
                                             <h2 *ngIf="model.rules[key].protected" class="truncate">
                                                 <strong>{{model.rules[key].title}}:</strong>&nbsp;
