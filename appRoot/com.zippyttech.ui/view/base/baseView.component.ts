@@ -37,7 +37,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit {
         this.setEndpoint(this.model.endpoint);
     }
     initRest(){
-        this.setWhere(this.instance.rest.where);//TODO:Falta cargar todos las demas variables y hacer parametros dinamicos
+        this.setWhere(this.instance.rest.where);
+        this.max  = this.instance.rest.max;
+        this.offset  = this.instance.rest.offset;
     }
     initViewOptions() {
         this.viewOptions["title"] = this.instance.viewOptions.title;
