@@ -4,7 +4,7 @@ import {DependenciesBase} from "./DependenciesBase";
 
 export abstract class ModelBase extends ModelRoot{
 
-    constructor(db:DependenciesBase,prefix,endpoint,useGlobal=true,private globalRequired=true) {
+    constructor(db:DependenciesBase,prefix,endpoint,useGlobal=true) {
         super(db,prefix,endpoint,useGlobal);
         this.checkGlobal();
     }
@@ -13,7 +13,12 @@ export abstract class ModelBase extends ModelRoot{
         {
             let account = new AccountModel(this.db);
             this.rules['account'] =  account.ruleObject;
-            this.rules['account'].required = this.globalRequired;
+            this.rules['account'].required = true;
+        }
+    }
+    public globalOptional(){
+        if(this.permissions['global']){
+            this.rules['account'].required = false;
         }
     }
 
