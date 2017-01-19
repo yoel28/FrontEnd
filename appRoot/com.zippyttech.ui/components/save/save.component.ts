@@ -86,7 +86,7 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
         return false;
     }
     existloadDelete():boolean{
-        if(this.instanceForm && this.instanceForm.delete && this.instanceForm.id >= 0){
+        if(this.instanceForm && this.instanceForm.delete && this.instanceForm.id && parseFloat(this.instanceForm.id || '-1')>0 ){
             return true;
         }
         return false;
