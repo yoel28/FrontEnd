@@ -35,11 +35,11 @@ export class RestController implements OnInit {
     where:string = "";
     whereObject:IWhere=[];
     findData:boolean=false;
-    rest:IRest=[
-        'where':[],
-        'max':15,
-        'offset':0,
-    ]
+    rest:IRest= {
+        'where': [],
+        'max': 15,
+        'offset': 0,
+    }
 
     constructor(public db:DependenciesBase | any) {
         this.httputils = new HttpUtils(db.http,db.toastyService,db.toastyConfig);
