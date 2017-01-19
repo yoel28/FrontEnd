@@ -10,37 +10,38 @@
                             &nbsp;<i *ngIf="findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                         </h4>
                         <div class="box-tools pull-right header-tools">
+                            <template [ngIf]="viewOptions.viewActions">
+                                <button *ngFor="let buttom of getViewOptionsButtons('modal')"
+                                        class="btn btn-box-tool {{buttom.class}}" type="button" data-toggle="modal"
+                                        [attr.data-target]="'#'+buttom.modal"
+                                        [attr.title]="buttom.title | translate"
+                                >
+                                    <i class="{{buttom.icon}}"></i>
+                                </button>
+                                <button *ngFor="let buttom of getViewOptionsButtons('showDeleted')"
+                                        class="btn btn-box-tool {{buttom.class}}" type="button"
+                                        [class.deleted-all]="deleted=='all'"
+                                        [class.deleted-only]="deleted=='only'"
+                                        [attr.title]="buttom.title | translate"
+                                        (click)="changeDeleted($event)"
+                                >
+                                    <i class="{{buttom.icon}}"></i>
+                                </button>
+                                <button class="btn btn-box-tool" type="button"
+                                        [attr.title]="db.msg.refresh | translate"
+                                        (click)="loadData('',$event)">
+                                    <i *ngIf="!findData" class="fa fa-refresh"></i>
+                                    <i *ngIf="findData" class="fa fa-spinner fa-spin"></i>
+                                </button>
 
-                            <button *ngFor="let buttom of getViewOptionsButtons('modal')"
-                                    class="btn btn-box-tool {{buttom.class}}" type="button" data-toggle="modal"
-                                    [attr.data-target]="'#'+buttom.modal"
-                                    [attr.title]="buttom.title | translate"
-                            >
-                                <i class="{{buttom.icon}}"></i>
-                            </button>
-                            <button *ngFor="let buttom of getViewOptionsButtons('showDeleted')"
-                                    class="btn btn-box-tool {{buttom.class}}" type="button"
-                                    [class.deleted-all]="deleted=='all'"
-                                    [class.deleted-only]="deleted=='only'"
-                                    [attr.title]="buttom.title | translate"
-                                    (click)="changeDeleted($event)"
-                            >
-                                <i class="{{buttom.icon}}"></i>
-                            </button>
-                            <button class="btn btn-box-tool" type="button"
-                                    [attr.title]="db.msg.refresh | translate"
-                                    (click)="loadData('',$event)">
-                                <i *ngIf="!findData" class="fa fa-refresh"></i>
-                                <i *ngIf="findData" class="fa fa-spinner fa-spin"></i>
-                            </button>
-
-                            <template [ngIf]="model.permissions.export">
-                                <a target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
-                                    <i class="fa fa-file-pdf-o text-red"></i>
-                                </a>&nbsp;
-                                <a target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
-                                    <i class="fa fa-file-excel-o text-green"></i>
-                                </a>
+                                <template [ngIf]="model.permissions.export">
+                                    <a target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
+                                        <i class="fa fa-file-pdf-o text-red"></i>
+                                    </a>&nbsp;
+                                    <a target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
+                                        <i class="fa fa-file-excel-o text-green"></i>
+                                    </a>
+                                </template>
                             </template>
 
 
