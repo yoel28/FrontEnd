@@ -29,11 +29,21 @@
                             </button>
                             <button class="btn btn-box-tool" type="button"
                                     [attr.title]="db.msg.refresh | translate"
-                                    (click)="loadData('',$event)"
-                            >
+                                    (click)="loadData('',$event)">
                                 <i *ngIf="!findData" class="fa fa-refresh"></i>
                                 <i *ngIf="findData" class="fa fa-spinner fa-spin"></i>
                             </button>
+
+                            <template [ngIf]="model.permissions.export">
+                                <a target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
+                                    <i class="fa fa-file-pdf-o text-red"></i>
+                                </a>&nbsp;
+                                <a target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
+                                    <i class="fa fa-file-excel-o text-green"></i>
+                                </a>
+                            </template>
+
+
 
                             <div class="btn-group">
                                 <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false" [attr.title]="db.msg.config">
