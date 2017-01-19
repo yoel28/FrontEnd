@@ -29,7 +29,7 @@
                             </button>
                             <button class="btn btn-box-tool" type="button"
                                     [attr.title]="db.msg.refresh | translate"
-                                    (click)="loadWhere('',$event)"
+                                    (click)="loadData('',$event)"
                             >
                                 <i *ngIf="!findData" class="fa fa-refresh"></i>
                                 <i *ngIf="findData" class="fa fa-spinner fa-spin"></i>
