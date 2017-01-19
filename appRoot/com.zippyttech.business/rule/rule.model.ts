@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class RuleModel extends ModelBase{
 
     constructor(public db:DependenciesBase){
-        super(db,'RULE','/rules/',true,false);
+        super(db,'RULE','/rules/');
         this.initModel();
     }
     modelExternal() {}
@@ -42,6 +42,7 @@ export class RuleModel extends ModelBase{
             'title':'Nombre',
             'placeholder':'Nombre',
         };
+        this.globalOptional();
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
     initPermissions() {}

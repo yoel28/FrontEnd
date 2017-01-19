@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class InfoModel extends ModelBase{
 
     constructor(public db:DependenciesBase){
-        super(db,'INFO','/infos/',true,false);
+        super(db,'INFO','/infos/');
         this.initModel();
     }
     modelExternal() {}
@@ -93,6 +93,8 @@ export class InfoModel extends ModelBase{
             'title': 'Icono',
             'placeholder': 'Seleccione un icono',
         }
+
+        this.globalOptional();
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }

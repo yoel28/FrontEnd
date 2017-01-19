@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class ParamModel extends ModelBase{
 
     constructor(public db:DependenciesBase){
-        super(db,'PARAM','/params/',true,false);
+        super(db,'PARAM','/params/');
         this.initModel();
     }
     modelExternal() {}
@@ -47,6 +47,8 @@ export class ParamModel extends ModelBase{
             'title': 'Tipo',
             'placeholder': 'Seleccione un Tipo',
         };
+
+        this.globalOptional();
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
     initPermissions() {}

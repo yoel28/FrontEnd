@@ -8,7 +8,7 @@ export class EventModel extends ModelBase{
     public rule:any={};
 
     constructor(public db:DependenciesBase){
-        super(db,'EVENT','/events/',true,false);
+        super(db,'EVENT','/events/');
         this.initModel(false);
         this.loadDataExternal();
     }
@@ -121,6 +121,8 @@ export class EventModel extends ModelBase{
             'title': 'Icono',
             'placeholder': 'Ingrese el icono',
         }
+
+        this.globalOptional();
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
         delete this.rules['detail'];
