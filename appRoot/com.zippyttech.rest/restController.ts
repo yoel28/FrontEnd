@@ -200,7 +200,9 @@ export class RestController implements OnInit {
         }
     }
 
-    loadData(offset?) {
+    loadData(offset?,event?) {
+        if(event)
+            event.preventDefault();
         this.findData = true;
         let that = this;
         if (offset && offset == '#')
