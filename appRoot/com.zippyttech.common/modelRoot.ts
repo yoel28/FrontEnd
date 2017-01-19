@@ -57,6 +57,7 @@ export abstract class ModelRoot extends RestController{
 
     abstract initPermissions();
     private _initPermissions() {
+        this.permissions['export'] = this.db.myglobal.existsPermission([this.prefix + '_EXPORT']);
         this.permissions['showDelete'] = this.db.myglobal.existsPermission([this.prefix + '_SHOW_DELETED']);
         this.permissions['list'] = this.db.myglobal.existsPermission([this.prefix + '_LIST']);
         this.permissions['add'] = this.db.myglobal.existsPermission([this.prefix + '_ADD']);
