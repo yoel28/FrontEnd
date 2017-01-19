@@ -34,7 +34,7 @@ export class RestController implements OnInit {
     page:any = [];
     where:string = "";
     whereObject:IWhere=[];
-    id='';
+    id:string='';
     findData:boolean=false;
     rest:IRest= {
         'where': [],
