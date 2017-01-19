@@ -3,6 +3,7 @@ import {IRest} from "../../../com.zippyttech.rest/restController";
 
 export abstract class BaseViewInstance  implements OnInit {
 
+    public viewActions:boolean=true;
     public instance:any={};
     public paramsTable:any={};
     public model:any;
@@ -26,6 +27,8 @@ export abstract class BaseViewInstance  implements OnInit {
     }
 
     protected _loadInstance(){
+        this.viewOptions['viewActions']=this.viewActions;
+
         this.instance = {
             'model':this.model,
             'viewOptions':this.viewOptions,
