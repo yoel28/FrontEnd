@@ -34,6 +34,7 @@ export class RestController implements OnInit {
     page:any = [];
     where:string = "";
     whereObject:IWhere=[];
+    id='';
     findData:boolean=false;
     rest:IRest= {
         'where': [],
@@ -206,7 +207,7 @@ export class RestController implements OnInit {
             that.getLoadDataAll([], null, null, 0, 1000, null);
         else {
             this.getOffset(offset);
-            return this.httputils.onLoadList(this.endpoint + "?max=" + this.max + "&offset=" + this.offset + this.where + (this.sort.length > 0 ? '&sort=' + this.sort : '') + (this.order.length > 0 ? '&order=' + this.order : '') + (this.deleted.length > 0 ? '&deleted=' + this.deleted : ''), this.dataList, this.max, this.error).then(
+            return this.httputils.onLoadList(this.endpoint +this.id + "?max=" + this.max + "&offset=" + this.offset + this.where + (this.sort.length > 0 ? '&sort=' + this.sort : '') + (this.order.length > 0 ? '&order=' + this.order : '') + (this.deleted.length > 0 ? '&deleted=' + this.deleted : ''), this.dataList, this.max, this.error).then(
                 response=> {
                     that.loadPager(that.dataList);
                     this.findData=false;
@@ -375,6 +376,8 @@ export class RestController implements OnInit {
     loadDataWhere(id='',where:IWhere=[]){
         let that = this;
         this.findData = true;
+        if(id && id!='')
+            this.id = id;
         this.where="&where="+encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
         let successCallback= response => {
             that.findData=false;
