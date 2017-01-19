@@ -18,7 +18,6 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
     public params:any={};
 
     public rules:any={};
-    public id:number;
     public dataSelect:any={};
     public dataListMultiple:any={};//arraay para opciones multiples
 
