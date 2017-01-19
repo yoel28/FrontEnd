@@ -27,6 +27,7 @@ import {SearchMultipleComponent} from "./com.zippyttech.ui/components/searchMult
 import {ToastyModule} from "ng2-toasty";
 import {FormComponent} from "./com.zippyttech.ui/components/form/form.component";
 import {NotificationComponent} from "./com.zippyttech.business/notification/notification.component";
+import {ModalComponent} from "./com.zippyttech.ui/components/modal/modal.component";
 
 const routesDefault: Routes = [
 
@@ -90,7 +91,8 @@ export const componentsView = [
     FilterComponent,
     SaveComponent,
     SearchMultipleComponent,
-    FormComponent
+    FormComponent,
+    ModalComponent
 ];
 export const componentsApp = [];
 export const componentsPublic = [
