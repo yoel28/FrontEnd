@@ -375,14 +375,14 @@ export class RestController implements OnInit {
     loadDataWhere(id='',where:IWhere=[]){
         let that = this;
         this.findData = true;
-        this.where="?where="+encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
+        this.where="&where="+encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
         let successCallback= response => {
             that.findData=false;
             Object.assign(that.dataList, response.json());
             if(!(id && id==''))
                 that.loadPager(that.dataList);
         };
-        return this.httputils.doGet(this.endpoint+id+this.where,successCallback,this.error);
+        return this.httputils.doGet(this.endpoint+id+'?offset=0'+this.where,successCallback,this.error);
     }
 
     changeOrder(sort){
