@@ -41,7 +41,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit {
         this.loadRest();
     }
     initViewOptions() {
-        this.viewOptions["title"] = this.instance.viewOptions.title;
+        this.viewOptions = this.instance.viewOptions;
         this.viewOptions["buttons"] = [];
 
         this.viewOptions["buttons"].push({
