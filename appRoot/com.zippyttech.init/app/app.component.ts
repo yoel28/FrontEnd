@@ -29,14 +29,21 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire) {
         super(db);
-
-        let that = this;
-        let url = "https://cdg.zippyttech.com:8080";
-
+        let url="https://cdg.zippyttech.com:8080";
         localStorage.setItem('urlAPI', url + '/api');
         localStorage.setItem('url', url);
+        this.routerEvents();
+    }
 
-        db.router.events.subscribe((event: any) => {
+    ngOnInit(): void {
+        this.menuType = new FormControl(null);
+        this.menuItems = new FormControl([]);
+        this.loadPublicData();
+    }
+
+    routerEvents(){
+        let that = this;
+        this.db.router.events.subscribe((event: any) => {
             if (event instanceof NavigationStart) {
                 that.db.myglobal.navigationStart = true;
             }
@@ -45,8 +52,11 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 let componentName = event.state.root.children[0].component['name'];
                 let isPublic = that.isPublic(componentName);
 
-                if (isPublic && that.db.myglobal.dataSesion.valid) {
+                if (isPublic && localStorage.getItem('bearer')) {
                     let link = ['/init/dashboard', {}];
+                    if(componentName == 'TermConditionsComponent'){
+                        jQuery('#termConditions').modal('show');
+                    }
                     that.db.router.navigate(link);
                 }
                 else if (!isPublic && !that.db.myglobal.dataSesion.valid) {
@@ -76,12 +86,6 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 }
             }
         });
-    }
-
-    ngOnInit(): void {
-        this.menuType = new FormControl(null);
-        this.menuItems = new FormControl([]);
-        this.loadPublicData();
     }
 
     initModels() {
