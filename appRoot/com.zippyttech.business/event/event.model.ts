@@ -4,13 +4,12 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
 export class EventModel extends ModelBase{
 
-    public publicData:any={};
-    public rule:any={};
+    public rule:RuleModel;
 
     constructor(public db:DependenciesBase){
         super(db,'EVENT','/events/');
         this.initModel(false);
-        this.loadDataExternal();
+        this.loadDataPublic();
     }
     modelExternal() {
         this.rule = new RuleModel(this.db);
@@ -147,23 +146,20 @@ export class EventModel extends ModelBase{
         delete this.rulesSave.detail;
         delete this.rulesSave.enabled;
     }
-    loadDataExternal()
+    loadDataPublic()
     {
         let that = this;
-        let successCallback= response => {
-            Object.assign(that.publicData,response.json())
-            that.publicData.domains.forEach(obj=>{
-                that.rules['over'].source.push({'value':obj.name,'text':obj.logicalPropertyName});
-            });
-            that.publicData.event.actionTypes.forEach(obj=>{
-                that.rules['actionType'].source.push({'value':obj,'text':obj});
-            });
-            that.publicData.event.wayTypes.forEach(obj=>{
-                that.rules['way'].source.push({'value':obj,'text':obj});
-            })
-            that.completed = true;
-        }
-        this.httputils.doGet(localStorage.getItem('url'),successCallback,this.error,true)
+
+        that.db.myglobal.publicData.domains.forEach(obj=>{
+            that.rules['over'].source.push({'value':obj.name,'text':obj.logicalPropertyName});
+        });
+        that.db.myglobal.publicData.event.actionTypes.forEach(obj=>{
+            that.rules['actionType'].source.push({'value':obj,'text':obj});
+        });
+        that.db.myglobal.publicData.event.wayTypes.forEach(obj=>{
+            that.rules['way'].source.push({'value':obj,'text':obj});
+        })
+        that.completed = true
     }
 
 }
