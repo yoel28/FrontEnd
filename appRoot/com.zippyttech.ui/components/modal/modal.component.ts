@@ -15,7 +15,7 @@ export interface IModal{
     body?:{
 
     }
-    footer:Array<IAction>
+    footer?:Array<IAction>
 }
 interface IAction{
     title:string;
