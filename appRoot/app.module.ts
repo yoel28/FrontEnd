@@ -14,6 +14,7 @@ import {directivesApp, directivesDefault} from "./app.directives";
 import {QRCodeModule} from "angular2-qrcode/angular2-qrcode";
 import {WebSocket} from "./com.zippyttech.utils/websocket";
 import {DependenciesBase} from "./com.zippyttech.common/DependenciesBase";
+import {TruncateModule} from "ng2-truncate";
 
 const myFirebaseConfig = {
     apiKey: "AIzaSyD7yBfAAGV9pSCHqkqJXGW2g6R70209Kl4",
@@ -36,7 +37,8 @@ const myFirebaseConfig = {
             provide: TranslateLoader,
             useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
             deps: [Http]
-        })
+        }),
+        TruncateModule
     ],
     declarations: [
         AppComponent,
