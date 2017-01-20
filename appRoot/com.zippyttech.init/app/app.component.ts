@@ -8,6 +8,7 @@ import {InfoModel} from "../../com.zippyttech.business/info/info.model";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {AngularFire} from "angularfire2";
+import {IModal} from "../../com.zippyttech.ui/components/modal/modal.component";
 
 declare var jQuery: any;
 declare var SystemJS: any;
@@ -80,6 +81,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     ngOnInit(): void {
         this.menuType = new FormControl(null);
         this.menuItems = new FormControl([]);
+        this.loadPublicData();
     }
 
     initModels() {
@@ -299,5 +301,23 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             event.preventDefault();
         let link = [url, {}];
         this.db.router.navigate(link);
+    }
+
+    loadPublicData(){
+        let that = this;
+        let callback=(response)=>{
+            Object.assign(that.db.myglobal.publicData,response.json());
+        };
+        this.httputils.doGet(localStorage.getItem('url'),callback,this.error,true)
+    }
+
+    getIModalTerm(){
+        let iModalTerm:IModal = {
+            id:'termConditions',
+            header:{
+                title:'Terminos y condiciones'
+            }
+        };
+        return iModalTerm;
     }
 }
