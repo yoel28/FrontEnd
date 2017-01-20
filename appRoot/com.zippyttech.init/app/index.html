@@ -157,11 +157,6 @@
 
 <modal-view [params]="getIModalTerm()">
     <div body>
-        <template [ngIf]="db && db.myglobal && db.myglobal.publicData && db.myglobal.publicData.termConditions">
-            {{db.myglobal.publicData.termConditions}}
-        </template>
-        <template [ngIf]="!(db && db.myglobal && db.myglobal.publicData && db.myglobal.publicData.termConditions)">
-            <i class="fa fa-spinner fa-spin"></i>&nbsp;{{db.msg.pleaseWait}}
-        </template>
+        <term-conditions></term-conditions>
     </div>
 </modal-view>
