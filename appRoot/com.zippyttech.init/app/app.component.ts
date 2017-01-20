@@ -320,6 +320,9 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             id:'termConditions',
             header:{
                 title:'Terminos y condiciones'
+            },
+            global:{
+                size:'modal-lg'
             }
         };
         return iModalTerm;
