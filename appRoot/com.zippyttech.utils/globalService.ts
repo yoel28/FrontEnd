@@ -12,6 +12,8 @@ export class globalService extends RestController{
     help:any={};
     permissions:any=[];
 
+    public publicData:any={};
+
     public visualData:any = {};
 
     public qrPublic:any;
