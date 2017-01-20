@@ -102,5 +102,6 @@ export const componentsPublic = [
     'LoginComponent',
     'ActivateComponent',
     'RecoverComponent',
-    'RecoverPasswordComponent'
+    'RecoverPasswordComponent',
+    'TermConditionsComponent'
 ];
