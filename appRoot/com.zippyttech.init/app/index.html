@@ -106,6 +106,7 @@
             <strong>Copyright &copy; 2017 <a href="#">{{db.myglobal.user.account}}</a>.</strong> Todos los derechos reservados.
             <br/>En caso de error comunicarse al
             {{db.myglobal.getParams('PHONE_SUPPORT')}} / {{ replace(db.myglobal.getParams('EMAIL_SUPPORT')) }}
+            <a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{db.msg.termConditions}}</a>
         </footer>
     </div>
     <div *ngIf="menuType.value && menuType.value.modal" class="modal fade" id="myMenu" tabindex="-1" role="dialog"
@@ -153,3 +154,14 @@
     </div>
 
 </div>
+
+<modal-view [params]="getIModalTerm()">
+    <div body>
+        <template [ngIf]="db && db.myglobal && db.myglobal.publicData && db.myglobal.publicData.termConditions">
+            {{db.myglobal.publicData.termConditions}}
+        </template>
+        <template [ngIf]="!(db && db.myglobal && db.myglobal.publicData && db.myglobal.publicData.termConditions)">
+            <i class="fa fa-spinner fa-spin"></i>&nbsp;{{db.msg.pleaseWait}}
+        </template>
+    </div>
+</modal-view>
