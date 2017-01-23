@@ -232,14 +232,27 @@ export abstract class ModelRoot extends RestController{
         return -1;
     }
 
-    public getOnlyKeys(keys:Array<string>){
+    public getIncludeKeys(keys:Array<string>,useRuleSave=false){
         let data={};
         let that = this;
         keys.forEach(key=>{
-            if(that.rules && that.rules[key])
+            if(that.rules && that.rules[key] && !useRuleSave)
                 data[key] = that.rules[key];
-        })
+            if(that.rulesSave && that.rulesSave[key] && useRuleSave)
+                data[key] = that.rulesSave[key];
+        });
         return data;
-
+    }
+    public getExcludeKeys(keys:Array<string>,useRuleSave=false){
+        let data={};
+        let that = this;
+        let keysModel = Object.keys(useRuleSave?this.rulesSave:this.rules)
+        keysModel.forEach(key=>{
+            if(keys.indexOf(key)<0 && !useRuleSave)
+                data[key] = that.rules[key];
+            if(keys.indexOf(key)<0 && useRuleSave)
+                data[key] = that.rulesSave[key];
+        });
+        return data;
     }
 }
