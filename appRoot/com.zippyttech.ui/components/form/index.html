@@ -29,6 +29,7 @@
                                                 <input tags-input data-role="tagsinput"
                                                        placeholder="{{rules[key].placeholder}}"
                                                        type="text"
+                                                       [prefix]="rules[key].prefix || 'GLOBAL_'"
                                                        [attr.aria-describedby]="key"
                                                        [readonly]="rules[key].readOnly"
                                                        [control]="form.controls[key]"
