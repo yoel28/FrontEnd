@@ -212,7 +212,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
             }
         });
         if(addBody && typeof addBody == 'object'){ //TODO:agregar parametros extrar... no implementado
-            body.push(addBody)
+            Object.assign(body,body,addBody);
         }
         return body;
     }
