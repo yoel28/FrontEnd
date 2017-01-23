@@ -54,7 +54,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
     initForm() {
         let that = this;
         Object.keys(this.rules).forEach((key)=> {
-            if((that.onlyRequired && that.rules[key].required) || !that.onlyRequired){
+            if((that.onlyRequired && (that.rules[key].required || that.rules[key].forceInSave)) || !that.onlyRequired){
                 that.data[key] = [];
                 let validators=[];
                 if(that.rules[key].required)
