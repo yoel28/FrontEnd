@@ -309,8 +309,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                     else
                         that.data[data.key].setValue(val);
                 }catch (e){
-                    if(data.refreshField.callback)
-                        data.refreshField.callback(data,response,that.data[data.key]);
+                    console.log(e);
                 }
 
             }
