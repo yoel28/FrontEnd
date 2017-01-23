@@ -1,6 +1,6 @@
 <div class="row">
     <div class="{{db.classCol(12,12,12,12)}}">
-        <form role="form" [formGroup]="form" class="{{ (search.object && searchView)?db.classCol(5,5,5,5):''}}"
+        <form role="form" [formGroup]="form" class="{{ (search.object && searchView)?db.classCol(4,3,2,0):''}}"
               *ngIf="keys && keys.length > 0">
             <div *ngFor="let key of keys">
                 <div *ngIf="rules[key]">
@@ -86,7 +86,7 @@
                                                 <span *ngIf="search && search.key ==  key && !findData" class="label label-green label-radius" [attr.title]="search.paramsSearch.count+' Coincidencia(s)'">
                                                     {{search.paramsSearch.count}}
                                                 </span>
-                                                <span *ngIf="search && search.key ==  key && findData" [attr.title]="db.msg.findData" class="fa fa-spinner fa-spin"></span>
+                                            <span *ngIf="search && search.key ==  key && findData" [attr.title]="db.msg.findData" class="fa fa-spinner fa-spin"></span>
                                         </button>
 
 
@@ -94,7 +94,7 @@
                                                 tabindex="-1" type="button"
                                                 class="btn btn-box-tool fa {{rules[key].refreshField.icon}} text-blue"
                                                 (click)="refreshField($event,rules[key])">
-                                                <span *ngIf="refreshFieldKey && refreshFieldKey ==  key && findData" [attr.title]="db.msg.findData" class="fa fa-spinner fa-spin"></span>
+                                            <span *ngIf="refreshFieldKey && refreshFieldKey ==  key && findData" [attr.title]="db.msg.findData" class="fa fa-spinner fa-spin"></span>
                                         </button>
                                     </div>
                                     <div class="{{db.classCol(12,12,12,12)}} table-responsive"
@@ -131,7 +131,7 @@
                 </div>
             </div>
         </form>
-        <div class="{{(search.object && searchView)?db.classCol(7,7,7,7):''}}" *ngIf="(search.object && searchView)">
+        <div class="{{(search.object && searchView)?db.classCol(8,9,10,12):''}}" *ngIf="(search.object && searchView)">
             <form role="form" (submit)="getSearch($event,find.value)">
                 <div class="col-lg-12 form-margin">
                     <strong>{{search.title}}&nbsp;</strong> <label class="label label-green pull-right">{{search.paramsSearch.count+' Coincidencia(s)'}}</label><br/>
@@ -155,7 +155,7 @@
                 <i class="fa fa-spinner fa-spin"></i>
                 {{db.msg.findData}}
             </div>
-            <div *ngIf="dataList.count" class="col-lg-12">
+            <div *ngIf="dataList.count" class="col-lg-12 table-responsive">
                 <table class="table table-hover">
                     <tbody>
                     <tr *ngFor="let data of dataList.list" (click)="getDataSearch(data)"
