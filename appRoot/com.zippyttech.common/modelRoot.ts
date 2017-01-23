@@ -231,4 +231,15 @@ export abstract class ModelRoot extends RestController{
             return this.dataList['list'].findIndex(obj => obj.id == id);
         return -1;
     }
+
+    public getOnlyKeys(keys:Array<string>){
+        let data={};
+        let that = this;
+        keys.forEach(key=>{
+            if(that.rules && that.rules[key])
+                data[key] = that.rules[key];
+        })
+        return data;
+
+    }
 }
