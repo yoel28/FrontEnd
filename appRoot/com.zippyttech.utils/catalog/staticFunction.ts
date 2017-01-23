@@ -69,7 +69,12 @@ export class StaticFunction {
     }
 
     public static classCol(lg=12,md=12,sm=12,xs=12){
-        return ' col-lg-'+lg+' col-md-'+md+' col-sm-'+sm+' col-xs-'+xs;
+        let _lg =  lg == 0?'hidden-lg':'col-lg-'+lg;
+        let _md =  md == 0?'hidden-md':'col-md-'+md;
+        let _sm =  sm == 0?'hidden-sm':'col-sm-'+sm;
+        let _xs =  xs == 0?'hidden-xs':'col-xs-'+xs;
+
+        return ' '+_lg+' '+_md+' '+_sm+' '+_xs;
     }
     public static classOffset(lg=0,md=0,sm=0,xs=0){
         return ' col-lg-offset-'+lg+' col-md-offset-'+md+' col-sm-offset-'+sm+' col-xs-offset-'+xs;
