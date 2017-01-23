@@ -195,3 +195,8 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
 .label.label-radius{
     border-radius: 50px !important;
 }
+@media (max-width: 768px) {
+    .btn {
+        padding: 1px 5px 2px 5px !important;
+    }
+}
