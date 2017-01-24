@@ -49,27 +49,27 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         this.getInstance = new EventEmitter();
         this.setEndpoint(this.params? this.params.endpoint:'');
         this.getListObjectNotReferenceSave();
-        console.log('1 '+this.findData);
+        //console.log('1 '+this.findData);
     }
     ngAfterContentChecked(){
-        console.log('2 '+this.findData);
+        //console.log('2 '+this.findData);
     }
     ngOnChanges(){
-        console.log('3 '+this.findData);
+        //console.log('3 '+this.findData);
     }
     ngDoCheck(){
-        console.log('4 '+this.findData);
+        //console.log('4 '+this.findData);
     }
     ngAfterContentInit(){
-        console.log('5 '+this.findData);
+        //console.log('5 '+this.findData);
     }
     ngAfterViewChecked(){
-        console.log('6 '+this.findData);
+        //console.log('6 '+this.findData);
         if(!this.findData)
             this.on = true;
     }
     ngAfterViewInit() {
-        console.log('7 '+this.findData);
+        //console.log('7 '+this.findData);
         this.getInstance.emit(this);
     }
 
