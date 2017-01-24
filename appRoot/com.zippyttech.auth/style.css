@@ -39,3 +39,13 @@ div, table, section, .modal-dialog > .modal-content {
 .padding-top{
     padding: 5px 0px;
 }
+@media( max-height : 420px ) {
+    .wrapper{
+        position: relative;
+    }
+}
+@media( max-width : 420px ) {
+    .wrapper {
+        position: relative;
+    }
+}
