@@ -70,6 +70,11 @@
                                         </span>
 
                                     </li>
+                                    <li (click)="savePreference()">
+                                        <button  class="btn btn-box-tool fa fa-save" title="Guardar">
+                                            &nbsp;{{db.msg.savePreferences}}
+                                        </button>
+                                    </li>
                                 </ul>
                             </div>
                             <tooltip-view [code]="model.prefix+'_2'"></tooltip-view>
