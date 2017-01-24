@@ -205,7 +205,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                 if(that.rules[key].type=='list'){
                     let data=[];
                     body[key].forEach(obj=>{
-                        data.push(obj.value);
+                        data.push(obj.value || obj);
                     });
                     body[key]=data;
                 }
