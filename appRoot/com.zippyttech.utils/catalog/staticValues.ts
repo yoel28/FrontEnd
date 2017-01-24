@@ -180,6 +180,7 @@ export class StaticValues {
         msg.exportPdf="Exportar a pdf";
         msg.exportXls="Exportar a excel";
         msg.termConditions="Terminos y condiciones";
+        msg.savePreferences="Guardar preferencias";
 
         return msg;
 
