@@ -1,9 +1,12 @@
-import {OnInit} from '@angular/core';
+import {OnInit, EventEmitter, AfterViewInit} from '@angular/core';
 import {IRest} from "../../../com.zippyttech.rest/restController";
+import {BaseViewComponent} from "./baseView.component";
 
-export abstract class BaseViewInstance  implements OnInit {
+export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
 
     public viewActions:boolean=true;
+    public getInstance:any;
+    public instanceBase:BaseViewComponent;
     public instance:any={};
     public paramsTable:any={};
     public model:any;
@@ -25,6 +28,9 @@ export abstract class BaseViewInstance  implements OnInit {
         this._loadWhereInParamsFilter();
         this._loadInstance();
     }
+    ngAfterViewInit():void{
+        this._getInstance();
+    }
 
     protected _loadInstance(){
         this.viewOptions['viewActions']=this.viewActions;
@@ -38,6 +44,14 @@ export abstract class BaseViewInstance  implements OnInit {
     }
     protected _loadWhereInParamsFilter(){
         this.model.paramsSearch.where = this.rest.where;
+    }
+
+    protected _getInstance(){
+        this.getInstance = new EventEmitter();
+        this.getInstance.emit(this);
+    }
+    public setInstance(instance:BaseViewComponent){
+        this.instanceBase = instance;
     }
 
 }
