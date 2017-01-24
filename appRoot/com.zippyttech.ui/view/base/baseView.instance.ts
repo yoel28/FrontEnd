@@ -16,6 +16,9 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
         max:15,
         offset:0,
     };
+    constructor() {
+        this.getInstance = new EventEmitter();
+    }
 
     abstract initModel();
     abstract initViewOptions();
@@ -47,7 +50,6 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
     }
 
     protected _getInstance(){
-        this.getInstance = new EventEmitter();
         this.getInstance.emit(this);
     }
     public setInstance(instance:BaseViewComponent){
