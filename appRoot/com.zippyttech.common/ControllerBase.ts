@@ -1,6 +1,6 @@
 import {RestController, IRest} from "../com.zippyttech.rest/restController";
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
-import {OnInit} from "@angular/core";
+import {OnInit,EventEmitter} from "@angular/core";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "./DependenciesBase";
 
@@ -12,6 +12,7 @@ declare var Table2Excel:any;
 export abstract class ControllerBase extends RestController implements OnInit {
     
     public formatDateId:any = {};
+    public getInstance:any;
     public prefix:string;
     public configId = moment().valueOf();
     public viewOptions:any = {};
@@ -32,6 +33,7 @@ export abstract class ControllerBase extends RestController implements OnInit {
     }
     ngOnInit():void{
         this.initModel();
+        this._getInstance();
     }
     public initLang() {
         var userLang = navigator.language.split('-')[0];
@@ -49,6 +51,10 @@ export abstract class ControllerBase extends RestController implements OnInit {
                 visible.push(obj);
         })
         return visible;
+    }
+    protected _getInstance(){
+        this.getInstance = new EventEmitter();
+        this.getInstance.emit(this)
     }
 
     public getViewOptionsActions() {
