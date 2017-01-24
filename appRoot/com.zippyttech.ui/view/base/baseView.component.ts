@@ -77,6 +77,8 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             'icon': 'fa fa-trash'
         });
 
+        this.loadPreferenceViewModel();
+
     }
     loadParamsTable(){
         this.paramsTable.endpoint=this.endpoint;
@@ -156,9 +158,29 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             Object.assign(that.model.rules,temp);
         }
     }
-
     public _getInstance(){
         this.getInstance.emit(this);
+    }
+    loadPreferenceViewModel(){
+        let that = this;
+        let temp={};
+        let current=[];
+        current=this.db.myglobal.getPreferenceViewModel(this.model.constructor.name,this.model.rules);
+        current.forEach(obj=>{
+            temp[obj.key]=that.model.rules[obj.key];
+            temp[obj.key].visible = obj.visible;
+        });
+        that.model.rules={};
+        Object.assign(that.model.rules,temp);
+    }
+    savePreference(){
+        let that = this;
+        this.db.myglobal.setPreferenceViewModel(this.model.constructor.name,this.model.rules);
+        let body = {'preferences':this.db.myglobal.user.preferences};
+        let successCallback = (response)=>{
+            that.addToast('Notificación','Preferencias guardadas')
+        }
+        this.httputils.doPut('/auto/update',this.objectToString(body),successCallback,this.error)
     }
 
 }
