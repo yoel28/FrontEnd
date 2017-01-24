@@ -111,6 +111,9 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
 
         let auth;
         let that=this;
+        if(this.subcribe)
+            this.subcribe.unsubscribe();
+
         this.subcribe=this.af.auth.subscribe(
             (response:any)=>{
                 if(that.context.company)
