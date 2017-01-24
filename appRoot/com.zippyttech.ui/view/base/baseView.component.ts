@@ -10,11 +10,11 @@ declare var SystemJS:any;
     templateUrl: SystemJS.map.app + '/com.zippyttech.ui/view/base/index.html',
     styleUrls: [SystemJS.map.app + '/com.zippyttech.ui/view/base/style.css'],
     inputs: ['instance'],
+    outputs:['getInstance'],
     animations: AnimationsManager.getTriggers("d-slide_up|fade-fade",200)
 })
 export class BaseViewComponent extends ControllerBase implements OnInit {
     public instance:any;
-
     public dataSelect:any = {};
     public paramsTable:any={};
 
