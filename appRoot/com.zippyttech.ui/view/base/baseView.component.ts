@@ -1,4 +1,7 @@
-import {Component, OnInit, HostBinding, trigger, state, style, transition, animate} from '@angular/core';
+import {
+    Component, OnInit, HostBinding, trigger, state, style, transition, animate, EventEmitter,
+    AfterViewInit
+} from '@angular/core';
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {AnimationsManager} from "../../animations/AnimationsManager";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
@@ -13,13 +16,16 @@ declare var SystemJS:any;
     outputs:['getInstance'],
     animations: AnimationsManager.getTriggers("d-slide_up|fade-fade",200)
 })
-export class BaseViewComponent extends ControllerBase implements OnInit {
+export class BaseViewComponent extends ControllerBase implements OnInit,AfterViewInit {
     public instance:any;
     public dataSelect:any = {};
     public paramsTable:any={};
+    public getInstance:any;
+
 
     constructor(public db:DependenciesBase) {
         super(db);
+        this.getInstance = new EventEmitter();
     }
     ngOnInit(){
         super.ngOnInit();
@@ -28,6 +34,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit {
         this.initViewOptions();
         this.loadParamsTable();
         this.loadPage();
+    }
+    ngAfterViewInit(){
+        this._getInstance();
     }
     initModel() {
         this.model = this.instance.model;
@@ -148,6 +157,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit {
         }
     }
 
+    public _getInstance(){
+        this.getInstance.emit(this);
+    }
 
 }
 
