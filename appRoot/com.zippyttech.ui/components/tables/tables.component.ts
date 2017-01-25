@@ -10,7 +10,7 @@ declare var moment:any;
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/components/tables/style.css'],
-    inputs:['params','model','dataList','deleted','findData','rest'],
+    inputs:['params','model','dataList','rest','findData'],
     outputs:['getInstance'],
 })
 
@@ -38,6 +38,7 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
 
     constructor(public db:DependenciesBase) {
         super(db);
+        this.getInstance = new EventEmitter();
     }
 
     ngOnInit()
@@ -46,7 +47,6 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         this.loadRest();
         if(this.params && this.params.actions)
             this.keyActions=Object.keys(this.params.actions);
-        this.getInstance = new EventEmitter();
         this.setEndpoint(this.params? this.params.endpoint:'');
         this.getListObjectNotReferenceSave();
         //console.log('1 '+this.findData);
@@ -280,7 +280,12 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
     changeOrder(sort){
         if(sort && this.model && this.model.rules[sort] && this.model.rules[sort].search){
             if(sort ==  this.sort){
-                this.order = this.order=='asc'?'desc':'asc';
+                if(this.order == 'desc')
+                    this.order = 'asc';
+                else{
+                    this.sort='';
+                    this.order='';
+                }
             }
             else
             {
