@@ -78,7 +78,7 @@
 
                     <a *ngIf="model.rules[key].object && key!='roles'">
                         <template [ngIf]="model.rules[key].eval">
-                            {{evalExp(data,model.rules[key].keyDisplay)}}
+                            {{evalExp(data,model.rules[key].eval)}}
                         </template>
                         <template [ngIf]="!model.rules[key].eval">
                             {{data[model.rules[key].keyDisplay]}}
