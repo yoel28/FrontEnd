@@ -179,14 +179,19 @@ export class globalService extends RestController{
 
     getRule(code:string):string{
         let that = this;
-        let valor="";
+        let valor=[];
         Object.keys(this.rules || {}).forEach(index=>{
             if(that.rules[index].code==code){
-                valor=that.rules[index].rule;
-                return;
+                valor.push(that.rules[index]);
             }
         });
-        return valor;
+        if(valor.length == 0)
+            return '';
+        if(valor.length == 1)
+            return valor[0].rule;
+
+        let companyId=this.user.companyId;
+
     }
 
     getTooltip(code:string):any{
@@ -222,7 +227,12 @@ export class globalService extends RestController{
         }
         this.user.preferences.columns[model.replace('Model','')]=[];
         Object.keys(rules).forEach(key=>{
-            that.user.preferences.columns[model.replace('Model','')].push({'key':key,'visible':rules[key].visible})
+            that.user.preferences.columns[model.replace('Model','')].push(
+                {   'key':key,
+                    'visible':rules[key].visible,
+                    'display':rules[key].eval?rules[key].eval:rules[key].keyDisplay
+                }
+            )
         });
     }
     private checkKeysView(saveKeys,currentKeys):boolean{
