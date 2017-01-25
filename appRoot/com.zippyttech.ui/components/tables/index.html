@@ -77,7 +77,12 @@
                     </button>
 
                     <a *ngIf="model.rules[key].object && key!='roles'">
-                         {{data[model.rules[key].keyDisplay]}}
+                        <template [ngIf]="model.rules[key].eval">
+                            {{evalDisplayObject(data,data[model.rules[key].keyDisplay])}}
+                        </template>
+                        <template [ngIf]="!model.rules[key].eval">
+                            {{data[model.rules[key].keyDisplay]}}
+                        </template>
                          <label *ngIf="model.permissions.update && (data.enabled==true || data.enabled==null) && !data.deleted">
                              <span *ngIf="!model.rules[key].reference">
 
