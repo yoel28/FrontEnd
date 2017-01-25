@@ -231,7 +231,7 @@ export class globalService extends RestController{
                 {   'key':key,
                     'visible':rules[key].visible,
                     'exclude':rules[key].exclude?true:false,
-                    'display':rules[key].eval?rules[key].eval:rules[key].keyDisplay,
+                    'display':rules[key].keyDisplay,
                 }
             )
         });
