@@ -19,6 +19,8 @@ export interface IRest{
     where:IWhere;
     max:number;
     offset:number;
+    sort?:string;
+    order?:string;
 }
 
 export class RestController implements OnInit {
@@ -51,6 +53,8 @@ export class RestController implements OnInit {
         this.setWhere(this.rest.where);
         this.max  = this.rest.max;
         this.offset  = this.rest.offset;
+        this.order  = this.rest.order || this.order;
+        this.sort  = this.rest.sort || this.sort;
     }
 
     setEndpoint(endpoint:string) {
