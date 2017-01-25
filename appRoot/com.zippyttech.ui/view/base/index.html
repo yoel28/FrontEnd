@@ -82,7 +82,7 @@
                     </div>
                     <div *ngIf="model.permissions.list" class="box-body">
                         <div *ngIf="dataList && dataList.count>0">
-                            <tables-view [dataList]="dataList" [model]="model" [params]="paramsTable" [deleted]="deleted" [findData]="findData" [rest]="rest"></tables-view>
+                            <tables-view [dataList]="dataList" [model]="model" [params]="paramsTable" (getInstance)="setInstance($event)" [findData]="findData" [rest]="rest"></tables-view>
                         </div>
                         <div *ngIf="dataList && dataList.count == 0">
                             <div class="alert alert-warning alert-dismissable">
