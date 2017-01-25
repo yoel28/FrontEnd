@@ -12,13 +12,13 @@ export abstract class ModelBase extends ModelRoot{
         if(this.permissions['global'])
         {
             let account = new AccountModel(this.db);
-            this.rules['accountName'] =  account.ruleObject;
-            this.rules['accountName'].required = true;
+            this.rules['account'] =  account.ruleObject;
+            this.rules['account'].required = true;
         }
     }
     public globalOptional(){
         if(this.permissions['global']){
-            this.rules['accountName'].required = false;
+            this.rules['account'].required = false;
         }
     }
 
