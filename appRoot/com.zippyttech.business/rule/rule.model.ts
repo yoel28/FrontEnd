@@ -21,7 +21,8 @@ export class RuleModel extends ModelBase{
             'placeholder':'Código',
         };
         this.rules['rule']={
-            'type':'text',
+            'type':'textarea',
+            "showbuttons": true,
             'required':true,
             'update':this.permissions.update,
             'search':this.permissions.filter,
