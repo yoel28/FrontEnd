@@ -291,7 +291,9 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         }
     }
 
-
+    evalExp(data,exp){
+        return eval(exp);
+    }
 
 
 }
