@@ -37,7 +37,7 @@ export class RestController implements OnInit {
     where:string = "";
     whereObject:IWhere=[];
     id:string='';
-    findData:boolean=false;
+    findData:any=false;
     rest:IRest= {
         'where': [],
         'max': 15,
@@ -53,8 +53,8 @@ export class RestController implements OnInit {
         this.setWhere(this.rest.where);
         this.max  = this.rest.max;
         this.offset  = this.rest.offset;
-        this.order  = this.rest.order || this.order;
-        this.sort  = this.rest.sort || this.sort;
+        this.order = this.rest.order;
+        this.sort = this.rest.sort;
     }
 
     setEndpoint(endpoint:string) {
