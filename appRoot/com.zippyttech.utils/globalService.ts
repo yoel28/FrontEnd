@@ -177,6 +177,18 @@ export class globalService extends RestController{
         return valor;
     }
 
+    getRule(code:string):string{
+        let that = this;
+        let valor="";
+        Object.keys(this.rules || {}).forEach(index=>{
+            if(that.rules[index].code==code){
+                valor=that.rules[index].rule;
+                return;
+            }
+        });
+        return valor;
+    }
+
     getTooltip(code:string):any{
         let that = this;
         let valor={};
