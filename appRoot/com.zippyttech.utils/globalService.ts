@@ -230,7 +230,8 @@ export class globalService extends RestController{
             that.user.preferences.columns[model.replace('Model','')].push(
                 {   'key':key,
                     'visible':rules[key].visible,
-                    'display':rules[key].eval?rules[key].eval:rules[key].keyDisplay
+                    'exclude':rules[key].exclude?true:false,
+                    'display':rules[key].eval?rules[key].eval:rules[key].keyDisplay,
                 }
             )
         });
