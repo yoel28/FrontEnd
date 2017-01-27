@@ -238,6 +238,20 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         }
         return "-";
     }
+    public formatTimeView(data) {
+        if (data) {
+            if (data < 1800000)//menor a 30min
+                return this.dateHmanizer(data, {units: ['m', 's']})
+            if (data < 3600000) //menor a 1hora
+                return this.dateHmanizer(data, {units: ['m']})
+            if(data < 86400000)
+                return  this.dateHmanizer(data, {units: ['h', 'm']})
+
+            return  this.dateHmanizer(data)
+        }
+        return '-'
+
+    }
     public changeFormatDate(id) {
         if (!this.formatDateId[id])
             this.formatDateId[id] = {'value': false};
