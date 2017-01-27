@@ -33,6 +33,7 @@ export class FilterComponent extends RestController implements OnInit{
         'text': [
             {'id':'eq','text':'Igual que'},
             {'id':'isNull','text':'Nulo'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'ne','text':'Diferente que'},
             {'id':'%like%','text': 'Contiene'},
             {'id':'like%','text': 'Comienza con'},
@@ -44,6 +45,7 @@ export class FilterComponent extends RestController implements OnInit{
         ],
         'number':[
             {'id':'eq','text':'Igual que'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
             {'id':'ne','text':'Diferente que'},
             {'id':'ge','text':'Mayor Igual'},
@@ -53,6 +55,7 @@ export class FilterComponent extends RestController implements OnInit{
         ],
         'time':[
             {'id':'eq','text':'Igual que'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
             {'id':'ne','text':'Diferente que'},
             {'id':'ge','text':'Mayor Igual'},
@@ -62,21 +65,25 @@ export class FilterComponent extends RestController implements OnInit{
         ],
         'object':[
             {'id':'eq','text':'Igual que'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
             {'id':'ne','text':'Diferente que'},
         ],
         'boolean':[
             {'id':'eq','text':'Igual que'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
             {'id':'ne','text':'Diferente que'},
         ],
         'date':[
             {'id':'eq','text':'En rango'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'ne','text':'Fuera de rango'},
             {'id':'isNull','text':'Nulo'},
         ],
         'email': [
             {'id':'eq','text':'Igual que'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
             {'id':'ne','text':'Diferente que'},
             {'id':'%like%','text': 'Contiene'},
@@ -88,11 +95,13 @@ export class FilterComponent extends RestController implements OnInit{
         ],
         'select': [
             {'id':'eq','text':'Igual que'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'ne','text':'Diferente que'},
             {'id':'isNull','text':'Nulo'},
         ],
         'textarea': [
             {'id':'eq','text':'Igual que'},
+            {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
             {'id':'ne','text':'Diferente que'},
             {'id':'%like%','text': 'Contiene'},
@@ -220,7 +229,7 @@ export class FilterComponent extends RestController implements OnInit{
             if(that.rules[key].type=='filter' && that.form.value[key]=='-1')
                 that.form.controls[key].setValue(null);
 
-            if ((this.form.value[key] && this.form.value[key] != "") || that.form.value[key + 'Cond'] == 'isNull')
+            if ((this.form.value[key] && this.form.value[key] != "") || that.form.value[key + 'Cond'] == 'isNull' || that.form.value[key + 'Cond'] == 'isNotNull')
             {
                 let whereTemp:any = {};//Fila de where para un solo elemento
                 let whereTemp2:any;//Fila para codificiones multiples
