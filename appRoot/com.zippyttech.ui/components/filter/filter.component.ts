@@ -168,7 +168,7 @@ export class FilterComponent extends RestController implements OnInit{
         event.preventDefault();
         this.findControl="";
         this.dataList={};
-        this.max=5;
+        this.rest.max=5;
         this.search=data;
         this.getSearch();
     }
@@ -333,8 +333,7 @@ export class FilterComponent extends RestController implements OnInit{
             let temp = dataWhere.concat(this.params.where);
             dataWhere = temp;
         }
-        let where = "&where="+encodeURI(JSON.stringify(dataWhere).split('{').join('[').split('}').join(']'));
-        this.whereFilter.emit(where);
+        this.whereFilter.emit(dataWhere);
     }
     //reset
     onReset(event) {
