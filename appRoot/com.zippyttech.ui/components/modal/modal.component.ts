@@ -43,7 +43,6 @@ export class ModalComponent extends RestController{
         this.getInstance = new EventEmitter();
     }
     ngOnInit(){
-        super.ngOnInit();
         this.getInstance.emit(this);
     }
     private test(){
