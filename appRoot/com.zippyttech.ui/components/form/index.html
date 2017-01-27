@@ -35,6 +35,14 @@
                                                        [control]="form.controls[key]"
                                                        (instance)="rules[key].refreshField ?(rules[key].refreshField.instance=$event||null):null"
                                                 >
+                                                <form (submit)="addTagManual($event,key)" *ngIf="rules[key].refreshField.tagFree">
+                                                    <input placeholder="{{rules[key].placeholder}} Manual"
+                                                           type="text"
+                                                           [attr.aria-describedby]="key"
+                                                           [attr.id]="key+'manual'"
+                                                           class="form-control"
+                                                    >
+                                                </form>
                                             </div>
 
                                             <input *ngIf="rules[key].type == 'color'" color-picker
