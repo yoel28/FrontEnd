@@ -31,7 +31,7 @@ export class SearchComponent extends RestController implements OnInit,DoCheck{
         this.getInstance = new EventEmitter();
     }
     ngOnInit(){
-        this.max = 5;
+        this.rest.max = 5;
         this.setEndpoint(this.params.endpoint);
     }
     ngDoCheck():void{
@@ -39,7 +39,7 @@ export class SearchComponent extends RestController implements OnInit,DoCheck{
     }
     getSearch(search){
         this.endpoint=this.params.endpoint+search;
-        this.where = this.params.where || "";
+        this.rest.where = this.params.where || [];
         this.loadData();
     }
     getData(data){
