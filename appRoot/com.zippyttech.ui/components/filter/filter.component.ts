@@ -346,9 +346,9 @@ export class FilterComponent extends RestController implements OnInit{
                 (<FormControl>this.form.controls[key]).setErrors(null);
             }
         })
-        let where="";
+        let where=[];
         if(this.params.where && this.params.where.length > 0 ){
-             where="&where="+encodeURI(JSON.stringify(this.params.where).split('{').join('[').split('}').join(']'));
+             where=this.params.where;
         }
         this.whereFilter.emit(where);
     }
