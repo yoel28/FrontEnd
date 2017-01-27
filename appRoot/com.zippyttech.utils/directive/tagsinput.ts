@@ -24,7 +24,7 @@ export class TagsInput implements OnInit{
             {
                 'tagClass': function(item) {
                     switch (item.id) {
-                        case '1': return 'label label-primary cursor-pointer';
+                        case '1': return 'label label-green cursor-pointer';
                         case '2': return 'label label-danger label-important cursor-pointer';
                         case '3': return 'label label-success cursor-pointer';
                         case '4': return 'label label-default cursor-pointer';
