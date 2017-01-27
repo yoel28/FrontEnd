@@ -7,7 +7,7 @@
                         <h4 class="box-title">
                             {{viewOptions.title | translate }}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
-                            &nbsp;<i *ngIf="findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+                            &nbsp;<i *ngIf="rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                         </h4>
                         <div class="box-tools pull-right header-tools">
                             <template [ngIf]="viewOptions.viewActions">
@@ -30,8 +30,8 @@
                                 <button class="btn btn-box-tool" type="button"
                                         [attr.title]="db.msg.refresh | translate"
                                         (click)="loadData('',$event)">
-                                    <i *ngIf="!findData" class="fa fa-refresh"></i>
-                                    <i *ngIf="findData" class="fa fa-spinner fa-spin"></i>
+                                    <i *ngIf="!rest.findData" class="fa fa-refresh"></i>
+                                    <i *ngIf="rest.findData" class="fa fa-spinner fa-spin"></i>
                                 </button>
 
                                 <template [ngIf]="model.permissions.export">
@@ -82,7 +82,7 @@
                     </div>
                     <div *ngIf="model.permissions.list" class="box-body">
                         <div *ngIf="dataList && dataList.count>0">
-                            <tables-view [dataList]="dataList" [model]="model" [params]="paramsTable" (getInstance)="setInstance($event)" [findData]="findData" [rest]="rest"></tables-view>
+                            <tables-view [dataList]="dataList" [model]="model" [params]="paramsTable" (getInstance)="setInstance($event)"  [rest]="rest"></tables-view>
                         </div>
                         <div *ngIf="dataList && dataList.count == 0">
                             <div class="alert alert-warning alert-dismissable">
