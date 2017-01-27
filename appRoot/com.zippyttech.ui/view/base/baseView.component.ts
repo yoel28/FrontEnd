@@ -70,6 +70,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             'visible': this.model.permissions.filter && this.model.permissions.list,
             'title': 'Filtrar',
             'class': 'text-blue',
+            'evalClass':'this.rest.where.length>0?"filter-enabled":""',
             'icon': 'fa fa-filter',
             'type':'modal',
             'modal': this.model.paramsSearch.idModal
@@ -184,6 +185,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             that.addToast('Notificación','Preferencias guardadas')
         }
         this.httputils.doPut('/auto/update',this.objectToString(body),successCallback,this.error)
+    }
+    evalExp(exp){
+        return eval(exp);
     }
 
 }
