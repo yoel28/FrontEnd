@@ -286,7 +286,7 @@
         <tr>
             <td [attr.colspan]="keyVisible().length + 1">
                 <div class="btn-group pull-right">
-                    <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"
+                    <button (click)="loadData(val)" [class.btn-green]="val==((rest.offset/rest.max)+1)"
                             *ngFor="let val of dataList.page" type="button" class="btn btn-default">
                         {{val}}
                     </button>
