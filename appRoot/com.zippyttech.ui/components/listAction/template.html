@@ -1,14 +1,14 @@
 <div class="box collapsed-box" *ngIf="data.model">
     <div [class]="'box-header with-border '+((!permissionValid('list'))?'bg-red':
-                                            ((existData() && data.model.dataList.list.length <= 0))?'bg-info':
+                                            ((existData() && data.model.dataList.count <= 0))?'bg-info':
                                             '')"
          onclick="jQuery(this).find('#btn-toogle').click(); jQuery(this).find('#btn-toogle-w').click(); "
     >
         <h3 class="box-title">
             {{data.model.ruleObject.title}}
             <a *ngIf="!permissionValid('list')" id="btn-toogle-w" data-widget="collapse"><i class="fa fa-warning"></i></a>
-            <span *ngIf="(existData() && data.model.dataList.list.length > 0)" class="badge">{{data.model.dataList.list.length}}</span>
-            <span *ngIf="(existData() && data.model.dataList.list.length <= 0)">
+            <span *ngIf="(existData() && data.model.dataList.count > 0)" class="badge">{{data.model.dataList.count}}</span>
+            <span *ngIf="(existData() && data.model.dataList.count <= 0)">
                 <h3>No hay elementos para mostrar</h3>
             </span>
             <div *ngIf="!existData() && permissionValid('list')" class="loader">
@@ -22,7 +22,7 @@
     </div>
 
     <div class="box-body">
-        <ul class="list-group" *ngIf="permissionValid('list') && existData() && (data.model.dataList.list.length>0)">
+        <ul class="list-group" *ngIf="permissionValid('list') && existData() && (data.model.dataList.count>0)">
             <li class="list-group-item list-group-item-heading {{db.classCol(12,12,12,12)}}">
                 <div class="{{db.classCol(11,11,11,11)}} data-detail">
                     <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}" *ngFor="let key of visibleKeys">
@@ -43,7 +43,7 @@
                                 {{elem[key]}}
                             </span>
                             <span *ngIf="data.model.rules[key].object">
-                                {{(elem[data.model.rules[key].keyDisplay])?elem[data.model.rules[key].keyDisplay]:"N/A"}}
+                                {{ (elem[data.model.rules[key].keyDisplay])?elem[data.model.rules[key].keyDisplay]:"N/A"}}
                             </span>
                         </div>
                     </div>
@@ -91,5 +91,28 @@
         </span>
     </div>
     <div class="box-footer">
+        <div class="list-tools-btns {{db.classCol(4,4,4,4)}}">
+            <button type="button" class="btn btn-box-tool text-blue"
+                    data-toggle="modal" [attr.data-target]="'#'+data.model.paramsSearch.idModal+''"
+            >
+                <i class="fa fa-filter"></i>
+            </button>
+        </div>
+        <div class="list-pager {{db.classCol(8,8,8,8)}}">
+            <div class="btn-group pull-right" *ngIf="data.model.dataList && data.model.dataList.page && data.model.dataList.page.length > 1">
+                <button *ngFor="let val of data.model.dataList.page" type="button" class="btn list-pager-btn"
+                        (click)="data.model.loadData(val)" [class.btn-green]="val==((data.model.rest.offset/data.model.rest.max)+1)"
+                >
+                    {{val}}
+                </button>
+            </div>
+        </div>
     </div>
 </div>
+
+<filter-view
+        (whereFilter)="data.model.loadWhere($event)"
+        [rules] = "data.model.rules"
+        [params] = "data.model.paramsSearch"
+>
+</filter-view>

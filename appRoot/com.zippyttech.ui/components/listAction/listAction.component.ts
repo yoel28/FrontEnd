@@ -14,6 +14,7 @@ export interface IListActionData {
     actions: IAction;
     globalParams:IActionParams;
     model: any;
+    visibleKeys?: string[];
     routerLink: string;
     observable?:{
         watch:FormControl,
@@ -91,7 +92,7 @@ export class ListActionComponent extends ControllerBase
 
     initModel()
     {
-        this.visibleKeys = this.getVisibleDataKeys();
+        this.visibleKeys = (this.data.visibleKeys)?this.data.visibleKeys:this.getVisibleDataKeys();
 
     }
 

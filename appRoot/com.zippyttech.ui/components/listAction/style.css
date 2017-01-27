@@ -26,6 +26,15 @@
     margin: 0px;
 }
 
+.box-footer{
+    padding: 0px 35px;
+    padding-bottom: 10px;
+}
+
+.box-footer > *{
+    padding: 0px;
+}
+
 /*##########################*/
 
 .list-group
@@ -151,8 +160,39 @@
     padding: 2px;
 }
 
+.list-tools-btns button
+{
+    border-radius: 0px 0px 20px 20px !important;
+    overflow: hidden;
+    border: 1px solid #ecf0f5;
+    padding: 5px;
+}
 
 .error-info{
     padding: 20px;
     text-align: center;
+}
+
+.list-pager .btn-group
+{
+    border-radius: 0px 0px 20px 20px !important;
+    overflow: hidden;
+    border: 1px solid #ecf0f5;
+    padding: 0px;
+}
+
+.list-pager-btn
+{
+    border-radius: 0px !important;
+    border: none;
+    color: #777777;
+    background-color: #ffffff;
+    border-right: 1px solid #ecf0f5;
+    border-left: 1px solid #ecf0f5;
+}
+.list-pager-btn:hover,
+.list-pager-btn:active{
+    color: #777777;
+    background-color: #ebebeb;
+    border-color: #c6c6c6;
 }
