@@ -1,0 +1,6 @@
+<template [ngIf]="rule && rule.type">
+    <span [ngSwitch]="rule.type">
+        <span [ngSwitchCase]="text">{{rule.type}} prueba</span>
+        <span *ngSwitchDefault>{{rule.type}}</span>
+    </span>
+</template>
