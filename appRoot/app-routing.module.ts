@@ -29,6 +29,8 @@ import {FormComponent} from "./com.zippyttech.ui/components/form/form.component"
 import {NotificationComponent} from "./com.zippyttech.business/notification/notification.component";
 import {ModalComponent} from "./com.zippyttech.ui/components/modal/modal.component";
 import {TermConditionsComponent} from "./com.zippyttech.business/termConditions/termConditions.component";
+import {RuleViewComponent} from "./com.zippyttech.ui/components/ruleView/ruleView.component";
+import {ChannelComponent} from "./com.zippyttech.business/channel/channel.component";
 
 const routesDefault: Routes = [
 
@@ -54,6 +56,7 @@ const routesDefault: Routes = [
     { path: 'business/info', component: InfoComponent},
     { path: 'business/rule', component: RuleComponent},
     { path: 'business/param', component: ParamComponent},
+    { path: 'business/channel', component: ChannelComponent},
 ];
 const routesApp: Routes = [];
 @NgModule({
@@ -83,7 +86,8 @@ export const componentsDefault = [
     AccountComponent,
     UserComponent,
     NotificationComponent,
-    TermConditionsComponent
+    TermConditionsComponent,
+    ChannelComponent
 ];
 export const componentsView = [
     ImageEditComponent,
@@ -95,7 +99,8 @@ export const componentsView = [
     SaveComponent,
     SearchMultipleComponent,
     FormComponent,
-    ModalComponent
+    ModalComponent,
+    RuleViewComponent
 ];
 export const componentsApp = [];
 export const componentsPublic = [
