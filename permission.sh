@@ -33,6 +33,7 @@ Menu[7,0]="MEN_INFO";                   Menu[7,1]="Información";
 Menu[8,0]="MEN_PARAM";                  Menu[8,1]="Parámetros";
 Menu[9,0]="MEN_RULE";                   Menu[9,1]="Reglas";
 Menu[10,0]="MEN_NOTIFY";                Menu[10,1]="Notificaciones";
+Menu[11,0]="MEN_CHANNEL";               Menu[11,1]="Canales";
 
 
 #PREFIX			    Title
@@ -56,7 +57,8 @@ Modulos[4,0]="RULE";		Modulos[4,1]="Reglas";				Modulos[4,2]="rule";
 Modulos[5,0]="ACCOUNT";		Modulos[5,1]="Cuentas";				Modulos[5,2]="account";
 Modulos[6,0]="ROLE";		Modulos[6,1]="Roles";				Modulos[6,2]="role";
 Modulos[7,0]="USER";		Modulos[7,1]="Usuarios";			Modulos[7,2]="user";
-Modulos[8,0]="PERM";		Modulos[8,1]="Permisos";			Modulos[8,2]="permission";
+Modulos[8,0]="CH";	    	Modulos[8,1]="Canales";			    Modulos[8,2]="channel";
+Modulos[9,0]="PERM";		Modulos[9,1]="Permisos";			Modulos[9,2]="permission";
 
 #PREFIX			    Modulo			    Controlador
 #Modulos[0,0]="";	Modulos[0,1]="";	Modulos[0,2]="";
