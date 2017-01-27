@@ -95,8 +95,13 @@ export class ChannelModel extends ModelBase{
     }
     loadDataModel(){
         let that=this;
-        let component = componentsApp.concat(componentsDefault,componentsView);
-        component.forEach(comp =>{
+        componentsApp.forEach(comp =>{
+            that.rules['component'].source.push({'value': comp.name, 'text': comp.name})
+        });
+        componentsDefault.forEach(comp =>{
+            that.rules['component'].source.push({'value': comp.name, 'text': comp.name})
+        });
+        componentsView.forEach(comp =>{
             that.rules['component'].source.push({'value': comp.name, 'text': comp.name})
         });
         this.completed=true;
