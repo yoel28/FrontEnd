@@ -24,12 +24,12 @@ export class TagsInput implements OnInit{
             {
                 'tagClass': function(item) {
                     switch (item.id) {
-                        case '0': return 'label label-blue cursor-pointer';
                         case '1': return 'label label-primary cursor-pointer';
                         case '2': return 'label label-danger label-important cursor-pointer';
                         case '3': return 'label label-success cursor-pointer';
                         case '4': return 'label label-default cursor-pointer';
                         case '5': return 'label label-warning cursor-pointer';
+                        default: return 'label label-blue cursor-pointer';
                     }
                 },
                 'itemTitle':function(item) {
