@@ -24,12 +24,12 @@ export class SearchMultipleComponent extends RestController implements OnInit,Do
         this.getInstance = new EventEmitter();
     }
     ngOnInit(){
-        this.max = 5;
+        this.rest.max = 5;
         this.setEndpoint(this.params.endpoint);
     }
     getSearch(search){
         this.endpoint=this.params.endpoint+search;
-        this.where = this.params.where || "";
+        this.rest.where = this.params.where || [];
         this.loadData();
     }
     ngDoCheck():void{
