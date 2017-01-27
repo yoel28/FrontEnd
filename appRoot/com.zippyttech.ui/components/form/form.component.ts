@@ -5,6 +5,7 @@ import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
 declare var SystemJS:any;
+declare var jQuery:any;
 @Component({
     moduleId:module.id,
     selector: 'form-view',
@@ -394,6 +395,23 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
             return this.params.customValidator?this.params.customValidator(this):true;
         }
         return false
+    }
+    addTagManual(event,key){
+        if(event)
+            event.preventDefault();
+        let tag=jQuery('#'+key+'manual').val();
+        if(tag && tag.length)
+        {
+            jQuery('#'+key+'manual').val('');
+            this.rules[key].refreshField.instance.addValue(
+                {
+                    'id': 0,
+                    'value': tag,
+                    'title': 'Entrada manual'
+                }
+            );
+        }
+
     }
 }
 
