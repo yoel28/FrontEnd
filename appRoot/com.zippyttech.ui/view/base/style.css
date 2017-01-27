@@ -198,3 +198,8 @@
     border-radius: 4px !important;
     color: red !important;
 }
+.filter-enabled{
+    background: rgba(0, 0, 0, 0.38);
+    border-radius: 4px !important;
+    color: white !important;
+}
