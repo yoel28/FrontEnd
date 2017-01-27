@@ -10,7 +10,7 @@ declare var moment:any;
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/components/tables/style.css'],
-    inputs:['params','model','dataList','rest','findData'],
+    inputs:['params','model','dataList','rest'],
     outputs:['getInstance'],
 })
 
@@ -44,7 +44,6 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
     ngOnInit()
     {
         this.keyActions=[];
-        this.loadRest();
         if(this.params && this.params.actions)
             this.keyActions=Object.keys(this.params.actions);
         this.setEndpoint(this.params? this.params.endpoint:'');
@@ -65,7 +64,7 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
     }
     ngAfterViewChecked(){
         //console.log('6 '+this.findData);
-        if(!this.findData)
+        if(!this.rest.findData)
             this.on = true;
     }
     ngAfterViewInit() {
@@ -279,18 +278,18 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
 
     changeOrder(sort){
         if(sort && this.model && this.model.rules[sort] && this.model.rules[sort].search){
-            if(sort ==  this.sort){
-                if(this.order == 'desc')
-                    this.order = 'asc';
+            if(sort ==  this.rest.sort){
+                if(this.rest.order == 'desc')
+                    this.rest.order = 'asc';
                 else{
-                    this.sort='';
-                    this.order='';
+                    this.rest.sort=null;
+                    this.rest.order=null;
                 }
             }
             else
             {
-                this.sort =  sort;
-                this.order = 'desc'
+                this.rest.sort =  sort;
+                this.rest.order = 'desc'
             }
             this.loadData();
         }
