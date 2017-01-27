@@ -1,7 +1,11 @@
 #!/bin/bash
 
-url="https://hostname:8080/api/permissions/";
-token="mytoken";
+url="https://cdg.zippyttech.com:8080/api/permissions/";
+token="bk3ifapcpe8l03g6iq1su5md5efg29et";#dev
+
+
+#url="https://club.zippyttech.com:8080/api/permissions/";
+#token="9hf31a08306q7pv6gtv4gtul4bt3jaqv";
 
 #Otros------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 declare -A Otros;
