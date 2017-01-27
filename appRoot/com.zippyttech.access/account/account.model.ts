@@ -138,7 +138,7 @@ export class AccountModel extends ModelRoot{
         this.ruleObject.title="Cuenta";
         this.ruleObject.placeholder="Ingrese la cuenta";
         this.ruleObject.key="account";
-        this.ruleObject.keyDisplay='RULE:ACCOUNT_DISPLAY_:Cuenta';
+        this.ruleObject.keyDisplay='accountName';
         this.ruleObject.eval=this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB');
         this.ruleObject.code="accountId";
     }
