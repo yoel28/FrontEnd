@@ -48,21 +48,11 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     }
     initRest(){
         this.rest = this.instance.rest;
-        this.rest.order = this.order;
-        this.rest.sort = this.sort;
-        this.loadRest();
     }
 
     public instanceTable:any;
     setInstance(instance:TablesComponent){
         this.instanceTable = instance;
-        this.findData=this.instanceTable.findData;
-
-        this.instanceTable.where = this.where;
-
-        this.instanceTable.deleted = this.deleted;
-        this.instanceTable.order = this.order;
-        this.instanceTable.sort = this.sort;
     }
     initViewOptions() {
         this.viewOptions = this.instance.viewOptions;
@@ -124,12 +114,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     getUrlExport(type:string){
         if(this.instanceTable)
         return  localStorage.getItem('urlAPI')+
-                this.endpoint +this.id +
-                '?access_token='+localStorage.getItem('bearer')+
-                this.where +
-                (this.instanceTable.order.length > 0 ? '&order=' + this.instanceTable.order : '') +
-                (this.instanceTable.sort.length > 0 ? '&sort=' + this.instanceTable.sort : '') +
-                (this.deleted.length > 0 ? '&deleted=' + this.deleted : '')+
+                this.endpoint +
+                this.getRestParams()+
+                '&access_token='+localStorage.getItem('bearer')+
                 '&formatType='+type;
     }
 
