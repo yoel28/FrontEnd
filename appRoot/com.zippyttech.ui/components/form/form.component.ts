@@ -164,7 +164,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
         this.setEndpoint(this.params.endpoint);
         let body = this.getFormValues();
         if(this.params.updateField)
-            this.httputils.onUpdate(this.endpoint+this.id,JSON.stringify(body),this.dataSelect,this.error);
+            this.httputils.onUpdate(this.endpoint+this.rest.id,JSON.stringify(body),this.dataSelect,this.error);
         else
             this.httputils.doPost(this.endpoint,JSON.stringify(body),successCallback,this.error);
     }
@@ -224,7 +224,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
     //Al hacer click en la lupa guarda los valores del objecto
     getLoadSearch(event,data){
         event.preventDefault();
-        this.max=5;
+        this.rest.max=5;
         this.searchView=true;
         this.findControl=this.data[data.key].value || '';
         this.search=data;
@@ -298,10 +298,10 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
         let that = this;
         this.refreshFieldKey=data.key;
         if(data.refreshField.endpoint){
-            this.findData=true;
+            this.rest.findData=true;
             let successCallback= response => {
                 that.refreshFieldKey = '';
-                this.findData=false;
+                that.rest.findData=false;
                 try {
                     let val = response.json()[data.refreshField.field];
                     if(data.refreshField.callback)
@@ -347,7 +347,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
         this.resetForm();
         if(data.id)
         {
-            this.id = data.id;
+            this.rest.id = data.id;
             Object.keys(data).forEach(key=>{
                 if(that.data[key])
                 {
