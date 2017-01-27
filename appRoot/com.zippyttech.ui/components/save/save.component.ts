@@ -55,7 +55,7 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
         this.setEndpoint(this.params.endpoint);
         let body = this.instanceForm.getFormValues(addBody);
         if(this.params.updateField)
-            this.httputils.onUpdate(this.endpoint+this.instanceForm.id,JSON.stringify(body),this.instanceForm.dataSelect,this.error);
+            this.httputils.onUpdate(this.endpoint+this.instanceForm.rest.id,JSON.stringify(body),this.instanceForm.dataSelect,this.error);
         else
             this.httputils.doPost(this.endpoint,JSON.stringify(body),successCallback,this.error);
     }
@@ -86,7 +86,7 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
         return false;
     }
     existloadDelete():boolean{
-        if(this.instanceForm && this.instanceForm.delete && this.instanceForm.id && parseFloat(this.instanceForm.id || '-1')>0 ){
+        if(this.instanceForm && this.instanceForm.delete && this.instanceForm.rest.id && parseFloat(this.instanceForm.rest.id || '-1')>0 ){
             return true;
         }
         return false;
@@ -95,7 +95,7 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
         if(event)
             event.preventDefault();
         this.setEndpoint(this.params.endpoint);
-        this.onDelete(event,this.instanceForm.id);
+        this.onDelete(event,this.instanceForm.rest.id);
     }
 }
 
