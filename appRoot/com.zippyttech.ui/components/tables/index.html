@@ -3,9 +3,9 @@
         <thead>
         <tr>
             <th data-type = "html" *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
-                <i *ngIf="sort==key && order == 'asc' && !findData" class="fa fa-caret-up text-blue"></i>
-                <i *ngIf="sort==key && order == 'desc' && !findData" class="fa fa-caret-down text-blue"></i>
-                <i *ngIf="sort==key && findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+                <i *ngIf="rest.sort==key && rest.order == 'asc' && !rest.findData" class="fa fa-caret-up text-blue"></i>
+                <i *ngIf="rest.sort==key && rest.order == 'desc' && !rest.findData" class="fa fa-caret-down text-blue"></i>
+                <i *ngIf="rest.sort==key && rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                 &nbsp;{{model.rules[key].title}}
             </th>
             <th data-type = "html" *ngIf="params && params.actions">&nbsp;
