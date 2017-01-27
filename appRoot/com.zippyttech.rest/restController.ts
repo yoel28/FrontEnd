@@ -245,11 +245,13 @@ export class RestController {
         max = (max ? max : that.rest.max);
         where = (where ? where : that.rest.where);
         list.page = [];
+        that.rest.findData = true;
         return this.httputils.onLoadList(endpoint + "?max=" + max + "&offset=" + offset + that.setWhere(where), list, max, this.error).then(
             response=> {
                 if (list.count > 0) {
                     data = data.concat(list.list);
                     if (list.count == list.list.length || list.count == data.length) {
+                        that.rest.findData=false;
                         Object.assign(list.list, data);
                         if (successCallback)
                             successCallback();
