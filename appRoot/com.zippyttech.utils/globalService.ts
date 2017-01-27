@@ -179,19 +179,22 @@ export class globalService extends RestController{
 
     getRule(code:string):string{
         let that = this;
-        let valor=[];
-        Object.keys(this.rules || {}).forEach(index=>{
-            if(that.rules[index].code==code){
-                valor.push(that.rules[index]);
+        let rule = this.getByAccount(this.rules,code);
+        return rule.rule || '';
+    }
+    getByAccount(list,code){
+        let that = this;
+        let value:any={};
+        list.forEach(obj=>{
+            if(obj.accountId == that.user.accountId && obj.code ==  code){
+                value=obj;
+                return;
             }
-        });
-        if(valor.length == 0)
-            return '';
-        if(valor.length == 1)
-            return valor[0].rule;
-
-        let companyId=this.user.companyId;
-
+            if(!value.id && obj.accountId == null && obj.code ==  code){
+                value=obj;
+            }
+        })
+        return value;
     }
 
     getTooltip(code:string):any{
