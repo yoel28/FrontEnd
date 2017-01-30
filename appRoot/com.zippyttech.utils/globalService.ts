@@ -8,8 +8,8 @@ import {ToastyService, ToastyConfig} from "ng2-toasty";
 @Injectable()
 export class globalService extends RestController{
     user:any={};
-    params:any={};
-    help:any={};
+    params:any=[];
+    help:any=[];
     permissions:any=[];
     rules:any=[];
 
