@@ -51,7 +51,7 @@ export abstract class ModelRoot extends RestController{
         this.loadParamsSearch();
 
         this.addCustomField();
-
+        this.db.ws.loadChannelByModel(this.constructor.name,this);
         this.completed=completed;
     }
 
@@ -254,5 +254,11 @@ export abstract class ModelRoot extends RestController{
                 data[key] = that.rulesSave[key];
         });
         return data;
+    }
+    public setLoadData(data) {
+        this.dataList.list.unshift(data);
+        this.dataList.count++;
+        if (this.dataList.count > this.rest.max)
+            this.dataList.list.pop();
     }
 }
