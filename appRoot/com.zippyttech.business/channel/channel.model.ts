@@ -1,6 +1,6 @@
 import {ModelBase} from "../../com.zippyttech.common/modelBase";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
-import {componentsApp, componentsDefault, componentsView} from "../../app-routing.module";
+import {componentsApp, componentsDefault, componentsView, modelsDefault, modelsApp} from "../../app-routing.module";
 
 export class ChannelModel extends ModelBase{
 
@@ -37,15 +37,36 @@ export class ChannelModel extends ModelBase{
 
         this.rules['component']={
             'type': 'select',
-            'required':true,
             'update':this.permissions.update,
             'search':this.permissions.filter,
             'visible':this.permissions.visible,
             'key': 'component',
-            'source':[],
-            'icon': 'fa fa-key',
+            'source':[{'value': 'AppComponent', 'text': 'AppComponent'}],
             'title': 'Componente',
             'placeholder': 'Seleccione un componente',
+        };
+
+        this.rules['model']={
+            'type': 'select',
+            'update':this.permissions.update,
+            'search':this.permissions.filter,
+            'visible':this.permissions.visible,
+            'key': 'model',
+            'source':[],
+            'title': 'Modelo',
+            'placeholder': 'Seleccione un modelo',
+        };
+
+        this.rules['event']={
+            'type': 'select',
+            'required':true,
+            'update':this.permissions.update,
+            'search':this.permissions.filter,
+            'visible':this.permissions.visible,
+            'key': 'event',
+            'source':[],
+            'title': 'Evento',
+            'placeholder': 'Seleccione un evento',
         };
 
         this.rules['target']={
@@ -56,8 +77,8 @@ export class ChannelModel extends ModelBase{
             'visible':this.permissions.visible,
             'key': 'target',
             'icon': 'fa fa-key',
-            'title': 'Objetivo',
-            'placeholder': 'Objetivo',
+            'title': 'Canal',
+            'placeholder': 'Canal',
         };
 
         this.rules['callback']={
@@ -94,6 +115,12 @@ export class ChannelModel extends ModelBase{
         delete this.rulesSave.enabled;
     }
     loadDataModel(){
+        this.loadComponents();
+        this.loadModels();
+        this.loadEventsApi();
+        this.completed=true;
+    }
+    loadComponents(){
         let that=this;
         componentsApp.forEach(comp =>{
             that.rules['component'].source.push({'value': comp.name, 'text': comp.name})
@@ -104,7 +131,24 @@ export class ChannelModel extends ModelBase{
         componentsView.forEach(comp =>{
             that.rules['component'].source.push({'value': comp.name, 'text': comp.name})
         });
-        this.completed=true;
+    }
+    loadModels(){
+        let that = this;
+        modelsDefault.forEach(model=>{
+            that.rules['model'].source.push({'value': model.name, 'text': model.name})
+        });
+        modelsApp.forEach(model=>{
+            that.rules['model'].source.push({'value': model.name, 'text': model.name})
+        });
+    }
+    loadEventsApi(){
+        let that=this;
+        if(this.db.myglobal.publicData && this.db.myglobal.publicData.channel && this.db.myglobal.publicData.channel.eventTypes)
+        {
+            this.db.myglobal.publicData.channel.eventTypes.forEach(ev =>{
+                that.rules['event'].source.push({'value':ev, 'text': ev})
+            });
+        }
     }
 
 }
