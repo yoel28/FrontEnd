@@ -12,6 +12,7 @@ export class globalService extends RestController{
     help:any=[];
     permissions:any=[];
     rules:any=[];
+    channels:any=[];
 
     public publicData:any={};
 
@@ -33,7 +34,8 @@ export class globalService extends RestController{
                         c.value.permissions.status &&
                         c.value.params.status &&
                         c.value.help.status &&
-                        c.value.rules.status
+                        c.value.rules.status &&
+                        c.value.channels.status
                     )
                     {return null;}
                 }
@@ -65,6 +67,7 @@ export class globalService extends RestController{
         this.loadParams();
         this.loadTooltips();
         this.loadRules();
+        this.loadChannels();
     }
     dataSesionInit():void{
         this.dataSesion.setValue({
@@ -74,6 +77,7 @@ export class globalService extends RestController{
             'params':       {'status':false,'title':'Consultando  parametros'},
             'help':         {'status':false,'title':'Consultando  ayudas'},
             'rules':        {'status':false,'title':'Consultando  reglas'},
+            'channels':     {'status':false,'title':'Consultando  canales'},
         });
     }
     errorGS = (err:any):void => {
@@ -147,6 +151,15 @@ export class globalService extends RestController{
             that.dataSesion.setValue(that.dataSesion.value);
         };
         this.httputils.doGet('/rules?max=1000',successCallback,this.errorGS);
+    }
+    loadChannels():void{
+        let that = this;
+        let successCallback= (response:any) => {
+            Object.assign(that.channels,response.json().list);
+            that.dataSesion.value.channels.status=true;
+            that.dataSesion.setValue(that.dataSesion.value);
+        };
+        this.httputils.doGet('/channels?max=1000',successCallback,this.errorGS);
     }
 
     existsPermission(keys:any):boolean{
