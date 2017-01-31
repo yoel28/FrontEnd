@@ -1,13 +1,13 @@
 <div *ngIf="model.permissions.warning || !modalIn" >
     <div class="main-view-container">
-        <div [@animation_0]='(dataList && dataList.list)?"true":"false"'>
+        <div [@animation_0]='(model.dataList && model.dataList.list)?"true":"false"'>
             <section class="content">
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">
                             {{viewOptions.title | translate }}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
-                            &nbsp;<i *ngIf="rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+                            &nbsp;<i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                         </h4>
                         <div class="box-tools pull-right header-tools">
                             <template [ngIf]="viewOptions.viewActions">
@@ -20,18 +20,18 @@
                                 </button>
                                 <button *ngFor="let buttom of getViewOptionsButtons('showDeleted')"
                                         class="btn btn-box-tool {{buttom.class}}" type="button"
-                                        [class.deleted-all]="rest.deleted=='all'"
-                                        [class.deleted-only]="rest.deleted=='only'"
+                                        [class.deleted-all]="model.rest.deleted=='all'"
+                                        [class.deleted-only]="model.rest.deleted=='only'"
                                         [attr.title]="buttom.title | translate"
-                                        (click)="changeDeleted($event)"
+                                        (click)="model.changeDeleted($event)"
                                 >
                                     <i class="{{buttom.icon}}"></i>
                                 </button>
                                 <button class="btn btn-box-tool" type="button"
                                         [attr.title]="db.msg.refresh | translate"
-                                        (click)="loadData('',$event)">
-                                    <i *ngIf="!rest.findData" class="fa fa-refresh"></i>
-                                    <i *ngIf="rest.findData" class="fa fa-spinner fa-spin"></i>
+                                        (click)="model.loadData('',$event)">
+                                    <i *ngIf="!model.rest.findData" class="fa fa-refresh"></i>
+                                    <i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin"></i>
                                 </button>
 
                                 <template [ngIf]="model.permissions.export">
@@ -81,26 +81,26 @@
                         </div>
                     </div>
                     <div *ngIf="model.permissions.list" class="box-body">
-                        <div *ngIf="dataList && dataList.count>0">
-                            <tables-view [dataList]="dataList" [model]="model" [params]="paramsTable" (getInstance)="setInstance($event)"  [rest]="rest"></tables-view>
+                        <div *ngIf="model.dataList && model.dataList.count>0">
+                            <tables-view [model]="model" [params]="paramsTable" (getInstance)="setInstance($event)"  ></tables-view>
                         </div>
-                        <div *ngIf="dataList && dataList.count == 0">
+                        <div *ngIf="model.dataList && model.dataList.count == 0">
                             <div class="alert alert-warning alert-dismissable">
                                 <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
-                                <strong><i class="fa fa-warning"></i></strong>&nbsp;{{msg.notFound | translate}}
+                                <strong><i class="fa fa-warning"></i></strong>&nbsp;{{db.msg.notFound | translate}}
                             </div>
                         </div>
                     </div>
                     <div *ngIf="!model.permissions.list">
                         <div class="btn-red padding-error">
-                            <h5><i class="fa fa-warning"></i>&nbsp;<strong>{{msg.warningTitle | translate}} <tooltip-view [code]="model.prefix+'_3'"></tooltip-view></strong></h5>
-                            {{ (msg.notAuthorized || 'Acceso no autorizado') | translate}},&nbsp;{{msg.contactAdminPermission | translate}} {{model.prefix}}_LIST
+                            <h5><i class="fa fa-warning"></i>&nbsp;<strong>{{db.msg.warningTitle | translate}} <tooltip-view [code]="model.prefix+'_3'"></tooltip-view></strong></h5>
+                            {{ (db.msg.notAuthorized || 'Acceso no autorizado') | translate}},&nbsp;{{db.msg.contactAdminPermission | translate}} {{model.prefix}}_LIST
                         </div>
                     </div>
                 </div>
             </section>
         </div>
-        <div class="preload" *ngIf='!(dataList && dataList.list)'>
+        <div class="preload" *ngIf='!(model.dataList && model.dataList.list)'>
             <div id="screen">
                 <div id="course">
                     <div id="hole"></div>
@@ -111,10 +111,10 @@
         </div>
     </div>
     <div *ngIf="model.permissions.add">
-        <save-view [params]="model.paramsSave" [rules]="model.rulesSave" (save)="setLoadData($event)"></save-view>
+        <save-view [params]="model.paramsSave" [rules]="model.rulesSave" (save)="model.setLoadData($event)"></save-view>
     </div>
     <div *ngIf="model.permissions.filter">
-        <filter-view [params]="model.paramsSearch" [rules]="model.rules" (whereFilter)="loadWhere($event)"></filter-view>
+        <filter-view [params]="model.paramsSearch" [rules]="model.rules" (whereFilter)="model.loadWhere($event)"></filter-view>
     </div>
 </div>
 
@@ -125,18 +125,18 @@
         <div class="modal-content">
             <div class="modal-header bg-red text-center">
                 <h3 class="modal-title">
-                    <i class="fa fa-warning"></i>&nbsp;<strong>{{msg.warningTitle | translate | uppercase}}<tooltip-view [code]="model.prefix+'_4'"></tooltip-view></strong></h3>
+                    <i class="fa fa-warning"></i>&nbsp;<strong>{{db.msg.warningTitle | translate | uppercase}}<tooltip-view [code]="model.prefix+'_4'"></tooltip-view></strong></h3>
             </div>
             <div class="modal-body">
-                {{msg.warningBody | translate}}
+                {{db.msg.warningBody | translate}}
             </div>
             <div class="modal-footer">
                 <button (click)="onDashboard($event)" type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">
-                    &nbsp;{{msg.warningButtonExit | translate}}
+                    &nbsp;{{db.msg.warningButtonExit | translate}}
                 </button>
 
                 <button (click)="loadPage($event,true)"  data-dismiss="modal" type="button" class="btn btn-red fa fa-check">
-                    &nbsp;{{msg.warningButtonYes | translate}}
+                    &nbsp;{{db.msg.warningButtonYes | translate}}
                 </button>
             </div>
         </div>
