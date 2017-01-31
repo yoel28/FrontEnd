@@ -24,14 +24,33 @@
 
 
                     <a *ngIf=" !model.rules[key].object &&
-                                model.rules[key].type == 'text' ||
-                                model.rules[key].type == 'textarea' ||
-                                model.rules[key].type == 'number' ||
-                                model.rules[key].type == 'select' ||
-                                model.rules[key].type == 'password'"
+                                data[key] &&
+                                (
+                                    model.rules[key].type == 'text' ||
+                                    model.rules[key].type == 'textarea' ||
+                                    model.rules[key].type == 'number' ||
+                                    model.rules[key].type == 'select' ||
+                                    model.rules[key].type == 'password'
+                                )
+                            "
                        x-editable [disabled]="!model.rules[key].update" [endpoint]="model.endpoint"
-                       [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">
+                       [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
                     </a>
+
+                    <a *ngIf=" !model.rules[key].object &&
+                               !data[key] &&
+                                (
+                                    model.rules[key].type == 'text' ||
+                                    model.rules[key].type == 'textarea' ||
+                                    model.rules[key].type == 'number' ||
+                                    model.rules[key].type == 'select' ||
+                                    model.rules[key].type == 'password'
+                                )
+                            "
+                       x-editable [disabled]="!model.rules[key].update" [endpoint]="model.endpoint"
+                       [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
+                    </a>
+
                     <button *ngIf="model.rules[key].type == 'select' && !model.rules[key].required && data[key]"
                             (click)="model.setNull(data,key)"
                             type="button" class="btn btn-box-tool"
