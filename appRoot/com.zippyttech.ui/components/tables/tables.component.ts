@@ -1,5 +1,4 @@
-import {Component, EventEmitter, OnInit, AfterContentChecked} from "@angular/core";
-import {RestController} from "../../../com.zippyttech.rest/restController";
+import {Component, EventEmitter, OnInit} from "@angular/core";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
@@ -10,11 +9,11 @@ declare var moment:any;
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/components/tables/style.css'],
-    inputs:['params','model','dataList','rest'],
+    inputs:['params','model'],
     outputs:['getInstance'],
 })
 
-export class TablesComponent extends RestController implements OnInit,AfterContentChecked {
+export class TablesComponent implements OnInit {
 
 
     public params:any={};
@@ -30,64 +29,31 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
     public keyActions =[];
     public configId=moment().valueOf();
 
-    public on=false;
-
     public getInstance:any;
 
     public formatTime=StaticFunction.formatTime;
 
     constructor(public db:DependenciesBase) {
-        super(db);
         this.getInstance = new EventEmitter();
     }
 
-    ngOnInit()
-    {
+    ngOnInit() {
         this.keyActions=[];
         if(this.params && this.params.actions)
             this.keyActions=Object.keys(this.params.actions);
-        this.setEndpoint(this.params? this.params.endpoint:'');
         this.getListObjectNotReferenceSave();
-        //console.log('1 '+this.findData);
     }
-    ngAfterContentChecked(){
-        //console.log('2 '+this.findData);
-    }
-    ngOnChanges(){
-        //console.log('3 '+this.findData);
-    }
-    ngDoCheck(){
-        //console.log('4 '+this.findData);
-    }
-    ngAfterContentInit(){
-        //console.log('5 '+this.findData);
-    }
-    ngAfterViewChecked(){
-        //console.log('6 '+this.findData);
-        if(!this.rest.findData)
-            this.on = true;
-    }
+
     ngAfterViewInit() {
-        //console.log('7 '+this.findData);
         this.getInstance.emit(this);
     }
-
-
-
-
-
-    console(msg){
-        console.log(msg)
-    }
-
 
     private instanceSearch={};
     setInstanceSearch(type,instance){
         this.instanceSearch[type] =  instance;
     }
     
-    keyVisible()
-    {
+    keyVisible() {
         let data=[];
         let that=this;
         Object.keys(this.model.rules).forEach((key)=>{
@@ -97,13 +63,11 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         return data;
     }
 
-
     public searchTable:any = {};
     public searchTableData:any;
-
-    loadSearchTable(event,key,data)
-    {
-        event.preventDefault();
+    loadSearchTable(event,key,data) {
+        if(event)
+            event.preventDefault();
         this.checkAllSearch();
         this.searchTableData=data;
         if(this.model.rules[key].multiple){//TODO:Falta completar el comportamiento
@@ -117,7 +81,8 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         this.searchTable.field =  key;
 
     }
-    private checkAllSearch(){
+
+    private checkAllSearch() {
         let that=this;
         Object.keys(this.instanceSearch).forEach(key=>{
             if(that.instanceSearch[key] && that.instanceSearch[key].dataList){
@@ -127,23 +92,24 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
     }
 
     public modelSave:any={};
-    loadSaveModal(event,key,data)
-    {
+    loadSaveModal(event,key,data) {
         event.preventDefault();
         this.dataSelect=data;
     }
+
     getDataSave(data,key){
-        this.onPatch(this.modelSave[key].key,this.dataSelect,data.id);
-    }
-    getDataSearch(data){
-        this.onPatch(this.searchTable.field,this.searchTableData,data.id);
-    }
-    getDataSearchMultiple(data){
-        this.onPatch(this.searchTable.field,this.searchTableData,data);
+        this.model.onPatch(this.modelSave[key].key,this.dataSelect,data.id);
     }
 
-    actionPermissionKey() 
-    {
+    getDataSearch(data){
+        this.model.onPatch(this.searchTable.field,this.searchTableData,data.id);
+    }
+
+    getDataSearchMultiple(data){
+        this.model.onPatch(this.searchTable.field,this.searchTableData,data);
+    }
+
+    actionPermissionKey() {
         let data=[];
         let that=this;
 
@@ -155,17 +121,13 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
 
         return data;
     }
+
     getListObjectNotReferenceSave(){
         let that = this;
         Object.keys(this.model.rules).forEach(key=>{
             if(that.model.rules[key].object && !that.model.rules[key].reference && that.model.rules[key].permissions.add)
                 that.modelSave[key]=that.model.rules[key];
         })
-    }
-
-    getKeys(data)
-    {
-        return Object.keys(data);
     }
 
     getBooleandData(key,data){
@@ -197,8 +159,7 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
 
     }
     
-    public setDataFieldReference(data,setNull=false)
-    {
+    public setDataFieldReference(data,setNull=false) {
         let value=null;
         let that = this;
 
@@ -238,20 +199,22 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         }
         return "-";
     }
+
     public formatTimeView(data) {
         if (data) {
             if (data < 1800000)//menor a 30min
-                return this.dateHmanizer(data, {units: ['m', 's']})
+                return this.dateHmanizer(data, {units: ['m', 's']});
             if (data < 3600000) //menor a 1hora
-                return this.dateHmanizer(data, {units: ['m']})
+                return this.dateHmanizer(data, {units: ['m']});
             if(data < 86400000)
-                return  this.dateHmanizer(data, {units: ['h', 'm']})
+                return  this.dateHmanizer(data, {units: ['h', 'm']});
 
             return  this.dateHmanizer(data)
         }
         return '-'
 
     }
+
     public changeFormatDate(id) {
         if (!this.formatDateId[id])
             this.formatDateId[id] = {'value': false};
@@ -263,6 +226,7 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
         var diff = moment().valueOf() - moment(date).valueOf();
         return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) && this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN') == 'true')
     }
+
     public getTypeEval(key,data){
         if(this.model.rules[key])
             return eval(this.model.rules[key].eval);
@@ -292,20 +256,20 @@ export class TablesComponent extends RestController implements OnInit,AfterConte
 
     changeOrder(sort){
         if(sort && this.model && this.model.rules[sort] && this.model.rules[sort].search){
-            if(sort ==  this.rest.sort){
-                if(this.rest.order == 'desc')
-                    this.rest.order = 'asc';
+            if(sort ==  this.model.rest.sort){
+                if(this.model.rest.order == 'desc')
+                    this.model.rest.order = 'asc';
                 else{
-                    this.rest.sort=null;
-                    this.rest.order=null;
+                    this.model.rest.sort=null;
+                    this.model.rest.order=null;
                 }
             }
             else
             {
-                this.rest.sort =  sort;
-                this.rest.order = 'desc'
+                this.model.rest.sort =  sort;
+                this.model.rest.order = 'desc'
             }
-            this.loadData();
+            this.model.loadData();
         }
     }
 
