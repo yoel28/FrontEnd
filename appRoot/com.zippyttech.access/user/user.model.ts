@@ -16,6 +16,18 @@ export class UserModel extends ModelBase{
         this.role= new RoleModel(this.db);
     }
     initRules(){
+        this.rules['email']={
+            'type': 'text',
+            'email':true,
+            'required':true,
+            'setEqual':'username',
+            'update':this.permissions.update,
+            'search':this.permissions.filter,
+            'visible':this.permissions.visible,
+            'key': 'email',
+            'title': 'Correo electrónico',
+            'placeholder': 'Correo electrónico',
+        };
 
         this.rules['id']={
             'type': 'number',
@@ -35,6 +47,15 @@ export class UserModel extends ModelBase{
             'title': 'Cédula',
             'placeholder': 'Cédula',
         };
+        this.rules['username']={
+            'type': 'text',
+            'update':this.permissions.update,
+            'search':this.permissions.filter,
+            'visible':this.permissions.visible,
+            'key': 'username',
+            'title': 'Usuario',
+            'placeholder': 'Usuario',
+        };
         this.rules['name']={
             'type': 'text',
             'required':true,
@@ -45,20 +66,9 @@ export class UserModel extends ModelBase{
             'title': 'Nombre',
             'placeholder': 'Nombre',
         };
-        this.rules['email']={
-            'type': 'text',
-            'email':true,
-            'required':true,
-            'setEqual':'username',
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'email',
-            'title': 'Correo electrónico',
-            'placeholder': 'Correo electrónico',
-        };
         this.rules['phone']={
             'type': 'text',
+            'forceInSave':true,
             'update':this.permissions.update,
             'search':this.permissions.filter,
             'visible':this.permissions.visible,
@@ -67,15 +77,6 @@ export class UserModel extends ModelBase{
             'placeholder': 'Teléfono',
         };
 
-        this.rules['address']={
-            'type': 'text',
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'address',
-            'title': 'Dirección',
-            'placeholder': 'Dirección',
-        };
 
         this.rules['password']={
             'type': 'password',
@@ -120,8 +121,7 @@ export class UserModel extends ModelBase{
         this.rules['roles'].showbuttons=true;
         this.rules['roles'].source=[];
         this.rules['roles'].search=false;
-
-
+        this.rules['roles'].exclude=false;
 
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
