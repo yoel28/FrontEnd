@@ -143,7 +143,7 @@ export class WebSocket{
     }
     eventChannel(eventChannel:any){
         if(this.webSocket[eventChannel.target].instance){
-            switch (eventChannel['eventType']) {
+            switch (eventChannel['event']) {
                 case "INSERT" :
                     this.webSocket[eventChannel.target].instance.setLoadData(this.webSocket[eventChannel.target].data.value);
                     break;
