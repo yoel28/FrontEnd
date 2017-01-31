@@ -342,6 +342,7 @@ export class RestController {
         let body = JSON.stringify(json);
 
         let successCallback = response => {
+            Object.assign(data,response.json());
             that.addToast('Notificacion','Guardado con éxito');
         };
         return (this.httputils.doPut(endpoint+data.id,body,successCallback,this.error));
