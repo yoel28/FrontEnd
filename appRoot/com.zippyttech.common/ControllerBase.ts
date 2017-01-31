@@ -1,6 +1,5 @@
-import {RestController, IRest} from "../com.zippyttech.rest/restController";
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
-import {OnInit,EventEmitter} from "@angular/core";
+import {OnInit} from "@angular/core";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "./DependenciesBase";
 
@@ -9,30 +8,25 @@ declare var moment:any;
 declare var jQuery:any;
 declare var Table2Excel:any;
 
-export abstract class ControllerBase extends RestController implements OnInit {
+export abstract class ControllerBase implements OnInit {
     
     public formatDateId:any = {};
-    public prefix:string;
     public configId = moment().valueOf();
     public viewOptions:any = {};
     public dateHmanizer = StaticValues.dateHmanizer;
     public model:any={};
-    public msg:any =  StaticValues.msg;
     public dataSelect:any = {};
 
     public classCol=StaticFunction.classCol;
     public classOffset=StaticFunction.classOffset;
 
-    constructor(public db:DependenciesBase,prefix='NOPREFIX', endpoint='NOENPOINT') {
-        super(db);
-        this.setEndpoint(endpoint);
-        this.prefix = prefix;
+    constructor(public db:DependenciesBase) {
         this.initLang();
-
     }
     ngOnInit():void{
         this.initModel();
     }
+
     public initLang() {
         var userLang = navigator.language.split('-')[0];
         userLang = /(es|en)/gi.test(userLang) ? userLang : 'es';
@@ -59,14 +53,16 @@ export abstract class ControllerBase extends RestController implements OnInit {
         })
         return visible;
     }
+
     public getObjectKeys(data) {
         return Object.keys(data || {});
     }
+
     public formatDate(date, format, force = false, id = null) {
         if (date) {
             if (id && this.formatDateId[id])
                 force = this.formatDateId[id].value;
-            if (this.db.myglobal.getParams(this.prefix + '_DATE_FORMAT_HUMAN') == 'true' && !force) {
+            if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN') == 'true' && !force) {
                 var diff = moment().valueOf() - moment(date).valueOf();
                 if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) {
                     if (diff < 1800000)//menor a 30min
@@ -90,28 +86,20 @@ export abstract class ControllerBase extends RestController implements OnInit {
     public viewChangeDate(date) {
         //<i *ngIf="viewChangeDate(data.rechargeReferenceDate)" class="fa fa-exchange" (click)="changeFormatDate(data.id)"></i>
         var diff = moment().valueOf() - moment(date).valueOf();
-        return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) && this.db.myglobal.getParams(this.prefix + '_DATE_FORMAT_HUMAN') == 'true')
+        return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) && this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN') == 'true')
     }
-    //enlace a restcontroller
-    public setLoadData(data) {
-        this.dataList.list.unshift(data);
-        this.dataList.count++;
-        if (this.dataList.count > this.rest.max)
-            this.dataList.list.pop();
-    }
-    
+
     public modalIn:boolean=true;
-    
     public loadPage(event?,accept=false){
         if(event)
             event.preventDefault();
-
         if (this.model.permissions.warning || accept) {
             this.modalIn=false;
             if(this.model.permissions.list)
-                this.loadData();
+                this.model.loadData();
         }
     }
+
     public setDataFieldReference(model,data,setNull=false,callback)
     {
         let value=null;
@@ -132,6 +120,7 @@ export abstract class ControllerBase extends RestController implements OnInit {
             model.setDataField(data[model.ruleObject.code],that.model.ruleObject.key,null,callback,data);
 
     }
+
     public onDashboard(event){
         if(event)
             event.preventDefault();
@@ -141,7 +130,7 @@ export abstract class ControllerBase extends RestController implements OnInit {
     
     public export(type){
         let that=this;
-        this.getLoadDataAll([],null,null,0,1000,null,()=>{
+        this.model.getLoadDataAll([],null,null,0,1000,null,()=>{
                 setTimeout(function(_jQuery=jQuery){
                     if(type=='xls')
                         that.exportXls();
@@ -151,6 +140,7 @@ export abstract class ControllerBase extends RestController implements OnInit {
             }
         )
     }
+
     public exportXls(){
         let table2excel = new Table2Excel({
             'defaultFileName': this.configId,
@@ -164,6 +154,7 @@ export abstract class ControllerBase extends RestController implements OnInit {
         });
         table2excel.export(document.querySelectorAll("table.export"));
     }
+
     exportPrint(){
         var printContents = document.getElementById("reporte").innerHTML;
         var popupWin = window.open('', '_blank');
@@ -172,15 +163,15 @@ export abstract class ControllerBase extends RestController implements OnInit {
         popupWin.document.head.innerHTML = (document.head.innerHTML);
         popupWin.document.close();
     }
+
     public get getFecha(){
         return moment().format('DD/MM/YYYY');
     }
+
     public get getHora(){
         return moment().format('LT');
     }
-    public getKeys(data){
-        return Object.keys(data || {})
-    }
+
     public getKeysDataVisible()
     {
         let data=[];
