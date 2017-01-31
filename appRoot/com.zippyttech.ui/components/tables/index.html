@@ -32,6 +32,13 @@
                        x-editable [disabled]="!model.rules[key].update" [endpoint]="model.endpoint"
                        [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">
                     </a>
+                    <button *ngIf="model.rules[key].type == 'select' && !model.rules[key].required && data[key]"
+                            (click)="model.setNull(data,key)"
+                            type="button" class="btn btn-box-tool"
+                            title="Liberar"
+                    >
+                        <i class="fa fa-minus text-red"></i>
+                    </button>
 
                     <div *ngIf="model.rules[key].type=='image'">
                         <img [attr.id]="'img'+data.id+'_'+key"
