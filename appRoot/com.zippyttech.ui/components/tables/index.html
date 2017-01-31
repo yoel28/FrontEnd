@@ -1,11 +1,11 @@
-<div class="table-responsive" *ngIf="dataList && dataList.list" >
+<div class="table-responsive" *ngIf="model.dataList && model.dataList.list" >
     <table class="table table-striped table-hover">
         <thead>
         <tr>
             <th data-type = "html" *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
-                <i *ngIf="rest.sort==key && rest.order == 'asc' && !rest.findData" class="fa fa-caret-up text-blue"></i>
-                <i *ngIf="rest.sort==key && rest.order == 'desc' && !rest.findData" class="fa fa-caret-down text-blue"></i>
-                <i *ngIf="rest.sort==key && rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+                <i *ngIf="model.rest.sort==key && model.rest.order == 'asc' && !model.rest.findData" class="fa fa-caret-up text-blue"></i>
+                <i *ngIf="model.rest.sort==key && model.rest.order == 'desc' && !model.rest.findData" class="fa fa-caret-down text-blue"></i>
+                <i *ngIf="model.rest.sort==key && model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                 &nbsp;{{model.rules[key].title}}
             </th>
             <th data-type = "html" *ngIf="params && params.actions">&nbsp;
@@ -14,7 +14,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let data of dataList.list"  [class.deleted]="data.deleted">
+        <tr *ngFor="let data of model.dataList.list"  [class.deleted]="data.deleted">
             <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check">
 
                 <span *ngIf="!getDisabledField(key,data)">
@@ -29,8 +29,8 @@
                                 model.rules[key].type == 'number' ||
                                 model.rules[key].type == 'select' ||
                                 model.rules[key].type == 'password'"
-                       x-editable [disabled]="!model.rules[key].update" [endpoint]="params?params.endpoint:endpoint"
-                       [function]="onEditable" [data]="data" [rules]="model.rules" [field]="key">
+                       x-editable [disabled]="!model.rules[key].update" [endpoint]="model.endpoint"
+                       [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">
                     </a>
 
                     <div *ngIf="model.rules[key].type=='image'">
@@ -57,7 +57,7 @@
                                     <image-edit-view
                                             [image]="data[key]"
                                             [default]="model.rules[key].default"
-                                            (out)="onPatchValue(key,data, $event)"
+                                            (out)="model.onPatchValue(key,data, $event)"
                                     ></image-edit-view>
                                 </div>
                            </div>
@@ -67,12 +67,12 @@
 
                     <input *ngIf="model.rules[key].type == 'color' && model.rules[key].update && !data.deleted" color-picker readonly
                            [style.background-color]="'#'+data[key]" [attr.value]="'#'+data[key]" [hexString]="data[key]"
-                           (color)="onPatch(key,data,$event)">
+                           (color)="model.onPatch(key,data,$event)">
                     <label *ngIf=" model.rules[key].type == 'color' && !model.rules[key].update " class="form-control">{{'#'+data[key]}}</label>
 
 
                     <button *ngIf="model.rules[key].type =='boolean'" class="{{getBooleandData(key,data).class}}"
-                            (click)="onPatch(key,data)" [disabled]="getBooleandData(key,data).disabled || data.deleted" [attr.title]="getBooleandData(key,data).title">
+                            (click)="model.onPatch(key,data)" [disabled]="getBooleandData(key,data).disabled || data.deleted" [attr.title]="getBooleandData(key,data).title">
                         {{getBooleandData(key,data).text}}
                     </button>
 
@@ -113,7 +113,7 @@
                                  </button>
 
                                  <button *ngIf="data[model.rules[key].code] && !model.rules[key].required"
-                                         (click)="setNull(data,key)"
+                                         (click)="model.setNull(data,key)"
                                          type="button" class="btn btn-box-tool"
                                          title="Liberar"
                                  >
@@ -144,7 +144,7 @@
                                   <button (click)="loadDataFieldReference(data,key)"
                                           *ngIf="model.permissions.update && model.rules[key].permissions.search && !model.rules[key].pathLocal"
                                           data-toggle="modal"
-                                          [attr.data-target]="'#'++model.rules[key].paramsSearch.idModal"
+                                          [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal"
                                           type="button" class="btn btn-box-tool"
                                           title="Asignar"
                                   >
@@ -185,7 +185,7 @@
                     <a x-editable *ngIf="key=='roles'"
                        [disabled]="!model.permissions.update || !model.rules[key].permissions.list || !model.permissions.roleSave || data.deleted"
                        [endpoint]="'/users/'+data.id+'/roles'"
-                       [function]="onEditableRole" [data]="data" [rules]="model.rules"
+                       [function]="model.onEditableRole" [data]="data" [rules]="model.rules"
                        field="roles">
 
                     </a>
@@ -227,19 +227,14 @@
                                 &nbsp;{{params.actions[key].title}}
                             </a>
                             <a *ngIf="key == 'onPatch' && params.actions[key].type=='boolean'"
-                               (click)="onPatch(params.actions[key].field,data)">
+                               (click)="model.onPatch(params.actions[key].field,data)">
                                 <span class="{{params.actions[key].icon}}"></span>
                                 {{data[key]?params.actions[key].titleTrue:params.actions[key].titleFalse}}
                             </a>
                             <a *ngIf="key == 'onLock'"
-                               (click)="onLock('enabled',data)">
+                               (click)="model.onLock('enabled',data)">
                                 <span class="{{params.actions[key].icon}}"></span>
                                 {{data.enabled?params.actions[key].titleTrue:params.actions[key].titleFalse}}
-                            </a>
-                            <a *ngIf="key == 'print'"
-                               (click)="onPrint(params.actions[key].element)">
-                                <span class="{{params.actions[key].icon}}"></span>
-                                &nbsp;{{params.actions[key].title}}
                             </a>
                             <a *ngIf="key == 'viewHistory'" [attr.href]="params.actions[key].path+data.id">
                                 <span class="{{params.actions[key].icon}}"></span>
@@ -258,19 +253,14 @@
                             &nbsp;{{params.actions[key].title}}
                         </a>
                         <a *ngIf="key == 'onPatch' && params.actions[key].type=='boolean'"
-                           (click)="onPatch(params.actions[key].field,data)">
+                           (click)="model.onPatch(params.actions[key].field,data)">
                             <span class="{{params.actions[key].icon}}"></span>
                             {{data[key]?params.actions[key].titleTrue:params.actions[key].titleFalse}}
                         </a>
                         <a *ngIf="key == 'onLock'"
-                           (click)="onLock('enabled',data)">
+                           (click)="model.onLock('enabled',data)">
                             <span class="{{params.actions[key].icon}}"></span>
                             {{data.enabled?params.actions[key].titleTrue:params.actions[key].titleFalse}}
-                        </a>
-                        <a *ngIf="key == 'print'"
-                           (click)="onPrint(params.actions[key].element)">
-                            <span class="{{params.actions[key].icon}}"></span>
-                            &nbsp;{{params.actions[key].title}}
                         </a>
                         <a *ngIf="key == 'viewHistory'" [attr.href]="params.actions[key].path+data.id">
                             <span class="{{params.actions[key].icon}}"></span>
@@ -282,12 +272,12 @@
             </td>
         </tr>
         </tbody>
-        <tfoot *ngIf="dataList && dataList.page && dataList.page.length > 1">
+        <tfoot *ngIf="model.dataList && model.dataList.page && model.dataList.page.length > 1">
         <tr>
             <td [attr.colspan]="keyVisible().length + 1">
                 <div class="btn-group pull-right">
-                    <button (click)="loadData(val)" [class.btn-green]="val==((rest.offset/rest.max)+1)"
-                            *ngFor="let val of dataList.page" type="button" class="btn btn-default">
+                    <button (click)="model.loadData(val)" [class.btn-green]="val==((model.rest.offset/model.rest.max)+1)"
+                            *ngFor="let val of model.dataList.page" type="button" class="btn btn-default">
                         {{val}}
                     </button>
                     <tooltip-view [code]="model.prefix+'_9'"></tooltip-view>
@@ -317,7 +307,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">&nbsp;{{db.msg.warningButtonExit}}</button>
-                    <button (click)="onDelete($event,dataSelect.id)" data-dismiss="modal" type="button"
+                    <button (click)="model.onDelete($event,dataSelect.id)" data-dismiss="modal" type="button"
                             class="btn btn-red fa fa-trash">&nbsp;{{db.msg.delete}}
                     </button>
                 </div>
@@ -326,7 +316,7 @@
     </div>
 </div>
 
-<div *ngFor="let key of getKeys(modelSave)">
+<div *ngFor="let key of getObjectKeys(modelSave)">
     <save-view [rules]="modelSave[key].rulesSave" [params]="modelSave[key].paramsSave"
                (save)="getDataSave($event,key)"></save-view>
 </div>
