@@ -261,4 +261,21 @@ export abstract class ModelRoot extends RestController{
         if (this.dataList.count > this.rest.max)
             this.dataList.list.pop();
     }
+    public setUpdateData(data){
+        if(data.id){
+            let index = this.getIndexById(data.id);
+            if(index >= 0){
+                Object.assign(this.dataList.list[index],data);
+            }
+        }
+    }
+    public setDeleteData(data){
+        if(data.id){
+            let index = this.getIndexById(data.id);
+            if(index >= 0){
+                this.dataList.list.splice(index,1);
+            }
+        }
+
+    }
 }
