@@ -323,7 +323,7 @@ export class RestController {
         return (this.httputils.onUpdate("/lock" + this.endpoint + data.id, body, data, this.error));
     }
 
-    onPatchValueProfile(field, data, value=null,event?) {
+    onPatchProfile(field, data, value=null,event?) {
         if(event)
             event.preventDefault();
 
