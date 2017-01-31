@@ -37,12 +37,12 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
 
     protected _loadInstance(){
         this.viewOptions['viewActions']=this.viewActions;
+        this.model.rest = this.rest;
 
         this.instance = {
             'model':this.model,
             'viewOptions':this.viewOptions,
             'paramsTable':this.paramsTable,
-            'rest':this.rest
         };
     }
     protected _loadWhereInParamsFilter(){
