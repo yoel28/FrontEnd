@@ -216,9 +216,13 @@ export class globalService extends RestController{
     }
     setPreferenceViewModel(model:string,rules:Object){
         let that = this;
+        if(!this.user.preferences)
+            this.user.preferences={};
+
         if(!this.user.preferences.columns){
             this.user.preferences.columns={};
         }
+
         this.user.preferences.columns[model.replace('Model','')]=[];
         Object.keys(rules).forEach(key=>{
             that.user.preferences.columns[model.replace('Model','')].push(
