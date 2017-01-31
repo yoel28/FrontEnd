@@ -30,8 +30,6 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     }
     ngOnInit(){
         super.ngOnInit();
-        this.initParams();
-        this.initRest();
         this.initViewOptions();
         this.loadParamsTable();
         this.loadPage();
@@ -41,13 +39,6 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     }
     initModel() {
         this.model = this.instance.model;
-    }
-    initParams(){
-        this.prefix = this.model.prefix;
-        this.setEndpoint(this.model.endpoint);
-    }
-    initRest(){
-        this.rest = this.instance.rest;
     }
 
     public instanceTable:any;
@@ -70,7 +61,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             'visible': this.model.permissions.filter && this.model.permissions.list,
             'title': 'Filtrar',
             'class': 'text-blue',
-            'evalClass':'this.rest.where.length>0?"filter-enabled":""',
+            'evalClass':'this.model.rest.where.length>0?"filter-enabled":""',
             'icon': 'fa fa-filter',
             'type':'modal',
             'modal': this.model.paramsSearch.idModal
@@ -87,7 +78,6 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
 
     }
     loadParamsTable(){
-        this.paramsTable.endpoint=this.endpoint;
         this.paramsTable.actions={};
 
         if(this.instance.paramsTable && this.instance.paramsTable.actions )
@@ -97,7 +87,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
                     "icon": "fa fa-trash",
                     "exp": "",
                     'title': 'Eliminar',
-                    'idModal': this.prefix+'_'+this.configId+'_DEL',
+                    'idModal': this.model.prefix+'_'+this.configId+'_DEL',
                     'permission': this.model.permissions.delete,
                     'message': this.instance.paramsTable.actions.delete.message,
                     'keyAction':this.instance.paramsTable.actions.delete.keyAction
@@ -115,8 +105,8 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     getUrlExport(type:string){
         if(this.instanceTable)
         return  localStorage.getItem('urlAPI')+
-                this.endpoint +
-                this.getRestParams()+
+                this.model.endpoint +
+                this.model.getRestParams()+
                 '&access_token='+localStorage.getItem('bearer')+
                 '&formatType='+type;
     }
@@ -180,11 +170,10 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     savePreference(){
         let that = this;
         this.db.myglobal.setPreferenceViewModel(this.model.constructor.name,this.model.rules);
-        let body = {'preferences':this.db.myglobal.user.preferences};
         let successCallback = (response)=>{
-            that.addToast('Notificación','Preferencias guardadas')
+            that.model.addToast('Notificación','Preferencias guardadas')
         }
-        this.httputils.doPut('/auto/update',this.objectToString(body),successCallback,this.error)
+        this.model.onPatchProfile('preferences',this.db.myglobal.user,this.db.myglobal.user.preferences);
     }
     evalExp(exp){
         return eval(exp);
