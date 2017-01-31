@@ -26,7 +26,7 @@
                                             </h2>
                                             <p *ngIf="!model.rules[key].protected && (model.rules[key].type=='text' || model.rules[key].type=='textarea' || model.rules[key].type=='number' || model.rules[key].type=='password')">
                                                 <strong>{{model.rules[key].title}}:</strong>&nbsp;
-                                                <a *ngIf="!model.rules[key].object" x-editable [endpoint]="endpoint" [function]="onEditable"
+                                                <a *ngIf="!model.rules[key].object" x-editable [endpoint]="model.endpoint" [function]="model.onEditable"
                                                    [data]="db.myglobal.user" [rules]="model.rules" [field]="key" [disabled]="!model.rules[key].update">
                                                 </a>
                                                 <a *ngIf="model.rules[key].object">
@@ -38,7 +38,7 @@
                                         <a x-editable
                                            [disabled]="!model.permissions.update || !model.rules['roles'].permissions.list || !model.permissions.roleSave"
                                            [endpoint]="'/users/'+db.myglobal.user.id+'/roles'"
-                                           [function]="onEditableRole" [data]="db.myglobal.user" [rules]="model.rules"
+                                           [function]="model.onEditableRole" [data]="db.myglobal.user" [rules]="model.rules"
                                            field="roles">
 
                                         </a>
