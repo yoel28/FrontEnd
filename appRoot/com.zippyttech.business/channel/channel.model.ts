@@ -37,6 +37,8 @@ export class ChannelModel extends ModelBase{
 
         this.rules['component']={
             'type': 'select',
+            'hiddenOnly':'this.form.controls["model"].value && this.form.controls["model"].value!="-1"',
+            'disabled':'data.model!=null',
             'update':this.permissions.update,
             'search':this.permissions.filter,
             'visible':this.permissions.visible,
@@ -48,6 +50,8 @@ export class ChannelModel extends ModelBase{
 
         this.rules['model']={
             'type': 'select',
+            'hiddenOnly':'this.form.controls["component"].value && this.form.controls["component"].value!="-1"',
+            'disabled':'data.component!=null',
             'update':this.permissions.update,
             'search':this.permissions.filter,
             'visible':this.permissions.visible,
