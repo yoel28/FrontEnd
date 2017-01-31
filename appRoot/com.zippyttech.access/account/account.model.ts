@@ -12,6 +12,7 @@ export class AccountModel extends ModelRoot{
 
         this.rules['logo']={
             'type': 'image',
+            'exclude':true,
             'update':this.permissions.update,
             'visible':this.permissions.visible,
             'key': 'logo',
@@ -112,6 +113,7 @@ export class AccountModel extends ModelRoot{
 
         this.rules['miniLogo']={
             'type': 'image',
+            'exclude':true,
             'update':this.permissions.update,
             'visible':this.permissions.visible,
             'key': 'miniLogo',
