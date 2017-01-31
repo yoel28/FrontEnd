@@ -22,7 +22,7 @@ export class XEditable extends RestController implements OnInit {
     public disabled:boolean;
 
     constructor(public el:ElementRef, public db:DependenciesBase) {
-        super(db)
+        super(db);
         this.success = new EventEmitter();
         this.httputils = new HttpUtils(db.http,db.toastyService,db.toastyConfig);
     }
@@ -30,7 +30,7 @@ export class XEditable extends RestController implements OnInit {
     ngOnInit() {
         let that = this;
         if(that.disabled==null)
-            that.disabled = that.rules[that.field].disabled!=null ? that.rules[that.field].disabled : ( that.data.enabled ? !that.data.enabled : false)
+            that.disabled = that.rules[that.field].disabled!=null ? that.rules[that.field].disabled : ( that.data.enabled ? !that.data.enabled : false);
 
         jQuery(this.el.nativeElement).editable({
             type: that.rules[that.field].type || 'text',
