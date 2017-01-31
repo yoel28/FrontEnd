@@ -96,7 +96,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                     validators.push(
                         (c:FormControl)=> {
                             if(c.value && c.value.length > 0){
-                                if(c.value!='-1'){
+                                if(c.value!='-1' || (c.value=='-1' && !that.rules[key].required)){
                                         return null;
                                 }
                                 return {error: {valid: false}};
