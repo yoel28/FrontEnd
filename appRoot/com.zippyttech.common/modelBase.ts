@@ -14,6 +14,7 @@ export abstract class ModelBase extends ModelRoot{
             let account = new AccountModel(this.db);
             this.rules['account'] =  account.ruleObject;
             this.rules['account'].required = true;
+            this.rules['account'].update = this.permissions.update;
         }
     }
     public globalOptional(){
