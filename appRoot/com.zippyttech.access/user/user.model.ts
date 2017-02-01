@@ -117,6 +117,7 @@ export class UserModel extends ModelBase{
 
         this.rules['roles']=this.role.ruleObject;
         this.rules['roles'].type= 'checklist';
+        this.rules['roles'].update= this.permissions.update;
         this.rules['roles'].mode= 'popup';
         this.rules['roles'].showbuttons=true;
         this.rules['roles'].source=[];
