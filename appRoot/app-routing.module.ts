@@ -41,6 +41,7 @@ import {InfoModel} from "./com.zippyttech.business/info/info.model";
 import {NotificationModel} from "./com.zippyttech.business/notification/notification.model";
 import {ParamModel} from "./com.zippyttech.business/param/param.model";
 import {RuleModel} from "./com.zippyttech.business/rule/rule.model";
+import {ActivateComponent} from "./com.zippyttech.auth/activate/activate.component";
 
 const routesDefault: Routes = [
 
@@ -53,6 +54,7 @@ const routesDefault: Routes = [
     { path: 'auth/login/:company', component: LoginComponent},
     { path: 'auth/recover', component: RecoverComponent},
     { path: 'account/recoverPassword/:id/:token', component: RecoverPasswordComponent},
+    { path: 'account/active/:id/:token', component: ActivateComponent},
 
     { path: 'access/account', component: AccountComponent},
     { path: 'access/role', component: RoleComponent},
@@ -86,6 +88,7 @@ export const componentsDefault = [
     RecoverPasswordComponent,
     AclComponent,
     ProfileComponent,
+    ActivateComponent,
     LoadComponent,
     PermissionComponent,
     RoleComponent,
