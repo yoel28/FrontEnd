@@ -14,7 +14,7 @@
                     &nbsp;{{db.msg.pleaseWait}}
                 </h1>
                 <h2 *ngIf="activate.response">
-                    {{ activate.status?db.msg.activate:db.msg.errorActivate;}}
+                    {{ activate.status?db.msg.activate:db.msg.errorActivate}}
                 </h2>
                 <div class="login-box-body">
                     <button class="btn btn-success btn-blue" (click)="onLogin($event)">
