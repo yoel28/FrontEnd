@@ -192,6 +192,11 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         })
     }
 
+    public getTypeEval(key,data){
+        if(this.model.rules[key])
+            return eval(this.model.rules[key].eval);
+    }
+
 
 }
 
