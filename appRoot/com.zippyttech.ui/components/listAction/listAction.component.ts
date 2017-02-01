@@ -66,6 +66,8 @@ export class ListActionComponent extends ControllerBase
     ngOnInit()
     {
         super.ngOnInit();
+
+        this.model = this.data.model;
         let that = this;
         if(this.data.observable && this.data.observable.watch){
             this.data.observable.watch.valueChanges.subscribe(
