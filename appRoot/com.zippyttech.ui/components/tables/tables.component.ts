@@ -103,4 +103,24 @@ export class TablesComponent implements OnInit {
         }
     }
 
+    setDataFieldReference(data,setNull=false) {
+        let value=null;
+        let that = this;
+
+        if(!setNull)//no colocar valor nulo
+        {
+            value=this.paramsData.select['id'];
+            if(that.paramsData.select[that.paramsData.ruleReference.code]!=null && that.paramsData.ruleReference.unique)
+                that.paramsData.ruleReference.model.setDataField(that.paramsData.select[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.paramsData.select).then(
+                    response=>{
+                        that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+                    });
+            else
+                that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+        }
+        else
+            that.paramsData.ruleReference.model.setDataField(data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,data);
+
+    }
+
 }
