@@ -1,6 +1,303 @@
-<template [ngIf]="rule && rule.type">
-    <span [ngSwitch]="rule.type">
-        <span [ngSwitchCase]="text">{{rule.type}} prueba</span>
-        <span *ngSwitchDefault>{{rule.type}}</span>
-    </span>
+<template [ngIf]="!getDisabledField(key,data)">
+
+    <i *ngIf="model.rules[key].iconVisible" class="{{model.rules[key].iconVisible}}">&nbsp;</i>
+    <i *ngIf="model.rules[key].type == 'icon'" class="{{data[key]}}">&nbsp;</i>
+
+    <template [ngIf]="model.rules[key] && !model.rules[key].object">
+        <template [ngIf]="  model.rules[key].type == 'text' ||
+                            model.rules[key].type == 'textarea' ||
+                            model.rules[key].type == 'number' ||
+                            model.rules[key].type == 'select' ||
+                            model.rules[key].type == 'password'">
+
+
+            <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+                <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                   [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
+                </a>
+
+                <a *ngIf="!data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                   [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
+                </a>
+
+                <template [ngIf]="model.rules[key].type == 'select' && !model.rules[key].required && data[key]">
+                    <button (click)="model.setNull(data,key)" type="button" class="btn btn-box-tool" title="Liberar">
+                        <i class="fa fa-minus text-red"></i>
+                    </button>
+                </template>
+
+            </template>
+            <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+                <a x-editable [disabled]="true" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
+            </template>
+        </template>
+    </template>
+
+    <template [ngIf]="model.rules[key] && model.rules[key].type=='image'">
+            <img [attr.id]="'img'+data.id+'_'+key"
+                 [attr.src]="data[key] || model.rules[key].default"
+                 width="30" height="30"
+                 data-toggle="modal" [attr.data-target]="'#'+data.id+'_'+key"
+                 class="image-editor"
+                 [attr.title]="model.rules[key].update?db.msg.imageEdit:''"
+            >
+            <div [attr.id]="data.id+'_'+key" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-header bg-red text-center">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">
+                            <i class="fa fa-image"></i>&nbsp;
+                            <strong>{{db.msg.imageEditor}}</strong>
+                        </h4>
+                    </div>
+                    <div class="modal-content">
+                        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+                            <image-edit-view
+                                    [image]="data[key]"
+                                    [edit]="true"
+                                    [default]="model.rules[key].default"
+                                    (out)="model.onPatchValue(key,data, $event)"
+                            ></image-edit-view>
+                        </template>
+                        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+                            <image-edit-view
+                                    [image]="data[key]"
+                                    [edit]="false"
+                                    [default]="model.rules[key].default"
+                                    (out)="model.onPatchValue(key,data, $event)"
+                            ></image-edit-view>
+                        </template>
+                    </div>
+                </div>
+            </div>
+    </template>
+
+    <template [ngIf]="model.rules[key] && model.rules[key].type=='color'">
+        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+            <input color-picker class="form-control" readonly [style.background-color]="'#'+data[key]" [attr.value]="'#'+data[key]" [hexString]="data[key]" (color)="model.onPatch(key,data,$event)">
+        </template>
+        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+            <label [style.background-color]="'#'+data[key]" class="form-control">{{'#'+data[key]}}</label>
+        </template>
+    </template>
+
+    <template [ngIf]="model.rules[key].type=='boolean'">
+        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+            <template [ngIf]="key=='enabled'">
+                <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
+                        [disabled]="getBooleandData(key,data).disabled" [attr.title]="getBooleandData(key,data).title">
+                    {{getBooleandData(key,data).text}}
+                </button>
+            </template>
+            <template [ngIf]="key!='enabled'">
+                <button class="{{getBooleandData(key,data).class}}"  (click)="model.onPatch(key,data)"
+                        [disabled]="getBooleandData(key,data).disabled" [attr.title]="getBooleandData(key,data).title">
+                    {{getBooleandData(key,data).text}}
+                </button>
+            </template>
+        </template>
+        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+            <template [ngIf]="key=='enabled'">
+                <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
+                        [disabled]="getBooleandData(key,data).disabled || data.deleted" [attr.title]="getBooleandData(key,data).title">
+                    {{getBooleandData(key,data).text}}
+                </button>
+            </template>
+            <template [ngIf]="key!='enabled'">
+                <button class="{{getBooleandData(key,data).class}}" [disabled]="true" [attr.title]="getBooleandData(key,data).title">
+                    {{getBooleandData(key,data).text}}
+                </button>
+            </template>
+        </template>
+    </template>
+
+    <template [ngIf]="model.rules[key].type=='date'">
+        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+            <span>
+                {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY',false,data.id)}}
+                <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
+            </span>
+        </template>
+        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+            <span>
+                {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY',false,data.id)}}
+                <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
+            </span>
+        </template>
+    </template>
+
+    <template [ngIf]="model.rules[key].type=='time'">
+        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+            {{formatTimeView(data[key])}}
+        </template>
+        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+            {{formatTimeView(data[key])}}
+        </template>
+    </template>
+
+    <template [ngIf]="model.rules[key].type=='eval'">
+        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+            {{getTypeEval(key,data)}}
+        </template>
+        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+            {{getTypeEval(key,data)}}
+        </template>
+    </template>
+
+    <template [ngIf]="model.rules[key].object">
+
+        <template [ngIf]="key=='roles'">
+            <template [ngIf]="model.permissions.update && data.enabled && !data.deleted">
+                <a x-editable
+                   [disabled]="!model.rules[key].permissions.list || !model.permissions.roleSave"
+                   [endpoint]="'/users/'+data.id+'/roles'"
+                   [function]="model.onEditableRole" [data]="data" [rules]="model.rules"
+                   field="roles">
+                </a>
+            </template>
+            <template [ngIf]="!(model.permissions.update && data.enabled && !data.deleted)">
+                <a x-editable
+                   [disabled]="true"
+                   [data]="data"
+                   [rules]="model.rules"
+                   field="roles">
+                </a>
+            </template>
+        </template>
+
+        <template [ngIf]="key!='roles'">
+
+            <template [ngIf]="model.rules[key].type=='checklist'">
+
+                <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+                    <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                       [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
+                    </a>
+
+                    <a *ngIf="!data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                       [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
+                    </a>
+                </template>
+
+                <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+                    <a x-editable [disabled]="true" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
+                </template>
+
+            </template>
+
+            <template [ngIf]="model.rules[key].type=='text'">
+
+                <template [ngIf]="model.rules[key].multiple">
+                    <button *ngIf="data[key] && data[key].length > 0"
+                            (click)="setViewListData($event,data,key)"
+                            type="button" class="btn btn-box-tool"
+                            title="Listar" data-toggle="modal"
+                            data-target="#dataMultiple"
+                    >
+                        <i class="fa fa-list text-red"></i>
+                    </button>
+                </template>
+
+                <template [ngIf]="model.rules[key].eval">
+                    {{evalExp(data,model.rules[key].eval)}}
+                </template>
+                <template [ngIf]="!model.rules[key].eval">
+                    {{data[model.rules[key].keyDisplay]}}
+                </template>
+
+                <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+
+                    <template [ngIf]="!model.rules[key].reference">
+
+                        <button *ngIf="model.rules[key].paramsSave && model.rules[key].permissions.add"
+                                type="button" class="btn btn-box-tool"
+                                (click)="loadSaveModal($event,key,data)" title="Asignar nuevo"
+                                data-toggle="modal"
+                                [attr.data-target]="'#'+model.rules[key].paramsSave.idModal"
+                        >
+                            <i class="fa fa-plus text-green"></i>
+                        </button>
+
+                        <button *ngIf="model.rules[key].paramsSearch && model.rules[key].permissions.search"
+                                type="button" class="btn btn-box-tool"
+                                (click)="loadSearchTable($event,key,data)" title="Buscar"
+                                data-toggle="modal"
+                                [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal">
+                            <i class="fa fa-search text-blue"></i>
+                        </button>
+
+                        <button *ngIf="data[model.rules[key].code] && !model.rules[key].required"
+                                (click)="model.setNull(data,key)"
+                                type="button" class="btn btn-box-tool"
+                                title="Liberar"
+                        >
+                            <i class="fa fa-minus text-red"></i>
+                        </button>
+
+
+                    </template>
+
+                    <template [ngIf]="model.rules[key].reference">
+
+                        <button (click)="loadDataFieldReference(data,key)"
+                                *ngIf="model.permissions.update && model.rules[key].permissions.add"
+                                data-toggle="modal"
+                                [attr.data-target]="'#'+model.rules[key].paramsSave.idModal"
+                                type="button" class="btn btn-box-tool"
+                                title="Asignar nuevo"
+                        >
+                            <i class="fa fa-plus text-green"></i>
+                        </button>
+
+                        <button (click)="loadDataFieldReference(data,key)"
+                                *ngIf="model.permissions.update && model.rules[key].permissions.search && !model.rules[key].pathLocal"
+                                data-toggle="modal"
+                                [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal"
+                                type="button" class="btn btn-box-tool"
+                                title="Asignar"
+                        >
+                            <i class="fa fa-search text-blue"></i>
+                        </button>
+
+                        <button *ngIf="model.rules[key].paramsSearch && model.rules[key].permissions.search && model.rules[key].pathLocal"
+                                type="button" class="btn btn-box-tool"
+                                (click)="loadSearchTable($event,key,data)" title="Buscar"
+                                data-toggle="modal"
+                                [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal">
+                            <i class="fa fa-search text-blue"></i>
+                        </button>
+
+                        <button *ngIf="model.permissions.update && !model.rules[key].required && data[model.rules[key].code]"
+                                (click)="loadDataFieldReference(data,key,true)"
+                                type="button" class="btn btn-box-tool"
+                                title="Liberar">
+                            <i class="fa fa-minus text-red"></i>
+                        </button>
+
+
+                    </template>
+
+                </template>
+
+            </template>
+
+        </template>
+
+    </template>
+
+</template>
+
+<template [ngIf]="getDisabledField(key,data)">
+    <label class="label label-orange">N/A</label>
+</template>
+
+
+
+<template [ngIf]="model.rules[key].type==''">
+    <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+
+    </template>
+    <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+
+    </template>
 </template>
