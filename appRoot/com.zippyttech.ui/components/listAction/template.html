@@ -35,16 +35,7 @@
                 <div class="{{db.classCol(12,12,12,12)}} item-content">
                     <div class="{{db.classCol(11,11,11,11)}} data-detail">
                         <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}" *ngFor="let key of visibleKeys">
-                            <!--CAMBIAR Y CREAR UN ARREGLO DE VIEWS-->
-                            <span *ngIf="data.model.rules[key].type =='date'">
-                                {{formatDate(elem[key],data.model.rules[key].format?data.model.rules[key].format.formatView:'DD/MM/YYYY',false,elem.id)}}
-                            </span>
-                            <span *ngIf="data.model.rules[key].type =='number'">
-                                {{elem[key]}}
-                            </span>
-                            <span *ngIf="data.model.rules[key].object">
-                                {{ (elem[data.model.rules[key].keyDisplay])?elem[data.model.rules[key].keyDisplay]:"N/A"}}
-                            </span>
+                            <rule-view [key]="key" [data]="elem" [model]="data.model" [disabled]="true"></rule-view>
                         </div>
                     </div>
                     <div class="data-detail-item">
