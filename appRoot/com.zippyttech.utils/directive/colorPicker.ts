@@ -19,8 +19,14 @@ export class ColorPicker implements OnInit{
     }
     ngOnInit(){
         let that = this;
+        let _color = (that.hexControl.value || this.hexString);
+        if((_color && _color=='') || !_color)
+        {
+            _color='000000';
+        }
+
         jQuery(this.element.nativeElement).ColorPicker({
-            color: that.hexControl.value || this.hexString,
+            color: _color,
             onShow: function (colpkr) {
                 jQuery(colpkr).fadeIn(500);
                 return false;
@@ -37,7 +43,7 @@ export class ColorPicker implements OnInit{
                 jQuery(that.element.nativeElement).val('#'+(that.hexControl.value || this.hexString));
             }
         })
-        jQuery(that.element.nativeElement).css('backgroundColor', '#' + (that.hexControl.value || this.hexString));
-        jQuery(that.element.nativeElement).val('#'+(that.hexControl.value || this.hexString));
+        jQuery(that.element.nativeElement).css('backgroundColor', '#' + _color);
+        jQuery(that.element.nativeElement).val('#'+_color);
     }
 }
