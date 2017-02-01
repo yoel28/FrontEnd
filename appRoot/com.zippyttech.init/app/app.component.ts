@@ -333,4 +333,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         };
         return iModalTerm;
     }
+    @HostListener('window:offline') offline() {
+        this.addToast('Offline','Se a detectado un problema con el Internet, Por favor conectarse a la red','error');
+    }
 }
