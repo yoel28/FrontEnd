@@ -18,12 +18,13 @@ declare var moment:any;
     selector: 'rule-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/ruleView/index.html',
     styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/ruleView/style.css'],
-    inputs:['key','type','data','model','paramsData'],
+    inputs:['key','type','data','model','paramsData','disabled'],
     outputs:['getInstance'],
 })
 export class RuleViewComponent implements OnInit,AfterViewInit {
 
     public key: string;
+    public disabled:boolean=false;
     public model: ModelRoot;
     public type:string = 'inline' || 'input';
     public data:any;
@@ -195,6 +196,10 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     public getTypeEval(key,data){
         if(this.model.rules[key])
             return eval(this.model.rules[key].eval);
+    }
+
+    getEnabled(){
+        return (this.model.rules[this.key].update && this.data.enabled && !this.data.deleted && !this.disabled)
     }
 
 
