@@ -86,10 +86,20 @@
                 <div class="btn-group pull-right">
                     <button (click)="model.loadData(val)" [class.btn-green]="val==((model.rest.offset/model.rest.max)+1)"
                             *ngFor="let val of model.dataList.page" type="button" class="btn btn-default">
-                        <span *ngIf="val==((model.rest.offset/model.rest.max)+1) && model.rest.findData">
-                            <i class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+
+
+                        <span *ngIf="val==((model.rest.offset/model.rest.max)+1)">
+                            <span *ngIf="model.rest.findData">
+                                <i class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+                            </span>
+                            <span *ngIf="!model.rest.findData">
+                                {{val}}
+                            </span>
                         </span>
-                        {{val}}
+                        <span *ngIf="val!=((model.rest.offset/model.rest.max)+1)">
+                            {{val}}
+                        </span>
+
                     </button>
                     <tooltip-view [code]="model.prefix+'_9'"></tooltip-view>
                 </div>
