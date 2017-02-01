@@ -18,7 +18,7 @@
             <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check">
                 <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
             </td>
-            <td *ngIf="params && params.actions">
+            <td *ngIf="params && params.actions" class="notHidden">
 
                 <div class="btn-group dropdown pull-right" *ngIf="keyActions.length > 1 && !data.deleted">
                     <button type="button" data-toggle="dropdown"

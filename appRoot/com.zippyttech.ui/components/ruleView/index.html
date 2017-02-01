@@ -148,7 +148,7 @@
 
         <template [ngIf]="key=='roles'">
             <template [ngIf]="getEnabled()">
-                <a x-editable
+                <a x-editable class="notHidden"
                    [disabled]="!model.rules[key].permissions.list || !model.permissions.roleSave"
                    [endpoint]="'/users/'+data.id+'/roles'"
                    [function]="model.onEditableRole" [data]="data" [rules]="model.rules"
@@ -157,6 +157,7 @@
             </template>
             <template [ngIf]="!getEnabled()">
                 <a x-editable
+                   class="notHidden"
                    [disabled]="true"
                    [data]="data"
                    [rules]="model.rules"

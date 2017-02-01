@@ -200,7 +200,7 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
         padding: 1px 5px 2px 5px !important;
     }
 }
-table>tbody>tr>td a {
+table>tbody>tr>td:not(.notHidden) a:not(.notHidden) {
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
