@@ -63,6 +63,7 @@ export class EventModel extends ModelBase{
         this.rules['message']={
             'type': 'textarea',
             'required':true,
+            'exclude':true,
             'showbuttons':true,
             'update':this.permissions.update,
             'search':this.permissions.filter,

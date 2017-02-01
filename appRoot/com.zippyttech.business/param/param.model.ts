@@ -22,6 +22,7 @@ export class ParamModel extends ModelBase{
 
         this.rules['value']={
             'type': 'textarea',
+            'exclude':true,
             "showbuttons": true,
             'required':true,
             'update':this.permissions.update,
