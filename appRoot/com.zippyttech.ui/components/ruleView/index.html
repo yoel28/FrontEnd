@@ -11,7 +11,7 @@
                             model.rules[key].type == 'password'">
 
 
-            <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+            <template [ngIf]="getEnabled()">
                 <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
                    [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
                 </a>
@@ -27,7 +27,7 @@
                 </template>
 
             </template>
-            <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+            <template [ngIf]="!getEnabled()">
                 <a x-editable [disabled]="true" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
             </template>
         </template>
@@ -51,7 +51,7 @@
                         </h4>
                     </div>
                     <div class="modal-content">
-                        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+                        <template [ngIf]="getEnabled()">
                             <image-edit-view
                                     [image]="data[key]"
                                     [edit]="true"
@@ -59,7 +59,7 @@
                                     (out)="model.onPatchValue(key,data, $event)"
                             ></image-edit-view>
                         </template>
-                        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+                        <template [ngIf]="!getEnabled()">
                             <image-edit-view
                                     [image]="data[key]"
                                     [edit]="false"
@@ -73,16 +73,16 @@
     </template>
 
     <template [ngIf]="model.rules[key] && model.rules[key].type=='color'">
-        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+        <template [ngIf]="getEnabled()">
             <input color-picker class="form-control" readonly [style.background-color]="'#'+data[key]" [attr.value]="'#'+data[key]" [hexString]="data[key]" (color)="model.onPatch(key,data,$event)">
         </template>
-        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+        <template [ngIf]="!getEnabled()">
             <label [style.background-color]="'#'+data[key]" class="form-control">{{'#'+data[key]}}</label>
         </template>
     </template>
 
     <template [ngIf]="model.rules[key].type=='boolean'">
-        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+        <template [ngIf]="getEnabled()">
             <template [ngIf]="key=='enabled'">
                 <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
                         [disabled]="getBooleandData(key,data).disabled" [attr.title]="getBooleandData(key,data).title">
@@ -96,10 +96,10 @@
                 </button>
             </template>
         </template>
-        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+        <template [ngIf]="!getEnabled()">
             <template [ngIf]="key=='enabled'">
                 <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
-                        [disabled]="getBooleandData(key,data).disabled || data.deleted" [attr.title]="getBooleandData(key,data).title">
+                        [disabled]="getBooleandData(key,data).disabled || data.deleted || disabled" [attr.title]="getBooleandData(key,data).title">
                     {{getBooleandData(key,data).text}}
                 </button>
             </template>
@@ -112,13 +112,13 @@
     </template>
 
     <template [ngIf]="model.rules[key].type=='date'">
-        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+        <template [ngIf]="getEnabled()">
             <span>
                 {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY',false,data.id)}}
                 <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
             </span>
         </template>
-        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+        <template [ngIf]="!getEnabled()">
             <span>
                 {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY',false,data.id)}}
                 <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
@@ -127,19 +127,19 @@
     </template>
 
     <template [ngIf]="model.rules[key].type=='time'">
-        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+        <template [ngIf]="getEnabled()">
             {{formatTimeView(data[key])}}
         </template>
-        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+        <template [ngIf]="!getEnabled()">
             {{formatTimeView(data[key])}}
         </template>
     </template>
 
     <template [ngIf]="model.rules[key].type=='eval'">
-        <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+        <template [ngIf]="getEnabled()">
             {{getTypeEval(key,data)}}
         </template>
-        <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+        <template [ngIf]="!getEnabled()">
             {{getTypeEval(key,data)}}
         </template>
     </template>
@@ -147,7 +147,7 @@
     <template [ngIf]="model.rules[key].object">
 
         <template [ngIf]="key=='roles'">
-            <template [ngIf]="model.permissions.update && data.enabled && !data.deleted">
+            <template [ngIf]="getEnabled()">
                 <a x-editable
                    [disabled]="!model.rules[key].permissions.list || !model.permissions.roleSave"
                    [endpoint]="'/users/'+data.id+'/roles'"
@@ -155,7 +155,7 @@
                    field="roles">
                 </a>
             </template>
-            <template [ngIf]="!(model.permissions.update && data.enabled && !data.deleted)">
+            <template [ngIf]="!getEnabled()">
                 <a x-editable
                    [disabled]="true"
                    [data]="data"
@@ -169,7 +169,7 @@
 
             <template [ngIf]="model.rules[key].type=='checklist'">
 
-                <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+                <template [ngIf]="getEnabled()">
                     <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
                        [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
                     </a>
@@ -179,7 +179,7 @@
                     </a>
                 </template>
 
-                <template [ngIf]="!(model.rules[key].update && data.enabled && !data.deleted)">
+                <template [ngIf]="!getEnabled()">
                     <a x-editable [disabled]="true" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
                 </template>
 
@@ -205,7 +205,7 @@
                     {{data[model.rules[key].keyDisplay]}}
                 </template>
 
-                <template [ngIf]="model.rules[key].update && data.enabled && !data.deleted">
+                <template [ngIf]="getEnabled()">
 
                     <template [ngIf]="!model.rules[key].reference">
 
