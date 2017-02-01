@@ -16,7 +16,6 @@ export abstract class ControllerBase implements OnInit {
     public viewOptions:any = {};
     public dateHmanizer = StaticValues.dateHmanizer;
     public model:ModelRoot;
-    public dataSelect:any = {};
 
     public classCol=StaticFunction.classCol;
     public classOffset=StaticFunction.classOffset;
@@ -101,26 +100,6 @@ export abstract class ControllerBase implements OnInit {
         }
     }
 
-    public setDataFieldReference(model,data,setNull=false,callback)
-    {
-        let value=null;
-        let that = this;
-
-        if(!setNull)//no colocar valor nulo
-        {
-            value=this.dataSelect.id;
-            if(that.dataSelect[model.ruleObject.code]!=null && model.rules[this.model.ruleObject.key].unique)
-                model.setDataField(that.dataSelect[model.ruleObject.code],this.model.ruleObject.key,null,callback,that.dataSelect).then(
-                    response=>{
-                        model.setDataField(data.id,that.model.ruleObject.key,value,callback,that.dataSelect);
-                });
-            else
-                model.setDataField(data.id,that.model.ruleObject.key,value,callback,that.dataSelect);
-        }
-        else
-            model.setDataField(data[model.ruleObject.code],that.model.ruleObject.key,null,callback,data);
-
-    }
 
     public onDashboard(event){
         if(event)
