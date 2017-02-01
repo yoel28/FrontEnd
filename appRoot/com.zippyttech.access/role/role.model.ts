@@ -15,7 +15,7 @@ export class RoleModel extends ModelRoot{
             'update':this.permissions.update,
             'search':this.permissions.filter,
             'visible':this.permissions.visible,
-            'key': 'reference',
+            'key': 'authority',
             'title': 'Rol',
             'prefix':'ROLE_',
             'placeholder': 'Nombre del perfil',
