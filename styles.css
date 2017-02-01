@@ -200,3 +200,11 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
         padding: 1px 5px 2px 5px !important;
     }
 }
+table>tbody>tr>td a {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 250px;
+    max-height: 20px;
+}
