@@ -26,7 +26,7 @@ export class RuleComponent extends BaseViewInstance{
         this.paramsTable.actions={};
         this.paramsTable.actions.delete = {
             'message': '¿ Esta seguro de eliminar la regla: ',
-            'keyAction':'name'
+            'keyAction':'code'
         };
     }
 }
