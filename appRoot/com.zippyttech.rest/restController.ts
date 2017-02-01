@@ -107,7 +107,10 @@ export class RestController {
         this.rest.findData = false;
         if (that.db.toastyService) {
             try {
-                if (err.json()) {
+                if(err.status==0){
+                    that.addToast('error', 'Por favor verifique su conexion a Internet', 'error');
+                }
+                else if (err.json()) {
                     if (err.json().message && err.json().message.error)
                         that.addToast('error', err.json().message.error, 'error');
                     else if (err.json()._embedded && err.json()._embedded.errors) {
