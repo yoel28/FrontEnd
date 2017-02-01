@@ -2,6 +2,7 @@ import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {OnInit} from "@angular/core";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "./DependenciesBase";
+import {ModelRoot} from "./modelRoot";
 
 declare var humanizeDuration:any;
 declare var moment:any;
@@ -14,7 +15,7 @@ export abstract class ControllerBase implements OnInit {
     public configId = moment().valueOf();
     public viewOptions:any = {};
     public dateHmanizer = StaticValues.dateHmanizer;
-    public model:any={};
+    public model:ModelRoot;
     public dataSelect:any = {};
 
     public classCol=StaticFunction.classCol;
