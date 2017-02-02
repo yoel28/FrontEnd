@@ -142,26 +142,58 @@ export class WebSocket{
         });
     }
     eventChannel(eventChannel:any){
+        let that = this;
         if(this.webSocket[eventChannel.target].instance){
+
             switch (eventChannel['event']) {
                 case "INSERT" :
-                    this.webSocket[eventChannel.target].instance.setLoadData(this.webSocket[eventChannel.target].data.value);
+
+                    that.webSocket[eventChannel.target].instance.setLoadData(that.webSocket[eventChannel.target].data.value);
+
+                    that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    setTimeout(function(){
+                        that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    }, 1000);
                     break;
+
                 case "UPDATE" :
-                    this.webSocket[eventChannel.target].instance.setUpdateData(this.webSocket[eventChannel.target].data.value);
+
+                    that.webSocket[eventChannel.target].instance.setUpdateData(that.webSocket[eventChannel.target].data.value);
+
+                    that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    setTimeout(function(){
+                        that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    }, 1000);
                     break;
+
                 case "DELETE" :
-                    this.webSocket[eventChannel.target].instance.setDeleteData(this.webSocket[eventChannel.target].data.value);
+
+                    that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    setTimeout(function(){
+                        that.webSocket[eventChannel.target].instance.setDeleteData(that.webSocket[eventChannel.target].data.value);
+                    }, 1000);
                     break;
+
                 default:{
 
                 }
             }
+            if(eventChannel['callback']){
+                try {
+                    eval(eventChannel['callback']);
+                }catch (exception){
+                    console.log(exception);
+                }
+            }
+
         }
         else {
             console.log('Error: not found intance for channel '+eventChannel.target);
         }
 
+    }
+    addToast(title,message,type='info',time=10000){
+        this.myglobal.addToast(title,message,type,time);
     }
 
 
