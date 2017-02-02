@@ -90,6 +90,7 @@ export class AccountModel extends ModelRoot{
 
         this.rules['maxUserCount']={
             'type': 'number',
+            'exclude':true,
             'required':true,
             'step':'0.1',
             'update':this.permissions.update,

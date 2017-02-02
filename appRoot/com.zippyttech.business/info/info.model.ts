@@ -81,6 +81,7 @@ export class InfoModel extends ModelBase{
         }
         this.rules['icon']={
             'type': 'select',
+            'exclude':true,
             'required':true,
             'update':this.permissions.update,
             'search':this.permissions.filter,
