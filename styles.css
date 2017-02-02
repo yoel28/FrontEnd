@@ -210,7 +210,6 @@ table>tbody>tr>td:not(.notHidden) a:not(.notHidden) {
 }
 
 .parpadea {
-
     animation-name: parpadeo;
     animation-duration: 0.5s;
     animation-timing-function: linear;
