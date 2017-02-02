@@ -120,11 +120,13 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
             event.preventDefault();
         this.paramsData.viewListData['title'] = this.model.rules[key].title;
         this.paramsData.viewListData['label']={};
-        if(data[key][0])
+        if(typeof data[key] == 'object' && data[key].length>0)
+        {
             Object.keys(data[key][0]).forEach(subkey=>{
                 if(that.model.rules[key].rulesSave[subkey])
                     that.paramsData.viewListData['label'][subkey] = that.model.rules[key].rulesSave[subkey].title;
             });
+        }
         this.paramsData.viewListData['data'] =  data[key];
         if(typeof data[key] === 'string'){
             this.paramsData.viewListData['data'] = JSON.parse(data[key])
