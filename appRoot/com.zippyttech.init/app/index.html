@@ -2,13 +2,7 @@
     {{this.loadPage()}}
     <header class="main-header">
         <a href="#" [routerLink]="['/init/dashboard']" class="logo">
-                <span class="logo-mini">
-                    <img [attr.src]="db.pathElements.miniLogo" class="img-responsive">
-                </span>
-            <span class="logo-lg">
-                    <img [attr.src]="db.pathElements.miniLogo"
-                         class="img-responsive col-lg-5 col-md-5 col-sm-5 col-xs-4">
-                </span>
+            <img [attr.src]="db.pathElements.miniLogo" class="img-logo">
         </a>
         <nav class="navbar navbar-static-top" role="navigation">
             <a *ngIf="menuType.value && menuType.value.list" href="#" class="sidebar-toggle"  data-toggle="offcanvas"
