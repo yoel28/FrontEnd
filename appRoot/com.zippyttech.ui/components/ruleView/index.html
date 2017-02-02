@@ -7,16 +7,17 @@
         <template [ngIf]="  model.rules[key].type == 'text' ||
                             model.rules[key].type == 'textarea' ||
                             model.rules[key].type == 'number' ||
+                            model.rules[key].type == 'checklist' ||
                             model.rules[key].type == 'select' ||
                             model.rules[key].type == 'password'">
 
 
             <template [ngIf]="getEnabled()">
-                <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint" [class.notHidden]="model.rules[key].type == 'checklist'"
                    [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
                 </a>
 
-                <a *ngIf="!data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                <a *ngIf="!data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint" [class.notHidden]="model.rules[key].type == 'checklist'"
                    [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
                 </a>
 
@@ -28,7 +29,7 @@
 
             </template>
             <template [ngIf]="!getEnabled()">
-                <a x-editable [disabled]="true" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
+                <a x-editable [disabled]="true" [class.notHidden]="model.rules[key].type == 'checklist'" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
             </template>
         </template>
     </template>
@@ -171,11 +172,11 @@
             <template [ngIf]="model.rules[key].type=='checklist'">
 
                 <template [ngIf]="getEnabled()">
-                    <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                    <a *ngIf="data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint" class="notHidden"
                        [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
                     </a>
 
-                    <a *ngIf="!data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint"
+                    <a *ngIf="!data[key]" x-editable [disabled]="false" [endpoint]="model.endpoint" class="notHidden"
                        [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}
                     </a>
                 </template>
