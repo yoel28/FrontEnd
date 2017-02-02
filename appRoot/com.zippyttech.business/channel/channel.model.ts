@@ -86,7 +86,8 @@ export class ChannelModel extends ModelBase{
         };
 
         this.rules['callback']={
-            'type': 'text',
+            'type': 'textarea',
+            "showbuttons": true,
             'update':this.permissions.update,
             'visible':this.permissions.visible,
             'key': 'callback',
