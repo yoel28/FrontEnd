@@ -1,25 +1,19 @@
-import {ElementRef, Directive, Input} from "@angular/core";
+import {
+    ElementRef, Directive, Input, OnInit, AfterViewInit, AfterContentInit,
+    AfterContentChecked
+} from "@angular/core";
+import {TablesComponent} from "../../com.zippyttech.ui/components/tables/tables.component";
 declare let jQuery:any;
+declare let Footable:any;
+
 @Directive({
     selector: "[x-footable]"
 })
-export class XFootable{
-    private _active:boolean;
+export class XFootable implements AfterContentInit{
 
-    @Input('x-footable')
-    set active(value:boolean) {
-        this._active = value;
-        console.log("FOOTABLE:"+((this._active)?"TRUE":"FALSE"));
-        if(this._active)
-            this.run();
-    }
+    constructor(private element: ElementRef){}
 
-    constructor(private el: ElementRef){
-        this.active = false;
-    }
-
-    private run()
-    {
-        //jQuery(this.el.nativeElement).footable();
+    ngAfterContentInit(): void{
+        jQuery(this.element.nativeElement).footable();
     }
 }
