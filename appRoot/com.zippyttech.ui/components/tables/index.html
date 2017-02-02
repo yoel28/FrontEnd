@@ -15,7 +15,7 @@
         </thead>
         <tbody>
         <tr *ngFor="let data of model.dataList.list"  [class.deleted]="data.deleted">
-            <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check">
+            <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
                 <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
             </td>
             <td *ngIf="params && params.actions" class="notHidden">
