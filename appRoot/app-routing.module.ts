@@ -42,6 +42,8 @@ import {NotificationModel} from "./com.zippyttech.business/notification/notifica
 import {ParamModel} from "./com.zippyttech.business/param/param.model";
 import {RuleModel} from "./com.zippyttech.business/rule/rule.model";
 import {ActivateComponent} from "./com.zippyttech.auth/activate/activate.component";
+import {ChartViewComponent} from "./com.zippyttech.ui/components/chartview/chartview.component";
+import {ListActionComponent} from "./com.zippyttech.ui/components/listAction/listAction.component";
 
 const routesDefault: Routes = [
 
@@ -113,7 +115,10 @@ export const componentsView = [
     SearchMultipleComponent,
     FormComponent,
     ModalComponent,
-    RuleViewComponent
+    RuleViewComponent,
+    ListActionComponent,
+    ModalComponent,
+    ChartViewComponent
 ];
 export const componentsApp = [];
 export const componentsPublic = [
