@@ -276,6 +276,13 @@ export abstract class ModelRoot extends RestController{
                 this.dataList.list.splice(index,1);
             }
         }
-
+    }
+    public setBlockField(data){
+        if(data.id){
+            let index = this.getIndexById(data.id);
+            if(index >= 0){
+                this.dataList['list'][index].blockField=!this.dataList['list'][index].blockField;
+            }
+        }
     }
 }
