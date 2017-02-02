@@ -1,9 +1,14 @@
-import {Component, EventEmitter, OnInit} from "@angular/core";
+import {Component, EventEmitter, OnInit, NgModule} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
+import {XFootable} from "../../../com.zippyttech.utils/directive/xFootable";
+
 
 declare var SystemJS:any;
 declare var moment:any;
+@NgModule({
+    imports:[XFootable]
+})
 @Component({
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
@@ -27,11 +32,13 @@ export class TablesComponent implements OnInit {
 
     public keyActions =[];
     public configId=moment().valueOf();
-
     public getInstance:any;
+    private _currentPage: number;
 
     constructor(public db:DependenciesBase) {
+        this._currentPage = -1;
         this.getInstance = new EventEmitter();
+        //Array.observe(this.model.dataList, ()=>{});
     }
 
     ngOnInit() {
@@ -45,11 +52,22 @@ export class TablesComponent implements OnInit {
         this.getInstance.emit(this);
     }
 
+    public get currentPage(){
+        if(this._currentPage = -1)
+            this._currentPage = (this.model.rest.offset/this.model.rest.max)+1;
+        return this._currentPage;
+    }
+
+    public set currentPage(value:number){
+        this._currentPage = value;
+        this.model.loadData(value);
+    }
+
     setInstanceSearch(type,instance){
         this.paramsData.searchInstances[type] =  instance;
     }
-    
-    keyVisible() {
+
+    private keyVisible() {
         let data=[];
         let that=this;
         Object.keys(this.model.rules).forEach((key)=>{
