@@ -79,7 +79,14 @@ export class WebSocket{
                         that.webSocket[channel].status.setValue('connect');
                         if(that.checkContinue(channel)){
                             that.webSocket[channel].subscribers.client = that.webSocket[channel].client.subscribe(channel, function (message) {
-                                that.webSocket[channel].data.setValue(JSON.parse(message.body));
+
+                                try {
+                                    let data  = JSON.parse(message.body);
+                                    that.webSocket[channel].data.setValue(data);
+                                }
+                                catch (exception){
+                                    that.webSocket[channel].data.setValue(message.body);
+                                }
                                 if(eventChannel){
                                     that.eventChannel(eventChannel);
                                 }
@@ -143,34 +150,36 @@ export class WebSocket{
     }
     eventChannel(eventChannel:any){
         let that = this;
+        let body = that.webSocket[eventChannel.target].data.value;
+
         if(this.webSocket[eventChannel.target].instance){
 
             switch (eventChannel['event']) {
                 case "INSERT" :
 
-                    that.webSocket[eventChannel.target].instance.setLoadData(that.webSocket[eventChannel.target].data.value);
+                    that.webSocket[eventChannel.target].instance.setLoadData(body);
 
-                    that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    that.webSocket[eventChannel.target].instance.setBlockField(body);
                     setTimeout(function(){
-                        that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                        that.webSocket[eventChannel.target].instance.setBlockField(body);
                     }, 1000);
                     break;
 
                 case "UPDATE" :
 
-                    that.webSocket[eventChannel.target].instance.setUpdateData(that.webSocket[eventChannel.target].data.value);
+                    that.webSocket[eventChannel.target].instance.setUpdateData(body);
 
-                    that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    that.webSocket[eventChannel.target].instance.setBlockField(body);
                     setTimeout(function(){
-                        that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                        that.webSocket[eventChannel.target].instance.setBlockField(body);
                     }, 1000);
                     break;
 
                 case "DELETE" :
 
-                    that.webSocket[eventChannel.target].instance.setBlockField(that.webSocket[eventChannel.target].data.value);
+                    that.webSocket[eventChannel.target].instance.setBlockField(body);
                     setTimeout(function(){
-                        that.webSocket[eventChannel.target].instance.setDeleteData(that.webSocket[eventChannel.target].data.value);
+                        that.webSocket[eventChannel.target].instance.setDeleteData(body);
                     }, 1000);
                     break;
 
