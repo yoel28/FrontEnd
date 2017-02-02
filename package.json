@@ -43,6 +43,7 @@
     "font-awesome": "^4.7.0",
     "gulp-image": "^2.7.2",
     "highcharts": "^5.0.5",
+    "angular2-highcharts": "^0.4.1",
     "humanize-duration": "^3.10.0",
     "jquery": "2.1.4",
     "jquery-knob": "^1.2.11",
