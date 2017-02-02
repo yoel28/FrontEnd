@@ -1,0 +1,21 @@
+<div class="chart_container" *ngIf="chartData.options && chartData.options.series">
+    <div class="box">
+        <div class="box-header text-center with-border">
+            <span class="box-title">{{chartData.title}}</span>
+            <div class="box-tools tools-left">
+                <button *ngIf="viewDeep>0" type="button" class="btn btn-box-tool" (click)="viewDeep=viewDeep-1; db.myglobal.rest.findData=true; chartRefresh();"><i class="fa fa-reply"></i></button>
+            </div>
+            <div class="box-tools tools-right">
+                <button [disabled]="!checkChange(-1)"type="button" class="btn btn-box-tool" (click)="changeD(-1)"><i class="fa fa-arrow-left"></i></button>
+                <button [disabled]="!checkChange(1)" type="button" class="btn btn-box-tool" (click)="changeD(1)"><i class="fa fa-arrow-right"></i></button>
+            </div>
+        </div>
+        <div *ngIf="!db.myglobal.rest.findData" class="box-body" [attr.id]="chartId">
+            <chart [options]="chartData.options">
+                <series>
+                    <point (select)="onPointSelect($event)"></point>
+                </series>
+            </chart>
+        </div>
+    </div>
+</div>

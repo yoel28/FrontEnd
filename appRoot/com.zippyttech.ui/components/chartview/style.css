@@ -1,0 +1,30 @@
+.chart_container, .chart_container > .box{
+    width: 100%;
+    height: 100%;
+}
+
+
+.chart_container > .box > .box-body{
+    width: 100%;
+    height: 80%;
+}
+
+.chart_container > .box > .box-header{
+    width: 100%;
+    height: 15%;
+}
+
+.chart_container > .box > .box-header > .box-tools{
+    top: 5px;
+}
+
+.tools-left{
+    float: left !important;
+    left: 5px;
+    right: initial;
+}
+
+.tools-right{
+    float: right !important;
+    right: 5px;
+}
