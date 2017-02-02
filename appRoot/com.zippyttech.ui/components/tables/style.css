@@ -17,3 +17,6 @@ table {
 .deleted:nth-of-type(even){
     background: rgba(255, 0, 0, 0.37);
 }
+.footable-detail-row{
+    transition-duration: 1s;
+}
