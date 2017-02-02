@@ -206,7 +206,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
     getEnabled(){
-        return (this.model.rules[this.key].update && this.data.enabled && !this.data.deleted && !this.disabled)
+        return (this.model.rules[this.key].update && this.data.enabled && !this.data.deleted && !this.disabled && !this.data.blockField)
     }
 
 
