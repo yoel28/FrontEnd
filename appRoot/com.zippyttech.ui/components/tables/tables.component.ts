@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, NgModule} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
 import {XFootable} from "../../../com.zippyttech.utils/directive/xFootable";
+import {IModal} from "../modal/modal.component";
 
 
 declare var SystemJS:any;
@@ -27,8 +28,19 @@ export class TablesComponent implements OnInit {
         searchParams:{},
         searchInstances:{},
         viewListData:{},
-        ruleReference:{}
+        ruleReference:{},
+        locationParams:null
     };
+
+    public modalLocation:IModal={
+        id:'modalLocation',
+        header:{
+            title:'Ubicación'
+        },
+        global:{
+            size:'modal-lg'
+        }
+    }
 
     public keyActions =[];
     public configId=moment().valueOf();
@@ -138,6 +150,17 @@ export class TablesComponent implements OnInit {
         }
         else
             that.paramsData.ruleReference.model.setDataField(data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,data);
+
+    }
+    saveLocation(event){
+        if(event)
+            event.preventDefault();
+
+        let json={};
+        json['lat'] = this.paramsData.locationParams.data.lat;
+        json['lng'] = this.paramsData.locationParams.data.lng;
+
+        this.model.onPatchObject(json,this.paramsData.select);
 
     }
 
