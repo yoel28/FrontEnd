@@ -25,6 +25,7 @@ export interface ILocation{
         lng:number
     },
     instance?:LocationPickerComponent,
+    disabled?:boolean,
     mapTypeId?:'roadmap' | 'satellite' | 'hybrid' | 'terrain' | string;
     elements?:Array< 'lat' |'lng'|'street_number'|'route'|'locality'|'administrative_area_level_2'|
                      'administrative_area_level_1'|'country'|'postal_code'|'type'>
@@ -148,8 +149,7 @@ export class LocationPickerComponent extends ControllerBase implements  AfterVie
     }
     setMarker(){
 
-        if(!this.marker)
-        {
+        if(!this.marker) {
             this.marker = this.mapGoogle.addresspicker("marker");
             this.marker.setVisible(true);
             google.maps.event.addListener(this.marker, 'dragend', function(evt){
@@ -174,6 +174,7 @@ export class LocationPickerComponent extends ControllerBase implements  AfterVie
             this.marker.setPosition(this.params.center);
             this.params.data=this.params.center
         }
+        this.marker.setDraggable(!this.params.disabled);
         this.mapGoogle.addresspicker("updatePosition");
 
     }
