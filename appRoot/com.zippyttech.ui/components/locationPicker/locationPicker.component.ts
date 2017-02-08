@@ -12,6 +12,10 @@ export interface ILocation{
         value:number;
         visible?:boolean;
     },
+    keys?:{
+        lat:string,
+        lng:string,
+    }
     address?:boolean,
     reverse?:boolean,
     center?:{
@@ -92,6 +96,9 @@ export class LocationPickerComponent extends ControllerBase implements  AfterVie
 
         if(!this.params.elements)
             this.params.elements = [];
+
+        if(!this.params.keys)
+            this.params.keys = {lat:'lat',lng:'lng'}
 
     }
 

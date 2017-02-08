@@ -233,6 +233,10 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
                 }
             }
         }
+        this.paramsData.locationParams.keys = {
+            lat : this.model.rules[this.key].lat,
+            lng : this.model.rules[this.key].lng
+        }
         this.paramsData.locationParams.address = this.getEnabled();
 
 
