@@ -1,5 +1,4 @@
-import {Component, OnInit, AfterViewInit} from '@angular/core';
-import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
+import {Component, OnInit} from '@angular/core';
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {UserModel} from "../user.model";
 import {AnimationsManager} from "../../../com.zippyttech.ui/animations/AnimationsManager";

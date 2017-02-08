@@ -1,9 +1,8 @@
 <div [@animation_0]="'true'">
     <section class="content">
         <h1>{{db.msg.profile}}</h1>
-        <div class="row">
-            <div class="col-md-3">
-                <!-- Profile Image -->
+        <div class="row" *ngIf="model.completed">
+            <div class="{{db.classCol(3,4,12,12)}}">
                 <div class="box box-primary">
                     <div class="box-body box-profile">
                         <img class="profile-user-img img-responsive img-circle" src='{{db.myglobal.user["image"]}}'>
@@ -11,49 +10,37 @@
                         <p class="text-muted text-center">{{db.myglobal.user["account"]}}</p>
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
-                                <b>Cedula</b> <a class="pull-right">{{db.myglobal.user["idCard"]}}</a>
+                                <b>{{model.rules["idCard"].title}}</b> <a class="pull-right">{{db.myglobal.user["idCard"]}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>id</b> <a class="pull-right">{{db.myglobal.user["id"]}}</a>
+                                <b>{{model.rules["id"].title}}</b> <a class="pull-right">{{db.myglobal.user["id"]}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Correo</b> <a class="pull-right">{{db.myglobal.user["email"]}}</a>
+                                <b>{{model.rules["email"].title}}</b> <a class="pull-right">{{db.myglobal.user["email"]}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Telefono</b> <a class="pull-right">{{db.myglobal.user["phone"]}}</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>Dirección</b> <a class="pull-right">{{db.myglobal.user["anddress"]}}</a>
+                                <b>{{model.rules["phone"].title}}</b> <a class="pull-right">{{db.myglobal.user["phone"]}}</a>
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <!-- /.col -->
-            <div class="col-md-9">
+            <div class="{{db.classCol(7,6,12,12)}}">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">Datos Basicos </a></li>
-                        <li class=""><a href="#imagen" data-toggle="tab" aria-expanded="false">Imagen de Perfil</a></li>
+                        <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">{{db.msg.basicData}}</a></li>
+                        <li class=""><a href="#imagen" data-toggle="tab" aria-expanded="false">{{db.msg.imageProfile}}</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="settings">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label  class="col-sm-2 control-label">Datos Basicos</label>
-                                    <div class="col-sm-10">
-                                        <div *ngFor="let key of getObjectKeys(model.rules)">
-                                            <h2 *ngIf="model.rules[key].protected" class="truncate">
-                                                <strong>{{model.rules[key].title}}:</strong>&nbsp;
-                                            </h2>
-                                            <p class="psalto" *ngIf="!model.rules[key].protected && (model.rules[key].type=='text' || model.rules[key].type=='textarea' || model.rules[key].type=='number' || model.rules[key].type=='password')">
+                                    <div class="{{db.classCol(10,10,10,10)}}">
+                                        <div *ngFor="let key of getObjectKeys(model.rules)" class="border-bottom">
+                                            <p class="psalto" *ngIf="model.rules[key].type != 'boolean' && model.rules[key].type != 'image'">
                                                 <strong>{{model.rules[key].title}}:</strong>&nbsp;&nbsp;
-                                                <a *ngIf="!model.rules[key].object" x-editable [endpoint]="endpoint" [function]="onEditable"
-                                                   [data]="db.myglobal.user" [rules]="model.rules" [field]="key" [disabled]="!model.rules[key].update">
-                                                </a>
-                                                <a *ngIf="model.rules[key].object">
-                                                    {{db.myglobal.user[model.rules[key].keyDisplay]}}
-                                                </a>
+                                                <rule-view [key]="key" [model]="model" [data]="db.myglobal.user"></rule-view>
                                             </p>
                                         </div>
                                     </div>
@@ -63,8 +50,7 @@
                         <div class="tab-pane" id="imagen">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label  class="col-sm-2 control-label">Imagen de Perfil</label>
-                                    <div class="col-sm-8">
+                                    <div class="{{db.classCol(8,10,10)+' '+db.classOffset(2,1,1)}}">
                                         <image-edit-view *ngIf="model.rules.image"
                                                          [image]="db.myglobal.user.image"
                                                          [default]="model.rules.image.default"
