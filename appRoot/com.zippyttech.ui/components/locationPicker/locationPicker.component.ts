@@ -81,10 +81,10 @@ export class LocationPickerComponent extends ControllerBase implements  AfterVie
         if(!this.params.center)
             this.params.center = {lat:this._lat, lng:this._lng};
 
-        if(typeof this.params.center.lat != 'number')
+        if(typeof this.params.center.lat != 'number' ||  isNaN(this.params.center.lat))
             this.params.center.lat=this._lat;
 
-        if(typeof this.params.center.lng != 'number')
+        if(typeof this.params.center.lng !== 'number' ||  isNaN(this.params.center.lng))
             this.params.center.lng=this._lng;
 
 
