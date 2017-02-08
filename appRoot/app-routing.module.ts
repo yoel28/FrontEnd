@@ -44,6 +44,7 @@ import {RuleModel} from "./com.zippyttech.business/rule/rule.model";
 import {ActivateComponent} from "./com.zippyttech.auth/activate/activate.component";
 import {ChartViewComponent} from "./com.zippyttech.ui/components/chartview/chartview.component";
 import {ListActionComponent} from "./com.zippyttech.ui/components/listAction/listAction.component";
+import {DataViewComponent} from "./com.zippyttech.ui/components/dataView/dataView.component";
 
 const routesDefault: Routes = [
 
@@ -118,7 +119,8 @@ export const componentsView = [
     RuleViewComponent,
     ListActionComponent,
     ModalComponent,
-    ChartViewComponent
+    ChartViewComponent,
+    DataViewComponent
 ];
 export const componentsApp = [];
 export const componentsPublic = [
