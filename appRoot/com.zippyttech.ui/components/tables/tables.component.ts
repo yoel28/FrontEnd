@@ -157,8 +157,8 @@ export class TablesComponent implements OnInit {
             event.preventDefault();
 
         let json={};
-        json['lat'] = this.paramsData.locationParams.data.lat;
-        json['lng'] = this.paramsData.locationParams.data.lng;
+        json[this.paramsData.locationParams.keys.lat] = this.paramsData.locationParams.data.lat;
+        json[this.paramsData.locationParams.keys.lng] = this.paramsData.locationParams.data.lng;
 
         this.model.onPatchObject(json,this.paramsData.select);
 

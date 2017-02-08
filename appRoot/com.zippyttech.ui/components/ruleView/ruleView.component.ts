@@ -218,8 +218,8 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
 
         if(this.paramsData && this.paramsData.locationParams && this.paramsData.locationParams.instance){
             this.paramsData.locationParams.center={
-                lat:data.lat,
-                lng:data.lng
+                lat:data[this.model.rules[this.key].lat],
+                lng:data[this.model.rules[this.key].lng]
             };
             this.paramsData.locationParams.disabled = !this.getEnabled();
             this.paramsData.locationParams.instance.setMarker();
@@ -228,10 +228,14 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
             this.paramsData.locationParams={
                 disabled:!this.getEnabled(),
                 center:{
-                    lat:data.lat,
-                    lng:data.lng
+                    lat:data[this.model.rules[this.key].lat],
+                    lng:data[this.model.rules[this.key].lng]
                 }
             }
+        }
+        this.paramsData.locationParams.keys = {
+            lat : this.model.rules[this.key].lat,
+            lng : this.model.rules[this.key].lng
         }
         this.paramsData.locationParams.address = this.getEnabled();
 
