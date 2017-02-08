@@ -238,3 +238,9 @@ table>tbody>tr>td:not(.notHidden) a:not(.notHidden) {
     50% { opacity: 0.0; }
     100% { opacity: 1.0; }
 }
+
+ul.ui-autocomplete {
+    width: 40% !important;
+    padding: 5px !important;
+    z-index: 10000 !important;
+}
