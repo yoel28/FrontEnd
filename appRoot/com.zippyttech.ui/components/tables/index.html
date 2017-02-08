@@ -202,4 +202,17 @@
         </div>
     </div>
 </div>
+
+<template [ngIf]="paramsData && paramsData.locationParams">
+    <modal-view [params]="modalLocation">
+        <div body>
+            <location-picker [params]="paramsData.locationParams"></location-picker>
+        </div>
+        <div footer>
+            <button class="btn btn-success" (click)="saveLocation($event)" >{{db.msg.save}}</button>
+        </div>
+    </modal-view>
+</template>
+
+
 <!--######################################################################################-->
