@@ -32,6 +32,17 @@
                 <a x-editable [disabled]="true" [class.notHidden]="model.rules[key].type == 'checklist'" [data]="data" [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
             </template>
         </template>
+
+
+
+        <template [ngIf]="model.rules[key].type=='location'">
+            <template [ngIf]="getEnabled()">
+                <button class="btn btn-box-tool" (click)="loadLocationParams($event,data)" data-toggle="modal" data-target="#modalLocation" [attr.title]="db.msg.viewLocation"><i class="fa fa-map-marker fa-lg text-red"></i></button>
+            </template>
+
+            <template [ngIf]="!getEnabled()">
+                <button class="btn btn-box-tool" (click)="loadLocationParams($event,data)" data-toggle="modal" data-target="#modalLocation" [attr.title]="db.msg.viewLocation"><i class="fa fa-map-marker fa-lg text-red"></i></button>            </template>
+        </template>
     </template>
 
     <template [ngIf]="model.rules[key] && model.rules[key].type=='image'">
