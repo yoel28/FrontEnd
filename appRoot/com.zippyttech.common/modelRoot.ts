@@ -103,6 +103,21 @@ export abstract class ModelRoot extends RestController{
             "title": "Habilitado",
             "placeholder": "",
         };
+        this.rulesDefault["editable"] = {
+            "update": (this.permissions.update && this.permissions.lock),
+            "visible": this.permissions.lock && this.permissions.visible,
+            "disabled":'!data.enabled',
+            "search": this.permissions.search,
+            'icon': 'fa fa-list',
+            "type": "boolean",
+            'source': [
+                {'value':true,'text': 'Editable', 'class': 'btn btn-sm btn-green','title':'Editable'},
+                {'value':false,'text': 'Bloqueado', 'class': 'btn btn-sm btn-red','title':'Bloqueado'},
+            ],
+            "key": "editable",
+            "title": "Editable",
+            "placeholder": "Editable",
+        };
     }
 
     abstract initParamsSearch();
@@ -215,6 +230,9 @@ export abstract class ModelRoot extends RestController{
         Object.keys(this.rules).forEach(key=>{
             that.rules[key].check =  false;
         })
+
+
+        delete this.rulesSave['editable'];
     }
     public spliceId(id:string)
     {
