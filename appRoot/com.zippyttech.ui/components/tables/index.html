@@ -208,7 +208,7 @@
         <div body>
             <location-picker [params]="paramsData.locationParams"></location-picker>
         </div>
-        <div footer>
+        <div  *ngIf="!paramsData.locationParams.disabled" footer>
             <button class="btn btn-success" (click)="saveLocation($event)" >{{db.msg.save}}</button>
         </div>
     </modal-view>
