@@ -77,19 +77,6 @@ export class UserModel extends ModelBase{
             'placeholder': 'Teléfono',
         };
 
-
-        this.rules['password']={
-            'type': 'password',
-            'required':true,
-            'exclude':true,
-            'update':this.permissions.update,
-            'visible':this.permissions.visible,
-            'key': 'password',
-            'showbuttons':true,
-            'title': 'Contraseña',
-            'placeholder': 'Contraseña',
-        };
-
         this.rules['image']={
             'type': 'image',
             'exclude':true,
@@ -123,6 +110,18 @@ export class UserModel extends ModelBase{
         this.rules['roles'].source=[];
         this.rules['roles'].search=false;
         this.rules['roles'].exclude=true;
+
+        this.rules['password']={
+            'type': 'password',
+            'required':true,
+            'exclude':true,
+            'update':this.permissions.update,
+            'visible':this.permissions.visible,
+            'key': 'password',
+            'showbuttons':true,
+            'title': 'Contraseña',
+            'placeholder': 'Contraseña',
+        };
 
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
