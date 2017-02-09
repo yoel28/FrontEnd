@@ -1,36 +1,23 @@
 import {Component, EventEmitter, OnInit, NgModule} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
-import {XFootable} from "../../../com.zippyttech.utils/directive/xFootable";
 import {IModal} from "../modal/modal.component";
+import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 
 
 declare var SystemJS:any;
 declare var moment:any;
 
-export interface ITableActions{
-    [key:string]:{
-        title?: string,
-        icon?: string,
-        permission?: boolean,
-        message?: string,
-        exp?: string,
-        callback?: (data?:any)=>void;
-        keyAction?:string;
-    }
-}
-
 @Component({
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/components/tables/style.css'],
-    inputs:['actions','model'],
+    inputs:['model'],
     outputs:['getInstance'],
 })
 export class TablesComponent implements OnInit {
 
-    public actions:ITableActions = {};
-    public model:any={};
+    public model:ModelRoot;
 
     public paramsData:IRuleView={
         select:{},
@@ -49,23 +36,17 @@ export class TablesComponent implements OnInit {
         global:{
             size:'modal-lg'
         }
-    }
+    };
 
-    public keyActions =[];
-    public configId=moment().valueOf();
     public getInstance:any;
     private _currentPage: number;
 
     constructor(public db:DependenciesBase) {
         this._currentPage = -1;
         this.getInstance = new EventEmitter();
-        //Array.observe(this.model.dataList, ()=>{});
     }
 
     ngOnInit() {
-        this.keyActions=[];
-        if(this.actions)
-            this.keyActions = Object.keys(this.actions);
         this.getListObjectNotReferenceSave();
     }
 
@@ -119,16 +100,13 @@ export class TablesComponent implements OnInit {
         this.model.onPatch(this.paramsData.searchParams['field'],this.paramsData.select,data);
     }
 
-    actionPermissionKey() {
+    public get getModelActions() {
         let data=[];
-        let that=this;
-
-        Object.keys(this.actions).forEach((key)=>
+        Object.keys(this.model.getActions).forEach(((key)=>
         {
-            if(that.actions[key].permission)
-                data.push(key);
-        });
-
+            if(this.model.getActions[key].permission)
+                data.push(this.model.getActions[key]);
+        }).bind(this));
         return data;
     }
 
