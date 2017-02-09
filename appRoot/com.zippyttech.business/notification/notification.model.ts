@@ -62,10 +62,9 @@ export class NotificationModel extends ModelRoot{
         delete this.rulesSave.enabled;
         delete this.rulesSave.image;
     }
-    initParamsDelete(params){
-        params.message = '¿ Esta seguro de eliminar la notificación: ';
-        params.key = 'title';
+    initModelActions(params){
+        params['delete'].message='¿ Esta seguro de eliminar la notificación: ';
+        params['delete'].keyAction = 'title';
     }
-    initModelActions(params){}
 
 }
