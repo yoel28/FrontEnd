@@ -5,9 +5,10 @@ import {ActivatedRoute} from "@angular/router";
 
 declare var SystemJS:any;
 @Component({
-    selector: 'basic-controller',
+    selector: 'basic-component',
     templateUrl:SystemJS.map.app+'/com.zippyttech.ui/view/base/base.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/view/base/style.css'],
+    inputs:['model']
 })
 export class BasicComponent extends BaseViewInstance{
 
