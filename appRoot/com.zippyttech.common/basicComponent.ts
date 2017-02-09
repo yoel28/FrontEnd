@@ -23,8 +23,7 @@ export class BasicComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = this.model.ruleObject.title;
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = this.model.getParamsDelete;
+    loadTableActions(params){
+        params['delete'] = this.model.getParamsDelete;
     }
 }
