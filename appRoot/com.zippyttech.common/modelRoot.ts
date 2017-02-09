@@ -3,19 +3,22 @@ import {RestController} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
 
 declare var moment:any;
+declare var jQuery:any;
+
 interface IParamsDelete{
     key:string,
     message:string
 }
 export interface IModelActions{
     [key:string]:{
+        id?:string,
         title?: string,
         icon?: string,
         permission?: boolean,
         message?: string,
         exp?: string,
         callback?: (data?:any)=>void;
-        keyAction?:string;
+        key?:string;
     }
 }
 
@@ -32,12 +35,8 @@ export abstract class ModelRoot extends RestController{
     public rulesSave:any={};
 
     public navIndex:number=-1;
-    private modelAction:IModelActions={};
+    private actions:IModelActions={};
 
-    private paramsDelete:IParamsDelete={
-        key:'code',
-        message:'¿ Esta seguro de eliminar el valor con el codigo: '
-    };
 
     public configId = moment().valueOf();
     private rulesDefault:any = {};
@@ -76,8 +75,8 @@ export abstract class ModelRoot extends RestController{
         this.loadParamsSearch();
 
         this.addCustomField();
-        this.initParamsDelete(this.paramsDelete);
-        this.initModelActions(this.modelAction);
+        this.initModelActions(this.actions);
+
         this.db.ws.loadChannelByModel(this.constructor.name,this);
         this.completed=completed;
     }
@@ -102,7 +101,32 @@ export abstract class ModelRoot extends RestController{
     abstract initModelActions(params:IModelActions);
     private _initModelActions(){
 
+        this.actions["delete"] = {
+            id:this.prefix+'_'+this.configId+'_DEL',
+            icon: "fa fa-trash",
+            title: 'Eliminar',
+            callback:function(data?){
+                jQuery("#"+this.prefix+'_'+this.configId+'_DEL').modal('show');
+            }.bind(this),
+            permission: this.permissions.delete,
+            message:'¿ Esta seguro de eliminar el valor con el codigo: ',
+            key: 'code'
+        };
+
+        this.actions["view"] = {
+            icon: "fa fa-vcard",
+            title: 'ver',
+            callback:function(data?){
+                this.getDetail(data);
+            }.bind(this),
+            permission: true,
+        }
+
     }
+    public get getActions(){
+        return this.actions;
+    };
+
 
     abstract modelExternal();
     abstract initRules();
@@ -213,14 +237,10 @@ export abstract class ModelRoot extends RestController{
         }
     }
 
-    abstract initParamsDelete(params:IParamsDelete);
-    public get getParamsDelete():IParamsDelete{
-        return this.paramsDelete;
-    }
-
     getRulesDefault(){
         return this.rulesDefault;
     }
+
     private loadObjectRule(){
         this.ruleObject.rulesSave = this.rulesSave;
         this.ruleObject.paramsSave = this.paramsSave;
