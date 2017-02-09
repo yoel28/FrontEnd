@@ -20,10 +20,5 @@ export class BasicComponent extends BaseViewInstance{
         if(data.model)
             this.model= new data.model(this.db);
     }
-    initViewOptions() {
-        this.viewOptions["title"] = this.model.ruleObject.title;
-    }
-    loadTableActions(params){
-        params['delete'] = this.model.getParamsDelete;
-    }
+    initViewOptions(params) {}
 }
