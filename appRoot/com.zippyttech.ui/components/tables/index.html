@@ -21,83 +21,25 @@
                 <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
                     <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
                 </td>
-                <td *ngIf="actions" class="notHidden">
-                    <div *ngIf="keyActions.length == 1">
-                        <a href="#" (click)="actions[keyActions[0]].callback(data)">
-                            <i class="{{actions[keyActions[0]].icon}}"></i>
-                            {{" "+actions[keyActions[0]].title}}
+                <td *ngIf="getModelActions" class="notHidden">
+                    <div *ngIf="getModelActions.length == 1">
+                        <a href="#" (click)="paramsData.select = data;getModelActions[0].callback(data);">
+                            <i class="{{getModelActions[0].icon}}"></i>
+                            &nbsp;{{getModelActions[0].title}}
                         </a>
                     </div>
-                    <div *ngIf="keyActions.length > 1" class="btn-group dropdown pull-right">
+                    <div *ngIf="getModelActions.length > 1" class="btn-group dropdown pull-right">
                         <button type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-gears fa-lg"></i>
                         </button>
                         <ul role="menu" class="dropdown-menu text-left submenu-config">
-                            <li *ngFor="let key of actionPermissionKey()">
-                                <a (click)="actions[key].callback(data);">
-                                    <i class="{{actions[key].icon}}"></i> {{" "+actions[key].title}}
+                            <li *ngFor="let action of getModelActions">
+                                <a (click)="paramsData.select = data;action.callback(data);">
+                                    <i class="{{action.icon}}"></i>&nbsp;{{action.title}}
                                 </a>
                             </li>
                         </ul>
                     </div>
-                <div>
-                    <!--<div class="btn-group dropdown pull-right" *ngIf="keyActions.length > 1 && !data.deleted">-->
-                        <!--<button type="button" data-toggle="dropdown"-->
-                                <!--class="btn btn-box-tool dropdown-toggle"-->
-                                <!--aria-haspopup="true" aria-expanded="false">-->
-                            <!--<i class="fa fa-gears fa-lg"></i>-->
-                        <!--</button>-->
-                        <!--<ul role="menu" class="dropdown-menu text-left submenu-config">-->
-                            <!--<li *ngFor="let key of actionPermissionKey()">-->
-                                <!--<a *ngIf="key == 'delete' && data.enabled"-->
-                                   <!--data-toggle="modal" [attr.data-target]="'#'+params.actions[key].idModal"-->
-                                   <!--(click)="paramsData.select = data" href="#">-->
-                                    <!--<i class="{{params.actions[key].icon}}"></i>-->
-                                    <!--&nbsp;{{params.actions[key].title}}-->
-                                <!--</a>-->
-                                <!--<a *ngIf="key == 'onPatch' && params.actions[key].type=='boolean'"-->
-                                   <!--(click)="model.onPatch(params.actions[key].field,data)">-->
-                                    <!--<span class="{{params.actions[key].icon}}"></span>-->
-                                    <!--{{data[key]?params.actions[key].titleTrue:params.actions[key].titleFalse}}-->
-                                <!--</a>-->
-                                <!--<a *ngIf="key == 'onLock'"-->
-                                   <!--(click)="model.onLock('enabled',data)">-->
-                                    <!--<span class="{{params.actions[key].icon}}"></span>-->
-                                    <!--{{data.enabled?params.actions[key].titleTrue:params.actions[key].titleFalse}}-->
-                                <!--</a>-->
-                                <!--<a *ngIf="key == 'viewHistory'" [attr.href]="params.actions[key].path+data.id">-->
-                                    <!--<span class="{{params.actions[key].icon}}"></span>-->
-                                    <!--&nbsp;{{params.actions[key].title}}-->
-                                <!--</a>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                    <!--</div>-->
-                    <!---->
-                    <!--<div *ngIf="keyActions.length == 1 && !data.deleted">-->
-                        <!--<div *ngFor="let key of actionPermissionKey()">-->
-                            <!--<a *ngIf="key == 'delete'  && data.enabled"-->
-                               <!--data-toggle="modal" [attr.data-target]="'#'+params.actions[key].idModal"-->
-                               <!--(click)="paramsData.select = data" href="#">-->
-                                <!--<i class="{{params.actions[key].icon}}"></i>-->
-                                <!--&nbsp;{{params.actions[key].title}}-->
-                            <!--</a>-->
-                            <!--<a *ngIf="key == 'onPatch' && params.actions[key].type=='boolean'"-->
-                               <!--(click)="model.onPatch(params.actions[key].field,data)">-->
-                                <!--<span class="{{params.actions[key].icon}}"></span>-->
-                                <!--{{data[key]?params.actions[key].titleTrue:params.actions[key].titleFalse}}-->
-                            <!--</a>-->
-                            <!--<a *ngIf="key == 'onLock'"-->
-                               <!--(click)="model.onLock('enabled',data)">-->
-                                <!--<span class="{{params.actions[key].icon}}"></span>-->
-                                <!--{{data.enabled?params.actions[key].titleTrue:params.actions[key].titleFalse}}-->
-                            <!--</a>-->
-                            <!--<a *ngIf="key == 'viewHistory'" [attr.href]="params.actions[key].path+data.id">-->
-                                <!--<span class="{{params.actions[key].icon}}"></span>-->
-                                <!--&nbsp;{{params.actions[key].title}}-->
-                            <!--</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                </div>
                 </td>
             </tr>
         </tbody>
@@ -129,8 +71,8 @@
 
 <!--########################################MODALS########################################-->
 
-<div *ngIf="model.permissions.delete && params && params.actions && params.actions.delete">
-    <div class="modal fade" [attr.id]="params.actions.delete.idModal" tabindex="-1" role="dialog"
+<div *ngIf="model.permissions.delete && model.getActions && model.getActions['delete']">
+    <div class="modal fade" [attr.id]="model.getActions['delete'].id" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -143,7 +85,7 @@
                     </strong></h3>
                 </div>
                 <div class="modal-body">
-                    {{params.actions.delete.message}} <strong>'{{paramsData.select[params.actions.delete.keyAction]}}'</strong>
+                    {{model.getActions['delete'].message}} <strong>'{{paramsData.select[model.getActions['delete'].key]}}'</strong>
                     ?
                 </div>
                 <div class="modal-footer">
