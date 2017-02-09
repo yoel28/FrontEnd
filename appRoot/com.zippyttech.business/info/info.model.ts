@@ -108,7 +108,7 @@ export class InfoModel extends ModelBase{
         this.paramsSave.title="Agregar ayuda"
     }
     initRuleObject() {
-        this.ruleObject.title="Ayuda";
+        this.ruleObject.title="Información (Ayudas)";
         this.ruleObject.placeholder="Ingrese codigo de la ayuda";
         this.ruleObject.key="info";
         this.ruleObject.keyDisplay="infoCode";
@@ -117,6 +117,9 @@ export class InfoModel extends ModelBase{
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
+    }
+    initParamsDelete(params){
+        params.message = '¿Esta seguro de eliminar la ayuda : ';
     }
 
 }
