@@ -20,11 +20,11 @@ export class PermissionComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Permisos';
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar el permiso : ',
-            'keyAction':'code'
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar el permiso : ',
+            keyAction:'code'
         };
     }
 }

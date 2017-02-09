@@ -20,11 +20,11 @@ export class RoleComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Roles';
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar el rol : ',
-            'keyAction':'authority'
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar el rol : ',
+            keyAction:'authority'
         };
     }
 }

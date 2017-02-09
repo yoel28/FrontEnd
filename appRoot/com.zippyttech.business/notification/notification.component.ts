@@ -22,11 +22,12 @@ export class NotificationComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Notificaciones';
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar la accion : ',
-            'keyAction':'title'
+
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar la accion : ',
+            keyAction:'title'
         };
     }
 }

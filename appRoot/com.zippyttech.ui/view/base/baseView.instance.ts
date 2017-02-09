@@ -1,6 +1,7 @@
 import {OnInit, EventEmitter, AfterViewInit} from '@angular/core';
 import {IRest} from "../../../com.zippyttech.rest/restController";
 import {BaseViewComponent} from "./baseView.component";
+import {ITableActions} from "../../components/tables/tables.component";
 
 export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
 
@@ -8,7 +9,7 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
     public getInstance:any;
     public instanceBase:BaseViewComponent;
     public instance:any={};
-    public paramsTable:any={};
+    public tableActions:ITableActions;
     public model:any;
     public viewOptions:any={};
     public rest:IRest={
@@ -22,12 +23,12 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
 
     abstract initModel();
     abstract initViewOptions();
-    abstract loadParamsTable();
+    abstract loadTableActions();
 
     ngOnInit(){
         this.initModel();
         this.initViewOptions();
-        this.loadParamsTable();
+        this.loadTableActions();
         this._loadWhereInParamsFilter();
         this._loadInstance();
     }
@@ -42,7 +43,7 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
         this.instance = {
             'model':this.model,
             'viewOptions':this.viewOptions,
-            'paramsTable':this.paramsTable,
+            'tableActions':this.tableActions,
         };
     }
     protected _loadWhereInParamsFilter(){

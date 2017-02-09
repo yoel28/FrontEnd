@@ -20,11 +20,12 @@ export class ParamComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Parámetros';
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar el parámetro : ',
-            'keyAction':'code'
+
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar el parámetro : ',
+            keyAction:'code'
         };
     }
 }

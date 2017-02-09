@@ -2,6 +2,7 @@ import {Component, NgModule} from "@angular/core";
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {checkBinding} from "@angular/core/src/linker/view_utils";
+import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
 
 
 declare var SystemJS:any;
@@ -42,7 +43,7 @@ export class ChartViewComponent extends ControllerBase
     }
 
     initModel() {
-        this.chartId = "CHART_"+moment().valueOf();
+        this.chartId = StaticFunction.getRandomID("CHART");
         this.chartData.options["chart"].renderTo = this.chartId;
         this.chartData.options["credits"] = false;
         this.chartRefresh();

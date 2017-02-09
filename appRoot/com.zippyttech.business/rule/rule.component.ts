@@ -22,11 +22,11 @@ export class RuleComponent extends BaseViewInstance{
         this.viewOptions["title"] = 'Reglas';
     }
 
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar la regla: ',
-            'keyAction':'code'
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar la regla: ',
+            keyAction:'code'
         };
     }
 }

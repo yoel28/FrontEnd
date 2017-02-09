@@ -22,11 +22,11 @@ export class ChannelComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Canales (WS)';
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar el canal : ',
-            'keyAction':'code'
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar el canal : ',
+            keyAction:'code'
         };
     }
 }

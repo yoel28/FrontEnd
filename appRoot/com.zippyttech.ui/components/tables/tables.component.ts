@@ -7,20 +7,29 @@ import {IModal} from "../modal/modal.component";
 
 declare var SystemJS:any;
 declare var moment:any;
-@NgModule({
-    imports:[XFootable]
-})
+
+export interface ITableActions{
+    [key:string]:{
+        title?: string,
+        icon?: string,
+        permission?: boolean,
+        message?: string,
+        exp?: string,
+        callback?: (data?:any)=>void;
+        keyAction?:string;
+    }
+}
+
 @Component({
     selector: 'tables-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tables/index.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/components/tables/style.css'],
-    inputs:['params','model'],
+    inputs:['actions','model'],
     outputs:['getInstance'],
 })
-
 export class TablesComponent implements OnInit {
 
-    public params:any={};
+    public actions:ITableActions = {};
     public model:any={};
 
     public paramsData:IRuleView={
@@ -55,8 +64,8 @@ export class TablesComponent implements OnInit {
 
     ngOnInit() {
         this.keyActions=[];
-        if(this.params && this.params.actions)
-            this.keyActions=Object.keys(this.params.actions);
+        if(this.actions)
+            this.keyActions = Object.keys(this.actions);
         this.getListObjectNotReferenceSave();
     }
 
@@ -114,9 +123,9 @@ export class TablesComponent implements OnInit {
         let data=[];
         let that=this;
 
-        Object.keys(this.params.actions).forEach((key)=>
+        Object.keys(this.actions).forEach((key)=>
         {
-            if(that.params.actions[key].permission)
+            if(that.actions[key].permission)
                 data.push(key);
         });
 
@@ -152,6 +161,7 @@ export class TablesComponent implements OnInit {
             that.paramsData.ruleReference.model.setDataField(data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,data);
 
     }
+
     saveLocation(event){
         if(event)
             event.preventDefault();
@@ -163,5 +173,4 @@ export class TablesComponent implements OnInit {
         this.model.onPatchObject(json,this.paramsData.select);
 
     }
-
 }

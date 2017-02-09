@@ -21,11 +21,12 @@ export class AccountComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Cuentas';
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar la cuenta: ',
-            'keyAction':'authority'
+
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar la cuenta: ',
+            keyAction:'authority'
         };
     }
 }

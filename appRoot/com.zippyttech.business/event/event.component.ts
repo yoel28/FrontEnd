@@ -21,11 +21,11 @@ export class EventComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Eventos';
     }
-    loadParamsTable(){
-       this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar el evento : ',
-            'keyAction':'code'
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar el evento : ',
+            keyAction:'code'
         };
     }
 

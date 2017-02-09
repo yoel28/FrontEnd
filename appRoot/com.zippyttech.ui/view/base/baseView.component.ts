@@ -5,10 +5,11 @@ import {
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {AnimationsManager} from "../../animations/AnimationsManager";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
-import {TablesComponent} from "../../components/tables/tables.component";
+import {TablesComponent,ITableActions} from "../../components/tables/tables.component";
 
 
 declare var SystemJS:any;
+declare var jQuery:any;
 @Component({
     selector: 'base-view',
     templateUrl: SystemJS.map.app + '/com.zippyttech.ui/view/base/index.html',
@@ -20,7 +21,7 @@ declare var SystemJS:any;
 export class BaseViewComponent extends ControllerBase implements OnInit,AfterViewInit {
     public instance:any;
     public dataSelect:any = {};
-    public paramsTable:any={};
+    public tableActions:ITableActions;
     public getInstance:any;
 
 
@@ -31,7 +32,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     ngOnInit(){
         super.ngOnInit();
         this.initViewOptions();
-        this.loadParamsTable();
+        this.loadTableActions();
         this.loadPage();
     }
     ngAfterViewInit(){
@@ -77,29 +78,34 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
         this.loadPreferenceViewModel();
 
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-
-        if(this.instance.paramsTable && this.instance.paramsTable.actions )
-        {
-            if(this.instance.paramsTable.actions.delete){
-                this.paramsTable.actions.delete = {
-                    "icon": "fa fa-trash",
-                    "exp": "",
-                    'title': 'Eliminar',
-                    'idModal': this.model.prefix+'_'+this.configId+'_DEL',
-                    'permission': this.model.permissions.delete,
-                    'message': this.instance.paramsTable.actions.delete.message,
-                    'keyAction':this.instance.paramsTable.actions.delete.keyAction
-                };
-            }
-
-            if(this.instance.paramsTable.actions.viewHistory){
-                this.paramsTable.actions.viewHistory = this.instance.paramsTable.actions.viewHistory;
-            }
-
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions = this.instance.tableActions;
+        let that = this;
+        if(this.tableActions["delete"]){
+            this.tableActions["delete"] = {
+                icon: "fa fa-trash",
+                exp: "",
+                title: 'Eliminar',
+                callback:function(data?){
+                    jQuery("#"+that.model.prefix+'_'+that.configId+'_DEL').modal('hide');
+                },
+                permission: this.model.permissions.delete,
+                message: this.instance.tableActions["delete"].message,
+                keyAction: this.instance.tableActions["delete"].keyAction
+            };
         }
-
+        this.tableActions["view"] = {
+            icon: "fa fa-vcard",
+            exp: "",
+            title: 'ver',
+            callback:function(data?){
+                this.model.getDetail(data);
+            }.bind(this),
+            permission: true,
+            message: "",
+            keyAction: ""
+        }
     }
 
     getUrlExport(type:string){

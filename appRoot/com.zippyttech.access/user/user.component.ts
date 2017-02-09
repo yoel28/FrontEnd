@@ -21,11 +21,12 @@ export class UserComponent extends BaseViewInstance{
     initViewOptions() {
         this.viewOptions["title"] = 'Usuarios';
     }
-    loadParamsTable(){
-        this.paramsTable.actions={};
-        this.paramsTable.actions.delete = {
-            'message': '¿ Esta seguro de eliminar el usuario : ',
-            'keyAction':'username'
+
+    loadTableActions(){
+        this.tableActions={};
+        this.tableActions["delete"] = {
+            message: '¿ Esta seguro de eliminar el usuario : ',
+            keyAction:'username'
         };
     }
 }
