@@ -7,6 +7,17 @@ interface IParamsDelete{
     key:string,
     message:string
 }
+export interface IModelActions{
+    [key:string]:{
+        title?: string,
+        icon?: string,
+        permission?: boolean,
+        message?: string,
+        exp?: string,
+        callback?: (data?:any)=>void;
+        keyAction?:string;
+    }
+}
 
 export abstract class ModelRoot extends RestController{
 
@@ -19,6 +30,9 @@ export abstract class ModelRoot extends RestController{
     public paramsSave:any = {};
     public ruleObject:any={};
     public rulesSave:any={};
+
+    public navIndex:number=-1;
+    private modelAction:IModelActions={};
 
     private paramsDelete:IParamsDelete={
         key:'code',
@@ -46,6 +60,7 @@ export abstract class ModelRoot extends RestController{
         this._initParamsSearch();
         this._initParamsSave();
         this._initRuleObject();
+        this._initModelActions();
     }
     public initModel(completed=true){
         this.initPermissions();
@@ -62,6 +77,7 @@ export abstract class ModelRoot extends RestController{
 
         this.addCustomField();
         this.initParamsDelete(this.paramsDelete);
+        this.initModelActions(this.modelAction);
         this.db.ws.loadChannelByModel(this.constructor.name,this);
         this.completed=completed;
     }
@@ -81,6 +97,11 @@ export abstract class ModelRoot extends RestController{
         this.permissions['visible'] = true;//this.myglobal.existsPermission([this.prefix + '_VISIBLE']);
         this.permissions['audit'] = this.db.myglobal.existsPermission([this.prefix + '_AUDICT']);
         this.permissions['global'] = this.db.myglobal.existsPermission(['ACCESS_GLOBAL']) && this.useGlobal;
+    }
+
+    abstract initModelActions(params:IModelActions);
+    private _initModelActions(){
+
     }
 
     abstract modelExternal();

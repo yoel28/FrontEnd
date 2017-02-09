@@ -68,4 +68,5 @@ export class RuleModel extends ModelBase{
     initParamsDelete(params){
         params.message = '¿ Esta seguro de eliminar la regla: ';
     }
+    initModelActions(params){}
 }

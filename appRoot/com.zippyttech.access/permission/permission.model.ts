@@ -85,5 +85,6 @@ export class PermissionModel extends ModelRoot{
     initParamsDelete(params){
         params.message = '¿ Esta seguro de eliminar el permiso : ';
     }
+    initModelActions(params){}
 
 }

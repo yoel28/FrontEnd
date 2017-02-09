@@ -171,5 +171,6 @@ export class UserModel extends ModelBase{
             that.completed = true;
         })
     }
+    initModelActions(params){}
 
 }

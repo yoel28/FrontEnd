@@ -155,5 +155,6 @@ export class AccountModel extends ModelRoot{
         params.key='name';
         params.message='¿ Esta seguro de eliminar la cuenta: ';
     }
+    initModelActions(params){}
 }
 

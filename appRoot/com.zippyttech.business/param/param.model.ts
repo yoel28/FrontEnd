@@ -77,5 +77,6 @@ export class ParamModel extends ModelBase{
     initParamsDelete(params){
         params.message = '¿ Esta seguro de eliminar el parametro: ';
     }
+    initModelActions(params){}
 
 }

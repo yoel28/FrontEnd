@@ -164,5 +164,6 @@ export class EventModel extends ModelBase{
     initParamsDelete(params){
         params.message = '¿ Esta seguro de eliminar el evento: ';
     }
+    initModelActions(params){}
 
 }

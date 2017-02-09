@@ -121,5 +121,6 @@ export class InfoModel extends ModelBase{
     initParamsDelete(params){
         params.message = '¿Esta seguro de eliminar la ayuda : ';
     }
+    initModelActions(params){}
 
 }
