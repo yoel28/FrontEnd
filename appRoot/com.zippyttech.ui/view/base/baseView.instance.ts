@@ -11,11 +11,7 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
     public paramsTable:any={};
     public model:any;
     public viewOptions:any={};
-    public rest:IRest={
-        where:[],
-        max:15,
-        offset:0,
-    };
+
     constructor() {
         this.getInstance = new EventEmitter();
     }
@@ -28,7 +24,6 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
         this.initModel();
         this.initViewOptions();
         this.loadParamsTable();
-        this._loadWhereInParamsFilter();
         this._loadInstance();
     }
     ngAfterViewInit():void{
@@ -37,16 +32,12 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
 
     protected _loadInstance(){
         this.viewOptions['viewActions']=this.viewActions;
-        this.model.rest = this.rest;
 
         this.instance = {
             'model':this.model,
             'viewOptions':this.viewOptions,
             'paramsTable':this.paramsTable,
         };
-    }
-    protected _loadWhereInParamsFilter(){
-        this.model.paramsSearch.where = this.rest.where;
     }
 
     protected _getInstance(){
