@@ -18,6 +18,11 @@
                     </div>
                 </div>
             </div>
+            <template [ngIf]="dataParams.nav">
+            <button (click)="model.navIndex = '-1'" *ngIf="(typeof(dataParams.nav) == 'boolean') || dataParams.nav.left" class="nav-left"></button>
+            <button (click)="model.navIndex = '+1'" *ngIf="(typeof(dataParams.nav) == 'boolean') || dataParams.nav.right" class="nav-right"></button>
+            <button (click)="model.navIndex =  -1 " *ngIf="(typeof(dataParams.nav) == 'boolean') || dataParams.nav.back" class="nav-back"></button>
+            </template>
         </div>
     </div>
 </div>

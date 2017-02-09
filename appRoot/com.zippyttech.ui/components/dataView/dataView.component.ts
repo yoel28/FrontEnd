@@ -12,6 +12,10 @@ interface IDataView{
         sm:1|2|3|4|6|12;
         xs:1|2|3|4|6|12;
     };
+    nav?:boolean | {
+        dir:boolean;
+        back:boolean;
+    };
 }
 
 
@@ -25,18 +29,13 @@ interface IDataView{
 export class DataViewComponent implements OnInit{
     private model:any;
     private paramsData:any;
-    private dataParams:IDataView = {};
+    private dataParams:IDataView={ cols: {lg:4,md:3,sm:2,xs:1} };
 
-    constructor(public db:DependenciesBase) {
-
-    }
+    constructor(public db:DependenciesBase) { }
 
     ngOnInit(): void {
         if(!this.model)
             console.error("Model is required in DataViewComponent!");
-        if(!this.dataParams.cols){
-            this.dataParams.cols = {lg:4,md:3,sm:2,xs:1}
-        }
     }
 
     private getDataKeys():string[]{
