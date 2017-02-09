@@ -45,6 +45,7 @@ import {ActivateComponent} from "./com.zippyttech.auth/activate/activate.compone
 import {ChartViewComponent} from "./com.zippyttech.ui/components/chartview/chartview.component";
 import {ListActionComponent} from "./com.zippyttech.ui/components/listAction/listAction.component";
 import {LocationPickerComponent} from "./com.zippyttech.ui/components/locationPicker/locationPicker.component";
+import {DataViewComponent} from "./com.zippyttech.ui/components/dataView/dataView.component";
 
 const routesDefault: Routes = [
 
@@ -120,7 +121,9 @@ export const componentsView = [
     ListActionComponent,
     ModalComponent,
     ChartViewComponent,
-    LocationPickerComponent
+    LocationPickerComponent,
+    ChartViewComponent,
+    DataViewComponent
 ];
 export const componentsApp = [];
 export const componentsPublic = [

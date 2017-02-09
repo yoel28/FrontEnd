@@ -303,4 +303,7 @@ export abstract class ModelRoot extends RestController{
             }
         }
     }
+    public getDetail(data){
+
+    }
 }

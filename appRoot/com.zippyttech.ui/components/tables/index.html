@@ -1,4 +1,7 @@
-<div class="table-responsive" *ngIf="model.dataList && model.dataList.list" >
+<div *ngIf="model.dataList && model.dataList.count == 1">
+    <data-view [model]="model" [dataParams]="{internal:true}" [paramsData]="paramsData"></data-view>
+</div>
+<div *ngIf="model.dataList && model.dataList.count > 1" class="table-responsive"  >
     <table id="footable" class="table table-striped table-hover"><!--x-footable -->
         <thead>
         <tr><!--[attr.data-breakpoints]="((i<2)?'':(i<=4)?'xs sm': (i<=7)?'xs sm md':'xs sm md lg')"-->
