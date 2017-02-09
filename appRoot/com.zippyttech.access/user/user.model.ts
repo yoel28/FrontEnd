@@ -155,8 +155,11 @@ export class UserModel extends ModelBase{
         delete this.rulesSave.accountLocked;
         delete this.rulesSave.username;
     }
-    loadDataExternal()
-    {
+    initParamsDelete(params){
+        params.message='¿ Esta seguro de eliminar el usuario : ';
+        params.key='username';
+    }
+    loadDataExternal() {
         let that = this;
         this.role.loadData().then(response => {
             if(that.role.dataList && that.role.dataList.list)
@@ -168,5 +171,6 @@ export class UserModel extends ModelBase{
             that.completed = true;
         })
     }
+    initModelActions(params){}
 
 }

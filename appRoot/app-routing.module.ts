@@ -9,28 +9,18 @@ import {AclComponent} from "./com.zippyttech.access/acl/acl.component";
 import {ProfileComponent} from "./com.zippyttech.access/user/profile/profile.component";
 import {ImageEditComponent} from "./com.zippyttech.ui/components/imageEdit/imageEdit.component";
 import {LoadComponent} from "./com.zippyttech.init/load/load.component";
-import {PermissionComponent} from "./com.zippyttech.access/permission/permission.component";
 import {BaseViewComponent} from "./com.zippyttech.ui/view/base/baseView.component";
 import {TooltipComponent} from "./com.zippyttech.ui/components/tooltips/tooltips.component";
 import {TablesComponent} from "./com.zippyttech.ui/components/tables/tables.component";
 import {SearchComponent} from "./com.zippyttech.ui/components/search/search.component";
 import {FilterComponent} from "./com.zippyttech.ui/components/filter/filter.component";
 import {SaveComponent} from "./com.zippyttech.ui/components/save/save.component";
-import {RoleComponent} from "./com.zippyttech.access/role/role.component";
-import {EventComponent} from "./com.zippyttech.business/event/event.component";
-import {InfoComponent} from "./com.zippyttech.business/info/info.component";
-import {RuleComponent} from "./com.zippyttech.business/rule/rule.component";
-import {ParamComponent} from "./com.zippyttech.business/param/param.component";
-import {AccountComponent} from "./com.zippyttech.access/account/account.component";
-import {UserComponent} from "./com.zippyttech.access/user/user.component";
 import {SearchMultipleComponent} from "./com.zippyttech.ui/components/searchMultiple/searchMultiple.component";
 import {ToastyModule} from "ng2-toasty";
 import {FormComponent} from "./com.zippyttech.ui/components/form/form.component";
-import {NotificationComponent} from "./com.zippyttech.business/notification/notification.component";
 import {ModalComponent} from "./com.zippyttech.ui/components/modal/modal.component";
 import {TermConditionsComponent} from "./com.zippyttech.business/termConditions/termConditions.component";
 import {RuleViewComponent} from "./com.zippyttech.ui/components/ruleView/ruleView.component";
-import {ChannelComponent} from "./com.zippyttech.business/channel/channel.component";
 import {AccountModel} from "./com.zippyttech.access/account/account.model";
 import {PermissionModel} from "./com.zippyttech.access/permission/permission.model";
 import {RoleModel} from "./com.zippyttech.access/role/role.model";
@@ -46,6 +36,7 @@ import {ChartViewComponent} from "./com.zippyttech.ui/components/chartview/chart
 import {ListActionComponent} from "./com.zippyttech.ui/components/listAction/listAction.component";
 import {LocationPickerComponent} from "./com.zippyttech.ui/components/locationPicker/locationPicker.component";
 import {DataViewComponent} from "./com.zippyttech.ui/components/dataView/dataView.component";
+import {BasicComponent} from "./com.zippyttech.common/basicComponent";
 
 const routesDefault: Routes = [
 
@@ -60,19 +51,20 @@ const routesDefault: Routes = [
     { path: 'account/recoverPassword/:id/:token', component: RecoverPasswordComponent},
     { path: 'account/active/:id/:token', component: ActivateComponent},
 
-    { path: 'access/account', component: AccountComponent},
-    { path: 'access/role', component: RoleComponent},
-    { path: 'access/permission', component: PermissionComponent},
+    { path: 'access/account', component: BasicComponent,data:{'model':AccountModel}},
+    { path: 'access/role', component: BasicComponent,data:{'model':RoleModel}},
+    { path: 'access/permission', component: BasicComponent,data:{'model':PermissionModel}},
+    { path: 'access/user', component: BasicComponent,data:{'model':UserModel}},
     { path: 'access/acl', component: AclComponent},
-    { path: 'access/user', component: UserComponent},
     { path: 'access/user/profile', component: ProfileComponent},
 
 
-    { path: 'business/event', component: EventComponent},
-    { path: 'business/info', component: InfoComponent},
-    { path: 'business/rule', component: RuleComponent},
-    { path: 'business/param', component: ParamComponent},
-    { path: 'business/channel', component: ChannelComponent},
+    { path: 'business/event', component: BasicComponent, data:{'model':EventModel}},
+    { path: 'business/info', component: BasicComponent,data:{'model':InfoModel}},
+    { path: 'business/rule', component: BasicComponent, data:{'model':RuleModel}},
+    { path: 'business/param', component: BasicComponent , data:{'model':ParamModel}},
+    { path: 'business/channel', component: BasicComponent,data:{'model':ChannelModel}},
+    { path: 'business/notify', component: BasicComponent,data:{'model':NotificationModel}},
 ];
 const routesApp: Routes = [];
 @NgModule({
@@ -94,17 +86,8 @@ export const componentsDefault = [
     ProfileComponent,
     ActivateComponent,
     LoadComponent,
-    PermissionComponent,
-    RoleComponent,
-    EventComponent,
-    InfoComponent,
-    RuleComponent,
-    ParamComponent,
-    AccountComponent,
-    UserComponent,
-    NotificationComponent,
     TermConditionsComponent,
-    ChannelComponent
+    BasicComponent
 ];
 export const componentsView = [
     ImageEditComponent,

@@ -82,5 +82,9 @@ export class PermissionModel extends ModelRoot{
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
+    initParamsDelete(params){
+        params.message = '¿ Esta seguro de eliminar el permiso : ';
+    }
+    initModelActions(params){}
 
 }

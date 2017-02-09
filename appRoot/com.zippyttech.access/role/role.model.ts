@@ -43,5 +43,10 @@ export class RoleModel extends ModelRoot{
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
+    initParamsDelete(params){
+        params.message = '¿ Esta seguro de eliminar el rol : ';
+        params.key = 'authority';
+    }
+    initModelActions(params){}
 
 }

@@ -3,6 +3,22 @@ import {RestController} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
 
 declare var moment:any;
+interface IParamsDelete{
+    key:string,
+    message:string
+}
+export interface IModelActions{
+    [key:string]:{
+        title?: string,
+        icon?: string,
+        permission?: boolean,
+        message?: string,
+        exp?: string,
+        callback?: (data?:any)=>void;
+        keyAction?:string;
+    }
+}
+
 export abstract class ModelRoot extends RestController{
 
     public prefix = "DEFAULT";
@@ -14,6 +30,14 @@ export abstract class ModelRoot extends RestController{
     public paramsSave:any = {};
     public ruleObject:any={};
     public rulesSave:any={};
+
+    public navIndex:number=-1;
+    private modelAction:IModelActions={};
+
+    private paramsDelete:IParamsDelete={
+        key:'code',
+        message:'¿ Esta seguro de eliminar el valor con el codigo: '
+    };
 
     public configId = moment().valueOf();
     private rulesDefault:any = {};
@@ -36,6 +60,7 @@ export abstract class ModelRoot extends RestController{
         this._initParamsSearch();
         this._initParamsSave();
         this._initRuleObject();
+        this._initModelActions();
     }
     public initModel(completed=true){
         this.initPermissions();
@@ -51,6 +76,8 @@ export abstract class ModelRoot extends RestController{
         this.loadParamsSearch();
 
         this.addCustomField();
+        this.initParamsDelete(this.paramsDelete);
+        this.initModelActions(this.modelAction);
         this.db.ws.loadChannelByModel(this.constructor.name,this);
         this.completed=completed;
     }
@@ -70,6 +97,11 @@ export abstract class ModelRoot extends RestController{
         this.permissions['visible'] = true;//this.myglobal.existsPermission([this.prefix + '_VISIBLE']);
         this.permissions['audit'] = this.db.myglobal.existsPermission([this.prefix + '_AUDICT']);
         this.permissions['global'] = this.db.myglobal.existsPermission(['ACCESS_GLOBAL']) && this.useGlobal;
+    }
+
+    abstract initModelActions(params:IModelActions);
+    private _initModelActions(){
+
     }
 
     abstract modelExternal();
@@ -181,6 +213,11 @@ export abstract class ModelRoot extends RestController{
         }
     }
 
+    abstract initParamsDelete(params:IParamsDelete);
+    public get getParamsDelete():IParamsDelete{
+        return this.paramsDelete;
+    }
+
     getRulesDefault(){
         return this.rulesDefault;
     }
@@ -196,19 +233,6 @@ export abstract class ModelRoot extends RestController{
     private loadParamsSave(){
         this.paramsSave.prefix = this.prefix+'_ADD';
     }
-
-    // public setDataField(id,key,value?,callback?,data?){
-    //     let json = {};
-    //     json[key] = value || null;
-    //     let body = JSON.stringify(json);
-    //     return (this.db.myglobal.httputils.onUpdate(this.endpoint + id, body,{}).then(response=>{
-    //         if(callback)
-    //             callback(response,data);
-    //     }));
-    // }
-    // public loadDataModel(successCallback){
-    //     return this.db.myglobal.httputils.doGet(this.endpoint,successCallback,this.myglobal.error);
-    // }
 
     public extendRulesObjectInRules(rules){
         let that = this;
