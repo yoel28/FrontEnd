@@ -45,7 +45,7 @@ export class RoleModel extends ModelRoot{
     }
     initModelActions(params){
         params['delete'].message = '¿ Esta seguro de eliminar el rol : ';
-        params['delete'].keyAction = 'authority';
+        params['delete'].key = 'authority';
     }
 
 }

@@ -64,7 +64,7 @@ export class NotificationModel extends ModelRoot{
     }
     initModelActions(params){
         params['delete'].message='¿ Esta seguro de eliminar la notificación: ';
-        params['delete'].keyAction = 'title';
+        params['delete'].key = 'title';
     }
 
 }

@@ -153,7 +153,7 @@ export class AccountModel extends ModelRoot{
     }
     initModelActions(params){
         params['delete'].message='¿ Esta seguro de eliminar la cuenta: ';
-        params['delete'].keyAction = 'name';
+        params['delete'].key = 'name';
     }
 }
 

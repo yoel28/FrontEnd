@@ -169,7 +169,7 @@ export class UserModel extends ModelBase{
     }
     initModelActions(params){
         params['delete'].message='¿ Esta seguro de eliminar el usuario : ';
-        params['delete'].keyAction = 'username';
+        params['delete'].key = 'username';
     }
 
 }
