@@ -5,7 +5,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">
-                            <i class="{{model.ruleObject.icon||'fa fa-list-alt'}}"></i>{{'   '+(viewOptions.title | translate)}}
+                            <i class="{{model.ruleObject.icon||'fa fa-list-alt'}}"></i>{{'   '+(model.ruleObject.title | translate)}}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
                             &nbsp;<i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                         </h4>
@@ -82,7 +82,7 @@
                     </div>
                     <div *ngIf="model.permissions.list && model.dataList" class="box-body">
                         <div *ngIf="model.dataList.count>0">
-                            <tables-view  [model]="model" [actions]="tableActions" (getInstance)="setInstance($event)"  ></tables-view>
+                            <tables-view  [model]="model" (getInstance)="setInstance($event)"></tables-view>
                         </div>
                         <div *ngIf="model.dataList.count == 0">
                             <div class="alert alert-warning alert-dismissable">
