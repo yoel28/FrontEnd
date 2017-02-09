@@ -1,30 +1,33 @@
 import {OnInit, EventEmitter, AfterViewInit} from '@angular/core';
-import {IRest} from "../../../com.zippyttech.rest/restController";
 import {BaseViewComponent} from "./baseView.component";
-import {ITableActions} from "../../components/tables/tables.component";
+import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
+
+interface IViewOptions{
+    viewActions?:boolean;
+}
 
 export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
 
     public viewActions:boolean=true;
+    public viewOptions:IViewOptions={};
+
     public getInstance:any;
     public instanceBase:BaseViewComponent;
     public instance:any={};
-    public tableActions:ITableActions={};
-    public model:any;
-    public viewOptions:any={};
+    public model:ModelRoot;
+
 
     constructor() {
         this.getInstance = new EventEmitter();
     }
 
     abstract initModel();
-    abstract initViewOptions();
-    abstract loadTableActions(params:ITableActions);
+    abstract initViewOptions(params:IViewOptions);
 
     ngOnInit(){
         this.initModel();
-        this.initViewOptions();
-        this.loadTableActions(this.tableActions);
+        this.initViewOptions(this.viewOptions);
+
         this._loadInstance();
     }
     ngAfterViewInit():void{
@@ -37,7 +40,6 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
         this.instance = {
             'model':this.model,
             'viewOptions':this.viewOptions,
-            'tableActions':this.tableActions,
         };
     }
 
