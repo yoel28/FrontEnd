@@ -79,4 +79,8 @@ export class StaticFunction {
     public static classOffset(lg=0,md=0,sm=0,xs=0){
         return ' col-lg-offset-'+lg+' col-md-offset-'+md+' col-sm-offset-'+sm+' col-xs-offset-'+xs;
     }
+
+    public static getRandomID(pref:string):string{
+        return pref+"_"+Math.random().toString(36).substr(2, 9);
+    }
 }

@@ -27,11 +27,9 @@
                                      alt="User Image">
                             </li>
                             <li class="user-footer">
-                                <div class="pull-left">
-                                    <button (click)='onProfile($event)' class="btn btn-success text-white">Perfil</button>
-                                </div>
-                                <div class="pull-right">
-                                    <button (click)='logout($event)' class="btn btn-success">Salir</button>
+                                <div class="user-btns">
+                                    <button (click)='onProfile($event)' class="btn btn-success text-white pull-left">Perfil</button>
+                                    <button (click)='logout($event)' class="btn btn-success pull-right">Salir</button>
                                 </div>
                             </li>
                         </ul>
@@ -44,12 +42,14 @@
     <aside class="main-sidebar" *ngIf="menuType.value && menuType.value.list">
         <section class="sidebar">
             <div class="user-panel cursor-pointer" (click)='onProfile()'>
-                <div class="pull-left image">
+                <div class="image">
                     <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle">
                 </div>
-                <div class="pull-left info">
-                    <p>{{db.myglobal.user.name}}</p>
-                    <i class="fa fa-building text-success"></i> {{db.myglobal.user.companyName}}
+                <div class="info">
+                    <span class="name">{{db.myglobal.user.name}}</span>
+                    <span class="company" *ngIf="db.myglobal.user.companyName && db.myglobal.user.companyName!=''">
+                        <i class="fa fa-industry"></i> {{db.myglobal.user.companyName}}
+                    </span>
                 </div>
             </div>
             <ul class="sidebar-menu">
