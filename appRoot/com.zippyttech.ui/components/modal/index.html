@@ -2,21 +2,17 @@
     <div [attr.id]="params.id" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog {{params.global?params.global.size:'modal-sm'}}">
             <div class="modal-content">
-                <div class="modal-header text-center {{params.header.class || 'bg-green-club'}}">
+                <div class="modal-header text-center {{params.header.class || 'bg-green-club' }}">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" [attr.title]="db.msg.close">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <h3 class="modal-title">{{params.header.title}}</h3>
+                    <h3 class="modal-title">{{params.header.title }}</h3>
                     <ng-content select="[header]"></ng-content>
                 </div>
                 <div class="modal-body">
                     <ng-content select="[body]"></ng-content>
                 </div>
                 <div class="modal-footer">
-                    <button data-dismiss="modal" type="button" class="btn btn-success">
-                        <i class="fa fa-close"></i>
-                        &nbsp;{{db.msg.close}}
-                    </button>
                     <button *ngFor="let footer of params.footer" data-dismiss="modal" type="button" class="{{footer.class || 'btn btn-primary'}}">
                         <i class="{{footer.icon || 'fa fa-list'}}"></i>
                         &nbsp;{{footer.title}}

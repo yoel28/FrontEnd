@@ -302,6 +302,9 @@ export class RestController {
             }
         );
     }
+    onPatchObject(body:Object, data) {
+        return (this.httputils.onUpdate(this.endpoint + data.id,JSON.stringify(body), data, this.error));
+    }
 
     onPatch(field, data, value?) {
         let json = {};

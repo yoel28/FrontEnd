@@ -1,16 +1,56 @@
 <div [@animation_0]="'true'">
     <section class="content">
-        <div class="box">
-            <div class="box-header with-border">
-                <h1>{{db.msg.profile}}</h1>
+        <h1>{{db.msg.profile}}</h1>
+        <div class="row" *ngIf="model.completed">
+            <div class="{{db.classCol(3,4,12,12)}}">
+                <div class="box box-primary">
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src='{{db.myglobal.user["image"]}}'>
+                        <h3 class="profile-username text-center">  <span>{{db.myglobal.user["name"]}}</span></h3>
+                        <p class="text-muted text-center">{{db.myglobal.user["account"]}}</p>
+                        <ul class="list-group list-group-unbordered">
+                            <li class="list-group-item">
+                                <b>{{model.rules["idCard"].title}}</b> <a class="pull-right">{{db.myglobal.user["idCard"]}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>{{model.rules["id"].title}}</b> <a class="pull-right">{{db.myglobal.user["id"]}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>{{model.rules["email"].title}}</b> <a class="pull-right">{{db.myglobal.user["email"]}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>{{model.rules["phone"].title}}</b> <a class="pull-right">{{db.myglobal.user["phone"]}}</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-            <div class="box-body" *ngIf="model.completed">
-                <div *ngIf="db.myglobal.user.id" class="col-lg-12">
-                    <div class="panel">
-                        <div class="panel-body">
-                            <div class="profile">
-                                <div style="margin-bottom: 15px" class="row">
-                                    <div class="{{db.classCol(6,6)}}">
+            <!-- /.col -->
+            <div class="{{db.classCol(7,6,12,12)}}">
+                <div class="nav-tabs-custom">
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">{{db.msg.basicData}}</a></li>
+                        <li class=""><a href="#imagen" data-toggle="tab" aria-expanded="false">{{db.msg.imageProfile}}</a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="settings">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="{{db.classCol(10,10,10,10)}}">
+                                        <div *ngFor="let key of getObjectKeys(model.rules)" class="border-bottom">
+                                            <p class="psalto" *ngIf="model.rules[key].type != 'boolean' && model.rules[key].type != 'image'">
+                                                <strong>{{model.rules[key].title}}:</strong>&nbsp;&nbsp;
+                                                <rule-view [key]="key" [model]="model" [data]="db.myglobal.user"></rule-view>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="imagen">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="{{db.classCol(8,10,10)+' '+db.classOffset(2,1,1)}}">
                                         <image-edit-view *ngIf="model.rules.image"
                                                          [image]="db.myglobal.user.image"
                                                          [default]="model.rules.image.default"
@@ -18,37 +58,14 @@
                                                          (out)="saveImage($event)"
                                         ></image-edit-view>
                                     </div>
-                                    <div class="{{db.classCol(6,6)}}">
-                                        <div *ngFor="let key of getObjectKeys(model.rules)">
-                                            <h2 *ngIf="model.rules[key].protected" class="truncate">
-                                                <strong>{{model.rules[key].title}}:</strong>&nbsp;
-                                                {{db.myglobal.user[key]}}
-                                            </h2>
-                                            <p *ngIf="!model.rules[key].protected && (model.rules[key].type=='text' || model.rules[key].type=='textarea' || model.rules[key].type=='number' || model.rules[key].type=='password')">
-                                                <strong>{{model.rules[key].title}}:</strong>&nbsp;
-                                                <a *ngIf="!model.rules[key].object" x-editable [endpoint]="model.endpoint" [function]="model.onEditable"
-                                                   [data]="db.myglobal.user" [rules]="model.rules" [field]="key" [disabled]="!model.rules[key].update">
-                                                </a>
-                                                <a *ngIf="model.rules[key].object">
-                                                    {{db.myglobal.user[model.rules[key].keyDisplay]}}
-                                                </a>
-                                            </p>
-                                        </div>
-                                        <strong>Rol:</strong>
-                                        <a x-editable
-                                           [disabled]="!model.permissions.update || !model.rules['roles'].permissions.list || !model.permissions.roleSave"
-                                           [endpoint]="'/users/'+db.myglobal.user.id+'/roles'"
-                                           [function]="model.onEditableRole" [data]="db.myglobal.user" [rules]="model.rules"
-                                           field="roles">
-
-                                        </a>
-                                    </div>
                                 </div>
-                            </div>
+                            </form>
                         </div>
                     </div>
                 </div>
             </div>
+            <!-- /.col -->
         </div>
+        <!-- /.row -->
     </section>
 </div>

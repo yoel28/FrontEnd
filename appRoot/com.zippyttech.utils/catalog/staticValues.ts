@@ -181,6 +181,11 @@ export class StaticValues {
         msg.exportXls="Exportar a excel";
         msg.termConditions="Terminos y condiciones";
         msg.savePreferences="Guardar preferencias";
+        msg.address="Dirección";
+        msg.zoom="Zoom";
+        msg.viewLocation="Ver ubicación";
+        msg.basicData="Datos basicos";
+        msg.imageProfile="Imagen de Perfil";
 
         return msg;
 
