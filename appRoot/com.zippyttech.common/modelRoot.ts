@@ -3,6 +3,11 @@ import {RestController} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
 
 declare var moment:any;
+interface IParamsDelete{
+    key:string,
+    message:string
+}
+
 export abstract class ModelRoot extends RestController{
 
     public prefix = "DEFAULT";
@@ -14,6 +19,11 @@ export abstract class ModelRoot extends RestController{
     public paramsSave:any = {};
     public ruleObject:any={};
     public rulesSave:any={};
+
+    private paramsDelete:IParamsDelete={
+        key:'code',
+        message:'¿ Esta seguro de eliminar el valor con el codigo: '
+    };
 
     public configId = moment().valueOf();
     private rulesDefault:any = {};
@@ -51,6 +61,7 @@ export abstract class ModelRoot extends RestController{
         this.loadParamsSearch();
 
         this.addCustomField();
+        this.initParamsDelete(this.paramsDelete);
         this.db.ws.loadChannelByModel(this.constructor.name,this);
         this.completed=completed;
     }
@@ -181,6 +192,11 @@ export abstract class ModelRoot extends RestController{
         }
     }
 
+    abstract initParamsDelete(params:IParamsDelete);
+    public get getParamsDelete():IParamsDelete{
+        return this.paramsDelete;
+    }
+
     getRulesDefault(){
         return this.rulesDefault;
     }
@@ -196,19 +212,6 @@ export abstract class ModelRoot extends RestController{
     private loadParamsSave(){
         this.paramsSave.prefix = this.prefix+'_ADD';
     }
-
-    // public setDataField(id,key,value?,callback?,data?){
-    //     let json = {};
-    //     json[key] = value || null;
-    //     let body = JSON.stringify(json);
-    //     return (this.db.myglobal.httputils.onUpdate(this.endpoint + id, body,{}).then(response=>{
-    //         if(callback)
-    //             callback(response,data);
-    //     }));
-    // }
-    // public loadDataModel(successCallback){
-    //     return this.db.myglobal.httputils.doGet(this.endpoint,successCallback,this.myglobal.error);
-    // }
 
     public extendRulesObjectInRules(rules){
         let that = this;
