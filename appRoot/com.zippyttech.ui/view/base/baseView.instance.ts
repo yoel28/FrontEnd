@@ -9,7 +9,7 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
     public getInstance:any;
     public instanceBase:BaseViewComponent;
     public instance:any={};
-    public tableActions:ITableActions;
+    public tableActions:ITableActions={};
     public model:any;
     public viewOptions:any={};
 
@@ -19,12 +19,12 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
 
     abstract initModel();
     abstract initViewOptions();
-    abstract loadTableActions();
+    abstract loadTableActions(params:ITableActions);
 
     ngOnInit(){
         this.initModel();
         this.initViewOptions();
-        this.loadTableActions();
+        this.loadTableActions(this.tableActions);
         this._loadInstance();
     }
     ngAfterViewInit():void{
