@@ -304,6 +304,9 @@ export abstract class ModelRoot extends RestController{
         }
     }
     public getDetail(data){
-
+        Object.assign(this.dataList,data,{'listBackup':this.dataList});
+    }
+    public getReturn(){
+        Object.assign(this.dataList,this.dataList.listBackup);
     }
 }
