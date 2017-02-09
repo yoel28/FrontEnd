@@ -5,7 +5,7 @@ import {
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {AnimationsManager} from "../../animations/AnimationsManager";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
-import {TablesComponent,ITableActions} from "../../components/tables/tables.component";
+import {TablesComponent} from "../../components/tables/tables.component";
 
 
 declare var SystemJS:any;
@@ -19,11 +19,9 @@ declare var jQuery:any;
     animations: AnimationsManager.getTriggers("d-slide_up|fade-fade",200)
 })
 export class BaseViewComponent extends ControllerBase implements OnInit,AfterViewInit {
-    public instance:any;
-    public dataSelect:any = {};
-    public tableActions:ITableActions;
-    public getInstance:any;
 
+    public getInstance:any;
+    private instance:any;
 
     constructor(public db:DependenciesBase) {
         super(db);
@@ -32,17 +30,16 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     ngOnInit(){
         super.ngOnInit();
         this.initViewOptions();
-        this.loadTableActions();
         this.loadPage();
     }
     ngAfterViewInit(){
-        this._getInstance();
+        this.getInstance.emit(this);
     }
     initModel() {
         this.model = this.instance.model;
     }
 
-    public instanceTable:any;
+    public instanceTable:TablesComponent;
     setInstance(instance:TablesComponent){
         this.instanceTable = instance;
     }
@@ -77,35 +74,6 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
 
         this.loadPreferenceViewModel();
 
-    }
-    loadTableActions(){
-        this.tableActions={};
-        this.tableActions = this.instance.tableActions;
-        let that = this;
-        if(this.tableActions["delete"]){
-            this.tableActions["delete"] = {
-                icon: "fa fa-trash",
-                exp: "",
-                title: 'Eliminar',
-                callback:function(data?){
-                    jQuery("#"+that.model.prefix+'_'+that.configId+'_DEL').modal('hide');
-                },
-                permission: this.model.permissions.delete,
-                message: this.instance.tableActions["delete"].message,
-                keyAction: this.instance.tableActions["delete"].keyAction
-            };
-        }
-        this.tableActions["view"] = {
-            icon: "fa fa-vcard",
-            exp: "",
-            title: 'ver',
-            callback:function(data?){
-                this.model.getDetail(data);
-            }.bind(this),
-            permission: true,
-            message: "",
-            keyAction: ""
-        }
     }
 
     getUrlExport(type:string){
@@ -157,9 +125,6 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             that.model.rules={};
             Object.assign(that.model.rules,temp);
         }
-    }
-    public _getInstance(){
-        this.getInstance.emit(this);
     }
     loadPreferenceViewModel(){
         let that = this;
