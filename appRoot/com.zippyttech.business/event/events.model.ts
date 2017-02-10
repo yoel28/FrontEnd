@@ -2,7 +2,7 @@ import {ModelBase} from "../../com.zippyttech.common/modelBase";
 import {RuleModel} from "../rule/rule.model";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-export class EventModel extends ModelBase{
+export class EventsModel extends ModelBase{
 
     public rule:RuleModel;
 
