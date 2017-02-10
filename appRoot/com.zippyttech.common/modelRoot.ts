@@ -24,7 +24,7 @@ export interface IModelActions{
 
 export abstract class ModelRoot extends RestController{
 
-    public prefix = "DEFAULT";
+    public prefix = ((this.constructor.name).toUpperCase()).replace('MODEL','');
     public endpoint = "DEFAULT_ENDPOINT";
     public useGlobal:boolean=true;
     public completed=false;
@@ -45,9 +45,11 @@ export abstract class ModelRoot extends RestController{
     public dataList:any={};
 
 
-    constructor(public db:DependenciesBase,prefix,endpoint,useGlobal=true){
+    constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
         super(db);
-        this.prefix = prefix;
+        if(prefix)
+            this.prefix = prefix;
+
         this.endpoint = endpoint;
         this.useGlobal = useGlobal;
         this._initModel();
@@ -83,7 +85,11 @@ export abstract class ModelRoot extends RestController{
 
     abstract initPermissions();
     private _initPermissions() {
-        this.permissions['export'] = this.db.myglobal.existsPermission([this.prefix + '_EXPORT']);
+        this.permissions['exportPdf'] = this.db.myglobal.existsPermission([this.prefix + '_EXPORT_PDF']);
+        this.permissions['exporXls'] = this.db.myglobal.existsPermission([this.prefix + '_EXPORT_XLS']);
+
+
+        this.permissions['showAll'] = this.db.myglobal.existsPermission([this.prefix + '_SHOW_ALL']);
         this.permissions['showDelete'] = this.db.myglobal.existsPermission([this.prefix + '_SHOW_DELETED']);
         this.permissions['list'] = this.db.myglobal.existsPermission([this.prefix + '_LIST']);
         this.permissions['add'] = this.db.myglobal.existsPermission([this.prefix + '_ADD']);
@@ -94,7 +100,7 @@ export abstract class ModelRoot extends RestController{
         this.permissions['lock'] = this.db.myglobal.existsPermission([this.prefix + '_LOCK']);
         this.permissions['warning'] = this.db.myglobal.existsPermission([this.prefix + '_WARNING']);
         this.permissions['visible'] = true;//this.myglobal.existsPermission([this.prefix + '_VISIBLE']);
-        this.permissions['audit'] = this.db.myglobal.existsPermission([this.prefix + '_AUDICT']);
+        this.permissions['audit'] = this.db.myglobal.existsPermission([this.prefix + '_AUDIT']);
         this.permissions['global'] = this.db.myglobal.existsPermission(['ACCESS_GLOBAL']) && this.useGlobal;
     }
 
@@ -104,6 +110,7 @@ export abstract class ModelRoot extends RestController{
         this.actions["delete"] = {
             id:this.prefix+'_'+this.configId+'_DEL',
             icon: "fa fa-trash",
+            exp:'data.enabled',
             title: 'Eliminar',
             callback:function(data?){
                 jQuery("#"+this.prefix+'_'+this.configId+'_DEL').modal('show');
@@ -149,11 +156,22 @@ export abstract class ModelRoot extends RestController{
             "visible": this.permissions.lock && this.permissions.visible,
             "search": false,
             'required': true,
-            'icon': 'fa fa-list',
             "type": "boolean",
             'source': [
-                {'value':true,'text': 'Habilitado', 'class': 'btn btn-sm btn-green','title':'Habilitado'},
-                {'value':false,'text': 'Deshabilitado', 'class': 'btn btn-sm btn-red','title':'Deshabilitado'},
+                {
+                    'value': true,
+                    'text': 'Habilitado',
+                    'class': 'btn-transparent text-green',
+                    'title': 'Habilitado',
+                    'icon': 'fa fa-unlock'
+                },
+                {
+                    'value': false,
+                    'text': 'Deshabilitado',
+                    'class': 'btn-transparent  text-red',
+                    'title': 'Deshabilitado',
+                    'icon': 'fa fa-lock'
+                },
             ],
             "key": "enabled",
             "title": "Habilitado",
@@ -167,8 +185,20 @@ export abstract class ModelRoot extends RestController{
             'icon': 'fa fa-list',
             "type": "boolean",
             'source': [
-                {'value':true,'text': 'Editable', 'class': 'btn btn-sm btn-green','title':'Editable'},
-                {'value':false,'text': 'Bloqueado', 'class': 'btn btn-sm btn-red','title':'Bloqueado'},
+                {
+                    'value': true,
+                    'text': 'Editable',
+                    'class': 'btn-transparent text-green',
+                    'title': 'Editable',
+                    'icon': 'fa fa-pencil-square-o'
+                },
+                {
+                    'value': false,
+                    'text': 'Bloqueado',
+                    'class': 'btn-transparent  text-red',
+                    'title': 'Protegido',
+                    'icon': 'fa fa-lock'
+                },
             ],
             "key": "editable",
             "title": "Editable",
