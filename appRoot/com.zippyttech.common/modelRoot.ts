@@ -146,8 +146,8 @@ export abstract class ModelRoot extends RestController{
         this.actions["view"] = {
             icon: "fa fa-vcard",
             title: 'ver',
-            callback:function(data?){
-                this.getDetail(data);
+            callback:function(index?){
+                this.navIndex = index;
             }.bind(this),
             permission: true,
         }
