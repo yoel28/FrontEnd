@@ -110,7 +110,7 @@ export abstract class ModelRoot extends RestController{
         this.actions["delete"] = {
             id:this.prefix+'_'+this.configId+'_DEL',
             icon: "fa fa-trash",
-            exp:'data.enabled',
+            exp:'data.enabled && data.editable && !data.deleted',
             title: 'Eliminar',
             callback:function(data?){
                 jQuery("#"+this.prefix+'_'+this.configId+'_DEL').modal('show');
@@ -155,6 +155,7 @@ export abstract class ModelRoot extends RestController{
             "update": (this.permissions.update && this.permissions.lock),
             "visible": this.permissions.lock && this.permissions.visible,
             "search": false,
+            "disabled":"data.deleted",
             'required': true,
             "type": "boolean",
             'source': [
@@ -180,7 +181,7 @@ export abstract class ModelRoot extends RestController{
         this.rulesDefault["editable"] = {
             "update": (this.permissions.update && this.permissions.lock),
             "visible": this.permissions.lock && this.permissions.visible,
-            "disabled":'!data.enabled',
+            "disabled":'!data.enabled || data.deleted',
             "search": this.permissions.search,
             'icon': 'fa fa-list',
             "type": "boolean",
