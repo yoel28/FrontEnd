@@ -23,7 +23,7 @@
                 </td>
                 <td *ngIf="getModelActions(data)" class="notHidden">
                     <div *ngIf="getModelActions(data).length == 1">
-                        <a (click)="paramsData.select = data;getModelActions(data)[0].callback((action.title=='ver')?i:data);">
+                        <a (click)="paramsData.select = data;getModelActions(data)[0].callback((getModelActions(data)[0].title=='ver')?i:data);">
                             <i class="{{getModelActions(data)[0].icon}}"></i>
                             &nbsp;{{getModelActions(data)[0].title}}
                         </a>
