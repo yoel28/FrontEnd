@@ -100,14 +100,18 @@ export class TablesComponent implements OnInit {
         this.model.onPatch(this.paramsData.searchParams['field'],this.paramsData.select,data);
     }
 
-    public get getModelActions() {
-        let data=[];
+    public getModelActions(data:Object) {
+        let action=[];
         Object.keys(this.model.getActions).forEach(((key)=>
         {
             if(this.model.getActions[key].permission)
-                data.push(this.model.getActions[key]);
+            {
+                if(eval(this.model.getActions[key].exp || 'true'))
+                    action.push(this.model.getActions[key]);
+
+            }
         }).bind(this));
-        return data;
+        return action;
     }
 
     getObjectKeys(data){
