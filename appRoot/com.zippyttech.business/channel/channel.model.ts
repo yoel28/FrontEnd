@@ -5,7 +5,7 @@ import {componentsApp, componentsDefault, componentsView, modelsDefault, modelsA
 export class ChannelModel extends ModelBase{
 
     constructor(public db:DependenciesBase){
-        super(db,'CH','/channels/');
+        super(db,'/channels/');
         this.initModel(false);
         this.loadDataModel();
     }

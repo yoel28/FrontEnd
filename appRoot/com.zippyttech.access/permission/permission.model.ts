@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class PermissionModel extends ModelRoot{
 
     constructor(public db:DependenciesBase){
-        super(db,'PERM','/permissions/');
+        super(db,'/permissions/');
         this.initModel();
     }
     modelExternal() {}

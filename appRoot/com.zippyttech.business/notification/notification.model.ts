@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class NotificationModel extends ModelRoot{
 
     constructor(public db:DependenciesBase){
-        super(db,'NOTIFY','/notifications/');
+        super(db,'/notifications/');
         this.initModel();
     }
     modelExternal() {}

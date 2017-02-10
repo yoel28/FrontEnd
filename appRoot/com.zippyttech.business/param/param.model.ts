@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class ParamModel extends ModelBase{
 
     constructor(public db:DependenciesBase){
-        super(db,'PARAM','/params/');
+        super(db,'/params/');
         this.initModel();
     }
     modelExternal() {}

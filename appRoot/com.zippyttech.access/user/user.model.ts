@@ -8,7 +8,7 @@ export class UserModel extends ModelBase{
     public pathElements=StaticValues.pathElements;
 
     constructor(public db:DependenciesBase){
-        super(db,'USER','/users/');
+        super(db,'/users/');
         this.initModel(false);
         this.loadDataExternal();
     }

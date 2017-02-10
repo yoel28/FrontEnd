@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class AccountModel extends ModelRoot{
 
     constructor(db:DependenciesBase){
-        super(db,'ACCOUNT','/accounts/');
+        super(db,'/accounts/');
         this.initModel();
     }
     modelExternal() {}

@@ -4,7 +4,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export class RuleModel extends ModelBase{
 
     constructor(public db:DependenciesBase){
-        super(db,'RULE','/rules/');
+        super(db,'/rules/');
         this.initModel();
     }
     modelExternal() {}
