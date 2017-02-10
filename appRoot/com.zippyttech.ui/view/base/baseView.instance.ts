@@ -31,7 +31,7 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
         this._loadInstance();
     }
     ngAfterViewInit():void{
-        this._getInstance();
+        this.getInstance.emit(this);
     }
 
     protected _loadInstance(){
@@ -43,9 +43,6 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
         };
     }
 
-    protected _getInstance(){
-        this.getInstance.emit(this);
-    }
     public setInstance(instance:BaseViewComponent){
         this.instanceBase = instance;
     }
