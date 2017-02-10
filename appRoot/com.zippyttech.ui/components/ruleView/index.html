@@ -109,13 +109,22 @@
             </template>
         </template>
         <template [ngIf]="!getEnabled()">
-            <template [ngIf]="key=='enabled'">
-                <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
-                        [disabled]="getBooleandData(key,data).disabled || data.deleted || disabled" [attr.title]="getBooleandData(key,data).title">
-                    <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
-                </button>
+            <template [ngIf]="key=='enabled' || key=='editable'">
+                <template [ngIf]="key=='enabled'">
+                    <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
+                            [disabled]="getBooleandData(key,data).disabled || data.deleted || disabled " [attr.title]="getBooleandData(key,data).title">
+                        <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
+                    </button>
+                </template>
+                <template [ngIf]="key=='editable'">
+                    <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
+                            [disabled]="getBooleandData(key,data).disabled || data.deleted  || disabled " [attr.title]="getBooleandData(key,data).title">
+                        <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
+                    </button>
+                </template>
+
             </template>
-            <template [ngIf]="key!='enabled'">
+            <template [ngIf]="key!='enabled' && key!='editable'">
                 <button class="{{getBooleandData(key,data).class}}" [disabled]="true" [attr.title]="getBooleandData(key,data).title">
                     <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
                 </button>
@@ -168,11 +177,10 @@
                 </a>
             </template>
             <template [ngIf]="!getEnabled()">
-                <a x-editable
-                   class="notHidden"
+                <a x-editable class="notHidden"
                    [disabled]="true"
-                   [data]="data"
-                   [rules]="model.rules"
+                   [endpoint]="'/users/'+data.id+'/roles'"
+                   [function]="model.onEditableRole" [data]="data" [rules]="model.rules"
                    field="roles">
                 </a>
             </template>
@@ -211,13 +219,14 @@
                     </button>
                 </template>
 
-                <template [ngIf]="model.rules[key].eval">
-                    {{evalExp(data,model.rules[key].eval)}}
-                </template>
-                <template [ngIf]="!model.rules[key].eval">
-                    {{data[model.rules[key].keyDisplay]}}
-                </template>
-
+                <span class="title-object">
+                    <template [ngIf]="model.rules[key].eval">
+                        {{evalExp(data,model.rules[key].eval)}}
+                    </template>
+                    <template [ngIf]="!model.rules[key].eval">
+                        {{data[model.rules[key].keyDisplay]}}
+                    </template>
+                </span>
                 <template [ngIf]="getEnabled()">
 
                     <template [ngIf]="!model.rules[key].reference">
