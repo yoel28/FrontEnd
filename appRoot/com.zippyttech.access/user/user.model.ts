@@ -29,15 +29,6 @@ export class UserModel extends ModelBase{
             'placeholder': 'Correo electrónico',
         };
 
-        this.rules['id']={
-            'type': 'number',
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'id',
-            'title': 'ID',
-            'placeholder': 'ID',
-        };
-
         this.rules['idCard']={
             'type': 'text',
             'update':this.permissions.update,
@@ -94,11 +85,23 @@ export class UserModel extends ModelBase{
             'icon': 'fa fa-list',
             "type": "boolean",
             'source': [
-                {'value':false,'text': 'Verificado', 'class': 'btn btn-sm btn-green'},
-                {'value':true, 'text': 'Sin verificar', 'class': 'btn btn-sm btn-red'},
+                {
+                    'value': true,
+                    'text': 'Verificado',
+                    'class': 'btn-transparent text-blue',
+                    'title': 'Verificado',
+                    'icon': 'fa fa-check-circle'
+                },
+                {
+                    'value': false,
+                    'text': 'Sin verificar',
+                    'class': 'btn-transparent  text-red',
+                    'title': 'Sin verificar',
+                    'icon': 'fa fa-exclamation-circle'
+                }
             ],
             "key": "accountLocked",
-            "title": "Cuenta",
+            "title": "Verificada",
             "placeholder": "¿Cuenta verificada?",
         };
 
@@ -127,6 +130,18 @@ export class UserModel extends ModelBase{
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
         delete this.rules['detail'];
     }
+    public updateProfile(){
+        this.setEndpoint('/auto/update');
+        this.rules['email'].update=true;
+        this.rules['idCard'].update=true;
+        this.rules['username'].update=true;
+        this.rules['name'].update=true;
+        this.rules['phone'].update=true;
+        this.rules['image'].update=true;
+        this.rules['roles'].update=true;
+        this.rules['password'].update=true;
+    }
+
     initPermissions() {
         this.permissions['roleSave']=this.db.myglobal.existsPermission(['USER_ROLE_SAVE'])
     }
