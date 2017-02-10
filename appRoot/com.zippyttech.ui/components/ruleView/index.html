@@ -98,13 +98,13 @@
             <template [ngIf]="key=='enabled'">
                 <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
                         [disabled]="getBooleandData(key,data).disabled" [attr.title]="getBooleandData(key,data).title">
-                    {{getBooleandData(key,data).text}}
+                    <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
                 </button>
             </template>
             <template [ngIf]="key!='enabled'">
                 <button class="{{getBooleandData(key,data).class}}"  (click)="model.onPatch(key,data)"
                         [disabled]="getBooleandData(key,data).disabled" [attr.title]="getBooleandData(key,data).title">
-                    {{getBooleandData(key,data).text}}
+                    <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
                 </button>
             </template>
         </template>
@@ -112,12 +112,12 @@
             <template [ngIf]="key=='enabled'">
                 <button class="{{getBooleandData(key,data).class}}" (click)="model.onLock(key,data, $event)"
                         [disabled]="getBooleandData(key,data).disabled || data.deleted || disabled" [attr.title]="getBooleandData(key,data).title">
-                    {{getBooleandData(key,data).text}}
+                    <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
                 </button>
             </template>
             <template [ngIf]="key!='enabled'">
                 <button class="{{getBooleandData(key,data).class}}" [disabled]="true" [attr.title]="getBooleandData(key,data).title">
-                    {{getBooleandData(key,data).text}}
+                    <i class="{{getBooleandData(key,data).icon}}"></i>&nbsp;{{getBooleandData(key,data).text}}
                 </button>
             </template>
         </template>
