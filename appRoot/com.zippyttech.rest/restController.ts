@@ -351,7 +351,10 @@ export class RestController {
             Object.assign(data,response.json());
             that.addToast('Notificacion','Guardado con éxito');
         };
-        return (this.httputils.doPut(endpoint+data.id,body,successCallback,this.error));
+        if(endpoint == '/auto/update')
+            return (this.httputils.doPut(endpoint,body,successCallback,this.error));
+        else
+            return (this.httputils.doPut(endpoint+data.id,body,successCallback,this.error));
     }
 
     onEditableRole(field, data, value, endpoint) {
