@@ -15,7 +15,7 @@ export abstract class ControllerBase implements OnInit {
     public configId = moment().valueOf();
     public viewOptions:any = {};
     public dateHmanizer = StaticValues.dateHmanizer;
-    public model:ModelRoot;
+    public model:any;
 
     public classCol=StaticFunction.classCol;
     public classOffset=StaticFunction.classOffset;
