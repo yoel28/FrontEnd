@@ -151,61 +151,151 @@ export abstract class ModelRoot extends RestController{
             "title": "Detalle",
             "placeholder": "Ingrese el detalle",
         };
-        this.rulesDefault["enabled"] = {
-            "update": (this.permissions.update && this.permissions.lock),
-            "visible": this.permissions.lock && this.permissions.visible,
-            "search": false,
-            "disabled":"data.deleted",
-            'required': true,
-            "type": "boolean",
-            'source': [
-                {
-                    'value': true,
-                    'text': 'Habilitado',
-                    'class': 'btn-transparent text-green',
-                    'title': 'Habilitado',
-                    'icon': 'fa fa-unlock'
-                },
-                {
-                    'value': false,
-                    'text': 'Deshabilitado',
-                    'class': 'btn-transparent  text-red',
-                    'title': 'Deshabilitado',
-                    'icon': 'fa fa-lock'
-                },
-            ],
-            "key": "enabled",
-            "title": "Habilitado",
-            "placeholder": "",
-        };
-        this.rulesDefault["editable"] = {
-            "update": (this.permissions.update && this.permissions.lock),
-            "visible": this.permissions.lock && this.permissions.visible,
-            "disabled":'!data.enabled || data.deleted',
-            "search": this.permissions.search,
-            'icon': 'fa fa-list',
-            "type": "boolean",
-            'source': [
-                {
-                    'value': true,
-                    'text': 'Editable',
-                    'class': 'btn-transparent text-green',
-                    'title': 'Editable',
-                    'icon': 'fa fa-pencil-square-o'
-                },
-                {
-                    'value': false,
-                    'text': 'Bloqueado',
-                    'class': 'btn-transparent  text-red',
-                    'title': 'Protegido',
-                    'icon': 'fa fa-lock'
-                },
-            ],
-            "key": "editable",
-            "title": "Editable",
-            "placeholder": "Editable",
-        };
+        this.loadRulesExtra();
+
     }
+    private loadRulesExtra(){
+        this.setRuleEnable();
+        this.setRuleEditable();
+        this.setRuleId();
+        this.setRuleIp();
+        this.setRuleUserAgent();
+        this.setRuleUsernameCreator();
+        this.setRuleUsernameUpdater();
+    }
+    setRuleEnable(force =  false){
+        if(this.permissions.lock || force){
+            this.rulesDefault["enabled"] = {
+                "update": (this.permissions.update && this.permissions.lock),
+                "visible": this.permissions.lock && this.permissions.visible,
+                "search": false,
+                "disabled":"data.deleted",
+                'required': true,
+                "type": "boolean",
+                'source': [
+                    {
+                        'value': true,
+                        'text': 'Habilitado',
+                        'class': 'btn-transparent text-green',
+                        'title': 'Habilitado',
+                        'icon': 'fa fa-unlock'
+                    },
+                    {
+                        'value': false,
+                        'text': 'Deshabilitado',
+                        'class': 'btn-transparent  text-red',
+                        'title': 'Deshabilitado',
+                        'icon': 'fa fa-lock'
+                    },
+                ],
+                "key": "enabled",
+                "title": "Habilitado",
+                "placeholder": "",
+            };
+        }
+    }
+    setRuleEditable(force=false){
+        if(this.permissions.lock || force){
+            this.rulesDefault["editable"] = {
+                "update": (this.permissions.update && this.permissions.lock),
+                "visible": this.permissions.lock && this.permissions.visible,
+                "disabled":'!data.enabled || data.deleted',
+                "search": this.permissions.search,
+                'icon': 'fa fa-list',
+                "type": "boolean",
+                'source': [
+                    {
+                        'value': true,
+                        'text': 'Editable',
+                        'class': 'btn-transparent text-green',
+                        'title': 'Editable',
+                        'icon': 'fa fa-pencil-square-o'
+                    },
+                    {
+                        'value': false,
+                        'text': 'Bloqueado',
+                        'class': 'btn-transparent  text-red',
+                        'title': 'Protegido',
+                        'icon': 'fa fa-lock'
+                    },
+                ],
+                "key": "editable",
+                "title": "Editable",
+                "placeholder": "Editable",
+            };
+        }
+    }
+    setRuleId(force=false){
+        if(this.permissions.audit || force){
+            this.rulesDefault["id"] = {
+                "update": false,
+                "visible": this.permissions.visible,
+                "search": this.permissions.filter,
+                'icon': 'fa fa-list',
+                "type": "number",
+                "key": "id",
+                "title": "ID",
+                "placeholder": "Ingrese el ID",
+            };
+        }
+    }
+    setRuleIp(force=false){
+        if(this.permissions.audit || force){
+            this.rulesDefault["ip"] = {
+                "update": false,
+                "visible": this.permissions.visible,
+                "search": this.permissions.filter,
+                'icon': 'fa fa-list',
+                "type": "text",
+                "key": "ip",
+                "title": "IP",
+                "placeholder": "Ingrese la IP",
+            };
+        }
+    }
+    setRuleUserAgent(force=false){
+        if(this.permissions.audit || force){
+            this.rulesDefault["userAgent"] = {
+                "update": false,
+                "visible": this.permissions.visible,
+                "search": this.permissions.filter,
+                'icon': 'fa fa-list',
+                "type": "text",
+                "key": "userAgent",
+                "title": "userAgent",
+                "placeholder": "Ingrese el userAgent",
+            };
+        }
+    }
+    setRuleUsernameCreator(force=false){
+        if(this.permissions.audit || force){
+            this.rulesDefault["usernameCreator"] = {
+                "update": false,
+                "visible": this.permissions.visible,
+                "search": this.permissions.filter,
+                'icon': 'fa fa-list',
+                "type": "text",
+                "key": "usernameCreator",
+                "title": "Creador",
+                "placeholder": "Ingrese el usuario creador",
+            };
+        }
+    }
+    setRuleUsernameUpdater(force=false){
+        if(this.permissions.audit || force){
+            this.rulesDefault["usernameUpdater"] = {
+                "update": false,
+                "visible": this.permissions.visible,
+                "search": this.permissions.filter,
+                'icon': 'fa fa-list',
+                "type": "text",
+                "key": "usernameUpdater",
+                "title": "Actualizador",
+                "placeholder": "Ingrese el usuario que actualizo",
+            };
+        }
+    }
+
 
     abstract initParamsSearch();
     private _initParamsSearch() {
