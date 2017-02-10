@@ -21,19 +21,19 @@
                 <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
                     <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
                 </td>
-                <td *ngIf="getModelActions" class="notHidden">
-                    <div *ngIf="getModelActions.length == 1">
-                        <a href="#" (click)="paramsData.select = data;getModelActions[0].callback(data);">
-                            <i class="{{getModelActions[0].icon}}"></i>
-                            &nbsp;{{getModelActions[0].title}}
+                <td *ngIf="getModelActions(data)" class="notHidden">
+                    <div *ngIf="getModelActions(data).length == 1">
+                        <a href="#" (click)="paramsData.select = data;getModelActions(data)[0].callback(data);">
+                            <i class="{{getModelActions(data)[0].icon}}"></i>
+                            &nbsp;{{getModelActions(data)[0].title}}
                         </a>
                     </div>
-                    <div *ngIf="getModelActions.length > 1" class="btn-group dropdown pull-right">
+                    <div *ngIf="getModelActions(data).length > 1" class="btn-group dropdown pull-right">
                         <button type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                                 <i class="fa fa-gears fa-lg"></i>
                         </button>
                         <ul role="menu" class="dropdown-menu text-left submenu-config">
-                            <li *ngFor="let action of getModelActions">
+                            <li *ngFor="let action of getModelActions(data)">
                                 <a (click)="paramsData.select = data;action.callback(data);">
                                     <i class="{{action.icon}}"></i>&nbsp;{{action.title}}
                                 </a>
