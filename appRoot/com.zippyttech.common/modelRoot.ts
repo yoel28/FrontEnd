@@ -498,4 +498,10 @@ export abstract class ModelRoot extends RestController{
             this.setBlockField(data);
         }.bind(this), 500);
     }
+    goPage(url:string,event?) {
+        if (event)
+            event.preventDefault();
+        let link = [url, {}];
+        this.db.router.navigate(link);
+    }
 }
