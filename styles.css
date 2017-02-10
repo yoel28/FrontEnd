@@ -353,3 +353,8 @@ ul.ui-autocomplete {
     border-color: #116f34 !important;
     border-radius: 10px !important;
 }
+.btn-transparent, .btn-transparent:focus,.btn-transparent:active,.btn-transparent:visited{
+    border: transparent;
+    background: transparent;
+    outline: transparent;
+}
