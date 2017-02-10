@@ -23,7 +23,7 @@
                 </td>
                 <td *ngIf="getModelActions(data)" class="notHidden">
                     <div *ngIf="getModelActions(data).length == 1">
-                        <a href="#" (click)="paramsData.select = data;getModelActions(data)[0].callback((key=='view')?i:data);">
+                        <a (click)="paramsData.select = data;getModelActions(data)[0].callback((action.title=='ver')?i:data);">
                             <i class="{{getModelActions(data)[0].icon}}"></i>
                             &nbsp;{{getModelActions(data)[0].title}}
                         </a>
@@ -34,7 +34,7 @@
                         </button>
                         <ul role="menu" class="dropdown-menu text-left submenu-config">
                             <li *ngFor="let action of getModelActions(data)">
-                                <a (click)="paramsData.select = data;action.callback((key=='view')?i:data);">
+                                <a (click)="paramsData.select = data;action.callback((action.title=='ver')?i:data);">
                                     <i class="{{action.icon}}"></i>&nbsp;{{action.title}}
                                 </a>
                             </li>
