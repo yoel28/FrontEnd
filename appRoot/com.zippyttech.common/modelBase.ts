@@ -4,8 +4,8 @@ import {DependenciesBase} from "./DependenciesBase";
 
 export abstract class ModelBase extends ModelRoot{
 
-    constructor(db:DependenciesBase,prefix,endpoint,useGlobal=true) {
-        super(db,prefix,endpoint,useGlobal);
+    constructor(db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string) {
+        super(db,endpoint,useGlobal,prefix);
         this.checkGlobal();
     }
     private checkGlobal(){
