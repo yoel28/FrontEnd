@@ -7,15 +7,15 @@ declare var moment:any;
 interface IDataView{
     internal?:boolean;
     cols?:{
-        lg:1|2|3|4|6|12;
-        md:1|2|3|4|6|12;
-        sm:1|2|3|4|6|12;
-        xs:1|2|3|4|6|12;
+        lg: 1|2|3|4|6|12;
+        md: 1|2|3|4|6|12;
+        sm: 1|2|3|4|6|12;
+        xs: 1|2|3|4|6|12;
     };
-    nav?:boolean | {
+    nav?:{
         dir:boolean;
         back:boolean;
-    };
+    } | boolean;
 }
 
 
@@ -29,17 +29,18 @@ interface IDataView{
 export class DataViewComponent implements OnInit{
     private model:any;
     private paramsData:any;
-    private dataParams:IDataView={ cols: {lg:4,md:3,sm:2,xs:1} };
+    private dataParams:IDataView={};
 
-    constructor(public db:DependenciesBase) { }
+    constructor(public db:DependenciesBase){}
 
-    ngOnInit(): void {
-        if(!this.model)
-            console.error("Model is required in DataViewComponent!");
+    ngOnInit(){
+        if(!this.model) console.error("Model is required in DataViewComponent!");
+        if(!this.dataParams.cols) this.dataParams.cols = {lg:4,md:3,sm:2,xs:1}
     }
 
     private getDataKeys():string[]{
         let keys:string[]=[];
+
         if(this.model.dataList){
             try {
                 Object.keys(this.model.rules).forEach((key) => {

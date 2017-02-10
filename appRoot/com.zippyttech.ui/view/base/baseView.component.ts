@@ -87,7 +87,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
                 icon: "fa fa-trash",
                 exp: "",
                 title: 'Eliminar',
-                callback:function(data?){
+                callback:function(){
                     jQuery("#"+that.model.prefix+'_'+that.configId+'_DEL').modal('hide');
                 },
                 permission: this.model.permissions.delete,
@@ -99,8 +99,8 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             icon: "fa fa-vcard",
             exp: "",
             title: 'ver',
-            callback:function(data?){
-                this.model.getDetail(data);
+            callback:function(index){
+                this.model.navIndex=""+index;
             }.bind(this),
             permission: true,
             message: "",
