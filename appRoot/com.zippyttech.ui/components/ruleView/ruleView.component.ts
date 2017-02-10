@@ -141,7 +141,15 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
     evalExp(data,exp){
-        return eval(exp);
+        try{
+            return eval(exp);
+        }catch (e){
+            this.db.debugLog(e);
+            this.db.debugLog('Verificar la regla en: ');
+            this.db.debugLog(data);
+            this.db.debugLog('-------------------------------------------------------------------------');
+        }
+
     }
 
     loadSaveModal(event,key,data) {
@@ -208,7 +216,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
     getEnabled(){
-        return (this.model.rules[this.key].update && this.data.enabled && !this.data.deleted && !this.disabled && !this.data.blockField)
+        return (this.model.rules[this.key].update && this.data.enabled && !this.data.deleted && !this.disabled && !this.data.blockField && this.data.editable)
     }
     loadLocationParams(event,data){
         if(event)
