@@ -133,6 +133,9 @@ a:not(.editable-empty){
 .nav-left:hover i, .nav-right:hover i{
     color: #FFF !important;
 }
+.nav-left:active i, .nav-right:active i{
+    border:none;
+}
 
 .view-tools-group{
     position: relative;
