@@ -8,7 +8,8 @@ declare var SystemJS:any;
     selector: 'basic-component',
     templateUrl:SystemJS.map.app+'/com.zippyttech.ui/view/base/base.html',
     styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/view/base/style.css'],
-    inputs:['model']
+    inputs:['model','viewActions'],
+    outputs:['getInstance']
 })
 export class BasicComponent extends BaseViewInstance{
 
