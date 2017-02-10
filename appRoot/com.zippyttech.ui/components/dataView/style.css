@@ -4,6 +4,7 @@
     height:auto;
     background:#FFF;
     overflow: auto;
+    width:100%;
 }
 
 .view i{
@@ -11,7 +12,7 @@
 }
 
 .view>*{
-    border-radius:0px !important;
+    float:left;
 }
 
 .view-header{
@@ -32,9 +33,20 @@
 
 .view-body{
     height: auto;
-    padding: 5px 5px 50px 5px;
-    overflow: auto;
-    /*perspective:1500px;*/
+    width:95%;
+    padding: 0px !important;
+    border-radius: 10px !important;
+    overflow:hidden;
+}
+
+.view-data{
+    border:1px solid rgba(0, 89, 180, .2);
+    width: 100%;
+    display:block;
+    height:auto;
+    overflow-y:auto;
+    border-radius: 0px !important;
+    padding: 10px 5px;
 }
 
 .view-item{
@@ -49,7 +61,6 @@
     position:absolute;
     display: block;
     background:rgba(0, 0, 0, 0.2);
-    width:i;
     height: 20px;
     transform: rotateX(-50deg) translateY(70px);
     filter: blur(10px);
@@ -99,4 +110,58 @@ a:not(.editable-empty){
     height: 100%;
     line-height: 100%;
     display: block;
+}
+
+
+/*#######*/
+
+.nav-left, .nav-right{
+    width:100%;
+    height: auto;
+    background: transparent !important;
+    border: none;
+    font-size: 32px;
+    padding:0px;
+    transition-duration:.5s;
+}
+
+.nav-left:hover, .nav-right:hover{
+    background: rgb(0, 89, 180) !important;
+    color: #FFF !important;
+}
+
+.nav-left:hover i, .nav-right:hover i{
+    color: #FFF !important;
+}
+
+.view-tools-group{
+    position: relative;
+    top: 45px;
+    border-radius: 10px 0px 0px 10px !important;
+    overflow: hidden;
+    padding:0px;
+    background: #0059b4 !important;
+    transition: .2s;
+    width: 5%;
+    max-width: 40px;
+    font-size:20px;
+}
+
+.view-tools-group>*{
+    border:none !important;
+    border-right: 1px solid;
+    float:right;
+    background: transparent;
+    color: #fff;
+    transition: .2s;
+}
+
+.view-tools-group>*:hover{
+    transform: translateX(-3px);
+    background: transparent;
+    color: #fff;
+}
+
+.view-tools-group>* i{
+    color: #FFF !important;
 }

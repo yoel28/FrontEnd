@@ -1,9 +1,15 @@
-<div class="view" *ngIf="model">
-    <div class="{{(dataParams.internal)?'':'box'}}">
-        <div class="view-header box-header" *ngIf="!dataParams.internal">
-            <i class="fa fa-building"></i> <h2>{{model.ruleObject.title}}</h2>
-        </div>
-        <div class="view-body {{(dataParams.internal)?'':'box-body'}}" *ngIf="model.completed">
+<div class="view {{(dataParams.internal)?'':'box'}}" *ngIf="model">
+    <div class="view-header box-header" *ngIf="!dataParams.internal">
+        <i class="fa fa-building"></i> <h2>{{model.ruleObject.title}}</h2>
+    </div>
+    <div class="view-tools-group">
+        <button (click)="model.navIndex = null" *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)" class="back">
+            <i class="fa fa-reply"></i>
+        </button>
+    </div>
+    <div class="view-body {{(dataParams.internal)?'':'box-body'}}" *ngIf="model.completed">
+        <button (click)="model.navIndex = -1" *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)" class="nav-btn nav-left" [disabled]="model.rest.findData || (model.navIndex==0 && model.rest.offset==0)"> <i class="fa fa-caret-up"></i> </button>
+        <div class="view-data">
             <div *ngFor="let key of getDataKeys()" class="view-item {{db.classCol(12/dataParams.cols.lg,12/dataParams.cols.md,12/dataParams.cols.sm,12/dataParams.cols.xs)}}">
                 <div class="view-item-icon {{db.classCol(2,2,2,2)}}">
                     <span>
@@ -13,11 +19,13 @@
                 <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
                     <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
                     <div class="view-item-detail-content">
-                        <rule-view [model]="model" [key]="key" [data]="(model.dataList.id)?model.dataList:model.dataList.list[0]" [disabled]="false" [paramsData]="paramsData"></rule-view>
-                        <!--paramsData disabled type-->
+                        <rule-view [data]="model.dataList.list[model.navIndex]"
+                                   [paramsData]="paramsData" [model]="model" [key]="key">
+                        </rule-view>
                     </div>
                 </div>
             </div>
         </div>
+        <button (click)="model.navIndex = 1" *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)"class="nav-btn nav-right" [disabled]="model.rest.findData || (model.navIndex+model.rest.offset==model.dataList.count-1)"><i class="fa fa-caret-down"></i> </button>
     </div>
 </div>

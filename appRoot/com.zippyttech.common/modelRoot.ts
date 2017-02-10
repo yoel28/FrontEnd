@@ -34,8 +34,32 @@ export abstract class ModelRoot extends RestController{
     public ruleObject:any={};
     public rulesSave:any={};
 
-    public navIndex:number=-1;
     private actions:IModelActions={};
+    private _navIndex:number=null;
+    public set navIndex(value: number|string){
+        if(value) {
+            let n = (typeof value == "string") ? Number(value) : this._navIndex + value;
+            if(n < 0 && this.rest.offset+n > 0){
+                this.loadData(this.rest.offset/this.rest.max).then(function(response){
+                    this._navIndex = this.rest.max + n;
+                    this.refreshData(this.dataList.list[this.navIndex]);
+                }.bind(this));
+            }else
+            if(n > this.rest.max-1 && this.rest.offset+n < this.dataList.count){
+                this.loadData(2+this.rest.offset/this.rest.max).then(function(response){
+                    this._navIndex = n - this.rest.max;
+                    this.refreshData(this.dataList.list[this.navIndex]);
+                }.bind(this));
+            }
+            else
+            if(n >= 0 &&  n <= this.rest.max-1 && this.rest.offset+n < this.dataList.count)
+                this._navIndex = n;
+            this.refreshData(this.dataList.list[this.navIndex]);
+        }
+        else this._navIndex = null;
+    }
+    public get navIndex(){ return this._navIndex; }
+
 
 
     public configId = moment().valueOf();
@@ -49,7 +73,6 @@ export abstract class ModelRoot extends RestController{
         super(db);
         if(prefix)
             this.prefix = prefix;
-
         this.endpoint = endpoint;
         this.useGlobal = useGlobal;
         this._initModel();
@@ -468,16 +491,11 @@ export abstract class ModelRoot extends RestController{
             }
         }
     }
-    public getDetail(data){
-        let backup = this.dataList;
-        this.dataList = data;
-        this.dataList.count = 1;
-        this.dataList.backup = backup;
-    // ,{'listBackup':this.dataList}
-    //  Object.assign(this.dataList,data);
-        //Object.assign({},this.dataList,data);
-    }
-    public getReturn(){
-        Object.assign(this.dataList,this.dataList.listBackup);
+
+    public refreshData(data){
+        this.setBlockField(data);
+        setTimeout(function(){
+            this.setBlockField(data);
+        }.bind(this), 500);
     }
 }
