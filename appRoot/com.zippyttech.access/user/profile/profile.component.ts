@@ -20,10 +20,10 @@ export class ProfileComponent extends ControllerBase implements OnInit{
     ngOnInit():any
     {
         super.ngOnInit();
-        this.loadPage();
     }
     initModel():any{
         this.model = new UserModel(this.db);
+        this.model.updateProfile();
     }
 
     saveImage(data){
