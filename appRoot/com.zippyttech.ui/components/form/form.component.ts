@@ -11,7 +11,7 @@ declare var jQuery:any;
     selector: 'form-view',
     templateUrl: 'index.html',
     styleUrls: [ 'style.css'],
-    inputs:['params','rules','onlyRequired'],
+    inputs:['params','rules'],
     outputs:['save','getInstance','getForm'],
 })
 export class FormComponent extends RestController implements OnInit,AfterViewInit{
@@ -31,7 +31,6 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
     public keys:any = {};
 
     public delete=false;
-    public onlyRequired=false;
 
     constructor(public db:DependenciesBase) {
         super(db);
@@ -55,7 +54,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
     initForm() {
         let that = this;
         Object.keys(this.rules).forEach((key)=> {
-            if((that.onlyRequired && (that.rules[key].required || that.rules[key].forceInSave)) || !that.onlyRequired){
+            if((that.params.onlyRequired && (that.rules[key].required || that.rules[key].forceInSave)) || !that.params.onlyRequired){
                 that.data[key] = [];
                 let validators=[];
                 if(that.rules[key].required)
