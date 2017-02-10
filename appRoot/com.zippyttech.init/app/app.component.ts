@@ -198,14 +198,14 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
             });
             this.menuItems.value.push({
-                'visible': this.db.myglobal.existsPermission(['MEN_USERS', 'MEN_ACL', 'MEN_PERM', 'MEN_ROLE', 'MEN_ACCOUNT']),
+                'visible': this.db.myglobal.existsPermission(['MEN_USER', 'MEN_ACL', 'MEN_PERMISSION', 'MEN_ROLE', 'MEN_ACCOUNT']),
                 'icon': 'fa fa-gears',
                 'title': 'Acceso',
                 'key': 'Acceso',
                 'select': false,
                 'treeview': [
                     {
-                        'visible': this.db.myglobal.existsPermission(['MEN_USERS']),
+                        'visible': this.db.myglobal.existsPermission(['MEN_USER']),
                         'icon': 'fa fa-user',
                         'title': 'Usuarios',
                         'routerLink': '/access/user'
@@ -217,7 +217,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                         'routerLink': '/access/acl'
                     },
                     {
-                        'visible': this.db.myglobal.existsPermission(['MEN_PERM']),
+                        'visible': this.db.myglobal.existsPermission(['MEN_PERMISSION']),
                         'icon': 'fa fa-user',
                         'title': 'Permisos',
                         'routerLink': '/access/permission'
@@ -237,7 +237,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 ]
             });
             this.menuItems.value.push({
-                'visible': this.db.myglobal.existsPermission(['MEN_EVENT', 'MEN_INFO', 'MEN_PARAM', 'MEN_RULE', 'MEN_NOTIFY','MEN_CHANNEL']),
+                'visible': this.db.myglobal.existsPermission(['MEN_EVENT', 'MEN_INFO', 'MEN_PARAM', 'MEN_RULE', 'MEN_NOTIFICATION','MEN_CHANNEL']),
                 'icon': 'fa fa-gears',
                 'title': 'Configuración',
                 'key': 'Configuracion',
@@ -248,6 +248,12 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                         'icon': 'fa fa-user',
                         'title': 'Canales',
                         'routerLink': '/business/channel'
+                    },
+                    {
+                        'visible': this.db.myglobal.existsPermission(['MEN_NOTIFICATION']),
+                        'icon': 'fa fa-user',
+                        'title': 'Notificaciones',
+                        'routerLink': '/business/notify'
                     },
                     {
                         'visible': this.db.myglobal.existsPermission(['MEN_EVENT']),
