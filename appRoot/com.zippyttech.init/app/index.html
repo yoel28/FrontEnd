@@ -1,4 +1,4 @@
-<div class="dm"  *ngIf="db.myglobal.dataSesion.valid">
+<div class="dm"  *ngIf="sessionValid">
     {{this.loadPage()}}
     <header class="main-header">
         <a href="#" [routerLink]="['/init/dashboard']" class="logo">
@@ -85,13 +85,13 @@
         </section>
     </aside>
 </div>
-<div [class.content-wrapper]="db.myglobal.dataSesion.valid" >
+<div [class.content-wrapper]="sessionValid" >
 
     <router-outlet></router-outlet>
 
     <ng2-toasty [position]="'top-right'"></ng2-toasty>
 </div>
-<div *ngIf="db.myglobal.dataSesion.valid" class="subir-top">
+<div *ngIf="sessionValid" class="subir-top">
     <div class="main-footer-container noprint">
         <footer class="main-footer">
             <div class="pull-right hidden-xs">
