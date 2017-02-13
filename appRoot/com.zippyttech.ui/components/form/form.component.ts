@@ -191,6 +191,9 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                 if(that.rules[key].type == 'number' && body[key]!=""){
                     body[key]=parseFloat(body[key]);
                 }
+                if(that.rules[key].type == 'select' && body[key]=="-1"){
+                    body[key]=null;
+                }
                 if(that.rules[key].type == 'boolean' && body[key]!=""){
                     if(typeof body[key] === 'string')
                         body[key]=body[key]=='true'?true:false;
