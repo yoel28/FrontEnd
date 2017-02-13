@@ -69,15 +69,15 @@ export class globalService extends RestController{
         this.loadRules();
         this.loadChannels();
     }
-    dataSesionInit():void{
+    dataSesionInit(value = false):void{
         this.dataSesion.setValue({
-            'token':        {'status':false,'title':'Validando usuario'},
-            'user':         {'status':false,'title':'Consultando datos del usuario'},
-            'permissions':  {'status':false,'title':'Consultando  permisos'},
-            'params':       {'status':false,'title':'Consultando  parametros'},
-            'help':         {'status':false,'title':'Consultando  ayudas'},
-            'rules':        {'status':false,'title':'Consultando  reglas'},
-            'channels':     {'status':false,'title':'Consultando  canales'},
+            'token':        {'status':value,'title':'Validando usuario'},
+            'user':         {'status':value,'title':'Consultando datos del usuario'},
+            'permissions':  {'status':value,'title':'Consultando  permisos'},
+            'params':       {'status':value,'title':'Consultando  parametros'},
+            'help':         {'status':value,'title':'Consultando  ayudas'},
+            'rules':        {'status':value,'title':'Consultando  reglas'},
+            'channels':     {'status':value,'title':'Consultando  canales'},
         });
     }
     errorGS = (err:any):void => {
