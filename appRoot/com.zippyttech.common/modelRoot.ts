@@ -440,7 +440,11 @@ export abstract class ModelRoot extends RestController{
         });
 
 
-        delete this.rulesSave['editable'];
+        delete this.rulesSave['id'];
+        delete this.rulesSave['ip'];
+        delete this.rulesSave['userAgent'];
+        delete this.rulesSave['usernameCreator'];
+        delete this.rulesSave['usernameUpdater'];
     }
     public spliceId(id:string)
     {
