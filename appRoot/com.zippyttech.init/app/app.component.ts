@@ -108,6 +108,9 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     ngAfterContentChecked() {
 
     }
+    public get sessionValid(){
+        return this.db.myglobal.dataSesion.valid && this.db.myglobal.user && !this.db.myglobal.user.temporal;
+    }
 
     @HostListener('window:resize', ['$event'])
     onResize(event) {
