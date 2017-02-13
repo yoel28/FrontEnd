@@ -11,19 +11,22 @@ interface IParamsDelete{
 }
 export interface IModelActions{
     [key:string]:{
-        id?:string,
-        title?: string,
-        icon?: string,
-        permission?: boolean,
-        message?: string,
-        exp?: string,
-        callback?: (data?:any)=>void;
+        view:[{
+            title: string,
+            icon: string,
+            colorClass?: string;
+        }],
+        permission: boolean;
+        callback(data?:any,index?:number);
+        id?:string;
+        message?: string;
+        exp?: string;
         key?:string;
-    }
+        syncKey?:string;
+    };
 }
 
 export abstract class ModelRoot extends RestController{
-
     public prefix = ((this.constructor.name).toUpperCase()).replace('MODEL','');
     public endpoint = "DEFAULT_ENDPOINT";
     public useGlobal:boolean=true;
@@ -37,22 +40,21 @@ export abstract class ModelRoot extends RestController{
     private actions:IModelActions={};
     private _navIndex:number=null;
     public set navIndex(value: number|string){
-        if(value) {
+        if(value!=null) {
             let n = (typeof value == "string") ? Number(value) : this._navIndex + value;
             if(n < 0 && this.rest.offset+n > 0){
                 this.loadData(this.rest.offset/this.rest.max).then(function(response){
                     this._navIndex = this.rest.max + n;
                     this.refreshData(this.dataList.list[this.navIndex]);
                 }.bind(this));
-            }else
-            if(n > this.rest.max-1 && this.rest.offset+n < this.dataList.count){
+            }
+            else if(n > this.rest.max-1 && this.rest.offset+n < this.dataList.count){
                 this.loadData(2+this.rest.offset/this.rest.max).then(function(response){
                     this._navIndex = n - this.rest.max;
                     this.refreshData(this.dataList.list[this.navIndex]);
                 }.bind(this));
             }
-            else
-            if(n >= 0 &&  n <= this.rest.max-1 && this.rest.offset+n < this.dataList.count)
+            else if(n >= 0 &&  n <= this.rest.max-1 && this.rest.offset+n < this.dataList.count)
                 this._navIndex = n;
             this.refreshData(this.dataList.list[this.navIndex]);
         }
@@ -130,32 +132,50 @@ export abstract class ModelRoot extends RestController{
     abstract initModelActions(params:IModelActions);
     private _initModelActions(){
 
+        this.actions["view"] = {
+            view:[{ title: 'ver', icon: "fa fa-vcard" }],
+            callback:function(data?,index?){
+                this.navIndex = index;
+            }.bind(this),
+            permission: true,
+        }
+        if(this.permissions.lock && this.permissions.visible) {
+            this.actions["enabled"] = {
+                view: [
+                    {icon: "fa fa-lock", title: "Habilitar", colorClass:"text-red"},
+                    {icon: "fa fa-unlock", title: "Deshabilitar", colorClass:"text-green"}
+                ],
+                permission: this.permissions.lock && this.permissions.visible,
+                callback: function (data?, index?) {
+                    data.enabled = !data.enabled;
+                }.bind(this),
+                syncKey: "enabled"
+            }
+            this.actions["editable"] = {
+                view: [
+                    {icon: "fa fa-lock", title: "Desbloquear", colorClass:"text-red"},
+                    {icon: "fa fa-unlock", title: "Bloquear", colorClass:"text-green"},
+                ],
+                permission: this.permissions.lock && this.permissions.visible,
+                callback: function (data?, index?) {
+                    data.editable = !data.editable;
+                }.bind(this),
+                syncKey: "editable"
+            }
+        }
+
         this.actions["delete"] = {
             id:this.prefix+'_'+this.configId+'_DEL',
-            icon: "fa fa-trash",
+            view:[{ icon: "fa fa-trash", title: 'Eliminar'}],
             exp:'data.enabled && data.editable && !data.deleted',
-            title: 'Eliminar',
-            callback:function(data?){
+            callback:function(data?,index?){
                 jQuery("#"+this.prefix+'_'+this.configId+'_DEL').modal('show');
             }.bind(this),
             permission: this.permissions.delete,
             message:'¿ Esta seguro de eliminar el valor con el codigo: ',
             key: 'code'
         };
-
-        this.actions["view"] = {
-            icon: "fa fa-vcard",
-            title: 'ver',
-            callback:function(index?){
-                this.navIndex = index;
-            }.bind(this),
-            permission: true,
-        }
-
     }
-    public get getActions(){
-        return this.actions;
-    };
 
 
     abstract modelExternal();
@@ -190,7 +210,7 @@ export abstract class ModelRoot extends RestController{
         if(this.permissions.lock || force){
             this.rulesDefault["enabled"] = {
                 "update": (this.permissions.update && this.permissions.lock),
-                "visible": this.permissions.lock && this.permissions.visible,
+                "visible": false,
                 "search": false,
                 "disabled":"data.deleted",
                 'required': true,
@@ -221,7 +241,7 @@ export abstract class ModelRoot extends RestController{
         if(this.permissions.lock || force){
             this.rulesDefault["editable"] = {
                 "update": (this.permissions.update && this.permissions.lock),
-                "visible": this.permissions.lock && this.permissions.visible,
+                "visible": false,
                 "disabled":'!data.enabled || data.deleted',
                 "search": this.permissions.search,
                 'icon': 'fa fa-list',
@@ -417,7 +437,7 @@ export abstract class ModelRoot extends RestController{
         let that = this;
         Object.keys(this.rules).forEach(key=>{
             that.rules[key].check =  false;
-        })
+        });
 
 
         delete this.rulesSave['editable'];
@@ -496,7 +516,7 @@ export abstract class ModelRoot extends RestController{
         this.setBlockField(data);
         setTimeout(function(){
             this.setBlockField(data);
-        }.bind(this), 500);
+        }.bind(this), 1);
     }
     goPage(url:string,event?) {
         if (event)
