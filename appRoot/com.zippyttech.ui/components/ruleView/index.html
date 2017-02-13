@@ -1,4 +1,4 @@
-<template [ngIf]="!getDisabledField(key,data)">
+<template [ngIf]="!getDisabledField(key,data) && !this.data.blockField">
 
     <i *ngIf="model.rules[key].iconVisible" class="{{model.rules[key].iconVisible}}">&nbsp;</i>
     <i *ngIf="model.rules[key].type == 'icon'" class="{{data[key]}}">&nbsp;</i>
