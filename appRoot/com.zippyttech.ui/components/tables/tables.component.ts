@@ -102,14 +102,10 @@ export class TablesComponent implements OnInit {
 
     public getModelActions(data:Object) {
         let action=[];
-        Object.keys(this.model.getActions).forEach(((key)=>
-        {
-            if(this.model.getActions[key].permission)
-            {
-                if(eval(this.model.getActions[key].exp || 'true'))
-                    action.push(this.model.getActions[key]);
-
-            }
+        Object.keys(this.model.actions).forEach((key=>{
+            if(this.model.actions[key].permission)
+                if(eval(this.model.actions[key].exp || 'true'))
+                    action.push(this.model.actions[key]);
         }).bind(this));
         return action;
     }
@@ -154,5 +150,19 @@ export class TablesComponent implements OnInit {
 
         this.model.onPatchObject(json,this.paramsData.select);
 
+    }
+
+    isUnique():boolean{
+        if(this.model.dataList.id || this.model.dataList.count==1 || this.model.navIndex != null)
+        {
+            if(this.model.navIndex == null)
+                this.model.navIndex = "0";
+            return true;
+        }
+        return false;
+    }
+
+    public getNumber(value):number{
+        return (value)?Number(value):0;
     }
 }
