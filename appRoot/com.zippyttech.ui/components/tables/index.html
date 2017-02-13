@@ -1,10 +1,11 @@
-<div *ngIf="model.dataList && model.dataList.list && model.navIndex != null">
+<div *ngIf="model.dataList && isUnique()">
     <data-view [model]="model" [dataParams]="{internal:true, nav:true}" [paramsData]="paramsData"></data-view>
 </div>
-<div *ngIf="model.dataList && model.dataList.list && model.navIndex == null" class="table-responsive"  >
+<div *ngIf="model.dataList && !isUnique()" class="table-responsive">
     <table id="footable" class="table table-striped table-hover"><!--x-footable -->
         <thead>
         <tr><!--[attr.data-breakpoints]="((i<2)?'':(i<=4)?'xs sm': (i<=7)?'xs sm md':'xs sm md lg')"-->
+            <th></th>
             <th data-type = "html" *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
                 <i *ngIf="model.rest.sort==key && model.rest.order == 'asc' && !model.rest.findData" class="fa fa-caret-up text-blue"></i>
                 <i *ngIf="model.rest.sort==key && model.rest.order == 'desc' && !model.rest.findData" class="fa fa-caret-down text-blue"></i>
@@ -18,28 +19,25 @@
         </thead>
         <tbody >
             <tr *ngFor="let data of model.dataList.list; let i=index"  [class.deleted]="data.deleted">
-                <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
-                    <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
-                </td>
                 <td *ngIf="getModelActions(data)" class="notHidden">
                     <div *ngIf="getModelActions(data).length == 1">
-                        <a (click)="paramsData.select = data;getModelActions(data)[0].callback((getModelActions(data)[0].title=='ver')?i:data);">
-                            <i class="{{getModelActions(data)[0].icon}}"></i>
-                            &nbsp;{{getModelActions(data)[0].title}}
+                        <a (click)="paramsData.select = data; getModelActions(data)[0].callback(data,i);">
+                            <i class="{{getModelActions(data)[0].view[0].icon}}"></i> {{getModelActions(data)[0].view[0].title}}
                         </a>
                     </div>
-                    <div *ngIf="getModelActions(data).length > 1" class="btn-group dropdown pull-right">
+                    <div *ngIf="getModelActions(data).length > 1" class="btn-group dropdown">
                         <button type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-gears fa-lg"></i>
+                            <i class="fa fa-gears fa-lg"></i>
                         </button>
                         <ul role="menu" class="dropdown-menu text-left submenu-config">
-                            <li *ngFor="let action of getModelActions(data)">
-                                <a (click)="paramsData.select = data;action.callback((action.title=='ver')?i:data);">
-                                    <i class="{{action.icon}}"></i>&nbsp;{{action.title}}
-                                </a>
+                            <li *ngFor="let action of getModelActions(data)" (click)="paramsData.select = data;action.callback(data,i);">
+                                <a class="cursor-pointer {{action.view[getNumber(data[action.syncKey])].colorClass}}"> <i class="{{action.view[getNumber(data[action.syncKey])].icon}}"></i>&nbsp;{{action.view[getNumber(data[action.syncKey])].title}} </a>
                             </li>
                         </ul>
                     </div>
+                </td>
+                <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
+                    <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
                 </td>
             </tr>
         </tbody>
@@ -71,8 +69,8 @@
 
 <!--########################################MODALS########################################-->
 
-<div *ngIf="model.permissions.delete && model.getActions && model.getActions['delete']">
-    <div class="modal fade" [attr.id]="model.getActions['delete'].id" tabindex="-1" role="dialog"
+<div *ngIf="model.permissions.delete && model.actions && model.actions['delete']">
+    <div class="modal fade" [attr.id]="model.actions['delete'].id" tabindex="-1" role="dialog"
          aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -85,7 +83,7 @@
                     </strong></h3>
                 </div>
                 <div class="modal-body">
-                    {{model.getActions['delete'].message}} <strong>'{{paramsData.select[model.getActions['delete'].key]}}'</strong>
+                    {{model.actions['delete'].message}} <strong>'{{paramsData.select[model.actions['delete'].key]}}'</strong>
                     ?
                 </div>
                 <div class="modal-footer">
