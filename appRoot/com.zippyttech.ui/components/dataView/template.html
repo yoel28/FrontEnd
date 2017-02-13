@@ -19,7 +19,7 @@
                 <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
                     <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
                     <div class="view-item-detail-content">
-                        <rule-view [data]="model.dataList.list[model.navIndex]"
+                        <rule-view [data]="(model.dataList.id)?model.dataList:model.dataList.list[model.navIndex]"
                                    [paramsData]="paramsData" [model]="model" [key]="key">
                         </rule-view>
                     </div>
