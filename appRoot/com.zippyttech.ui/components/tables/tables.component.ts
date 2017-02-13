@@ -17,7 +17,7 @@ declare var moment:any;
 })
 export class TablesComponent implements OnInit {
 
-    public model:ModelRoot;
+    public model:any;
 
     public paramsData:IRuleView={
         select:{},
