@@ -43,7 +43,20 @@
             <template [ngIf]="!getEnabled()">
                 <button class="btn btn-box-tool" (click)="loadLocationParams($event,data)" data-toggle="modal" data-target="#modalLocation" [attr.title]="db.msg.viewLocation"><i class="fa fa-map-marker fa-lg text-red"></i></button>            </template>
         </template>
-    </template>
+
+        <template [ngIf]="model.rules[key].type=='progress'">
+            <template [ngIf]="getEnabled()">
+                <template [ngIf]="model.rules[key].progress=='knob'">
+                    <input knob type="text" class="dial" [model]="model" [data]="data" [key]="key" [attr.value]="(data[key] || 0)" data-width="100%" [attr.title]="model.rules[key].title+': '+(data[key] || 0)">
+                </template>
+            </template>
+
+            <template [ngIf]="!getEnabled()">
+                <template [ngIf]="model.rules[key].progress=='knob'">
+                    <input knob type="text" class="dial" [model]="model" [data]="data" [key]="key" [attr.value]="(data[key] || 0)" data-width="100%" [attr.title]="model.rules[key].title+': '+(data[key] || 0)">
+                </template>
+            </template>
+        </template>
 
     <template [ngIf]="model.rules[key] && model.rules[key].type=='image'">
             <img [attr.id]="'img'+data.id+'_'+key"
