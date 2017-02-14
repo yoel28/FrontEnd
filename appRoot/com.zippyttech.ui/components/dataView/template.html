@@ -14,8 +14,8 @@
         </template>
     </div>
     <div class="view-body {{(dataParams.internal)?'':'box-body'}}" *ngIf="model.completed">
-        <button *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)"
-                [disabled]="model.rest.findData || (model.navIndex==0 && model.rest.offset==0)"
+        <button *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)) && (model.dataList.count && model.dataList.count>1)"
+                [disabled]="model.rest.findData || (model.navIndex==0 && model.rest.offset==0) || (model.dataList.count && model.dataList.count==1)"
                 class="nav-btn nav-left"  (click)="model.navIndex = -1"
         >  <i class="fa fa-caret-up"></i>
         </button>
@@ -34,7 +34,7 @@
                 </div>
             </div>
         </div>
-        <button *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)"
+        <button *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)) && (model.dataList.count && model.dataList.count>1)"
                 [disabled]="model.rest.findData || (model.navIndex+model.rest.offset==model.dataList.count-1)"
                 class="nav-btn nav-right" (click)="model.navIndex = 1"
         ><i class="fa fa-caret-down"></i>
