@@ -175,7 +175,7 @@ export abstract class ModelRoot extends RestController{
                 {icon: "fa fa-pencil", title: "Editable", colorClass:"text-green"},
             ],
             exp:'data.enabled && !data.deleted',
-            permission: this.permissions.lock && this.permissions.update,            exp:'data.enabled && !data.deleted',
+            permission: this.permissions.lock && this.permissions.update,
             callback: function (data?, index?) {
                 this.onLock('editable',data);
             }.bind(this),
@@ -185,8 +185,8 @@ export abstract class ModelRoot extends RestController{
 
         this.actions["visible"] = {
             view: [
-                {icon: "fa fa-eye", title: "Visible", colorClass:"text-green"},
-                {icon: "fa fa-eye-slash", title: "Oculto", colorClass:"text-red"}
+                {icon: "fa fa-eye-slash", title: "Oculto", colorClass:"text-red"},
+                {icon: "fa fa-eye", title: "Visible", colorClass:"text-green"}
             ],
             exp:'data.enabled && !data.deleted',
             permission: this.permissions.update && this.permissions.visible,
