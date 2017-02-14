@@ -23,6 +23,7 @@ export class globalService extends RestController{
     public channelWebsocket:any={};
 
     public navigationStart:boolean=false;
+    public accountAvailable=0;
 
     public dataSesion = new FormControl(
         null,
