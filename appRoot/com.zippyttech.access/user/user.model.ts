@@ -87,17 +87,17 @@ export class UserModel extends ModelBase{
             'source': [
                 {
                     'value': true,
-                    'text': 'Verificado',
-                    'class': 'btn-transparent text-blue',
-                    'title': 'Verificado',
-                    'icon': 'fa fa-check-circle'
-                },
-                {
-                    'value': false,
                     'text': 'Sin verificar',
                     'class': 'btn-transparent  text-red',
                     'title': 'Sin verificar',
                     'icon': 'fa fa-exclamation-circle'
+                },
+                {
+                    'value': false,
+                    'text': 'Verificado',
+                    'class': 'btn-transparent text-blue',
+                    'title': 'Verificado',
+                    'icon': 'fa fa-check-circle'
                 }
             ],
             "key": "accountLocked",
