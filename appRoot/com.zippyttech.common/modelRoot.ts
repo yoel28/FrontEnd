@@ -1,6 +1,7 @@
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {RestController} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
+import {FormControl} from "@angular/forms";
 
 declare var moment:any;
 declare var jQuery:any;
@@ -36,8 +37,10 @@ export abstract class ModelRoot extends RestController{
     public paramsSave:any = {};
     public ruleObject:any={};
     public rulesSave:any={};
+    public actions:IModelActions={};
 
-    private actions:IModelActions={};
+    public lockList:boolean = false;
+
     private _navIndex:number=null;
     public set navIndex(value: number|string){
         if(value!=null) {
@@ -68,7 +71,16 @@ export abstract class ModelRoot extends RestController{
     private rulesDefault:any = {};
     public rules:Object={};
 
-    public dataList:any={};
+    private _dataList:FormControl;
+
+    public set dataList(value:any){
+        if(this._dataList)
+            this._dataList.setValue(value);
+    }
+
+    public get dataList(){
+        return this._dataList.value;
+    }
 
 
     constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
@@ -77,7 +89,11 @@ export abstract class ModelRoot extends RestController{
             this.prefix = prefix;
         this.endpoint = endpoint;
         this.useGlobal = useGlobal;
+        this._dataList = new FormControl({});
         this._initModel();
+        this._dataList.valueChanges.subscribe((values=>{
+            console.log("CHANGED!");
+        }).bind(this));
     }
 
     private _initModel(){
@@ -142,23 +158,25 @@ export abstract class ModelRoot extends RestController{
         if(this.permissions.lock && this.permissions.visible) {
             this.actions["enabled"] = {
                 view: [
-                    {icon: "fa fa-lock", title: "Habilitar", colorClass:"text-red"},
-                    {icon: "fa fa-unlock", title: "Deshabilitar", colorClass:"text-green"}
+                    {icon: "fa fa-lock", title: "Desabilitado", colorClass:"text-red"},
+                    {icon: "fa fa-unlock", title: "Habilitado", colorClass:"text-green"}
                 ],
+                exp:'!data.deleted',
                 permission: this.permissions.lock && this.permissions.visible,
                 callback: function (data?, index?) {
-                    data.enabled = !data.enabled;
+                    this.onLock("enabled",data);
                 }.bind(this),
                 syncKey: "enabled"
             }
             this.actions["editable"] = {
                 view: [
-                    {icon: "fa fa-lock", title: "Desbloquear", colorClass:"text-red"},
-                    {icon: "fa fa-unlock", title: "Bloquear", colorClass:"text-green"},
+                    {icon: "fa fa-edit", title: "No Editable", colorClass:"text-red"},
+                    {icon: "fa fa-pencil", title: "Editable", colorClass:"text-green"},
                 ],
+                exp:'data.enabled',
                 permission: this.permissions.lock && this.permissions.visible,
                 callback: function (data?, index?) {
-                    data.editable = !data.editable;
+                    this.onPatch("editable",data);
                 }.bind(this),
                 syncKey: "editable"
             }
@@ -198,76 +216,13 @@ export abstract class ModelRoot extends RestController{
 
     }
     private loadRulesExtra(){
-        this.setRuleEnable();
-        this.setRuleEditable();
         this.setRuleId();
         this.setRuleIp();
         this.setRuleUserAgent();
         this.setRuleUsernameCreator();
         this.setRuleUsernameUpdater();
     }
-    setRuleEnable(force =  false){
-        if(this.permissions.lock || force){
-            this.rulesDefault["enabled"] = {
-                "update": (this.permissions.update && this.permissions.lock),
-                "visible": false,
-                "search": false,
-                "disabled":"data.deleted",
-                'required': true,
-                "type": "boolean",
-                'source': [
-                    {
-                        'value': true,
-                        'text': 'Habilitado',
-                        'class': 'btn-transparent text-green',
-                        'title': 'Habilitado',
-                        'icon': 'fa fa-unlock'
-                    },
-                    {
-                        'value': false,
-                        'text': 'Deshabilitado',
-                        'class': 'btn-transparent  text-red',
-                        'title': 'Deshabilitado',
-                        'icon': 'fa fa-lock'
-                    },
-                ],
-                "key": "enabled",
-                "title": "Habilitado",
-                "placeholder": "",
-            };
-        }
-    }
-    setRuleEditable(force=false){
-        if(this.permissions.lock || force){
-            this.rulesDefault["editable"] = {
-                "update": (this.permissions.update && this.permissions.lock),
-                "visible": false,
-                "disabled":'!data.enabled || data.deleted',
-                "search": this.permissions.search,
-                'icon': 'fa fa-list',
-                "type": "boolean",
-                'source': [
-                    {
-                        'value': true,
-                        'text': 'Editable',
-                        'class': 'btn-transparent text-green',
-                        'title': 'Editable',
-                        'icon': 'fa fa-pencil-square-o'
-                    },
-                    {
-                        'value': false,
-                        'text': 'Bloqueado',
-                        'class': 'btn-transparent  text-red',
-                        'title': 'Protegido',
-                        'icon': 'fa fa-lock'
-                    },
-                ],
-                "key": "editable",
-                "title": "Editable",
-                "placeholder": "Editable",
-            };
-        }
-    }
+
     setRuleId(force=false){
         if(this.permissions.audit || force){
             this.rulesDefault["id"] = {
@@ -518,10 +473,29 @@ export abstract class ModelRoot extends RestController{
             this.setBlockField(data);
         }.bind(this), 1);
     }
+
+    public refreshList(){
+        this.lockList = true;
+        setTimeout(()=>{
+            this.lockList=false;
+        },);
+    }
+
     goPage(url:string,event?) {
         if (event)
             event.preventDefault();
         let link = [url, {}];
         this.db.router.navigate(link);
     }
+
+    public getActionsArray(data:Object) { //data se usa en tiempo de ejecucion segun el string dentro de "eval()"
+        let action=[];
+        Object.keys(this.actions).forEach((key=>{
+            if(this.actions[key].permission && !(key=='view' && this.navIndex!=null))
+                if(eval(this.actions[key].exp || 'true'))
+                    action.push(this.actions[key]);
+        }).bind(this));
+        return action;
+    }
+
 }
