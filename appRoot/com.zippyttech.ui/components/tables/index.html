@@ -1,12 +1,13 @@
 <div *ngIf="model.dataList && isUnique()">
-    <data-view [model]="model" [dataParams]="{internal:true, nav:(model.dataList.count > 1)}" [paramsData]="paramsData"></data-view>
+    <data-view [model]="model" [dataParams]="{internal:true, nav:true}"></data-view>
 </div>
 <div *ngIf="model.dataList && !isUnique()" class="table-responsive">
-    <table id="footable" class="table table-striped table-hover"><!--x-footable -->
+    <table id="footable" class="table table-striped table-hover" ><!--*ngIf="!model.updating"--><!--x-footable -->
         <thead>
-        <tr><!--[attr.data-breakpoints]="((i<2)?'':(i<=4)?'xs sm': (i<=7)?'xs sm md':'xs sm md lg')"-->
-            <th></th>
-            <th data-type = "html" *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
+        <tr>
+            <div></div><!--[attr.data-breakpoints]="((i<1)?'':(i<2)?'xs':(i<4)?'xs sm': (i<=6)?'xs sm md':'xs sm md lg')" -->
+            <th
+                data-type = "html" *ngFor="let key of keyVisible(); let i=index" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
                 <i *ngIf="model.rest.sort==key && model.rest.order == 'asc' && !model.rest.findData" class="fa fa-caret-up text-blue"></i>
                 <i *ngIf="model.rest.sort==key && model.rest.order == 'desc' && !model.rest.findData" class="fa fa-caret-down text-blue"></i>
                 <i *ngIf="model.rest.sort==key && model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
@@ -19,23 +20,23 @@
         </thead>
         <tbody >
             <tr *ngFor="let data of model.dataList.list; let i=index"  [class.deleted]="data.deleted">
-                <td *ngIf="getModelActions(data)" class="notHidden">
-                    <div *ngIf="getModelActions(data).length == 1">
-                        <a (click)="paramsData.select = data; getModelActions(data)[0].callback(data,i);">
-                            <i class="{{getModelActions(data)[0].view[0].icon}}"></i> {{getModelActions(data)[0].view[0].title}}
+                <div *ngIf="model.getActionsArray(data)" class="notHidden">
+                    <div *ngIf="model.getActionsArray(data).length == 1">
+                        <a (click)="paramsData.select = data; model.getActionsArray(data)[0].callback(data,i);">
+                            <i class="{{model.getActionsArray(data)[0].view[0].icon}}"></i> {{model.getActionsArray(data)[0].view[0].title}}
                         </a>
                     </div>
-                    <div *ngIf="getModelActions(data).length > 1" class="btn-group dropdown">
+                    <div *ngIf="model.getActionsArray(data).length > 1" class="btn-group dropdown">
                         <button type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-gears fa-lg"></i>
                         </button>
                         <ul role="menu" class="dropdown-menu text-left submenu-config">
-                            <li *ngFor="let action of getModelActions(data)" (click)="paramsData.select = data;action.callback(data,i);">
+                            <li *ngFor="let action of model.getActionsArray(data)" (click)="paramsData.select = data;action.callback(data,i);">
                                 <a class="cursor-pointer {{action.view[getNumber(data[action.syncKey])].colorClass}}"> <i class="{{action.view[getNumber(data[action.syncKey])].icon}}"></i>&nbsp;{{action.view[getNumber(data[action.syncKey])].title}} </a>
                             </li>
                         </ul>
                     </div>
-                </td>
+                </div>
                 <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
                     <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
                 </td>
@@ -170,7 +171,7 @@
             <location-picker [params]="paramsData.locationParams"></location-picker>
         </div>
         <div  *ngIf="!paramsData.locationParams.disabled" footer>
-            <button class="btn btn-success" (click)="saveLocation($event)" data-dismiss="modal">{{db.msg.save}}</button>
+            <button class="btn btn-success" (click)="saveLocation($event)" >{{db.msg.save}}</button>
         </div>
     </modal-view>
 </template>
