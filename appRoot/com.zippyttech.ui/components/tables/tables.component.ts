@@ -85,7 +85,7 @@ export class TablesComponent implements OnInit {
         Object.keys(this.model.rules).forEach(key=>{
             if(that.model.rules[key].object && !that.model.rules[key].reference && that.model.rules[key].permissions.add)
                 that.modelSave[key]=that.model.rules[key];
-        })
+        });
     }
 
     getDataSave(data,key){
@@ -98,16 +98,6 @@ export class TablesComponent implements OnInit {
 
     getDataSearchMultiple(data){
         this.model.onPatch(this.paramsData.searchParams['field'],this.paramsData.select,data);
-    }
-
-    public getModelActions(data:Object) {
-        let action=[];
-        Object.keys(this.model.actions).forEach((key=>{
-            if(this.model.actions[key].permission)
-                if(eval(this.model.actions[key].exp || 'true'))
-                    action.push(this.model.actions[key]);
-        }).bind(this));
-        return action;
     }
 
     getObjectKeys(data){
