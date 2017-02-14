@@ -89,6 +89,8 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
             localStorage.setItem('bearer', response.json().access_token);
             contentHeaders.delete('Authorization');
             contentHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('bearer'));
+            (!this.context.company)
+                localStorage.setItem('userTemp','true');
             let link = ['/init/load', {}];
             that.db.router.navigate(link);
         };
