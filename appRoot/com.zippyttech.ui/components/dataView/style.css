@@ -11,7 +11,7 @@
     color:#0059b4;
 }
 
-.view>*{
+.view>*:not(.view-header){
     float:left;
 }
 
@@ -40,13 +40,16 @@
 }
 
 .view-data{
-    border:1px solid rgba(0, 89, 180, .2);
     width: 100%;
     display:block;
     height:auto;
     overflow-y:auto;
     border-radius: 0px !important;
     padding: 10px 5px;
+}
+
+.view-data-internal{
+    border:1px solid rgba(0, 89, 180, .2);
 }
 
 .view-item{
@@ -120,10 +123,11 @@ a:not(.editable-empty){
     width:100%;
     height: auto;
     background: transparent !important;
-    border: none;
+    border: none !important;
     font-size: 32px;
     padding:0px;
     transition-duration:.5s;
+    outline: none;
 }
 
 .nav-left:hover, .nav-right:hover{
@@ -134,8 +138,9 @@ a:not(.editable-empty){
 .nav-left:hover i, .nav-right:hover i{
     color: #FFF !important;
 }
-.nav-left:active i, .nav-right:active i{
-    border:none;
+.nav-left:active, .nav-right:active,.nav-left:focus, .nav-right:focus{
+    border:none !important;
+    outline: none;
 }
 
 .view-tools-group{
@@ -153,19 +158,30 @@ a:not(.editable-empty){
 
 .view-tools-group>*{
     border:none !important;
-    border-right: 1px solid;
-    float:right;
-    background: transparent;
+    background: transparent !important;
     color: #fff;
     transition: .2s;
+    width: 100%;
+    padding: 1px;
 }
 
 .view-tools-group>*:hover{
-    transform: translateX(-3px);
     background: transparent;
     color: #fff;
+    box-shadow: inset 0px 0px 30px 1px rgba(0, 0, 0, 0.4);
+}
+
+.view-tools-group>*:focus, .view-tools-group>*:active{
+    border:none !important;
+    outline: none;
 }
 
 .view-tools-group>* i{
     color: #FFF !important;
+    transition: .2s;
+}
+
+
+.view-tools-group>*:hover>i {
+    transform: scale(.9);
 }

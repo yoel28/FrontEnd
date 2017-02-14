@@ -1,5 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
+import {IRuleView} from "../ruleView/ruleView.component";
 
 declare var SystemJS:any;
 declare var moment:any;
@@ -24,34 +25,37 @@ interface IDataView{
     selector: 'data-view',
     templateUrl: 'template.html',
     styleUrls: ['style.css'],
-    inputs:['model','dataParams','paramsData']
+    inputs:['model','dataParams']
 })
 export class DataViewComponent implements OnInit{
     private model:any;
-    private paramsData:any;
     private dataParams:IDataView={};
+    public paramsData:IRuleView={ select:{}, searchParams:{}, searchInstances:{}, viewListData:{},
+        ruleReference:{}, locationParams:null };
+
+    private _data:any; //dataList
+    private set data(dataList){ this._data = dataList;}
+    private get data(){ return (this._data.list)?this._data.list[this.model.navIndex]:this._data;}
 
     constructor(public db:DependenciesBase){}
 
     ngOnInit(){
         if(!this.model) console.error("Model is required in DataViewComponent!");
         if(!this.dataParams.cols) this.dataParams.cols = {lg:4,md:3,sm:2,xs:1}
+        this.data = this.model.dataList;
     }
 
     private getDataKeys():string[]{
         let keys:string[]=[];
-
-        if(this.model.dataList){
-            try {
-                Object.keys(this.model.rules).forEach((key) => {
-                    if (this.model.rules[key].visible)
-                        keys.push(key);
-                });
-            }
-            catch(e){
-                console.log(e);
-            }
-        }
+        if(this.data)
+            Object.keys(this.model.rules).forEach((key=>{
+                if(this.model.rules[key].visible)
+                    keys.push(key);
+            }).bind(this));
        return keys;
+    }
+
+    public getNumber(value):number{
+        return (value)?Number(value):0;
     }
 }

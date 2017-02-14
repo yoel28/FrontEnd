@@ -6,10 +6,20 @@
         <button (click)="model.navIndex = null" *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)" class="back">
             <i class="fa fa-reply"></i>
         </button>
+        <template [ngIf]="dataParams.internal">
+            <button *ngFor="let action of model.getActionsArray(data)"
+                    (click)="action.callback(data,model.navIndex||0)">
+                <i class="{{action.view[getNumber(data[action.syncKey])||0].icon}}"></i>
+            </button>
+        </template>
     </div>
     <div class="view-body {{(dataParams.internal)?'':'box-body'}}" *ngIf="model.completed">
-        <button (click)="model.navIndex = -1" *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)" class="nav-btn nav-left" [disabled]="model.rest.findData || (model.navIndex==0 && model.rest.offset==0)"> <i class="fa fa-caret-up"></i> </button>
-        <div class="view-data">
+        <button *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)"
+                [disabled]="model.rest.findData || (model.navIndex==0 && model.rest.offset==0)"
+                class="nav-btn nav-left"  (click)="model.navIndex = -1"
+        >  <i class="fa fa-caret-up"></i>
+        </button>
+        <div class="view-data {{((dataParams.internal)?'view-data-internal':'')}}">
             <div *ngFor="let key of getDataKeys()" class="view-item {{db.classCol(12/dataParams.cols.lg,12/dataParams.cols.md,12/dataParams.cols.sm,12/dataParams.cols.xs)}}">
                 <div class="view-item-icon {{db.classCol(2,2,2,2)}}">
                     <span>
@@ -19,13 +29,15 @@
                 <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
                     <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
                     <div class="view-item-detail-content">
-                        <rule-view [data]="(model.dataList.id)?model.dataList:model.dataList.list[model.navIndex]"
-                                   [paramsData]="paramsData" [model]="model" [key]="key">
-                        </rule-view>
+                        <rule-view [model]="model" [data]="data"  [key]="key" [paramsData]="paramsData"> </rule-view>
                     </div>
                 </div>
             </div>
         </div>
-        <button (click)="model.navIndex = 1" *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)"class="nav-btn nav-right" [disabled]="model.rest.findData || (model.navIndex+model.rest.offset==model.dataList.count-1)"><i class="fa fa-caret-down"></i> </button>
+        <button *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir)"
+                [disabled]="model.rest.findData || (model.navIndex+model.rest.offset==model.dataList.count-1)"
+                class="nav-btn nav-right" (click)="model.navIndex = 1"
+        ><i class="fa fa-caret-down"></i>
+        </button>
     </div>
 </div>
