@@ -87,6 +87,7 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
         let successCallback = (response:any) => {
             that.submitForm = false;
             localStorage.setItem('bearer', response.json().access_token);
+            contentHeaders.delete('Authorization');
             contentHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('bearer'));
             let link = ['/init/load', {}];
             that.db.router.navigate(link);
