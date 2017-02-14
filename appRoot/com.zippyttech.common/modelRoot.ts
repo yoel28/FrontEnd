@@ -153,38 +153,54 @@ export abstract class ModelRoot extends RestController{
             callback:function(data?,index?){
                 this.navIndex = index;
             }.bind(this),
-            permission: true,
+            permission: this.permissions.list,
+        };
+
+        this.actions["enabled"] = {
+            view: [
+                {icon: "fa fa-lock", title: "Deshabilitado", colorClass:"text-red"},
+                {icon: "fa fa-unlock", title: "Habilitado", colorClass:"text-green"}
+            ],
+            exp:'!data.deleted',
+            permission: this.permissions.lock && this.permissions.update,
+            callback: function (data?, index?) {
+                this.onLock('enabled',data);
+            }.bind(this),
+            syncKey: "enabled"
+        };
+
+        this.actions["editable"] = {
+            view: [
+                {icon: "fa fa-edit", title: "No Editable", colorClass:"text-red"},
+                {icon: "fa fa-pencil", title: "Editable", colorClass:"text-green"},
+            ],
+            exp:'data.enabled && !data.deleted',
+            permission: this.permissions.lock && this.permissions.update,
+            callback: function (data?, index?) {
+                this.onLock('editable',data);
+            }.bind(this),
+            syncKey: "editable"
         }
-        if(this.permissions.lock && this.permissions.visible) {
-            this.actions["enabled"] = {
-                view: [
-                    {icon: "fa fa-lock", title: "Desabilitado", colorClass:"text-red"},
-                    {icon: "fa fa-unlock", title: "Habilitado", colorClass:"text-green"}
-                ],
-                exp:'!data.deleted',
-                permission: this.permissions.lock && this.permissions.visible,
-                callback: function (data?, index?) {
-                    this.onLock("enabled",data);
-                }.bind(this),
-                syncKey: "enabled"
-            }
-            this.actions["editable"] = {
-                view: [
-                    {icon: "fa fa-edit", title: "No Editable", colorClass:"text-red"},
-                    {icon: "fa fa-pencil", title: "Editable", colorClass:"text-green"},
-                ],
-                exp:'data.enabled',
-                permission: this.permissions.lock && this.permissions.visible,
-                callback: function (data?, index?) {
-                    this.onPatch("editable",data);
-                }.bind(this),
-                syncKey: "editable"
-            }
+
+
+        this.actions["visible"] = {
+            view: [
+                {icon: "fa fa-eye-slash", title: "Oculto", colorClass:"text-red"},
+                {icon: "fa fa-eye", title: "Visible", colorClass:"text-green"}
+            ],
+            exp:'data.enabled && !data.deleted',
+            permission: this.permissions.update && this.permissions.visible,
+            callback: function (data?, index?) {
+                this.onPatch('visible',data);
+            }.bind(this),
+            syncKey: "visible"
         }
 
         this.actions["delete"] = {
             id:this.prefix+'_'+this.configId+'_DEL',
-            view:[{ icon: "fa fa-trash", title: 'Eliminar'}],
+            view:[
+                { icon: "fa fa-trash", title: 'Eliminar'}
+            ],
             exp:'data.enabled && data.editable && !data.deleted',
             callback:function(data?,index?){
                 jQuery("#"+this.prefix+'_'+this.configId+'_DEL').modal('show');
@@ -394,8 +410,11 @@ export abstract class ModelRoot extends RestController{
             that.rules[key].check =  false;
         });
 
-
-        delete this.rulesSave['editable'];
+        delete this.rulesSave['id'];
+        delete this.rulesSave['ip'];
+        delete this.rulesSave['userAgent'];
+        delete this.rulesSave['usernameCreator'];
+        delete this.rulesSave['usernameUpdater'];
     }
     public spliceId(id:string)
     {

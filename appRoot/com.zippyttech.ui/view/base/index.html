@@ -1,6 +1,6 @@
 <div *ngIf="model.permissions.warning || !modalIn" >
     <div class="main-view-container">
-        <div [@animation_0]='(model.dataList && model.dataList.count)?"true":"false"'>
+        <div [@animation_0]='(model.dataList &&  (model.dataList.list || model.dataList.id))?"true":"false"'>
             <section class="content">
                 <div class="box">
                     <div class="box-header with-border">
@@ -81,10 +81,10 @@
                         </div>
                     </div>
                     <div *ngIf="model.permissions.list && model.dataList" class="box-body">
-                        <div *ngIf="model.dataList.count>0">
+                        <div *ngIf="model.dataList.count > 0 || model.dataList.id">
                             <tables-view  [model]="model" (getInstance)="setInstance($event)"></tables-view>
                         </div>
-                        <div *ngIf="model.dataList.count == 0">
+                        <div *ngIf="model.dataList.count == 0 || (!model.dataList.id && !model.dataList.list )">
                             <div class="alert alert-warning alert-dismissable">
                                 <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
                                 <strong><i class="fa fa-warning"></i></strong>&nbsp;{{db.msg.notFound | translate}}
@@ -100,7 +100,7 @@
                 </div>
             </section>
         </div>
-        <div class="preload" *ngIf='!(model.dataList && model.dataList.count)'>
+        <div class="preload" *ngIf='!(model.dataList && model.dataList.list)'>
             <div id="screen">
                 <div id="course">
                     <div id="hole"></div>

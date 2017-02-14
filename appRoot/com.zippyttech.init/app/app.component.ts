@@ -80,9 +80,12 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     that.db.router.navigate(link);
                 }
 
-                if (that.db.myglobal.dataSesion.valid && that.db.myglobal.getParams('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE')) {
-                    localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE'));
-                    location.reload(true);
+                if (that.db.myglobal.dataSesion.valid  && that.db.myglobal.getParams('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE')) {
+                    if(!that.db.myglobal.user.temporal)
+                    {
+                        localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE'));
+                        location.reload(true);
+                    }
                 }
             }
         });
@@ -104,6 +107,9 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     ngAfterContentChecked() {
 
+    }
+    public get sessionValid(){
+        return this.db.myglobal.dataSesion.valid && this.db.myglobal.user && !this.db.myglobal.user.temporal;
     }
 
     @HostListener('window:resize', ['$event'])
