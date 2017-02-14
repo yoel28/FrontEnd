@@ -59,12 +59,14 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     }
                     that.db.router.navigate(link);
                 }
-                else if (localStorage.getItem('userTemp') && componentName!='AccountSelectComponent'){
-                    that.db.myglobal.saveUrl = event.url;
-                    let link = ['/auth/accountSelect', {}];
-                    that.db.router.navigate(link);
+                else if (localStorage.getItem('userTemp')){
+                    if(componentName!='AccountSelectComponent'){
+                        that.db.myglobal.saveUrl = event.url;
+                        let link = ['/auth/accountSelect', {}];
+                        that.db.router.navigate(link);
+                    }
                 }
-                else if (!isPublic && !that.db.myglobal.dataSesion.valid && !localStorage.getItem('userTemp')) {
+                else if (!isPublic && !that.db.myglobal.dataSesion.valid ) {
                     let link: any;
                     if (localStorage.getItem('bearer')) {
                         if (componentName != 'LoadComponent') {
