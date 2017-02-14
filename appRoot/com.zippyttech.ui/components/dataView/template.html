@@ -3,12 +3,12 @@
         <i class="fa fa-building"></i> <h2>{{model.ruleObject.title}}</h2>
     </div>
     <div class="view-tools-group">
-        <button (click)="model.navIndex = null" *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)) && (model.dataList.count && model.dataList.count > 1)" class="back">
+        <button title="Volver" (click)="model.navIndex = null" *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)) && (model.dataList.count && model.dataList.count > 1)" class="back">
             <i class="fa fa-reply"></i>
         </button>
         <template [ngIf]="dataParams.internal">
             <button *ngFor="let action of model.getActionsArray(data)"
-                    (click)="action.callback(data,model.navIndex||0)">
+                    (click)="action.callback(data,model.navIndex||0)" [attr.title]="action.view[getNumber(data[action.syncKey])||0].title">
                 <i class="{{action.view[getNumber(data[action.syncKey])||0].icon}}"></i>
             </button>
         </template>
