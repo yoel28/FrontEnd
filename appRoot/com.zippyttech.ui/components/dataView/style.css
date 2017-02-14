@@ -90,13 +90,13 @@
 .view-item-detail-title{
     font-size:16px;
     color:#000;
+    height: 20px;
 }
 
 .view-item-detail-content,
 .view-item-detail-content *:not(.btn)
 {
-    height:auto;
-    color:#0059b4;
+    height: 60px;
     font-size:10px;
     white-space:nowrap;
     text-overflow: ellipsis;
