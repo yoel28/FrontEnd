@@ -27,6 +27,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     public info: any;
 
+
     constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire) {
         super(db);
         let url="https://cdg.zippyttech.com:8080";
@@ -116,7 +117,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     }
     public get sessionValid(){
-        return this.db.myglobal.dataSesion.valid && this.db.myglobal.user && !this.db.myglobal.user.temporal;
+        return this.db.myglobal.dataSesion.valid && !localStorage.getItem('userTemp');
     }
 
     @HostListener('window:resize', ['$event'])
@@ -148,6 +149,16 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             that.db.router.navigate(link);
         };
         this.httputils.doPost('/logout', null, successCallback, this.error);
+
+    }
+    public changeAccount(event){
+        if(event)
+            event.preventDefault();
+
+        localStorage.setItem('userTemp','true');
+
+        let link = ['/auth/accountSelect', {}];
+        this.db.router.navigate(link);
 
     }
 

@@ -30,6 +30,7 @@
                                 <div class="user-btns">
                                     <button (click)='onProfile($event)' class="btn btn-success text-white pull-left">Perfil</button>
                                     <button (click)='logout($event)' class="btn btn-success pull-right">Salir</button>
+                                    <button *ngIf="db.myglobal.getParams('CHANGE_ACCOUNT')=='1'" (click)='changeAccount($event)' class="btn btn-success pull-right">Cuenta</button>
                                 </div>
                             </li>
                         </ul>
