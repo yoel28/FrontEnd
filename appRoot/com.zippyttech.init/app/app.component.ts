@@ -59,6 +59,11 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     }
                     that.db.router.navigate(link);
                 }
+                else if (localStorage.getItem('userTemp') && componentName!='accountSelectComponent'){
+                    that.db.myglobal.saveUrl = event.url;
+                    let link = ['/auth/accountSelect', {}];
+                    that.db.router.navigate(link);
+                }
                 else if (!isPublic && !that.db.myglobal.dataSesion.valid) {
                     let link: any;
                     if (localStorage.getItem('bearer')) {
@@ -81,7 +86,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 }
 
                 if (that.db.myglobal.dataSesion.valid  && that.db.myglobal.getParams('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE')) {
-                    if(!that.db.myglobal.user.temporal)
+                    if(!localStorage.getItem('userTemp'))
                     {
                         localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE'));
                         location.reload(true);
