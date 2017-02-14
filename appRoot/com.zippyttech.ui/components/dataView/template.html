@@ -3,7 +3,7 @@
         <i class="fa fa-building"></i> <h2>{{model.ruleObject.title}}</h2>
     </div>
     <div class="view-tools-group">
-        <button (click)="model.navIndex = null" *ngIf="(dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)" class="back">
+        <button (click)="model.navIndex = null" *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)) && (model.dataList.count && model.dataList.count > 1)" class="back">
             <i class="fa fa-reply"></i>
         </button>
         <template [ngIf]="dataParams.internal">
