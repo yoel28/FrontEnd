@@ -158,7 +158,7 @@ export abstract class ModelRoot extends RestController{
 
         this.actions["enabled"] = {
             view: [
-                {icon: "fa fa-lock", title: "Desabilitado", colorClass:"text-red"},
+                {icon: "fa fa-lock", title: "Deshabilitado", colorClass:"text-red"},
                 {icon: "fa fa-unlock", title: "Habilitado", colorClass:"text-green"}
             ],
             exp:'!data.deleted',
