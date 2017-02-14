@@ -7,6 +7,7 @@ import {SmDropdown} from "./com.zippyttech.utils/directive/smDropDown";
 import {DateRangePicker} from "./com.zippyttech.utils/directive/dateRangePicker";
 import {TagsInput} from "./com.zippyttech.utils/directive/tagsinput";
 import {XFootable} from "./com.zippyttech.utils/directive/xFootable";
+import {Knob} from "./com.zippyttech.utils/directive/knob";
 
 export const directivesDefault = [
     ColorPicker,
@@ -17,6 +18,7 @@ export const directivesDefault = [
     SmDropdown,
     DateRangePicker,
     TagsInput,
-    XFootable
+    XFootable,
+    Knob
 ];
 export const directivesApp = [];
