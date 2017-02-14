@@ -38,11 +38,18 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
         json['TokenFCM']='';
         let successCallback= response => {
             localStorage.setItem('bearer', response.json().tokenValue);
+            contentHeaders.delete('Authorization');
             contentHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('bearer'));
+            if(!that.context.company)
+                localStorage.setItem('userTemp','true');
             let link = ['/init/load', {}];
             that.db.router.navigate(link);
         };
-        return this.httputils.doPost(localStorage.getItem('url')+'/tokens/'+this.context.company+'/firebaseToken',JSON.stringify(json),successCallback,this.error,true)
+        if(this.context.company)
+            return this.httputils.doPost(localStorage.getItem('url')+'/tokens/'+this.context.company+'/firebaseToken',JSON.stringify(json),successCallback,this.error,true)
+        else
+            return this.httputils.doPost(localStorage.getItem('url')+'/tokens/firebaseToken',JSON.stringify(json),successCallback,this.error,true)
+
     }
     ngOnInit(){
         this.initForm();
@@ -119,9 +126,8 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
 
         this.subcribe=this.af.auth.subscribe(
             (response:any)=>{
-                if(that.context.company)
-                    if(response && response.auth && !localStorage.getItem('bearer'))
-                        that.loginFirebase(response.auth.kd);
+                if(response && response.auth && !localStorage.getItem('bearer'))
+                    that.loginFirebase(response.auth.kd);
             },
             error=>{
                 console.log(error.message);
