@@ -111,28 +111,31 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
 
                 if(that.rules[key].object)
                 {
-                    that.data[key].valueChanges.subscribe((value: string) => {
-                        that.findControl = value;
-                        if(value && value.length > 0){
-                            that.search=that.rules[key];
-                            that.dataList=[];
-                            if( !that.searchId[key]){
-                                that.getSearch(null,value);
+                    that.data[key]
+                        .valueChanges
+                        .debounceTime(500)
+                        .subscribe((value: string) => {
+                            that.findControl = value;
+                            if(value && value.length > 0){
+                                that.search=that.rules[key];
+                                that.dataList=[];
+                                if( !that.searchId[key]){
+                                    that.getSearch(null,value);
+                                }
+                                else if(that.searchId[key].detail != value){
+                                    delete that.searchId[key];
+                                    that.getSearch(null,value);
+                                }
+                                else{
+                                    this.findControl="";
+                                    that.search = [];
+                                }
                             }
-                            else if(that.searchId[key].detail != value){
-                                delete that.searchId[key];
-                                that.getSearch(null,value);
+                            else {
+                                if(that.search && that.search.key == key)
+                                    that.getSearch(null,'');
                             }
-                            else{
-                                this.findControl="";
-                                that.search = [];
-                            }
-                        }
-                        else {
-                            if(that.search && that.search.key == key)
-                                that.getSearch(null,'');
-                        }
-                    });
+                        });
                 }
             }
 
