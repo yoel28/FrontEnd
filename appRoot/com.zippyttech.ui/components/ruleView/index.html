@@ -260,86 +260,89 @@
                     </template>
 
                     <span class="title-object">
-                    <template [ngIf]="model.rules[key].eval">
-                        {{evalExp(data,model.rules[key].eval)}}
-                    </template>
-                    <template [ngIf]="!model.rules[key].eval">
-                        {{data[model.rules[key].keyDisplay]}}
-                    </template>
-                </span>
-                    <template [ngIf]="getEnabled()">
+                        <template [ngIf]="model.rules[key].eval">
+                            {{evalExp(data,model.rules[key].eval)}}
+                        </template>
+                        <template [ngIf]="!model.rules[key].eval">
+                            {{data[model.rules[key].keyDisplay]}}
+                        </template>
+                    </span>
+                        <span class="buttons-object">
+                        <template [ngIf]="getEnabled()">
 
-                        <template [ngIf]="!model.rules[key].reference">
+                            <template [ngIf]="!model.rules[key].reference">
 
-                            <button *ngIf="model.rules[key].paramsSave && model.rules[key].permissions.add"
-                                    type="button" class="btn btn-box-tool"
-                                    (click)="loadSaveModal($event,key,data)" title="Asignar nuevo"
-                                    data-toggle="modal"
-                                    [attr.data-target]="'#'+model.rules[key].paramsSave.idModal"
-                            >
-                                <i class="fa fa-plus text-green"></i>
-                            </button>
+                                <button *ngIf="model.rules[key].paramsSave && model.rules[key].permissions.add"
+                                        type="button" class="btn btn-box-tool"
+                                        (click)="loadSaveModal($event,key,data)" title="Asignar nuevo"
+                                        data-toggle="modal"
+                                        [attr.data-target]="'#'+model.rules[key].paramsSave.idModal"
+                                >
+                                    <i class="fa fa-plus text-green"></i>
+                                </button>
 
-                            <button *ngIf="model.rules[key].paramsSearch && model.rules[key].permissions.search"
-                                    type="button" class="btn btn-box-tool"
-                                    (click)="loadSearchTable($event,key,data)" title="Buscar"
-                                    data-toggle="modal"
-                                    [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal">
-                                <i class="fa fa-search text-blue"></i>
-                            </button>
+                                <button *ngIf="model.rules[key].paramsSearch && model.rules[key].permissions.search"
+                                        type="button" class="btn btn-box-tool"
+                                        (click)="loadSearchTable($event,key,data)" title="Buscar"
+                                        data-toggle="modal"
+                                        [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal">
+                                    <i class="fa fa-search text-blue"></i>
+                                </button>
 
-                            <button *ngIf="data[model.rules[key].code] && !model.rules[key].required"
-                                    (click)="model.setNull(data,key)"
-                                    type="button" class="btn btn-box-tool"
-                                    title="Liberar"
-                            >
-                                <i class="fa fa-minus text-red"></i>
-                            </button>
+                                <button *ngIf="data[model.rules[key].code] && !model.rules[key].required"
+                                        (click)="model.setNull(data,key)"
+                                        type="button" class="btn btn-box-tool"
+                                        title="Liberar"
+                                >
+                                    <i class="fa fa-minus text-red"></i>
+                                </button>
 
+
+                            </template>
+
+                            <template [ngIf]="model.rules[key].reference">
+
+                                <button (click)="loadDataFieldReference(data,key)"
+                                        *ngIf="model.permissions.update && model.rules[key].permissions.add"
+                                        data-toggle="modal"
+                                        [attr.data-target]="'#'+model.rules[key].paramsSave.idModal"
+                                        type="button" class="btn btn-box-tool"
+                                        title="Asignar nuevo"
+                                >
+                                    <i class="fa fa-plus text-green"></i>
+                                </button>
+
+                                <button (click)="loadDataFieldReference(data,key)"
+                                        *ngIf="model.permissions.update && model.rules[key].permissions.search && !model.rules[key].pathLocal"
+                                        data-toggle="modal"
+                                        [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal"
+                                        type="button" class="btn btn-box-tool"
+                                        title="Asignar"
+                                >
+                                    <i class="fa fa-search text-blue"></i>
+                                </button>
+
+                                <button *ngIf="model.rules[key].paramsSearch && model.rules[key].permissions.search && model.rules[key].pathLocal"
+                                        type="button" class="btn btn-box-tool"
+                                        (click)="loadSearchTable($event,key,data)" title="Buscar"
+                                        data-toggle="modal"
+                                        [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal">
+                                    <i class="fa fa-search text-blue"></i>
+                                </button>
+
+                                <button *ngIf="model.permissions.update && !model.rules[key].required && data[model.rules[key].code]"
+                                        (click)="loadDataFieldReference(data,key,true)"
+                                        type="button" class="btn btn-box-tool"
+                                        title="Liberar">
+                                    <i class="fa fa-minus text-red"></i>
+                                </button>
+
+
+                            </template>
 
                         </template>
+                            </span>
 
-                        <template [ngIf]="model.rules[key].reference">
-
-                            <button (click)="loadDataFieldReference(data,key)"
-                                    *ngIf="model.permissions.update && model.rules[key].permissions.add"
-                                    data-toggle="modal"
-                                    [attr.data-target]="'#'+model.rules[key].paramsSave.idModal"
-                                    type="button" class="btn btn-box-tool"
-                                    title="Asignar nuevo"
-                            >
-                                <i class="fa fa-plus text-green"></i>
-                            </button>
-
-                            <button (click)="loadDataFieldReference(data,key)"
-                                    *ngIf="model.permissions.update && model.rules[key].permissions.search && !model.rules[key].pathLocal"
-                                    data-toggle="modal"
-                                    [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal"
-                                    type="button" class="btn btn-box-tool"
-                                    title="Asignar"
-                            >
-                                <i class="fa fa-search text-blue"></i>
-                            </button>
-
-                            <button *ngIf="model.rules[key].paramsSearch && model.rules[key].permissions.search && model.rules[key].pathLocal"
-                                    type="button" class="btn btn-box-tool"
-                                    (click)="loadSearchTable($event,key,data)" title="Buscar"
-                                    data-toggle="modal"
-                                    [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal">
-                                <i class="fa fa-search text-blue"></i>
-                            </button>
-
-                            <button *ngIf="model.permissions.update && !model.rules[key].required && data[model.rules[key].code]"
-                                    (click)="loadDataFieldReference(data,key,true)"
-                                    type="button" class="btn btn-box-tool"
-                                    title="Liberar">
-                                <i class="fa fa-minus text-red"></i>
-                            </button>
-
-
-                        </template>
-
-                    </template>
 
                 </template>
 
