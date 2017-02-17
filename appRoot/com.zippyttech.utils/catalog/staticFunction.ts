@@ -1,7 +1,9 @@
 import {StaticValues} from "./staticValues";
-declare var moment:any;
-declare var Table2Excel:any;
-declare var humanizeDuration:any;
+
+var jQuery = require('jquery');
+var moment = require('moment');
+var Table2Excel = require('table2excel');
+var humanizeDuration = require('humanize');
 
 export class StaticFunction {
     public static dateHmanizer = StaticValues.dateHmanizer;

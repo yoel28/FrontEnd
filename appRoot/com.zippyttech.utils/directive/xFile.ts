@@ -1,6 +1,7 @@
 import {ElementRef, Directive, OnInit} from '@angular/core';
 
-declare var jQuery:any;
+var jQuery = require('jquery');
+var fileinput = require('fileinput');
 
 @Directive({
     selector: '[x-file]',

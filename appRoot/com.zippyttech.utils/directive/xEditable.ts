@@ -3,8 +3,10 @@ import {HttpUtils} from "../../com.zippyttech.rest/http-utils";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {RestController} from "../../com.zippyttech.rest/restController";
 
-declare var jQuery:any;
-declare var moment:any;
+var jQuery = require('jquery');
+var bootstrap = require('bootstrap');
+var moment = require('moment');
+var editable = require('editable');
 
 @Directive({
     selector: "[x-editable]",

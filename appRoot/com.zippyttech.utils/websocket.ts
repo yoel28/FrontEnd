@@ -4,8 +4,8 @@ import {globalService} from "./globalService";
 import {ModelRoot} from "../com.zippyttech.common/modelRoot";
 
 
-declare var SockJS:any;
-declare var Stomp:any;
+var SockJS = require('sockjs');
+var Stomp = require('stomp');
 
 export interface IWebSocket{
     [channel:string]:{

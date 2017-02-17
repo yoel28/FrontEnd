@@ -4,10 +4,8 @@ import {XFile} from "../../../com.zippyttech.utils/directive/xFile";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 
 declare var SystemJS:any;
-declare var moment:any;
-@NgModule({
-    imports:[XCropit,XFile],
-})
+var moment = require('moment');
+
 @Component({
     selector: 'image-edit-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/imageEdit/index.html',

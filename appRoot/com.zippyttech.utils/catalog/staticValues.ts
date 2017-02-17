@@ -1,6 +1,7 @@
-declare var moment:any;
-declare var Table2Excel:any;
-declare var humanizeDuration:any;
+var jQuery = require('jquery');
+var moment = require('moment');
+var humanizeDuration = require('humanize');
+var Table2Excel = require('table2excel');
 
 export class StaticValues {
 

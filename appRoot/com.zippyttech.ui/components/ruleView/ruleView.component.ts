@@ -14,7 +14,7 @@ export interface IRuleView{
 }
 
 declare var SystemJS:any;
-declare var moment:any;
+var moment = require('moment');
 
 @Component({
     selector: 'rule-view',

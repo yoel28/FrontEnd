@@ -6,7 +6,7 @@ import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 
 
 declare var SystemJS:any;
-declare var moment:any;
+var moment = require('moment');
 
 @Component({
     selector: 'tables-view',

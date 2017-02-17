@@ -10,7 +10,7 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {AngularFire} from "angularfire2";
 import {IModal} from "../../com.zippyttech.ui/components/modal/modal.component";
 
-declare var jQuery: any;
+var jQuery = require('jquery');
 declare var SystemJS: any;
 @Component({
     selector: 'my-app',
@@ -61,7 +61,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     that.db.router.navigate(link);
                 }
                 else if (localStorage.getItem('userTemp')){
-                    if(componentName!='AccountSelectComponent'){
+                    if(componentName!='AccountSelectComponent' && componentName!='LoadComponent'){
                         that.db.myglobal.saveUrl = event.url;
                         let link = ['/auth/accountSelect', {}];
                         that.db.router.navigate(link);

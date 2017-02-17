@@ -3,7 +3,7 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 import {IRuleView} from "../ruleView/ruleView.component";
 
 declare var SystemJS:any;
-declare var moment:any;
+var moment = require('moment');
 
 interface IDataView{
     internal?:boolean;

@@ -4,8 +4,8 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 
 
 declare var SystemJS:any;
-declare var moment:any;
-declare var jQuery:any;
+var moment = require('moment');
+var jQuery = require('jquery');
 
 @Component({
     selector: 'tooltip-view',

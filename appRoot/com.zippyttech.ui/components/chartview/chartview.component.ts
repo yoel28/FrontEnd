@@ -6,8 +6,8 @@ import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFuncti
 
 
 declare var SystemJS:any;
-declare var moment:any;
-declare var jQuery:any;
+var moment = require('moment');
+var jQuery = require('jquery');
 const Highcharts = require('highcharts');
 //const Highcharts3d = require('highcharts/highcharts-3d.src');
 //Highcharts.setOptions({ colors: ['#058DC7', '#50B432', '#ED561B'] });

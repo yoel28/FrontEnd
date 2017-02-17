@@ -16,7 +16,9 @@ export interface IParamsKnob{
 }
 
 
-declare var jQuery:any;
+var jQuery = require('jquery');
+var knob = require('knob');
+
 @Directive({
     selector: "[knob]",
     inputs:['key','data','model','params'],

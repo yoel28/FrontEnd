@@ -2,14 +2,11 @@ import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {RestController} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
 import {FormControl} from "@angular/forms";
+import {IRules} from "./rulesInterface";
 
-declare var moment:any;
-declare var jQuery:any;
+var moment = require('moment');
+var jQuery = require('jquery');
 
-interface IParamsDelete{
-    key:string,
-    message:string
-}
 export interface IModelActions{
     [key:string]:{
         view:[{

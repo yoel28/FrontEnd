@@ -1,6 +1,6 @@
 import {ElementRef, Directive} from "@angular/core";
 
-declare var jQuery:any;
+var jQuery = require('jquery');
 
 @Directive({
     selector: "[sm-dropdown]"

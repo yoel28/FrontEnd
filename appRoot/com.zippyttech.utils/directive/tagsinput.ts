@@ -2,7 +2,9 @@ import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
 import {FormControl} from "@angular/forms";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-declare var jQuery:any;
+var jQuery = require('jquery');
+var tagsinput = require('tagsinput');
+
 @Directive({
     selector: "[tags-input]",
     inputs:['control','prefix'],

@@ -4,8 +4,8 @@ import  {FormControl, Validators, FormGroup} from '@angular/forms';
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
-declare var SystemJS:any;
-declare var jQuery:any;
+var jQuery = require('jquery');
+
 @Component({
     moduleId:module.id,
     selector: 'form-view',
@@ -37,6 +37,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
         this.save = new EventEmitter();
         this.getInstance = new EventEmitter();
         this.getForm = new EventEmitter();
+
     }
     ngOnInit(){
         this.initForm();
@@ -419,4 +420,3 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
 
     }
 }
-

@@ -1,7 +1,9 @@
 import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
 import {FormControl} from "@angular/forms";
 
-declare var jQuery:any;
+var jQuery = require('jquery');
+var colorpicker = require('colorpicker');
+
 @Directive({
     selector: "[color-picker]",
     inputs:['hexControl','hexString'],

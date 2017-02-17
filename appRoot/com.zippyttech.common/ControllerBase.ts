@@ -4,10 +4,11 @@ import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "./DependenciesBase";
 import {ModelRoot} from "./modelRoot";
 
-declare var humanizeDuration:any;
-declare var moment:any;
-declare var jQuery:any;
-declare var Table2Excel:any;
+var jQuery = require('jquery');
+var humanizeDuration = require('humanize');
+var moment = require('moment');
+var Table2Excel = require('table2excel');
+
 
 export abstract class ControllerBase implements OnInit {
     

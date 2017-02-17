@@ -1,9 +1,16 @@
 import {Component, EventEmitter, AfterViewInit} from '@angular/core';
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
+
 declare var SystemJS:any;
 
-declare var jQuery:any;
+
+var jQuery = require('jquery');
+//var google = require('google');
+var jqueryui = require('jqueryui');
+var addresspicker = require('addresspicker');
+
+
 declare var google:any;
 
 export interface ILocation{

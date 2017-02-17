@@ -9,7 +9,7 @@ import {TablesComponent} from "../../components/tables/tables.component";
 
 
 declare var SystemJS:any;
-declare var jQuery:any;
+var jQuery = require('jquery');
 @Component({
     selector: 'base-view',
     templateUrl: SystemJS.map.app + '/com.zippyttech.ui/view/base/index.html',

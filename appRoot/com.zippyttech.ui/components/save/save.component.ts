@@ -4,8 +4,8 @@ import {FormComponent} from "../form/form.component";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
 declare var SystemJS:any;
-declare var moment:any;
-declare var jQuery:any;
+var moment = require('moment');
+var jQuery = require('jquery');
 @Component({
     selector: 'save-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/save/index.html',
