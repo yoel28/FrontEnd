@@ -27,4 +27,8 @@ export class DependenciesBase {
     public debugLog(log){
         console.log(log);
     }
+
+    public templateTypeOf(value){
+        return typeof (value);
+    }
 }
