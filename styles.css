@@ -262,6 +262,11 @@ ul.ui-autocomplete {
     line-height: 40px !important;
 }
 
+.user-panel>.info{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .user-panel *{
     position: relative  !important;
     transition-duration:.5s  !important;

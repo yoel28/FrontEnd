@@ -5,10 +5,11 @@
     background:#FFF;
     overflow: auto;
     width:100%;
+    color:#0059b4;
 }
 
-.view i{
-    color:#0059b4;
+i{
+    color: inherit;
 }
 
 .view>*:not(.view-header){
@@ -18,6 +19,7 @@
 .view-header{
     padding: 4px 15px;
     border-bottom: 3px solid rgb(167, 167, 167);
+    color:#0059b4;
     /*box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.5);*/
 }
 
@@ -33,13 +35,15 @@
 
 .view-body{
     height: auto;
-    width:95%;
+    width:90%;
     padding: 0px !important;
     border-radius: 10px !important;
     overflow:hidden;
+    color:inherit;
 }
 
 .view-data{
+    color:inherit;
     width: 100%;
     display:block;
     height:auto;
@@ -111,12 +115,11 @@ a:not(.editable-empty){
     padding: 0px 2px !important;
 }
 
-.view-item-icon span {
+.view-item-icon span{
     height: 100%;
     line-height: 100%;
     display: block;
 }
-
 
 /*#######*/
 .nav-left, .nav-right{
@@ -130,30 +133,43 @@ a:not(.editable-empty){
     outline: none;
 }
 
-.nav-left:hover, .nav-right:hover{
-    background: rgb(0, 89, 180) !important;
-    color: #FFF !important;
+.nav-left[disabled], .nav-right[disabled],
+.nav-left[disabled]:hover, .nav-right[disabled]:hover
+{
+    background: #ffffff !important;
+    color: #f0f0f0 !important;
+    cursor: not-allowed !important;
 }
 
-.nav-left:hover i, .nav-right:hover i{
-    color: #FFF !important;
+.nav-left:hover, .nav-right:hover{
+    background: rgb(0, 89, 180) !important;
+    color: #FFF;
 }
+
 .nav-left:active, .nav-right:active,.nav-left:focus, .nav-right:focus{
     border:none !important;
     outline: none;
 }
 
-.view-tools-group{
+.view-aside{
     position: relative;
+    padding: 0px;
     top: 45px;
+    width: 10%;
+    max-width: 60px;
+}
+
+.view-tools-group{
     border-radius: 10px 0px 0px 10px !important;
-    overflow: hidden;
-    padding:0px;
-    background: #0059b4 !important;
-    transition: .2s;
-    width: 5%;
+    position: relative;
+    float:right;
+    width: 100%;
+    min-width: 25px;
     max-width: 40px;
+    background: #0059b4 !important;
+    overflow: hidden;
     font-size:20px;
+    transition: .2s;
 }
 
 .view-tools-group>*{
