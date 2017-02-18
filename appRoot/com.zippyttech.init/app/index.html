@@ -13,6 +13,15 @@
                class="btn btn-blue glyphicon glyphicon-th"
                style="font-size: x-large" data-toggle="modal" data-target="#myMenu">
             </a>
+
+            <a *ngIf="db.myglobal.getParams('CHANGE_ACCOUNT')=='1' && db.myglobal.accountAvailable > 1" type="button"
+               class="btn btn-blue glyphicon glyphicon-cog"
+               style="font-size: x-large"  (click)='changeAccount($event)'
+                title="Cambiar cuenta"
+            >
+            </a>
+
+
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">

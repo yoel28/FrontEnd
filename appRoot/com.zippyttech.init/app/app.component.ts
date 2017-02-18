@@ -27,6 +27,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     public info: any;
 
+
     constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire) {
         super(db);
         let url="https://cdg.zippyttech.com:8080";
@@ -59,7 +60,14 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     }
                     that.db.router.navigate(link);
                 }
-                else if (!isPublic && !that.db.myglobal.dataSesion.valid) {
+                else if (localStorage.getItem('userTemp')){
+                    if(componentName!='AccountSelectComponent'){
+                        that.db.myglobal.saveUrl = event.url;
+                        let link = ['/auth/accountSelect', {}];
+                        that.db.router.navigate(link);
+                    }
+                }
+                else if (!isPublic && !that.db.myglobal.dataSesion.valid ) {
                     let link: any;
                     if (localStorage.getItem('bearer')) {
                         if (componentName != 'LoadComponent') {
@@ -81,7 +89,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 }
 
                 if (that.db.myglobal.dataSesion.valid  && that.db.myglobal.getParams('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE')) {
-                    if(!that.db.myglobal.user.temporal)
+                    if(!localStorage.getItem('userTemp'))
                     {
                         localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE'));
                         location.reload(true);
@@ -109,7 +117,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     }
     public get sessionValid(){
-        return this.db.myglobal.dataSesion.valid && this.db.myglobal.user && !this.db.myglobal.user.temporal;
+        return this.db.myglobal.dataSesion.valid && !localStorage.getItem('userTemp');
     }
 
     @HostListener('window:resize', ['$event'])
@@ -141,6 +149,16 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             that.db.router.navigate(link);
         };
         this.httputils.doPost('/logout', null, successCallback, this.error);
+
+    }
+    public changeAccount(event){
+        if(event)
+            event.preventDefault();
+
+        localStorage.setItem('userTemp','true');
+
+        let link = ['/auth/accountSelect', {}];
+        this.db.router.navigate(link);
 
     }
 

@@ -344,6 +344,7 @@ export abstract class ModelRoot extends RestController{
             'idModal': this.prefix + '_' + this.configId + '_add',
             'endpoint': this.endpoint,
             'customValidator':null,
+            'onlyRequired':false,
             'customActions':[],
         };
     }
@@ -477,19 +478,19 @@ export abstract class ModelRoot extends RestController{
             }
         }
     }
-    public setBlockField(data){
+    public setBlockField(data,value?:boolean){
         if(data.id){
             let index = this.getIndexById(data.id);
             if(index >= 0){
-                this.dataList['list'][index].blockField=!this.dataList['list'][index].blockField;
+                this.dataList['list'][index].blockField= value==null?!this.dataList['list'][index].blockField:value;
             }
         }
     }
 
     public refreshData(data){
-        this.setBlockField(data);
+        this.setBlockField(data,true);
         setTimeout(function(){
-            this.setBlockField(data);
+            this.setBlockField(data,false);
         }.bind(this), 1);
     }
 
