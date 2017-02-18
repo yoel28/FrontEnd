@@ -247,7 +247,7 @@ header.main-header{
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .user-menu .dropdown-toggle{
     width: 50px !important;
   }
