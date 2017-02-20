@@ -11,6 +11,8 @@ import {AngularFire} from "angularfire2";
 import {IModal} from "../../com.zippyttech.ui/components/modal/modal.component";
 
 var jQuery = require('jquery');
+var adminLTE = require('adminLTE');
+
 declare var SystemJS: any;
 @Component({
     selector: 'my-app',
@@ -310,6 +312,10 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 ]
             });
         }
+    }
+
+    getLocalStorage(item){
+        return localStorage.getItem(item);
     }
 
     menuItemsVisible(menu) {
