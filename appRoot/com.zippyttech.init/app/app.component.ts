@@ -40,6 +40,10 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         this.menuType = new FormControl(null);
         this.menuItems = new FormControl([]);
         this.loadPublicData();
+
+        if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
+            this.goPage(null,'/init/load');
+        }
     }
 
     routerEvents(){
@@ -336,7 +340,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         this.db.myglobal.objectInstance[prefix] = instance;
     }
 
-    goPage(event, url) {
+    goPage(event=null, url) {
         if (event)
             event.preventDefault();
         let link = [url, {}];
