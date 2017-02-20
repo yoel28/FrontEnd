@@ -1,6 +1,4 @@
-import {Component, EventEmitter, NgModule} from '@angular/core';
-import {XCropit} from "../../../com.zippyttech.utils/directive/xCropit";
-import {XFile} from "../../../com.zippyttech.utils/directive/xFile";
+import {Component, EventEmitter} from '@angular/core';
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 
 declare var SystemJS:any;
