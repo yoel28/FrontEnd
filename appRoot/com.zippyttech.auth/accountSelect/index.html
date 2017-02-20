@@ -1,0 +1,31 @@
+<div class="color">
+    <img class="logoi" [attr.src]="db.pathElements.isotipo">
+    <b class="b2">iPanama</b>
+</div>
+
+<div class="main row">
+    <div class="secciones">
+        <section  *ngIf="dataList.length">
+            <div class="">
+                <h1 class="">Selecciona una cuenta</h1>
+                <button *ngIf="db.myglobal.dataSesion.valid" class="btn btn-primary fa fa-reply" (click)="removeChangeAccout($event)">Volver</button>
+            </div>
+        </section>
+    </div>
+    <div class="container">
+        <div class="row " *ngFor="let y of [0,4,8,12]">
+            <div (click)="selectAccount(list)" *ngFor="let list of (dataList | slice:y:y+4);  let i = index" class="{{getClassIndex(y+i)}} " >
+                <ul class="" title="{{list.name}}">
+                    <li  class="grises">
+                        <div class="iconos">
+                            <img [attr.src]="list.logo || db.pathElements.robot" alt="">
+                            <div>
+                                <h2> <a href="#">{{list.title}}</a></h2>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
