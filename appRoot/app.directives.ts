@@ -22,3 +22,18 @@ export const directivesDefault = [
     Knob
 ];
 export const directivesApp = [];
+export function abs():string{
+    //return '/home/zippyttech/Documentos/WebStorm/default2';
+    return '';
+}
+
+export function appPath():any {
+    return {
+        'access':   abs()+'/appRoot/com.zippyttech.access/',
+        'auth':     abs()+'/appRoot/com.zippyttech.auth/',
+        'business': abs()+'/appRoot/com.zippyttech.business/',
+        'init':     abs()+'/appRoot/com.zippyttech.init/',
+        'ui':       abs()+'/appRoot/com.zippyttech.ui/',
+        'baseView': abs()+'/appRoot/com.zippyttech.ui/view/base/'
+    }
+};
