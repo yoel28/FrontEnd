@@ -1,13 +1,9 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import  {FormControl, Validators, FormGroup} from '@angular/forms';
-import {Router, ActivatedRoute}           from '@angular/router';
-import {Http} from '@angular/http';
+import { ActivatedRoute}           from '@angular/router';
 import {RestController} from "../../com.zippyttech.rest/restController";
-import {globalService} from "../../com.zippyttech.utils/globalService";
 import {contentHeaders} from "../../com.zippyttech.rest/headers";
-import {StaticValues} from "../../com.zippyttech.utils/catalog/staticValues";
 import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
-import {ToastyService, ToastyConfig} from "ng2-toasty";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
@@ -96,7 +92,7 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
             localStorage.setItem('bearer', response.json().access_token);
             contentHeaders.delete('Authorization');
             contentHeaders.append('Authorization', 'Bearer ' + localStorage.getItem('bearer'));
-            (!this.context.company)
+            if(!this.context.company)
                 localStorage.setItem('userTemp','true');
             let link = ['/init/load', {}];
             that.db.router.navigate(link);
