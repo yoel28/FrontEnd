@@ -11,13 +11,13 @@ import {AngularFire} from "angularfire2";
 import {IModal} from "../../com.zippyttech.ui/components/modal/modal.component";
 
 var jQuery = require('jquery');
-var adminLTE = require('adminLTE');
 
 declare var SystemJS: any;
 @Component({
+    moduleId:module.id,
     selector: 'my-app',
-    templateUrl: SystemJS.map.app + 'com.zippyttech.init/app/index.html',
-    styleUrls: [SystemJS.map.app + 'com.zippyttech.init/app/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: ['style.css'],
     animations: AnimationsManager.getTriggers("d-fade|expand_down", 150)
 })
 export class AppComponent extends RestController implements OnInit,AfterViewInit,AfterContentChecked,DoCheck {
