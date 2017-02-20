@@ -69,9 +69,12 @@ System.config({
     'stomp':'assets/js/',
     'table2excel':'assets/js/',
     'addresspicker':'assets/plugins/',
+    'adminLTE':'assets/js/',
 
 
-  },
+
+
+    },
   // packages tells the System loader how to load when no filename and/or no extension
   packages: {
     'app': { main: './main.js', defaultExtension: 'js' },
@@ -180,6 +183,11 @@ System.config({
     },
     'addresspicker': {
       main:'jquery.ui.addresspicker',
+      format: 'cjs',
+      defaultExtension: 'js',
+    },
+    'adminLTE': {
+      main:'app',
       format: 'cjs',
       defaultExtension: 'js',
     },
