@@ -116,6 +116,7 @@ export class globalService extends RestController{
         };
         let where = encodeURI('[["op":"eq","field":"username","value":"'+this.user.username+'"],["join":"account",where:[["op":"eq","field":"name","value":"'+this.user.account+'"]]]]');
         this.httputils.doGet('/users?where='+where, successCallback,this.errorGS);
+        //        this.httputils.doGet('/current/user/', successCallback,this.errorGS);
     };
     loadMyPermissions():any{
         let that = this;
