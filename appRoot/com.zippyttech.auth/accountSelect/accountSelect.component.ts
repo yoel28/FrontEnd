@@ -21,13 +21,23 @@ export class AccountSelectComponent extends RestController implements OnInit{
 
     ngOnInit(){
         localStorage.setItem("userTemp","true");
-        this.loadData().then(function(response) {
-            this.db.myglobal.accountAvailable = this.dataList.length;
-            if(this.dataList.length == 1)
-                this.selectAccount(this.dataList[0])
-        }.bind(this));
-        jQuery("main").css("background-color","#222d32");
+        if(!localStorage.getItem('accountList')){
+            localStorage.removeItem('userTemp');
+            let link = ['/init/dashboard', {}];
+            this.db.router.navigate(link);
+        }
+        else {
+            this.loadData().then(function(response) {
+                if(this.dataList.length == 1)
+                    this.selectAccount(this.dataList[0]);
 
+                if(this.dataList && this.dataList.length > 1)
+                    localStorage.setItem('accountList','true');
+
+            }.bind(this));
+            jQuery("main").css("background-color","#222d32");
+
+        }
     }
     selectAccount(data){
         let that = this;
