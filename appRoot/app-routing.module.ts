@@ -37,6 +37,7 @@ import {ListActionComponent} from "./com.zippyttech.ui/components/listAction/lis
 import {LocationPickerComponent} from "./com.zippyttech.ui/components/locationPicker/locationPicker.component";
 import {DataViewComponent} from "./com.zippyttech.ui/components/dataView/dataView.component";
 import {BasicComponent} from "./com.zippyttech.common/basicComponent";
+import {AccountSelectComponent} from "./com.zippyttech.auth/accountSelect/accountSelect.component";
 
 const routesDefault: Routes = [
 
@@ -46,6 +47,7 @@ const routesDefault: Routes = [
     { path: 'term/conditions', component: TermConditionsComponent},
 
     { path: 'auth/login', component: LoginComponent},
+    { path: 'auth/accountSelect', component: AccountSelectComponent},
     { path: 'auth/login/:company', component: LoginComponent},
     { path: 'auth/recover', component: RecoverComponent},
     { path: 'account/recoverPassword/:id/:token', component: RecoverPasswordComponent},
@@ -78,6 +80,7 @@ export class AppRoutingModule {
 }
 
 export const componentsDefault = [
+    AccountSelectComponent,
     DashboardComponent,
     LoginComponent,
     RecoverComponent,
