@@ -56,8 +56,8 @@ gulp.task('copy-jit', ['clean'], function () {
 
 gulp.task('clean', function (done) {
   log('clean');
-  del([config.index.run]).then(paths => {
-    done()
+  del([config.index.run]).then(function(paths){
+    done();
   });
 });
 

@@ -175,9 +175,7 @@
 .header-tools .btn-box-tool{
     font-size: 14px !important;
 }
-.submenu-config{
-    border: 1px solid #BDBBBB !important;
-}
+
 .header-tools ul.dropdown-menu.submenu-config {
     min-width: 260px;
 }

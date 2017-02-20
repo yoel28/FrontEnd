@@ -20,3 +20,12 @@ table {
 .footable-detail-row{
     transition-duration: 1s;
 }
+
+.submenu-config {
+    border-radius: 0px 10px 10px 10px !important;
+    transition: .2s !important;
+}
+
+.submenu-config *{
+    transition: .2s !important;
+}
