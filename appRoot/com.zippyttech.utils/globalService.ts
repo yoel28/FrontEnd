@@ -219,7 +219,7 @@ export class globalService extends RestController{
         this.setPreferenceViewModel(model,rules);
         return this.user.preferences.columns[model.replace('Model','')];
     }
-    setPreferenceViewModel(model:string,rules:Object){
+    setPreferenceViewModel(model:string,rules:Object,reset=false){
         let that = this;
         if(!this.user.preferences)
             this.user.preferences={};
@@ -230,6 +230,8 @@ export class globalService extends RestController{
 
         this.user.preferences.columns[model.replace('Model','')]=[];
         Object.keys(rules).forEach(key=>{
+            if(reset)
+                rules[key].visible = reset;
             that.user.preferences.columns[model.replace('Model','')].push(
                 {   'key':key,
                     'visible':rules[key].visible,
