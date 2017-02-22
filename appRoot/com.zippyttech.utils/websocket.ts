@@ -4,8 +4,8 @@ import {globalService} from "./globalService";
 import {ModelRoot} from "../com.zippyttech.common/modelRoot";
 
 
-var SockJS = require('sockjs');
-var Stomp = require('stomp');
+var SockJS = require('sockjs-client');
+var Stomp = require('stompjs');
 
 export interface IWebSocket{
     [channel:string]:{
@@ -72,7 +72,7 @@ export class WebSocket{
                 let ws = new SockJS(localStorage.getItem('url') + "/stomp");
 
                 that.webSocket[channel].status.setValue('init');
-                that.webSocket[channel].client = Stomp.over(ws);
+                that.webSocket[channel].client = Stomp.Stomp.over(ws);
 
                 that.webSocket[channel].client.connect({},
                     function () {
