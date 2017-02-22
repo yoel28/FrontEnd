@@ -325,9 +325,17 @@ export class FilterComponent extends RestController implements OnInit{
 
                     if (that.rules[key].object) // si es un objecto y existe el id
                     {
-                        whereTemp.value=null;
-                        if(that.searchId[key] && that.searchId[key].id)
+                        if(that.searchId[key] && that.searchId[key].id){
                             whereTemp.value = that.searchId[key].id;
+                        }
+                        else
+                        {
+                            try {
+                                whereTemp.value  = parseFloat(whereTemp.value);
+                            }catch (e){
+                                this.db.debugLog('Error: Filter parse: '+e)
+                            }
+                        }
                     }
 
                     if(that.rules[key].type == 'boolean'){
