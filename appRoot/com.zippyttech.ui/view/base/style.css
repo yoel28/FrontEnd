@@ -201,3 +201,8 @@
     border-radius: 4px !important;
     color: white !important;
 }
+.page-info{
+    font-size: 10px;
+    font-style: oblique;
+    color: #4b4b4b;
+}
