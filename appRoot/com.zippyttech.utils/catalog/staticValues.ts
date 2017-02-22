@@ -187,6 +187,10 @@ export class StaticValues {
         msg.viewLocation="Ver ubicación";
         msg.basicData="Datos basicos";
         msg.imageProfile="Imagen de Perfil";
+        msg.exportDisabled="No se puede generar el reporte, limite de ";
+        msg.page="Pagina ";
+        msg.rows="filas ";
+        msg.results="resultados";
 
         return msg;
 
