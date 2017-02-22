@@ -8,6 +8,10 @@
                             <i class="{{model.ruleObject.icon||'fa fa-list-alt'}}"></i>{{'   '+(model.ruleObject.title | translate)}}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
                             &nbsp;<i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+                            <span *ngIf="model && model.dataList && model.dataList.count" class="page-info">
+                                &nbsp;{{db.msg.page}}{{getCurrentPage}},&nbsp;cerca de {{model.dataList.count}} {{db.msg.results}}
+                            </span>
+
                         </h4>
                         <div class="box-tools pull-right header-tools">
                             <template [ngIf]="viewOptions.viewActions">
@@ -34,14 +38,24 @@
                                     <i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin"></i>
                                 </button>
 
-                                <template [ngIf]="model.permissions.export">
-                                    <a target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
+
+                                <template [ngIf]="getEnabledReport">
+                                    <a *ngIf="model.permissions.exportPdf" target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
                                         <i class="fa fa-file-pdf-o text-red"></i>
                                     </a>&nbsp;
-                                    <a target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
+                                    <a *ngIf="model.permissions.exporXls" target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
                                         <i class="fa fa-file-excel-o text-green"></i>
                                     </a>
                                 </template>
+                                <template [ngIf]="!getEnabledReport">
+                                    <span *ngIf="model.permissions.exportPdf" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
+                                        <i class="fa fa-file-pdf-o text-red"></i>
+                                    </span>&nbsp;
+                                    <span *ngIf="model.permissions.exporXls" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
+                                        <i class="fa fa-file-excel-o text-green"></i>
+                                    </span>
+                                </template>
+
                             </template>
 
 
