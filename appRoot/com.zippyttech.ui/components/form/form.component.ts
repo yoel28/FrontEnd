@@ -114,7 +114,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                 {
                     that.data[key]
                         .valueChanges
-                        .debounceTime(500)
+                        .debounceTime(this.db.myglobal.getParams('WAIT_TIME_SEARCH') || '500')
                         .subscribe((value: string) => {
                             that.findControl = value;
                             if(value && value.length > 0){
