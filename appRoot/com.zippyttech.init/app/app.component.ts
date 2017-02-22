@@ -146,6 +146,8 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         let successCallback = (response: any) => {
             this.db.myglobal.dataSesionInit();
             localStorage.removeItem('bearer');
+            localStorage.removeItem('userTemp');
+            localStorage.removeItem('accountList');
             contentHeaders.delete('Authorization');
             that.af.auth.logout();
             this.menuItems.setValue([]);
