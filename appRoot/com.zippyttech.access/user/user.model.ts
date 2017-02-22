@@ -158,6 +158,7 @@ export class UserModel extends ModelBase{
         this.ruleObject.title="Usuario";
         this.ruleObject.placeholder="Ingrese el usuario";
         this.ruleObject.keyDisplay='user';
+        this.ruleObject.key='user';
         this.ruleObject.eval=this.db.myglobal.getRule('USER_DISPLAY_WEB');
         this.ruleObject.code="userId";
     }
