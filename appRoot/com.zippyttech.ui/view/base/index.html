@@ -84,9 +84,12 @@
                                         </span>
 
                                     </li>
-                                    <li (click)="savePreference()">
-                                        <button  class="btn btn-box-tool fa fa-save" title="Guardar">
-                                            &nbsp;{{db.msg.savePreferences}}
+                                    <li>
+                                        <button (click)="savePreference()" class="btn btn-box-tool" title="Guardar">
+                                            <i class="fa fa-save"></i>&nbsp;{{db.msg.savePreferences}}
+                                        </button>
+                                        <button (click)="savePreference(true)"  class="btn btn-box-tool" title="Borrar preferencias">
+                                            &nbsp;<i class="fa fa-trash"></i>
                                         </button>
                                     </li>
                                 </ul>
