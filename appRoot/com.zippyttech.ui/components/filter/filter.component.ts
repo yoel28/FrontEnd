@@ -31,6 +31,7 @@ export class FilterComponent extends RestController implements OnInit{
     //lista de operadores condicionales
     public  cond = {
         'text': [
+            {'id':'%ilike%','text': 'Contiene(i)'},
             {'id':'eq','text':'Igual que'},
             {'id':'isNull','text':'Nulo'},
             {'id':'isNotNull','text':'No nulo'},
@@ -38,7 +39,6 @@ export class FilterComponent extends RestController implements OnInit{
             {'id':'%like%','text': 'Contiene'},
             {'id':'like%','text': 'Comienza con'},
             {'id':'%like','text': 'Termina en'},
-            {'id':'%ilike%','text': 'Contiene(i)'},
             {'id':'ilike%','text': 'Comienza con(i)'},
             {'id':'%ilike','text': 'Termina en(i)'}
 
@@ -82,6 +82,7 @@ export class FilterComponent extends RestController implements OnInit{
             {'id':'isNull','text':'Nulo'},
         ],
         'email': [
+            {'id':'%ilike%','text': 'Contiene(i)'},
             {'id':'eq','text':'Igual que'},
             {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
@@ -89,7 +90,6 @@ export class FilterComponent extends RestController implements OnInit{
             {'id':'%like%','text': 'Contiene'},
             {'id':'like%','text': 'Comienza con'},
             {'id':'%like','text': 'Termina en'},
-            {'id':'%ilike%','text': 'Contiene(i)'},
             {'id':'ilike%','text': 'Comienza con(i)'},
             {'id':'%ilike','text': 'Termina en(i)'}
         ],
@@ -100,6 +100,7 @@ export class FilterComponent extends RestController implements OnInit{
             {'id':'isNull','text':'Nulo'},
         ],
         'textarea': [
+            {'id':'%ilike%','text': 'Contiene(i)'},
             {'id':'eq','text':'Igual que'},
             {'id':'isNotNull','text':'No nulo'},
             {'id':'isNull','text':'Nulo'},
@@ -107,7 +108,6 @@ export class FilterComponent extends RestController implements OnInit{
             {'id':'%like%','text': 'Contiene'},
             {'id':'like%','text': 'Comienza con'},
             {'id':'%like','text': 'Termina en'},
-            {'id':'%ilike%','text': 'Contiene(i)'},
             {'id':'ilike%','text': 'Comienza con(i)'},
             {'id':'%ilike','text': 'Termina en(i)'}
         ],
@@ -138,31 +138,44 @@ export class FilterComponent extends RestController implements OnInit{
                 that.data[key] = new FormControl("");
 
                 that.data[key+'Cond'] = [];
-                that.data[key+'Cond'] = new FormControl("eq");
+                that.data[key+'Cond'] = new FormControl((this.rules[key].type && this.cond[this.rules[key].type])?this.cond[this.rules[key].type][0].id: "eq");
+
+
                 if(that.rules[key].object)
                 {
-                    that.data[key].valueChanges.subscribe((value: string) => {
-                        if(value && value.length > 0){
-                            that.search=that.rules[key];
-                            that.findControl = value;
-                            that.dataList=[];
-                            that.setEndpoint(that.rules[key].paramsSearch.endpoint+value);
-                            if( !that.searchId[key]){
-                                that.loadData();
+                    that.data[key].
+                        valueChanges.
+                        debounceTime(this.db.myglobal.getParams('WAIT_TIME_SEARCH') || '500').
+                        subscribe((value: string) => {
+                            if(value && value.length > 0){
+                                that.search=that.rules[key];
+                                that.findControl = value;
+                                that.dataList=[];
+                                that.setEndpoint(that.rules[key].paramsSearch.endpoint+value);
+                                if( !that.searchId[key]){
+                                    that.loadData().then(((response)=>{
+                                        if(this.dataList && this.dataList.count == 1){
+                                            this.getDataSearch(this.dataList.list[0])
+                                        }
+                                    }).bind(this));
+                                }
+                                else if(that.searchId[key].detail != value){
+                                    that.loadData().then(((response)=>{
+                                        if(this.dataList && this.dataList.count==1){
+                                            this.getDataSearch(this.dataList.list[0])
+                                        }
+                                    }).bind(this));
+                                    delete that.searchId[key];
+                                }
+                                else{
+                                    this.findControl="";
+                                    that.search = [];
+                                }
+                            }else{
+                                that.findControl="";
+                                if(that.searchId[key])
+                                    delete that.searchId[key];
                             }
-                            else if(that.searchId[key].detail != value){
-                                that.loadData();
-                                delete that.searchId[key];
-                            }
-                            else{
-                                this.findControl="";
-                                that.search = [];
-                            }
-                        }else{
-                            that.findControl="";
-                            if(that.searchId[key])
-                                delete that.searchId[key];
-                        }
                     });
                 }
             }
