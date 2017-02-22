@@ -70,6 +70,12 @@ export class globalService extends RestController{
         this.loadChannels();
     }
     dataSesionInit(value = false):void{
+        this.user={};
+        this.params=[];
+        this.help=[];
+        this.permissions=[];
+        this.rules=[];
+        this.channels=[];
         this.dataSesion.setValue({
             'token':        {'status':value,'title':'Validando usuario'},
             'user':         {'status':value,'title':'Consultando datos del usuario'},
