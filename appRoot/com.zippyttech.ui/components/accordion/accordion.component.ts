@@ -1,8 +1,4 @@
 import {Component, EventEmitter, OnInit, AfterViewInit, NgModule} from "@angular/core";
-import {SearchComponent} from "../search/search.component";
-import {SaveComponent} from "../save/save.component";
-import {XEditable} from "../../../com.zippyttech.utils/directive/xEditable";
-import {ColorPicker} from "../../../com.zippyttech.utils/directive/colorPicker";
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
@@ -11,9 +7,6 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 declare var SystemJS:any;
 var moment = require('moment');
 
-@NgModule({
-    imports:[XEditable,ColorPicker,SearchComponent,SaveComponent]
-})
 @Component({
     selector: 'accordion-view',
     templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/accordion/index.html',
