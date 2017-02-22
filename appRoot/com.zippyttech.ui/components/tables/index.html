@@ -1,5 +1,5 @@
 <div *ngIf="model.dataList && isUnique()">
-    <data-view [model]="model" [dataParams]="{internal:true, nav:true}"></data-view>
+    <data-view [model]="model" [dataParams]="{internal:true, nav:true,paramsData:paramsData}"></data-view>
 </div>
 <div *ngIf="model.dataList && !isUnique()" class="table-responsive">
     <table id="footable" class="table table-striped table-hover" ><!--*ngIf="!model.updating"--><!--x-footable -->

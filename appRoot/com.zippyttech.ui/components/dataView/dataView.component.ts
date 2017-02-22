@@ -17,6 +17,7 @@ interface IDataView{
         dir:boolean;
         back:boolean;
     } | boolean;
+    paramsData?:IRuleView
 }
 
 
@@ -30,8 +31,6 @@ interface IDataView{
 export class DataViewComponent implements OnInit{
     private model:any;
     private dataParams:IDataView={};
-    public paramsData:IRuleView={ select:{}, searchParams:{}, searchInstances:{}, viewListData:{},
-        ruleReference:{}, locationParams:null };
 
     private _data:any; //dataList
     private set data(dataList){ this._data = dataList;}
