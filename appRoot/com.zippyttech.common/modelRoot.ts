@@ -254,7 +254,7 @@ export abstract class ModelRoot extends RestController{
         if(this.permissions.audit || force){
             this.rulesDefault["ip"] = {
                 "update": false,
-                "visible": this.permissions.visible,
+                "visible": false,
                 "search": this.permissions.filter,
                 'icon': 'fa fa-list',
                 "type": "text",
@@ -268,7 +268,7 @@ export abstract class ModelRoot extends RestController{
         if(this.permissions.audit || force){
             this.rulesDefault["userAgent"] = {
                 "update": false,
-                "visible": this.permissions.visible,
+                "visible": false,
                 "search": this.permissions.filter,
                 'icon': 'fa fa-list',
                 "type": "text",
@@ -282,7 +282,7 @@ export abstract class ModelRoot extends RestController{
         if(this.permissions.audit || force){
             this.rulesDefault["usernameCreator"] = {
                 "update": false,
-                "visible": this.permissions.visible,
+                "visible": false,
                 "search": this.permissions.filter,
                 'icon': 'fa fa-list',
                 "type": "text",
@@ -296,7 +296,7 @@ export abstract class ModelRoot extends RestController{
         if(this.permissions.audit || force){
             this.rulesDefault["usernameUpdater"] = {
                 "update": false,
-                "visible": this.permissions.visible,
+                "visible": false,
                 "search": this.permissions.filter,
                 'icon': 'fa fa-list',
                 "type": "text",
