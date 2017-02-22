@@ -144,9 +144,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
         that.model.rules={};
         Object.assign(that.model.rules,temp);
     }
-    savePreference(){
+    savePreference(reset=false){
         let that = this;
-        this.db.myglobal.setPreferenceViewModel(this.model.constructor.name,this.model.rules);
+        this.db.myglobal.setPreferenceViewModel(this.model.constructor.name,this.model.rules,reset);
         let successCallback = (response)=>{
             that.model.addToast('Notificación','Preferencias guardadas')
         }
