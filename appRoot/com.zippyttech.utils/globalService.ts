@@ -23,7 +23,6 @@ export class globalService extends RestController{
     public channelWebsocket:any={};
 
     public navigationStart:boolean=false;
-    public accountAvailable=0;
 
     public dataSesion = new FormControl(
         null,
@@ -109,14 +108,12 @@ export class globalService extends RestController{
     loadUser():void{
         let that = this;
         let successCallback= (response:any) => {
-            Object.assign(that.user,that.user,response.json().list[0]);
+            Object.assign(that.user,that.user,response.json());
             that.dataSesion.value.user.status=true;
             that.dataSesion.setValue(that.dataSesion.value);
 
         };
-        let where = encodeURI('[["op":"eq","field":"username","value":"'+this.user.username+'"],["join":"account",where:[["op":"eq","field":"name","value":"'+this.user.account+'"]]]]');
-        this.httputils.doGet('/users?where='+where, successCallback,this.errorGS);
-        //        this.httputils.doGet('/current/user/', successCallback,this.errorGS);
+        this.httputils.doGet('/current/user/', successCallback,this.errorGS);
     };
     loadMyPermissions():any{
         let that = this;
