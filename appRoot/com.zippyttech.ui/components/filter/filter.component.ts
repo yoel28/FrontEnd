@@ -138,7 +138,9 @@ export class FilterComponent extends RestController implements OnInit{
                 that.data[key] = new FormControl("");
 
                 that.data[key+'Cond'] = [];
-                that.data[key+'Cond'] = new FormControl((this.rules[key].type && this.cond[this.rules[key].type])?this.cond[this.rules[key].type][0].id: "eq");
+
+                let cond = this.cond[this.rules[key].object?'object':this.rules[key].type];
+                that.data[key+'Cond'] = new FormControl(cond?cond[0].id:'eq');
 
 
                 if(that.rules[key].object)
