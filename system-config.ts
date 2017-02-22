@@ -43,7 +43,7 @@ System.config({
     'angular2-qrcode':           'npm:angular2-qrcode',
     'qrcode-generator':          'npm:qrcode-generator/qrcode.js',
     'ng2-toasty':                'npmR:ng2-toasty/bundles/index.umd.js',
-    'angular2-highcharts':       'npmR:angular2-highcharts',
+    'angular2-highcharts':       'npm:angular2-highcharts',
     'highcharts':                'npmR:highcharts',
 
     //Dependencias
@@ -60,13 +60,12 @@ System.config({
     'inputmask':        'npmR:jquery-inputmask/',
     'bootstrap':        'npmR:bootstrap/dist/js/',
     'firebase':         'npm:firebase/',
-
+    'sockjs-client':    'npmR:sockjs-client/dist/',
+    'stompjs':          'npmR:stompjs/lib/',
 
 
     //assets
     'colorpicker':'assets/plugins/colorpicker/js/',
-    'sockjs':'assets/js/',
-    'stomp':'assets/js/',
     'table2excel':'assets/js/',
     'addresspicker':'assets/plugins/',
     'adminLTE':'assets/js/',
@@ -74,7 +73,7 @@ System.config({
 
 
 
-    },
+  },
   // packages tells the System loader how to load when no filename and/or no extension
   packages: {
     'app': { main: './main.js', defaultExtension: 'js' },
@@ -95,9 +94,9 @@ System.config({
 
     //Dependencias
     'jquery': {
-        main:'jquery.min',
-        format: 'global',
-        defaultExtension: 'js',
+      main:'jquery.min',
+      format: 'global',
+      defaultExtension: 'js',
     },
     'moment': {
       main:'moment',
@@ -105,49 +104,49 @@ System.config({
       defaultExtension: 'js',
     },
     'humanize': {
-        main:'humanize-duration',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'humanize-duration',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'editable': {
-        main:'bootstrap-editable.min',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'bootstrap-editable.min',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'cropit': {
-        main:'jquery.cropit',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'jquery.cropit',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'fileinput': {
-        main:'fileinput.min',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'fileinput.min',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'daterangepicker': {
-        main:'daterangepicker',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'daterangepicker',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'knob': {
-        main:'jquery.knob.min',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'jquery.knob.min',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'jqueryui': {
-        main:'jquery-ui.min',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'jquery-ui.min',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'tagsinput': {
-        main:'bootstrap-tagsinput.min',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'bootstrap-tagsinput.min',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     'inputmask': {
-        main:'index',
-        format: 'cjs',
-        defaultExtension: 'js',
+      main:'index',
+      format: 'cjs',
+      defaultExtension: 'js',
     },
     "bootstrap": {
       main:'bootstrap.min',
@@ -159,23 +158,23 @@ System.config({
       format: 'cjs',
       defaultExtension: 'js',
     },
-
+    "sockjs-client": {
+      main:'sockjs.min',
+      format: 'cjs',
+      defaultExtension: 'js',
+    },
+    'stompjs': {
+      main:'stomp.min',
+      format: 'cjs',
+      defaultExtension: 'js',
+    },
     //asset
     'colorpicker': {
       main:'colorpicker',
       format: 'cjs',
       defaultExtension: 'js',
     },
-    'sockjs': {
-      main:'sockjs',
-      format: 'cjs',
-      defaultExtension: 'js',
-    },
-    'stomp': {
-      main:'stomp',
-      format: 'cjs',
-      defaultExtension: 'js',
-    },
+
     'table2excel': {
       main:'tableToCSV',
       format: 'cjs',
