@@ -6,7 +6,7 @@ declare var System: any;
 
 System.config({
   defaultJSExtensions: true,
-  // production: true,
+  production: true,
   paths: {
     // paths serve as alias
     'npm:': 'node_modules/',
