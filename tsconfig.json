@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     //"outFile": "build.js",
-    "target": "es5",
+    "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
@@ -11,11 +11,10 @@
     "module": "commonjs",
     "suppressImplicitAnyIndexErrors": true
   },
-  //"compileOnSave": true,
+  "compileOnSave": true,
   "exclude": [
     "node_modules/*",
     "aot/*",
     "appRoot/*-aot.ts"
   ]
-
 }
