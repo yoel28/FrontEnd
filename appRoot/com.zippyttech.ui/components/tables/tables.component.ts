@@ -25,17 +25,20 @@ export class TablesComponent implements OnInit {
         searchInstances:{},
         viewListData:{},
         ruleReference:{},
-        locationParams:null
+        locationParams:null,
+        arrayData:[]
     };
 
     public modalLocation:IModal={
         id:'modalLocation',
-        header:{
-            title:'Ubicación'
-        },
-        global:{
-            size:'modal-lg'
-        }
+        header:{ title:'Ubicación' },
+        global:{ size:'modal-lg' }
+    };
+
+    public modalRule:IModal={
+        id:'modalRule',
+        header:{ title:'' },
+        global:{ size:'modal-sm'}
     };
 
     public getInstance:any;

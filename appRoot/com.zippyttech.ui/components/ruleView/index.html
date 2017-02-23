@@ -70,6 +70,7 @@
                                [attr.title]="model.rules[key].title+': '+(data[key] || 0)">
                     </template>
                 </template>
+
             </template>
 
             <template [ngIf]="model.rules[key] && model.rules[key].type=='image'">
@@ -197,6 +198,19 @@
                 </template>
                 <template [ngIf]="!getEnabled()">
                     {{getTypeEval(key,data)}}
+                </template>
+            </template>
+
+            <template [ngIf]="model.rules[key].type=='array'">
+                <template [ngIf]="model.rules[key].typeView == 'normal'">
+                    <div *ngFor="let item of model.fieldToArray(data,key)" class="array-content">
+                        <span class="array-item">{{item}}</span>
+                    </div>
+                </template>
+                <template [ngIf]="model.rules[key].typeView=='modal'">
+                    <a (click)="paramsData.select.title=model.rules[key].title; paramsData.arrayData=model.fieldToArray(data,key)" data-toggle="modal" data-target="#modalRule">
+                        <i class="fa fa-list fa-lg text-info"></i>
+                    </a>
                 </template>
             </template>
 

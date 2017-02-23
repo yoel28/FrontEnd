@@ -176,5 +176,17 @@
     </modal-view>
 </template>
 
+<template [ngIf]="paramsData && paramsData.arrayData">
+    <modal-view [params]="modalRule">
+        <div header>
+            <h2>{{paramsData.select.title}}</h2>
+        </div>
+        <div body>
+            <div *ngFor="let item of paramsData.arrayData">
+                <span>{{item}}</span>
+            </div>
+        </div>
+    </modal-view>
+</template>
 
 <!--######################################################################################-->
