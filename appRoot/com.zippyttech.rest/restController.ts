@@ -415,7 +415,7 @@ export class RestController {
     changeOrder(sort){
         if(sort ==  this.rest.sort){
             this.rest.order = this.rest.order=='desc'?'asc':null;
-            if(this.rest.order)
+            if(!this.rest.order)
                 this.rest.sort=null;
         }
         else
