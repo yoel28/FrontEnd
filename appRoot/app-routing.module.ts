@@ -26,7 +26,7 @@ import {PermissionModel} from "./com.zippyttech.access/permission/permission.mod
 import {RoleModel} from "./com.zippyttech.access/role/role.model";
 import {UserModel} from "./com.zippyttech.access/user/user.model";
 import {ChannelModel} from "./com.zippyttech.business/channel/channel.model";
-import {EventsModel} from "./com.zippyttech.business/event/events.model";
+import {EventModel} from "./com.zippyttech.business/event/event.model";
 import {InfoModel} from "./com.zippyttech.business/info/info.model";
 import {NotificationModel} from "./com.zippyttech.business/notification/notification.model";
 import {ParamModel} from "./com.zippyttech.business/param/param.model";
@@ -61,7 +61,7 @@ const routesDefault: Routes = [
     { path: 'access/user/profile', component: ProfileComponent},
 
 
-    { path: 'business/event', component: BasicComponent, data:{'model':EventsModel}},
+    { path: 'business/event', component: BasicComponent, data:{'model':EventModel}},
     { path: 'business/info', component: BasicComponent,data:{'model':InfoModel}},
     { path: 'business/rule', component: BasicComponent, data:{'model':RuleModel}},
     { path: 'business/param', component: BasicComponent , data:{'model':ParamModel}},
@@ -126,7 +126,7 @@ export const modelsDefault=[
     RoleModel,
     UserModel,
     ChannelModel,
-    EventsModel,
+    EventModel,
     InfoModel,
     NotificationModel,
     ParamModel,

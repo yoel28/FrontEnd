@@ -269,7 +269,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                 ]
             });
             this.menuItems.value.push({
-                'visible': this.db.myglobal.existsPermission(['MEN_EVENTS', 'MEN_INFO', 'MEN_PARAM', 'MEN_RULE', 'MEN_NOTIFICATION','MEN_CHANNEL']),
+                'visible': this.db.myglobal.existsPermission(['MEN_EVENT', 'MEN_INFO', 'MEN_PARAM', 'MEN_RULE', 'MEN_NOTIFICATION','MEN_CHANNEL']),
                 'icon': 'fa fa-gears',
                 'title': 'Configuración',
                 'key': 'Configuracion',
@@ -288,7 +288,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                         'routerLink': '/business/notify'
                     },
                     {
-                        'visible': this.db.myglobal.existsPermission(['MEN_EVENTS']),
+                        'visible': this.db.myglobal.existsPermission(['MEN_EVENT']),
                         'icon': 'fa fa-user',
                         'title': 'Eventos',
                         'routerLink': '/business/event'
