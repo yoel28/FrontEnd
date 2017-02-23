@@ -1,3 +1,11 @@
 .buttons-object{
     display: inline-block;
 }
+
+a{
+    cursor: pointer;
+}
+
+.array-item{
+    width: 100%;
+}

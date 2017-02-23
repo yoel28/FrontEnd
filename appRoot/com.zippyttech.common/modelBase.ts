@@ -23,4 +23,6 @@ export abstract class ModelBase extends ModelRoot{
         }
     }
 
+    public fieldToArray(data:Object,key:string){}
+
 }

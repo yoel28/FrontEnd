@@ -10,7 +10,8 @@ export interface IRuleView{
     searchInstances:Object,//instancias de todos los search
     viewListData:Object,//data de los multiples
     ruleReference:any,//regla para referencias
-    locationParams:ILocation
+    locationParams:ILocation,
+    arrayData:any[];
 }
 
 declare var SystemJS:any;
