@@ -14,4 +14,4 @@ yarn.lock
 aot/
 dist/
 .idea/
-index.html
+./index.html
