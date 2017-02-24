@@ -5,6 +5,7 @@
 declare var System: any;
 
 System.config({
+  // transpiler: 'typescript',
   defaultJSExtensions: true,
   production: true,
   paths: {
