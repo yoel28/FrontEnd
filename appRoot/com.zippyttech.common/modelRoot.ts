@@ -32,6 +32,7 @@ export interface IModelFilter{
             colorClass?: string;
             where:IWhere
         }],
+        status:number,
         permission: boolean;
         callback(model?:ModelRoot);
     };
