@@ -530,4 +530,43 @@ export abstract class ModelRoot extends RestController{
         return action;
     }
 
+    public updateModelFilter(event,key){
+        if(event)
+            event.preventDefault();
+
+        if(this.filters && this.filters[key]){
+            let currentFilter = this.filters[key];
+            if(currentFilter.view[currentFilter.status]){
+                if(currentFilter.view[currentFilter.status].where)
+                {
+                    let code = currentFilter.view[currentFilter.status].where[0]['code'];
+
+                    if(this.rest.where){
+                        (<any>this.rest.where).forEach((where,index)=>{
+                            if(where.code && where.code ==  code)
+                                (<any>this.rest.where).splice(index,1);
+                        });
+                    }
+                }
+
+                currentFilter.status = currentFilter.view[currentFilter.status+1]?(currentFilter.status+1):0;
+
+                if(currentFilter.view[currentFilter.status] && currentFilter.view[currentFilter.status].where){
+                    let where:IWhere;
+                    if(this.rest.where)
+                        where = (<any>this.rest.where).concat(currentFilter.view[currentFilter.status].where)
+                    else
+                        where =  currentFilter.view[currentFilter.status].where;
+
+                    this.rest.where = where;
+                }
+
+            }
+
+
+
+
+        }
+    }
+
 }
