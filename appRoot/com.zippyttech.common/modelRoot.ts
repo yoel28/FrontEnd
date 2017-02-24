@@ -1,5 +1,5 @@
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
-import {RestController} from "../com.zippyttech.rest/restController";
+import {RestController, IWhere} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
 import {FormControl} from "@angular/forms";
 import {IRules} from "./rulesInterface";
@@ -24,6 +24,19 @@ export interface IModelActions{
     };
 }
 
+export interface IModelFilter{
+    [key:string]:{
+        view:[{
+            title: string,
+            icon: string,
+            colorClass?: string;
+            where:IWhere
+        }],
+        permission: boolean;
+        callback(model?:ModelRoot);
+    };
+}
+
 export abstract class ModelRoot extends RestController{
     public prefix = ((this.constructor.name).toUpperCase()).replace('MODEL','');
     public endpoint = "DEFAULT_ENDPOINT";
@@ -35,6 +48,7 @@ export abstract class ModelRoot extends RestController{
     public ruleObject:any={};
     public rulesSave:any={};
     public actions:IModelActions={};
+    public filters:IModelFilter;
 
     public lockList:boolean = false;
 
