@@ -14,6 +14,16 @@
 
                         </h4>
                         <div class="box-tools pull-right header-tools">
+                            <template [ngIf]="model.filters">
+                                <button *ngFor="let key of getObjectKeys(model.filters)"
+                                        class="btn btn-box-tool {{model.filters[key].view[model.filters[key].status].colorClass}}" type="button"
+                                        [attr.title]="model.filters[key].view[model.filters[key].status].title | translate"
+                                        (click)="model.updateModelFilter($event,key)"
+                                >
+                                    <i class="{{model.filters[key].view[model.filters[key].status].icon}}"></i>
+                                </button>
+                                &nbsp;
+                            </template>
                             <template [ngIf]="viewOptions.viewActions">
                                 <button *ngFor="let buttom of getViewOptionsButtons('modal')"
                                         class="btn btn-box-tool {{buttom.class}} {{buttom.evalClass?evalExp(buttom.evalClass):''}}" type="button" data-toggle="modal"
