@@ -8,6 +8,7 @@ import {DateRangePicker} from "./com.zippyttech.utils/directive/dateRangePicker"
 import {TagsInput} from "./com.zippyttech.utils/directive/tagsinput";
 import {XFootable} from "./com.zippyttech.utils/directive/xFootable";
 import {Knob} from "./com.zippyttech.utils/directive/knob";
+import {InputMask} from "./com.zippyttech.utils/directive/inputMask";
 
 export const directivesDefault = [
     ColorPicker,
@@ -19,7 +20,8 @@ export const directivesDefault = [
     DateRangePicker,
     TagsInput,
     XFootable,
-    Knob
+    Knob,
+    InputMask
 ];
 export const directivesApp = [];
 export function abs():string{
