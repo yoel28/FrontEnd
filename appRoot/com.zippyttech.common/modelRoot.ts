@@ -49,7 +49,7 @@ export abstract class ModelRoot extends RestController{
     public ruleObject:any={};
     public rulesSave:any={};
     public actions:IModelActions={};
-    public filters:IModelFilter;
+    public filters:IModelFilter={};
 
     public lockList:boolean = false;
 
@@ -528,6 +528,46 @@ export abstract class ModelRoot extends RestController{
                     action.push(this.actions[key]);
         }).bind(this));
         return action;
+    }
+
+    public updateModelFilter(event,key){
+        if(event)
+            event.preventDefault();
+
+        if(this.filters && this.filters[key]){
+            let currentFilter = this.filters[key];
+            if(currentFilter.view[currentFilter.status]){
+                if(currentFilter.view[currentFilter.status].where)
+                {
+                    let code = currentFilter.view[currentFilter.status].where[0]['code'];
+                    let indexs=[];
+                    if(this.rest.where){
+                        (<any>this.rest.where).forEach((where,index)=>{
+                            if(where.code && where.code ==  code)
+                                indexs.unshift(index);
+                        });
+                    }
+                    indexs.forEach((i=>{
+                        (<any>this.rest.where).splice(i,1);
+                    }).bind(this))
+
+                }
+
+                currentFilter.status = currentFilter.view[currentFilter.status+1]?(currentFilter.status+1):0;
+
+                if(currentFilter.view[currentFilter.status] && currentFilter.view[currentFilter.status].where){
+                    let where:IWhere;
+                    if(this.rest.where)
+                        where = (<any>this.rest.where).concat(currentFilter.view[currentFilter.status].where)
+                    else
+                        where =  currentFilter.view[currentFilter.status].where;
+
+                    this.rest.where = where;
+                }
+
+            }
+            this.loadData();
+        }
     }
 
 }

@@ -13,6 +13,7 @@ interface WhereOp {
     field:string;
     value?:string | boolean | number;
     type?:string;
+    code?:string //codigo identificador para busquedas mas sencillas
 }
 
 export interface IRest{
