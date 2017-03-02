@@ -6,6 +6,8 @@ export interface IParamsInputMask{
 }
 var jQuery = require('jquery');
 var mask = require('inputmask');
+var bootstrap = require('bootstrap');
+
 @Directive({
     selector: "[input-mask]",
     inputs:['data','rule','params'],
@@ -43,7 +45,12 @@ export class InputMask implements OnInit{
         if(this.rule['type'] == 'phone'){
             jQuery(this.el.nativeElement).inputmask("(99) 9999[9]-9999");
         }
-
+        if(this.rule['type'] == 'date'){
+            jQuery(this.el.nativeElement).inputmask('dd-mm-yyyy');
+        }
+        if(this.rule['type'] == 'datetime'){
+            jQuery(this.el.nativeElement).inputmask('dd-mm-yyyy hh:mm:ss');
+        }
 
 
     }
