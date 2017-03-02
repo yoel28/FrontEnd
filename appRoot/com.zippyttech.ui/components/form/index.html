@@ -15,7 +15,7 @@
                                                                 <label *ngIf="rules[key].required" class="text-red">&nbsp;*</label>
                                                                 </span>
 
-                                            <input *ngIf="rules[key].type == 'text' || rules[key].type == 'number' || rules[key].type == 'password'"
+                                            <input *ngIf="rules[key].type == 'text' || rules[key].type == 'number' || rules[key].type == 'email' || rules[key].type == 'password'"
                                                    formControlName="{{key}}" class="form-control"
                                                    formControlName="{{key}}"
                                                    placeholder="{{rules[key].placeholder}}"
@@ -23,28 +23,6 @@
                                                    [attr.aria-describedby]="key"
                                                    [readonly]="rules[key].readOnly"
                                                    [attr.accesskey]="key"
-                                            >
-
-                                            <input *ngIf="rules[key].type == 'email'"
-                                                   formControlName="{{key}}" class="form-control"
-                                                   formControlName="{{key}}"
-                                                   placeholder="{{rules[key].placeholder}}"
-                                                   [attr.aria-describedby]="key"
-                                                   [readonly]="rules[key].readOnly"
-                                                   [attr.accesskey]="key"
-                                                   input-mask
-                                                   [rule]="rules[key]"
-                                            >
-
-                                            <input *ngIf="rules[key].type == 'phone'"
-                                                   formControlName="{{key}}" class="form-control"
-                                                   formControlName="{{key}}"
-                                                   placeholder="{{rules[key].placeholder}}"
-                                                   [attr.aria-describedby]="key"
-                                                   [readonly]="rules[key].readOnly"
-                                                   [attr.accesskey]="key"
-                                                   input-mask
-                                                   [rule]="rules[key]"
                                             >
 
                                             <div *ngIf="rules[key].type == 'list'">
@@ -80,11 +58,28 @@
 
                                                                 </textarea>
 
-                                            <input *ngIf="rules[key].type == 'date'" date-picker
-                                                   [format]="rules[key].format"
-                                                   (fecha)="loadDate($event,key)"
-                                                   [attr.value]="rules[key].title" type="text"
-                                                   class="form-control">
+
+                                            <input *ngIf="rules[key].type == 'date'"
+                                                   formControlName="{{key}}" class="form-control"
+                                                   formControlName="{{key}}"
+                                                   placeholder="{{rules[key].placeholder}}"
+                                                   [attr.aria-describedby]="key"
+                                                   [readonly]="rules[key].readOnly"
+                                                   [attr.accesskey]="key"
+                                                   input-mask
+                                                   [rule]="rules[key]"
+                                            >
+
+                                            <input *ngIf="rules[key].type == 'datetime'"
+                                                   formControlName="{{key}}" class="form-control"
+                                                   formControlName="{{key}}"
+                                                   placeholder="{{rules[key].placeholder}}"
+                                                   [attr.aria-describedby]="key"
+                                                   [readonly]="rules[key].readOnly"
+                                                   [attr.accesskey]="key"
+                                                   input-mask
+                                                   [rule]="rules[key]"
+                                            >
 
                                             <select sm-dropdown
                                                     *ngIf="rules[key].type == 'select' || rules[key].type == 'boolean'"
