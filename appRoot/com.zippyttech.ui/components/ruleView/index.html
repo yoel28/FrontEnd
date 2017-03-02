@@ -27,14 +27,16 @@
                     </a>
 
                     <template [ngIf]="model.rules[key].type == 'select' && !model.rules[key].required && data[key]">
-                        <button (click)="model.setNull(data,key)" type="button" class="btn btn-box-tool" title="Liberar">
+                        <button (click)="model.setNull(data,key)" type="button" class="btn btn-box-tool"
+                                title="Liberar">
                             <i class="fa fa-minus text-red"></i>
                         </button>
                     </template>
 
                 </template>
                 <template [ngIf]="!getEnabled()">
-                    <a x-editable [disabled]="true" [class.notHidden]="model.rules[key].type == 'checklist'" [data]="data"
+                    <a x-editable [disabled]="true" [class.notHidden]="model.rules[key].type == 'checklist'"
+                       [data]="data"
                        [rules]="model.rules" [field]="key">{{data[key] || 'N/A'}}</a>
                 </template>
             </template>
@@ -117,7 +119,8 @@
             <template [ngIf]="model.rules[key] && model.rules[key].type=='color'">
                 <template [ngIf]="getEnabled()">
                     <input color-picker class="form-control" readonly [style.background-color]="'#'+data[key]"
-                           [attr.value]="'#'+data[key]" [hexString]="data[key]" (color)="model.onPatch(key,data,$event)">
+                           [attr.value]="'#'+data[key]" [hexString]="data[key]"
+                           (color)="model.onPatch(key,data,$event)">
                 </template>
                 <template [ngIf]="!getEnabled()">
                     <label [style.background-color]="'#'+data[key]" class="form-control">{{'#'+data[key]}}</label>
@@ -183,6 +186,24 @@
                 </template>
             </template>
 
+            <template [ngIf]="model.rules[key].type=='datetime'">
+                <template [ngIf]="getEnabled()">
+                    <span>
+                        {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY, LT',false,data.id)}}
+                        <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
+                    </span>
+                </template>
+                <template [ngIf]="!getEnabled()">
+                    <span>
+                        {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY, LT',false,data.id)}}
+                        <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
+                    </span>
+                </template>
+            </template>
+
+
+
+
             <template [ngIf]="model.rules[key].type=='time'">
                 <template [ngIf]="getEnabled()">
                     {{formatTimeView(data[key])}}
@@ -208,7 +229,8 @@
                     </div>
                 </template>
                 <template [ngIf]="model.rules[key].typeView=='modal'">
-                    <a (click)="paramsData.select.title=model.rules[key].title; paramsData.arrayData=model.fieldToArray(data,key)" data-toggle="modal" data-target="#modalRule">
+                    <a (click)="paramsData.select.title=model.rules[key].title; paramsData.arrayData=model.fieldToArray(data,key)"
+                       data-toggle="modal" data-target="#modalRule">
                         <i class="fa fa-list fa-lg text-info"></i>
                     </a>
                 </template>
@@ -281,7 +303,7 @@
                             {{data[model.rules[key].keyDisplay]}}
                         </template>
                     </span>
-                        <span class="buttons-object">
+                    <span class="buttons-object">
                         <template [ngIf]="getEnabled()">
 
                             <template [ngIf]="!model.rules[key].reference">
