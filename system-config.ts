@@ -58,7 +58,7 @@ System.config({
     'knob':             'npmR:jquery-knob/dist/',
     'jqueryui':         'npmR:jqueryui/',
     'tagsinput':        'npmR:bootstrap-tagsinput/dist/',
-    'inputmask':        'npmR:jquery-inputmask/',
+    'inputmask':        'npmR:jquery.inputmask/',
     'bootstrap':        'npmR:bootstrap/dist/js/',
     'firebase':         'npm:firebase/',
     'sockjs-client':    'npmR:sockjs-client/dist/',

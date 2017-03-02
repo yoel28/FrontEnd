@@ -138,6 +138,17 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                             }
                         });
                 }
+
+                if(that.rules[key].events && that.rules[key].events.valueChange){
+                    that.data[key]
+                        .valueChanges
+                        .debounceTime(this.db.myglobal.getParams('WAIT_TIME_SAVE') || '500')
+                        .subscribe(((value: string) => {
+                            this.rules[key].events.valueChange(this,value)
+                        }).bind(this))
+
+                }
+
             }
 
         });
