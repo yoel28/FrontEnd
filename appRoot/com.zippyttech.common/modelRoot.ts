@@ -249,6 +249,10 @@ export abstract class ModelRoot extends RestController{
         this.setRuleUserAgent();
         this.setRuleUsernameCreator();
         this.setRuleUsernameUpdater();
+        this.setRuleDateCreated();
+        this.setRuleDateUpdated();
+
+        this.removeRuleExtraSave();
     }
 
     setRuleId(force=false){
@@ -320,6 +324,44 @@ export abstract class ModelRoot extends RestController{
                 "placeholder": "Ingrese el usuario que actualizo",
             };
         }
+    }
+    setRuleDateCreated(force=false){
+        if(this.permissions.audit || force){
+            this.rulesDefault["dateCreated"] = {
+                "update": false,
+                "visible": false,
+                "search": this.permissions.filter,
+                'icon': 'fa fa-list',
+                "type": "datetime",
+                "key": "dateCreated",
+                "title": "Creación",
+                "placeholder": "Ingrese la fecha de creación",
+            };
+        }
+    }
+    setRuleDateUpdated(force=false){
+        if(this.permissions.audit || force){
+            this.rulesDefault["dateUpdated"] = {
+                "update": false,
+                "visible": false,
+                "search": this.permissions.filter,
+                'icon': 'fa fa-list',
+                "type": "datetime",
+                "key": "dateUpdated",
+                "title": "Actualización",
+                "placeholder": "Ingrese la fecha de actualización",
+            };
+        }
+    }
+
+    private removeRuleExtraSave(){
+        delete this.rulesSave['id'];
+        delete this.rulesSave['ip'];
+        delete this.rulesSave['userAgent'];
+        delete this.rulesSave['usernameCreator'];
+        delete this.rulesSave['usernameUpdater'];
+        delete this.rulesSave['dateCreated'];
+        delete this.rulesSave['dateUpdated'];
     }
 
 
@@ -422,12 +464,6 @@ export abstract class ModelRoot extends RestController{
         Object.keys(this.rules).forEach(key=>{
             that.rules[key].check =  false;
         });
-
-        delete this.rulesSave['id'];
-        delete this.rulesSave['ip'];
-        delete this.rulesSave['userAgent'];
-        delete this.rulesSave['usernameCreator'];
-        delete this.rulesSave['usernameUpdater'];
     }
     public spliceId(id:string)
     {
