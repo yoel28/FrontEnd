@@ -133,6 +133,8 @@ export abstract class ModelRoot extends RestController{
         this.initModelActions(this.actions);
 
         this.db.ws.loadChannelByModel(this.constructor.name,this);
+
+        this.removeRuleExtraSave();
         this.completed=completed;
     }
 
@@ -251,8 +253,6 @@ export abstract class ModelRoot extends RestController{
         this.setRuleUsernameUpdater();
         this.setRuleDateCreated();
         this.setRuleDateUpdated();
-
-        this.removeRuleExtraSave();
     }
 
     setRuleId(force=false){
