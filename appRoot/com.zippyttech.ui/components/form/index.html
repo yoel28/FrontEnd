@@ -71,6 +71,18 @@
                                                    [control]="form.controls[key]"
                                             >
 
+                                            <input *ngIf="rules[key].type == 'url'"
+                                                   formControlName="{{key}}" class="form-control"
+                                                   formControlName="{{key}}"
+                                                   placeholder="{{rules[key].placeholder}}"
+                                                   [attr.aria-describedby]="key"
+                                                   [readonly]="rules[key].readOnly"
+                                                   [attr.accesskey]="key"
+                                                   input-mask
+                                                   [rule]="rules[key]"
+                                                   [control]="form.controls[key]"
+                                            >
+
                                             <input *ngIf="rules[key].type == 'datetime'"
                                                    formControlName="{{key}}" class="form-control"
                                                    formControlName="{{key}}"
