@@ -39,6 +39,9 @@ export class InputMask implements OnInit {
             case "datetime" :
                 this.loadTypeDateTime();
                 break;
+            case "url" :
+                this.loadTypeUrl();
+                break;
             default :
                 this.loadTypeDefault();
                 break;
@@ -115,6 +118,14 @@ export class InputMask implements OnInit {
         this.db.debugLog('Error: type not found');
         this.db.debugLog(this.rule);
         this.db.debugLog('----------------------------------------------------------------------');
+    }
+
+    private loadTypeUrl(){
+        jQuery(this.el.nativeElement).inputmask("Regex", {
+            regex:"(http|ftp|https)://[a-z0-9A-Z]+(.)*",
+            oncomplete: this.oncomplete,
+            onincomplete: this.onincomplete
+        });
     }
 
 
