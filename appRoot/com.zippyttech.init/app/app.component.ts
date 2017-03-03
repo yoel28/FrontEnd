@@ -67,8 +67,9 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     that.db.router.navigate(link);
                 }
                 else if (localStorage.getItem('userTemp')){
-                    if(componentName!='AccountSelectComponent' && componentName!='LoadComponent'){
-                        that.db.myglobal.saveUrl = event.url;
+                    if(componentName!='AccountSelectComponent'){
+                        if(componentName!='LoadComponent')
+                            that.db.myglobal.saveUrl = event.url;
                         let link = ['/auth/accountSelect', {}];
                         that.db.router.navigate(link);
                     }
@@ -220,7 +221,10 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     }
 
     loadMenu() {
-        if (this.menuItems.value && this.menuItems.value.length == 0) {
+        if(localStorage.getItem('userTemp') && this.menuItems.value && this.menuItems.value.length > 0){
+            this.menuItems.setValue([]);
+        }
+        else if (this.menuItems.value && this.menuItems.value.length == 0) {
 
             this.menuItems.value.push({
                 'visible': this.db.myglobal.existsPermission(['MEN_DASHBOARD']),
