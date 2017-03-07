@@ -43,7 +43,7 @@ export class XEditable extends RestController implements OnInit {
 
         jQuery(this.el.nativeElement).editable({
             type: currentType,
-            value: (that.rules[that.field].subKey?that.data[that.field][that.rules[that.field].subKey]:that.data[that.field]) || (that.field=='password'?"":"N/A"),
+            value: that.getValue,
             disabled: that.data.enabled?that.disabled:(that.data.enabled==null?that.disabled:true),
             display: that.rules[that.field].display || null,
             showbuttons: that.rules[that.field].showbuttons || false,
@@ -134,6 +134,15 @@ export class XEditable extends RestController implements OnInit {
 
     private get getMode(){
         return this.getRule.mode || 'inline';
+    }
+
+    private get getValue(){
+        let _currentRule =  this.getRule;
+
+        if (this.getType == 'combodate'){
+            return this.data[this.field];
+        }
+        return (_currentRule.subKey?(this.data[this.field][_currentRule.subKey]):((this.data[this.field]) || (this.field=='password'?"":"N/A")));
     }
 
 
