@@ -138,6 +138,16 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                             }
                         });
                 }
+                if(that.rules[key].required && that.rules[key].type == 'list')
+                {
+                    validators.push(
+                        (c:FormControl)=> {
+                            if(c.value && c.value.length > 0){
+                                return null;
+                            }
+                            return {list: {valid: false}};
+                        });
+                }
 
                 if(that.rules[key].events && that.rules[key].events.valueChange){
                     that.data[key]
@@ -147,6 +157,21 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                             this.rules[key].events.valueChange(this,value)
                         }).bind(this))
 
+                }
+
+                if(that.rules[key].url && that.rules[key].url=='image'){
+                    that.data[key]
+                        .valueChanges
+                        .debounceTime(this.db.myglobal.getParams('WAIT_TIME_SEARCH') || '500')
+                        .subscribe((value: string) => {
+                            let img = new Image();
+                            img.onerror = (()=>{
+                                this.data[key].setErrors({'imageError': {'valid': false}});
+                                console.log(key);
+                            }).bind(this);
+                            img.src = value;
+                            return null;
+                        });
                 }
 
             }
