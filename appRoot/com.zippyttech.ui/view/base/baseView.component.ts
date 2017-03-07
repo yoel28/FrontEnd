@@ -30,7 +30,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     ngOnInit(){
         super.ngOnInit();
         this.initViewOptions();
-        this.loadPage();
+        this.loadPage().then(()=>{
+            this.model.refreshList();
+        });
     }
     ngAfterViewInit(){
         this.getInstance.emit(this);
