@@ -83,16 +83,16 @@ export abstract class ModelRoot extends RestController{
     private rulesDefault:any = {};
     public rules:Object={};
 
-    private _dataList:FormControl;
-
-    public set dataList(value:any){
-        if(this._dataList)
-            this._dataList.setValue(value);
-    }
-
-    public get dataList(){
-        return this._dataList.value;
-    }
+    // private _dataList:FormControl;
+    //
+    // public set dataList(value:any){
+    //     if(this._dataList)
+    //         this._dataList.setValue(value);
+    // }
+    //
+    // public get dataList(){
+    //     return this._dataList.value;
+    // }
 
 
     constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
@@ -101,11 +101,11 @@ export abstract class ModelRoot extends RestController{
             this.prefix = prefix;
         this.endpoint = endpoint;
         this.useGlobal = useGlobal;
-        this._dataList = new FormControl({});
+        // this._dataList = new FormControl({});
         this._initModel();
-        this._dataList.valueChanges.subscribe((values=>{
-            console.log("CHANGED!");
-        }).bind(this));
+        // this._dataList.valueChanges.subscribe((values=>{
+        //     console.log("CHANGED!");
+        // }).bind(this));
     }
 
     private _initModel(){
