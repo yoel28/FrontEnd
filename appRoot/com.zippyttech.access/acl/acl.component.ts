@@ -2,24 +2,35 @@ import {Component, OnInit} from '@angular/core';
 import {RestController} from "../../com.zippyttech.rest/restController";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {PermissionModel} from "../permission/permission.model";
+import {RoleModel} from "../role/role.model";
 
 declare var SystemJS:any;
 
 @Component({
+    moduleId:module.id,
     selector: 'acl',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.access/acl/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.access/acl/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     animations: AnimationsManager.getTriggers("d-slide_up|fade-fade",200)
 })
 export class AclComponent extends RestController implements OnInit{
 
     public dataSelect:any={};
+    public permissions:any={};
+
+    private permissionModel:PermissionModel;
+    private roleModel:RoleModel;
 
     constructor(public db:DependenciesBase) {
         super(db);
     }
     ngOnInit(){
+        this.permissionModel = new PermissionModel(this.db);
+        this.roleModel = new RoleModel(this.db);
 
+        this.permissions['save']=this.db.myglobal.existsPermission(['ACL_UPDATE']);
+        this.permissions['menu']=this.db.myglobal.existsPermission(['MEN_ACL']) ;
     }
     //advertencia
     public modalIn:boolean=true;
@@ -37,11 +48,12 @@ export class AclComponent extends RestController implements OnInit{
 
     public dataPermissionsAll:any={};
     loadPermissions(){
-        let that=this;
-        let successCallback= response => {
-            that.permissionsOrder(response.json());
-        };
-        this.httputils.doGet('/permissions?max=1000',successCallback,this.error)
+        if(this.permissionModel.permissions.list){
+            this.permissionModel.rest.max = 1000;
+            this.permissionModel.loadData().then((response=>{
+                this.permissionsOrder(this.permissionModel.dataList);
+            }).bind(this));
+        }
     }
     permissionsOrder(data){
         let that=this;
@@ -58,15 +70,15 @@ export class AclComponent extends RestController implements OnInit{
     public items:any = [];
     public dataRoles:any=[];
     loadRoles(){
-        if(this.db.myglobal.existsPermission(['ROLE_LIST'])){
-            let successCallback= response => {
-                Object.assign(this.dataRoles, response.json());
+        if(this.roleModel.permissions.list){
+            this.roleModel.rest.max = 1000;
+            this.roleModel.loadData().then((response=>{
+                Object.assign(this.dataRoles, this.roleModel.dataList);
                 this.items=[];
                 this.dataRoles.list.forEach(obj=>{
                     this.items.push({id:obj.id,text:obj.authority});
                 });
-            };
-            this.httputils.doGet('/roles/?max=1000',successCallback,this.error)
+            }).bind(this));
         }
     }
     //Cargar Rol Seleccionado
@@ -143,17 +155,19 @@ export class AclComponent extends RestController implements OnInit{
     //Guardar Permisos
     savePermissions(){
         let that =  this;
-        let permissions=[];
-        this.role.permissions.forEach(obj=>{
-            permissions.push(obj.id);
-        });
-        let body = JSON.stringify({'permissions':permissions});
-        let successCallback= response => {
-            let index = this.dataRoles.list.findIndex(obj => obj.id == this.role.id);
-            this.dataRoles.list[index].permissions = this.role.permissions;
-            that.addToast('Notificación','Guardado con exito');
+        if(this.permissions.save){
+            let permissions=[];
+            this.role.permissions.forEach(obj=>{
+                permissions.push(obj.id);
+            });
+            let body = JSON.stringify({'permissions':permissions});
+            let successCallback= response => {
+                let index = this.dataRoles.list.findIndex(obj => obj.id == this.role.id);
+                this.dataRoles.list[index].permissions = this.role.permissions;
+                that.addToast('Notificación','Guardado con exito');
+            }
+            this.httputils.doPost('/role/'+this.role.id+'/permissions/',body,successCallback,this.error)
         }
-        this.httputils.doPost('/role/'+this.role.id+'/permissions/',body,successCallback,this.error)
     }
 
 }
