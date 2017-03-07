@@ -236,6 +236,7 @@ export abstract class ModelRoot extends RestController{
             "visible": this.permissions.visible,
             "search": this.permissions.filter,
             "showbuttons": true,
+            "mode":"popup",
             'icon': 'fa fa-list',
             "type": "textarea",
             "key": "detail",
@@ -332,7 +333,8 @@ export abstract class ModelRoot extends RestController{
                 "visible": false,
                 "search": this.permissions.filter,
                 'icon': 'fa fa-list',
-                "type": "datetime",
+                "type": "combodate",
+                "date":"datetime",
                 "key": "dateCreated",
                 "title": "Creación",
                 "placeholder": "Ingrese la fecha de creación",
@@ -346,7 +348,8 @@ export abstract class ModelRoot extends RestController{
                 "visible": false,
                 "search": this.permissions.filter,
                 'icon': 'fa fa-list',
-                "type": "datetime",
+                "type": "combodate",
+                "date":"datetime",
                 "key": "dateUpdated",
                 "title": "Actualización",
                 "placeholder": "Ingrese la fecha de actualización",
@@ -543,10 +546,20 @@ export abstract class ModelRoot extends RestController{
     }
 
     public refreshList(){
-        this.lockList = true;
-        setTimeout(()=>{
-            this.lockList=false;
-        },);
+        // this.lockList = true;
+        // setTimeout(()=>{
+        //     this.lockList=false;
+        // },100);
+        if(this.dataList) {
+            if (this.dataList.list) {
+                this.dataList.list.forEach(function (data) {
+                    this.refreshData(data);
+                }.bind(this));
+            }
+            else
+                this.refreshData(this.dataList);
+        }
+
     }
 
     goPage(url:string,event?) {
