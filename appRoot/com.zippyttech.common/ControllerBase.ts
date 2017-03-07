@@ -97,7 +97,7 @@ export abstract class ControllerBase implements OnInit {
         if (this.model.permissions.warning || accept) {
             this.modalIn=false;
             if(this.model.permissions.list)
-                this.model.loadData();
+                return this.model.loadData();
         }
     }
 
