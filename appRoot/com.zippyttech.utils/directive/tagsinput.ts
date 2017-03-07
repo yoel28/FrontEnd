@@ -42,10 +42,16 @@ export class TagsInput implements OnInit{
                 }
             }
         );
-        that.control.setValue(jQuery(that.el.nativeElement).tagsinput('items'));
+        this.eventRemoved();
         this.instance.emit(this);
     }
     public addValue(data){
         jQuery(this.el.nativeElement).tagsinput('add', data);
+        this.control.setValue(jQuery(this.el.nativeElement).tagsinput('items'));
+    }
+    public eventRemoved(){
+        jQuery(this.el.nativeElement).on('itemRemoved', function(event) {
+            this.control.setValue(jQuery(this.el.nativeElement).tagsinput('items'));
+        }.bind(this));
     }
 }
