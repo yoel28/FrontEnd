@@ -145,7 +145,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                             if(c.value && c.value.length > 0){
                                 return null;
                             }
-                            return {list: {valid: false}};
+                            return {listError: {valid: false}};
                         });
                 }
 
