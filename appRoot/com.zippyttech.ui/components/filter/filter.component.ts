@@ -81,6 +81,12 @@ export class FilterComponent extends RestController implements OnInit{
             {'id':'ne','text':'Fuera de rango'},
             {'id':'isNull','text':'Nulo'},
         ],
+        'combodate':[
+            {'id':'eq','text':'En rango'},
+            {'id':'isNotNull','text':'No nulo'},
+            {'id':'ne','text':'Fuera de rango'},
+            {'id':'isNull','text':'Nulo'},
+        ],
         'email': [
             {'id':'%ilike%','text': 'Contiene(i)'},
             {'id':'eq','text':'Igual que'},
