@@ -191,6 +191,8 @@ export class StaticValues {
         msg.page="Pagina ";
         msg.rows="filas ";
         msg.results="resultados";
+        msg.imageError="Por favor ingrese una imagen valida";
+        msg.listError="Lista vacia";
 
         return msg;
 
