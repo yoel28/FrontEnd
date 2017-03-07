@@ -188,7 +188,9 @@ export class UserModel extends ModelBase{
     }
     loadRoles(){
         this.db.myglobal.publicData['roles'].forEach((obj=> {
-            this.rules['roles'].source.push({'value': obj.id, 'text': obj.authority});
+            if(this.rules['roles']){
+                this.rules['roles'].source.push({'value': obj.id, 'text': obj.authority});
+            }
         }).bind(this));
         this.completed = true;
     }
