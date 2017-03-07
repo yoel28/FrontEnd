@@ -8,6 +8,7 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 import {TablesComponent} from "../../components/tables/tables.component";
 
 var jQuery = require('jquery');
+var moment = require('moment');
 @Component({
     moduleId:module.id,
     selector: 'base-view',
@@ -86,7 +87,8 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
                 this.model.endpoint +
                 this.model.getRestParams()+
                 '&access_token='+localStorage.getItem('bearer')+
-                '&formatType='+type;
+                '&formatType='+type+
+                '&tz='+moment().format('Z').replace(':','');
     }
     public getEnabledReport(type='PDF'){
         if(type=='PDF')
