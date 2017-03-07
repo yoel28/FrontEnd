@@ -36,7 +36,7 @@
                                                        (instance)="rules[key].refreshField ?(rules[key].refreshField.instance=$event||null):null"
                                                 >
                                                 <form (submit)="addTagManual($event,key)" *ngIf="rules[key].refreshField.tagFree">
-                                                    <input placeholder="{{rules[key].placeholder}} Manual"
+                                                    <input placeholder="Presione Enter para agregar un {{rules[key].placeholder}} manual"
                                                            type="text"
                                                            [attr.aria-describedby]="key"
                                                            class="form-control"
