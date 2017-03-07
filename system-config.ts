@@ -101,7 +101,7 @@ System.config({
     },
     'moment': {
       main:'moment',
-      format: 'cjs',
+      format: 'global',
       defaultExtension: 'js',
     },
     'humanize': {
