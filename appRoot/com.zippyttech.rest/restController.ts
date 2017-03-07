@@ -30,7 +30,7 @@ export interface IRest{
 
 export class RestController {
 
-    dataList:any = [];
+    dataList:any = {};
     httputils:HttpUtils;
     endpoint:string;
     rest:IRest= {
