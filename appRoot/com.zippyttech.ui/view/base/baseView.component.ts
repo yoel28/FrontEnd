@@ -7,13 +7,12 @@ import {AnimationsManager} from "../../animations/AnimationsManager";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {TablesComponent} from "../../components/tables/tables.component";
 
-
-declare var SystemJS:any;
 var jQuery = require('jquery');
 @Component({
+    moduleId:module.id,
     selector: 'base-view',
-    templateUrl: SystemJS.map.app + '/com.zippyttech.ui/view/base/index.html',
-    styleUrls: [SystemJS.map.app + '/com.zippyttech.ui/view/base/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: ['style.css'],
     inputs: ['instance'],
     outputs:['getInstance'],
     animations: AnimationsManager.getTriggers("d-slide_up|fade-fade",200)
