@@ -8,7 +8,7 @@
 
         <template [ngIf]="!model.rules[key].object">
 
-            <template [ngIf]="isCurrentType(['text','textarea','number','checklist','select','password'])">
+            <template [ngIf]="isCurrentType(['text','textarea','number','checklist','select','password','combodate'])">
 
                 <template [ngIf]="getEnabled()">
                     <a x-editable [disabled]="false" [endpoint]="model.endpoint"
@@ -161,36 +161,6 @@
                 </template>
             </template>
 
-            <template [ngIf]="isCurrentType(['date'])">
-                <template [ngIf]="getEnabled()">
-            <span>
-                {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY',false,data.id)}}
-                <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
-            </span>
-                </template>
-                <template [ngIf]="!getEnabled()">
-            <span>
-                {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY',false,data.id)}}
-                <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
-            </span>
-                </template>
-            </template>
-
-            <template [ngIf]="isCurrentType(['datetime'])">
-                <template [ngIf]="getEnabled()">
-                    <span>
-                        {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY, LT',false,data.id)}}
-                        <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
-                    </span>
-                </template>
-                <template [ngIf]="!getEnabled()">
-                    <span>
-                        {{formatDate(data[key],model.rules[key].format?model.rules[key].format.formatView:'DD/MM/YYYY, LT',false,data.id)}}
-                        <i *ngIf="viewChangeDate(data[key])" class="fa fa-exchange btn" (click)="changeFormatDate(data.id)"></i>
-                    </span>
-                </template>
-            </template>
-
             <template [ngIf]="isCurrentType(['time'])">
                 <template [ngIf]="getEnabled()">
                     {{formatTimeView(data[key])}}
@@ -198,6 +168,23 @@
                 <template [ngIf]="!getEnabled()">
                     {{formatTimeView(data[key])}}
                 </template>
+            </template>
+
+            <template [ngIf]="isCurrentType(['url'])">
+
+                <template [ngIf]="getEnabled()">
+
+                    <template [ngIf]="currentRule.url == 'image'">
+                        <img class="img-responsive" [attr.src]="data[key]" />
+                        <link rel=”import” href=”p.html”>
+                    </template>
+
+                </template>
+
+                <template [ngIf]="!getEnabled()">
+
+                </template>
+
             </template>
 
             <template [ngIf]="isCurrentType(['eval'])">
