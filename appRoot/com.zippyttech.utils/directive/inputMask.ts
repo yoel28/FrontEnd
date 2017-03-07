@@ -107,7 +107,7 @@ export class InputMask implements OnInit {
     }
 
     private loadTypeDateTime() {
-        jQuery(this.el.nativeElement).inputmask('dd-mm-yyyy hh:mm',
+        jQuery(this.el.nativeElement).inputmask('datetime',
             {
                 oncomplete: this.oncomplete.bind(this),
                 onincomplete: this.onincomplete.bind(this)
