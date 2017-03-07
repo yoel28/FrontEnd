@@ -39,7 +39,6 @@
                                                     <input placeholder="{{rules[key].placeholder}} Manual"
                                                            type="text"
                                                            [attr.aria-describedby]="key"
-                                                           [attr.id]="key+'manual'"
                                                            class="form-control"
                                                     >
                                                 </form>
@@ -83,7 +82,7 @@
                                                    [control]="form.controls[key]"
                                             >
 
-                                            <input *ngIf="rules[key].type == 'datetime'"
+                                            <input *ngIf="rules[key].type == 'combodate'"
                                                    formControlName="{{key}}" class="form-control"
                                                    formControlName="{{key}}"
                                                    placeholder="{{rules[key].placeholder}}"
@@ -109,8 +108,7 @@
                                                 </option>
                                             </select>
 
-                                            <div [hidden]="data[key].valid ||data[key].pristine"
-                                                 class="alert alert-danger">
+                                            <div [hidden]="data[key].valid || !data[key].touched" class="alert alert-danger">
                                                 <div *ngFor="let error of getKeys(data[key].errors || {})">
                                                     {{db.msg[error] || db.msg.error}}
                                                 </div>
