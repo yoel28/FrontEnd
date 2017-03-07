@@ -49,22 +49,21 @@
                                 </button>
 
 
-                                <template [ngIf]="getEnabledReport">
-                                    <a *ngIf="model.permissions.exportPdf" target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
-                                        <i class="fa fa-file-pdf-o text-red"></i>
-                                    </a>&nbsp;
-                                    <a *ngIf="model.permissions.exporXls" target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
-                                        <i class="fa fa-file-excel-o text-green"></i>
-                                    </a>
-                                </template>
-                                <template [ngIf]="!getEnabledReport">
-                                    <span *ngIf="model.permissions.exportPdf" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
-                                        <i class="fa fa-file-pdf-o text-red"></i>
-                                    </span>&nbsp;
-                                    <span *ngIf="model.permissions.exporXls" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
-                                        <i class="fa fa-file-excel-o text-green"></i>
-                                    </span>
-                                </template>
+
+                                <a *ngIf="model.permissions.exportPdf && getEnabledReport('PDF')" target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
+                                    <i class="fa fa-file-pdf-o text-red"></i>
+                                </a>&nbsp;
+                                <a *ngIf="model.permissions.exporXls && getEnabledReport('EXCEL')" target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
+                                    <i class="fa fa-file-excel-o text-green"></i>
+                                </a>
+
+                                <span *ngIf="model.permissions.exportPdf && !getEnabledReport('PDF')" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
+                                    <i class="fa fa-file-pdf-o text-red"></i>
+                                </span>&nbsp;
+                                <span *ngIf="model.permissions.exporXls && !getEnabledReport('EXCEL')" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS_EXCEL')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
+                                    <i class="fa fa-file-excel-o text-green"></i>
+                                </span>
+
 
                             </template>
 
