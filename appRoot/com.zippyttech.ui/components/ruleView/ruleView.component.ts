@@ -14,11 +14,7 @@ export interface IRuleView{
     arrayData:any[];
 }
 
-declare var SystemJS:any;
 var moment = require('moment');
-@NgModule({
-    schemas:[CUSTOM_ELEMENTS_SCHEMA]
-})
 @Component({
     moduleId:module.id,
     selector: 'rule-view',
@@ -44,6 +40,10 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         this.getInstance = new EventEmitter();
     }
     ngOnInit() {}
+
+    private get currentRule(){
+        return this.model.rules[this.key];
+    }
 
     public isCurrentType(list:Array<string>):boolean{
         return list.indexOf(this.model.rules[this.key].type) >= 0 ? true:false;
@@ -138,9 +138,10 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         this.paramsData.viewListData['data'] =  data[key];
         if(typeof data[key] === 'string'){
             try{
-                this.paramsData.viewListData['data'] = JSON.parse(data[key])
+                this.paramsData.viewListData['data'] = JSON.parse(data[key]);
             }
             catch (exception){
+                this.paramsData.viewListData['data'] = [];
                 console.log(exception);
             }
         }
