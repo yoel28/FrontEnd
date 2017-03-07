@@ -16,3 +16,10 @@
 .alert{
     margin-bottom: 0px !important;
 }
+
+@media(max-width: 425px){
+    .input-group-addon{
+        display: block;
+        border: none;
+    }
+}
