@@ -441,10 +441,10 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
     addTagManual(event,key){
         if(event)
             event.preventDefault();
-        let tag=jQuery('#'+key+'manual').val();
+        let tag=event.target[0].value;
         if(tag && tag.length)
         {
-            jQuery('#'+key+'manual').val('');
+            event.target[0].value='';
             this.rules[key].refreshField.instance.addValue(
                 {
                     'id': 0,
