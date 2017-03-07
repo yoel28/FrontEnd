@@ -88,8 +88,11 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
                 '&access_token='+localStorage.getItem('bearer')+
                 '&formatType='+type;
     }
-    get getEnabledReport(){
-        return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS')) >= this.model.dataList.count);
+    public getEnabledReport(type='PDF'){
+        if(type=='PDF')
+            return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')) >= this.model.dataList.count);
+        if(type=='EXCEL')
+            return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_EXCEL')) >= this.model.dataList.count);
     }
 
     setVisibleField(event,data)
