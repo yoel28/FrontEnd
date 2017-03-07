@@ -15,7 +15,7 @@ var bootstrap = require('bootstrap');
 })
 export class InputMask implements OnInit {
     private control: FormControl;
-    private rule: Object;
+    private rule: any;
     private params: IParamsInputMask;
 
     constructor(public el: ElementRef, public db: DependenciesBase) {
@@ -33,11 +33,11 @@ export class InputMask implements OnInit {
             case "phone" :
                 this.loadTypePhone();
                 break;
-            case "date" :
-                this.loadTypeDate();
-                break;
-            case "datetime" :
-                this.loadTypeDateTime();
+            case "combodate" :
+                if(this.rule.date == 'date')
+                    this.loadTypeDate();
+                if(this.rule.date == 'datetime')
+                    this.loadTypeDateTime();
                 break;
             case "url" :
                 this.loadTypeUrl();
@@ -51,7 +51,8 @@ export class InputMask implements OnInit {
     oncomplete(event) {
         let value = event.target.value;
         if (value) {
-            this.control.setValue(value)
+            this.control.setValue(value);
+            this.control.markAsTouched();
         }
         else {
             this.db.debugLog('----------------------------------------------------------------------');
@@ -62,7 +63,8 @@ export class InputMask implements OnInit {
     }
 
     onincomplete() {
-        this.control.setValue(null)
+        this.control.setValue(null);
+        this.control.markAsTouched();
     }
 
     checkParams() {
@@ -85,15 +87,15 @@ export class InputMask implements OnInit {
                 'A': {validator: '[a-zA-Z0-9_.\-]'},
                 'B': {validator: '[a-zA-Z0-9\-]'},
             },
-            oncomplete: this.oncomplete,
-            onincomplete: this.onincomplete
+            oncomplete: this.oncomplete.bind(this),
+            onincomplete: this.onincomplete.bind(this)
         });
     }
 
     private loadTypePhone() {
         jQuery(this.el.nativeElement).inputmask("(99) 9999[9]-9999", {
-            oncomplete: this.oncomplete,
-            onincomplete: this.onincomplete
+            oncomplete: this.oncomplete.bind(this),
+            onincomplete: this.onincomplete.bind(this)
         });
     }
 
@@ -107,10 +109,18 @@ export class InputMask implements OnInit {
     private loadTypeDateTime() {
         jQuery(this.el.nativeElement).inputmask('dd-mm-yyyy hh:mm',
             {
-                oncomplete: this.oncomplete,
-                onincomplete: this.onincomplete
+                oncomplete: this.oncomplete.bind(this),
+                onincomplete: this.onincomplete.bind(this)
             }
         );
+    }
+
+    private loadTypeUrl(){
+        jQuery(this.el.nativeElement).inputmask("Regex", {
+            regex:"(http|ftp|https)://[a-z0-9A-Z]+(.)*",
+            oncomplete: this.oncomplete.bind(this),
+            onincomplete: this.onincomplete.bind(this)
+        });
     }
 
     private loadTypeDefault() {
@@ -120,13 +130,7 @@ export class InputMask implements OnInit {
         this.db.debugLog('----------------------------------------------------------------------');
     }
 
-    private loadTypeUrl(){
-        jQuery(this.el.nativeElement).inputmask("Regex", {
-            regex:"(http|ftp|https)://[a-z0-9A-Z]+(.)*",
-            oncomplete: this.oncomplete,
-            onincomplete: this.onincomplete
-        });
-    }
+
 
 
 }
