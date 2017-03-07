@@ -1,6 +1,6 @@
 <div [@animation_0]="(!modalIn)?'true':'false'">
     <section class="content">
-        <div class="box">
+        <div class="box" *ngIf="permissions.menu">
             <div class="box-header with-border">
                 <div class="col-lg-12 margin-bottom">
                     <h4>Lista de control de accesso</h4>
@@ -13,17 +13,17 @@
                 </div>
                 <div class="col-lg-4 margin-bottom">
                     <div class="pull-left">
-                        <button *ngIf="db.myglobal.existsPermission(['ROLE_LIST'])" type="button" class="btn btn-success fa fa-refresh" (click)="loadRoles()"></button>
+                        <button *ngIf="roleModel.permissions.list" type="button" class="btn btn-success fa fa-refresh" (click)="loadRoles()"></button>
                     </div>
                 </div>
-                <div *ngIf="!db.myglobal.existsPermission(['ROLE_LIST'])" class="col-lg-12">
+                <div *ngIf="!roleModel.permissions.list" class="col-lg-12">
                     <div class="btn-red padding-error">
                         <h5><i class="fa fa-warning"></i>&nbsp;<strong>ADVERTENCIA</strong></h5>
                         No tiene permisos para listar los roles
                     </div>
                 </div>
 
-                <div *ngIf="!role.id && db.myglobal.existsPermission(['ROLE_LIST'])" class="col-lg-10 text-red ">
+                <div *ngIf="!role.id && roleModel.permissions.list" class="col-lg-10 text-red ">
                     Seleccione un rol
                 </div>
             </div>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="role.id" class="block-float">
+            <div *ngIf="role.id && permissions.save" class="block-float">
 
                 <button class="redondo btn btn-green btn-outlined" title="Seleccionar todos" type="button" (click)="selectPermission(true)">
                     <i class="fa fa-plus fa-lg"></i>
@@ -90,6 +90,13 @@
             </div>
 
         </div>
+        <div *ngIf="!permissions.menu" class="box">
+            <div class="btn-red padding-error">
+                <h5><i class="fa fa-warning"></i>&nbsp;<strong>ADVERTENCIA</strong></h5>
+                No tiene permisos para ver esta pagina
+            </div>
+        </div>
+
     </section>
 </div>
 
