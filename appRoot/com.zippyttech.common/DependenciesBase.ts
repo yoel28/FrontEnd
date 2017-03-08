@@ -24,9 +24,7 @@ export class DependenciesBase {
                 public ws:WebSocket
     ){}
 
-    public debugLog(log){
-        console.log(log);
-    }
+    public debugLog =  this.myglobal.debugLog.bind(this.myglobal);
 
     public templateTypeOf(value){
         return typeof (value);
