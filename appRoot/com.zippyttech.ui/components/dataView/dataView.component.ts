@@ -17,6 +17,7 @@ interface IDataView{
         dir:boolean;
         back:boolean;
     } | boolean;
+    viewActions?:boolean;
     paramsData?:IRuleView
 }
 
@@ -51,7 +52,7 @@ export class DataViewComponent implements OnInit{
                 if(this.model.rules[key].visible)
                     keys.push(key);
             }).bind(this));
-       return keys;
+        return keys;
     }
 
     public getNumber(value):number{
