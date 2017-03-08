@@ -40,7 +40,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     ngOnInit(): void {
         this.menuType = new FormControl(null);
-        this.menuItems = new FormControl([]);
+        this.menuItems = this.db.myglobal.menuItems;
         this.loadPublicData();
 
         // if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
@@ -221,10 +221,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     }
 
     loadMenu() {
-        if(localStorage.getItem('userTemp') && this.menuItems.value && this.menuItems.value.length > 0){
-            this.menuItems.setValue([]);
-        }
-        else if (this.menuItems.value && this.menuItems.value.length == 0) {
+        if (this.menuItems.value && this.menuItems.value.length == 0) {
 
             this.menuItems.value.push({
                 'visible': this.db.myglobal.existsPermission(['MEN_DASHBOARD']),
