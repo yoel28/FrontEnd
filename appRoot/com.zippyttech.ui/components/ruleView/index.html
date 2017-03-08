@@ -2,7 +2,6 @@
 
     <i *ngIf="model.rules[key].iconVisible" class="{{model.rules[key].iconVisible}}">&nbsp;</i>
     <i *ngIf="isCurrentType(['icon'])" class="{{data[key]}}">&nbsp;</i>
-    <div ng-include src="p.html"></div>
 
     <template [ngIf]="model.rules[key]">
 
@@ -49,9 +48,11 @@
             <template [ngIf]="isCurrentType(['progress'])">
                 <template [ngIf]="getEnabled()">
                     <template [ngIf]="model.rules[key].progress=='knob'">
+                        <div class="knob-size">
                         <input knob type="text" class="dial" [model]="model" [data]="data" [key]="key"
                                [attr.value]="(data[key] || 0)" data-width="100%"
                                [attr.title]="model.rules[key].title+': '+(data[key] || 0)">
+                        </div>
                     </template>
                 </template>
 
