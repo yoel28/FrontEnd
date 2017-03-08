@@ -2,12 +2,12 @@
     <div class="view-header box-header" *ngIf="!dataParams.internal">
         <i class="fa fa-building"></i> <h2>{{model.ruleObject.title}}</h2>
     </div>
-    <div class="view-aside">
-        <div class="view-tools-group">
+    <div class="view-aside {{(dataParams.viewActions)?'':'aside-hidden'}}">
+        <div class="view-tools-group" *ngIf="!model.rest.findData && dataParams.viewActions">
             <button title="Volver" (click)="model.navIndex = null" *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)) && (model.dataList.count && model.dataList.count > 1)" class="back">
                 <i class="fa fa-reply"></i>
             </button>
-            <template [ngIf]="dataParams.internal">
+            <template [ngIf]="dataParams.internal && dataParams.viewActions">
                 <button *ngFor="let action of model.getActionsArray(data)"
                         (click)="dataParams.ruleViewOptions.select=data; action.callback(data,model.navIndex||0)" [attr.title]="action.view[getNumber(data[action.syncKey])||0].title">
                     <i class="{{action.view[getNumber(data[action.syncKey])||0].icon}}"></i>
@@ -22,20 +22,25 @@
                 class="nav-btn nav-left"  (click)="model.navIndex = -1"
         >  <i class="fa fa-caret-up"></i>
         </button>
-        <div class="view-data {{((dataParams.internal)?'view-data-internal':'')}}">
-            <div *ngFor="let key of getDataKeys()" class="view-item {{db.classCol(12/dataParams.cols.lg,12/dataParams.cols.md,12/dataParams.cols.sm,12/dataParams.cols.xs)}}">
-                <div class="view-item-icon {{db.classCol(2,2,2,2)}} hidden-xs">
-                    <span>
-                        <i class="{{(model.rules[key].icon)?model.rules[key].icon:'fa fa-list-alt'}}"></i>
-                    </span>
-                </div>
-                <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
-                    <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
-                    <div class="view-item-detail-content">
-                        <rule-view [model]="model" [data]="data"  [key]="key" [paramsData]="dataParams.paramsData"> </rule-view>
+        <div class="view-data {{((dataParams.internal)?'view-data-internal':'')}}" >
+            <template [ngIf]="!model.rest.findData">
+                <div *ngFor="let key of getDataKeys()" class="view-item {{db.classCol(12/dataParams.cols.lg,12/dataParams.cols.md,12/dataParams.cols.sm,12/dataParams.cols.xs)}}">
+                    <div class="view-item-icon {{db.classCol(2,2,2,2)}} hidden-xs">
+                        <span>
+                            <i class="{{(model.rules[key].icon)?model.rules[key].icon:'fa fa-list-alt'}}"></i>
+                        </span>
+                    </div>
+                    <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
+                        <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
+                        <div class="view-item-detail-content">
+                            <rule-view [model]="model" [data]="data"  [key]="key" [paramsData]="dataParams.paramsData"> </rule-view>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </template>
+            <template [ngIf]="model.rest.findData">
+                <div class="preloadSpin"><i class="fa fa-spinner fa-spin"></i></div>
+            </template>
         </div>
         <button *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir))"
                 [disabled]="model.rest.findData || (model.navIndex + model.rest.offset == model.dataList.count-1)"
