@@ -409,8 +409,14 @@ export class RestController {
         if(code)
             this.removedCodeFilter(code);
 
-        if(typeof where === 'object')
-            this.rest.where = where;
+        if(typeof where === 'object'){
+
+            if((<any>where).length){
+                let whereTemp:IWhere;
+                whereTemp = (<any>this.rest.where).concat(where);
+                this.rest.where = whereTemp;
+            }
+        }
         else
             console.log('no es un objecto.. verificar');
         this.loadData();
