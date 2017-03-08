@@ -32,10 +32,10 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire) {
         super(db);
+        this.routerEvents();
         let url="https://cdg.zippyttech.com:8080";
         localStorage.setItem('urlAPI', url + '/api');
         localStorage.setItem('url', url);
-        this.routerEvents();
     }
 
     ngOnInit(): void {
@@ -43,9 +43,9 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         this.menuItems = new FormControl([]);
         this.loadPublicData();
 
-        if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
-            this.goPage(null,'/init/load');
-        }
+        // if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
+        //      this.goPage(null,'/init/load');
+        // }
     }
 
     routerEvents(){
