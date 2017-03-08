@@ -50,6 +50,8 @@ i{
     overflow-y:auto;
     border-radius: 0px !important;
     padding: 10px 5px;
+    min-height: 100px;
+    transition: .5s;
 }
 
 .view-data-internal{
@@ -160,6 +162,16 @@ a:not(.editable-empty){
     top: 45px;
     width: 10%;
     max-width: 60px;
+    min-height: 50px;
+}
+
+.aside-hidden{
+    width: 0px;
+    display: none;
+}
+
+.aside-hidden ~.view-body{
+    width: 100%;
 }
 
 .view-tools-group{
@@ -203,6 +215,22 @@ a:not(.editable-empty){
 
 .view-tools-group>*:hover>i {
     transform: scale(.9);
+}
+
+.preloadSpin{
+    color:black;
+    display: flex;
+    flex-flow: row nowrap;
+    vertical-align: middle;
+    align-items: center;
+    font-size: 32px;
+    width: 100%;
+    height: 200px;
+}
+
+.preloadSpin *{
+    color:black;
+    margin: 0 auto;
 }
 
 @media(max-width: 425px){

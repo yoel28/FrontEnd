@@ -23,9 +23,6 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
     display: block;
 }
-body {
-    line-height: 1;
-}
 ol, ul {
     list-style: none;
 }
@@ -104,11 +101,11 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
     max-width: none !important;
 }
 .btn.redondo {
-    -webkit-border-radius: 30px!important;
-    -moz-border-radius: 30px!important;
-    border-radius: 30px!important;
-    padding-top: 9px;
-    padding-bottom: 9px;
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0px;
 }
 .btn{
     border-radius: 3px !important;
@@ -341,8 +338,10 @@ ul.ui-autocomplete {
 }
 
 .sidebar-collapse .user-panel>.image>img {
+    width: 30px !important;
+    height: 30px !important;
     min-width: 0px !important;
-    width: 100% !important;
+
 }
 
 .sidebar-collapse .user-panel:hover>.image {
@@ -362,4 +361,37 @@ ul.ui-autocomplete {
     border: transparent;
     background: transparent;
     outline: transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 3px !important;
+    height: 3px !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(72, 140, 108, 0.16) !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(13, 86, 40, 0.6) !important;
+    outline: none;
+}
+
+
+body {
+    transition: .2s;
+    overflow: scroll !important;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgb(236, 240, 245) !important;
+}
+
+
+register-full .nav-btn:disabled{
+    display:none !important;
+}
+
+register-full .view-data-internal{
+    border-radius: 10px !important;
 }
