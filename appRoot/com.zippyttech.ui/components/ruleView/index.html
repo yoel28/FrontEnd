@@ -59,7 +59,7 @@
                 <template [ngIf]="!getEnabled()">
                     <template [ngIf]="model.rules[key].progress=='knob'">
                         <input knob type="text" class="dial" [model]="model" [data]="data" [key]="key"
-                               [attr.value]="(data[key] || 0)" data-width="100%"
+                               data-width="100%"
                                [attr.title]="model.rules[key].title+': '+(data[key] || 0)">
                     </template>
                 </template>
