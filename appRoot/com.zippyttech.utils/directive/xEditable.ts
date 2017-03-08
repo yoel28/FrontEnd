@@ -138,11 +138,14 @@ export class XEditable extends RestController implements OnInit {
 
     private get getValue(){
         let _currentRule =  this.getRule;
-
-        if (this.getType == 'combodate'){
-            return this.data[this.field];
+        switch (this.getType) {
+            case "combodate" :
+                return this.data[this.field];
+            case "password" :
+                return '';
+            default :
+                return (_currentRule.subKey?(this.data[this.field][_currentRule.subKey]):((this.data[this.field]) || "N/A"));
         }
-        return (_currentRule.subKey?(this.data[this.field][_currentRule.subKey]):((this.data[this.field]) || (this.field=='password'?"":"N/A")));
     }
 
 
