@@ -60,7 +60,7 @@ export class Knob implements OnInit{
                 max:100,
                 readOnly:true,
                 fontWeight:'900',
-                value:0
+                value:(this.data[this.key] || 0)
             }
         }
     }
