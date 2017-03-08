@@ -293,7 +293,7 @@ export class FilterComponent extends RestController implements OnInit{
                         }
                     }
 
-                    if (that.rules[key].type == 'date')//si es tipo date..
+                    if (that.rules[key].type == 'date' || that.rules[key].type == 'combodate')//si es tipo date..
                     {
                         whereTemp.type='date';
 
