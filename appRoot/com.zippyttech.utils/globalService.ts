@@ -31,6 +31,7 @@ export class globalService extends RestController{
     public channelWebsocket:any={};
 
     public navigationStart:boolean=false;
+    public menuItems:FormControl = new FormControl([]);
 
     public dataSesion = new FormControl(
         null,
@@ -84,6 +85,8 @@ export class globalService extends RestController{
         this.permissions=[];
         this.rules=[];
         this.channels=[];
+
+        this.menuItems.setValue([]);
         this.dataSesion.setValue({
             'token':        {'status':value,'title':'Validando usuario'},
             'user':         {'status':value,'title':'Consultando datos del usuario'},
