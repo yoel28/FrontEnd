@@ -26,7 +26,7 @@ export class DateRangePicker implements OnInit {
                 that.fecha.emit({'start':start.format(that.params.format),'end':end.add(1,'day').format(that.params.format)})
             });
         jQuery(that.element).on('cancel.daterangepicker', function(ev, picker) {
-            that.fecha.emit({});
+            that.fecha.emit(null);
         });
     }
 }
