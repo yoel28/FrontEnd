@@ -265,11 +265,12 @@ ul.ui-autocomplete {
 .user-panel>.info{
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 .user-panel *{
     position: relative  !important;
-    transition-duration:.5s  !important;
+    transition: cubic-bezier(0, 0.8, 0.07, 1.14) .5s  !important;
     left: 0px !important;
     top:0px !important;
 }
@@ -362,4 +363,28 @@ ul.ui-autocomplete {
     border: transparent;
     background: transparent;
     outline: transparent;
+}
+
+*::-webkit-scrollbar {
+    width: 3px !important;
+    height: 3px !important;
+}
+
+*::-webkit-scrollbar-track {
+    background: rgba(72, 140, 108, 0.16) !important;
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: rgba(13, 86, 40, 0.6) !important;
+    outline: none;
+}
+
+
+body {
+    transition: .2s;
+    overflow: scroll !important;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgb(236, 240, 245) !important;
 }

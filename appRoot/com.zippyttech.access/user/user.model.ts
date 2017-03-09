@@ -17,7 +17,7 @@ export class UserModel extends ModelBase{
     }
     initRules(){
         this.rules['email']={
-            'type': 'text',
+            'type': 'email',
             'email':true,
             'required':true,
             'setEqual':'username',
@@ -58,7 +58,7 @@ export class UserModel extends ModelBase{
             'placeholder': 'Nombre',
         };
         this.rules['phone']={
-            'type': 'text',
+            'type': 'phone',
             'forceInSave':true,
             'update':this.permissions.update,
             'search':this.permissions.filter,
