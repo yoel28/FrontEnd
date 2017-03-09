@@ -1,0 +1,21 @@
+<div>
+    <modal-view [params]="config" (getInstance)="modalView = $event" (onVisible)="visible = $event">
+        <div body>
+            <div [ngSwitch]="ms._currentModal">
+                <template [ngSwitchCase]="'delete'">
+                    {{ms.params.model.actions['delete'].message}} <strong>'{{ms.params.cfgParams.dataSelect[ms.params.model.actions['delete'].key]}}'</strong>
+                </template>
+
+                <template [ngSwitchCase]="'save'">
+                    <!--<save-view [rules]="saveModels[key].rulesSave" [params]="saveModels[key].paramsSave"-->
+                               <!--(save)="">-->
+                    <!--</save-view>-->
+                </template>
+
+                <template [ngSwitchCase]="'search'">
+
+                </template>
+            </div>
+        </div>
+    </modal-view>
+</div>
