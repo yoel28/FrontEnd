@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, NgModule} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
-import {IModal} from "../modal/modal.component";
+import {IModal} from "../modalView/modalView.component";
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 
 
