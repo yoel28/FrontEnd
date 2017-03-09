@@ -8,7 +8,7 @@ import {InfoModel} from "../../com.zippyttech.business/info/info.model";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {AngularFire} from "angularfire2";
-import {IModal} from "../../com.zippyttech.ui/components/modal/modal.component";
+import {IModal} from "../../com.zippyttech.ui/components/modalView/modalView.component";
 
 var jQuery = require('jquery');
 
