@@ -235,8 +235,6 @@ export abstract class ModelRoot extends RestController{
             "update": this.permissions.update,
             "visible": this.permissions.visible,
             "search": this.permissions.filter,
-            "showbuttons": true,
-            "mode":"popup",
             'icon': 'fa fa-list',
             "type": "textarea",
             "key": "detail",
