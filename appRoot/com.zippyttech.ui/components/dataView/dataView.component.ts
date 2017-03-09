@@ -17,6 +17,7 @@ interface IDataView{
         dir:boolean;
         back:boolean;
     } | boolean;
+    viewActions?:boolean;
     paramsData?:IRuleView
 }
 
