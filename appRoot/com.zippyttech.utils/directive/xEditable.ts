@@ -8,9 +8,14 @@ var bootstrap = require('bootstrap');
 var moment = require('moment');
 var editable = require('editable');
 
-// Params define
-// MIN_DATE
-// MAX_DATE
+/**
+ * @Params API
+ * Optional
+ *      MIN_DATE
+ *      MAX_DATE
+ *
+ *
+ */
 
 @Directive({
     selector: "[x-editable]",
@@ -34,119 +39,171 @@ export class XEditable extends RestController implements OnInit {
     }
 
     ngOnInit() {
-        let that = this;
-        if(that.disabled==null)
-            that.disabled = that.rules[that.field].disabled!=null ? that.rules[that.field].disabled : ( that.data.enabled ? !that.data.enabled : false);
 
-        let currentType = that.rules[that.field].type || 'text';
+        let currentRule = this.getRule;
 
 
         jQuery(this.el.nativeElement).editable({
-            type: currentType,
-            value: that.getValue,
-            disabled: that.data.enabled?that.disabled:(that.data.enabled==null?that.disabled:true),
-            display: that.rules[that.field].display || null,
-            showbuttons: that.rules[that.field].showbuttons || false,
 
-            mode: that.getMode,
-            source:that.getSource,
-            format:that.getFormat,
-            viewformat:that.getViewFormat,
-            template:that.getTemplate,
-            step:that.getStep,
+            type: this.getType(currentRule),
+            value: this.getValue(currentRule),
+            disabled: this.getDisabled(currentRule),
+            display: this.getDisplay(currentRule),
+            showbuttons: this.getShowbuttons(currentRule),
+            mode: this.getMode(currentRule),
+            source:this.getSource(currentRule),
+            format:this.getFormat(currentRule),
+            viewformat:this.getViewFormat(currentRule),
+            template:this.getTemplate(currentRule),
+            step:this.getStep(currentRule),
+            combodate: this.getCombodate(currentRule),
 
-            combodate: {
-                minYear: parseFloat(that.db.myglobal.getParams('MIN_DATE') || '2000'),
-                maxYear: parseFloat(that.db.myglobal.getParams('MAX_DATE') || '2020'),
-            },
             validate: function (newValue) {
-                if(that.function)
+                if(this.function)
                 {
-                    that.function(that.field, that.data, newValue, that.endpoint).then(
+                    this.function(this.field, this.data, newValue, this.endpoint).then(
                         function (value) {
-                            return;
-                        }, function (reason) {
-                            jQuery(that.el.nativeElement).editable('setValue', that.data[that.field], true);
-                        }
+                            this.eventSetValue(currentRule,value[this.field]);
+                        }.bind(this), function (reason) {
+                            this.eventSetValue(currentRule);
+                        }.bind(this)
                     );
                 }
-                that.success.emit(newValue);
-            }
+                this.success.emit(newValue);
+            }.bind(this)
         });
     }
-    private get getType(){
-        return this.getRule.type || 'text'
-    }
-
     private get getRule(){
         return this.rules[this.field];
     }
 
-    private get getFormat(){
-        let _currentRule =  this.getRule;
-
-        if (this.getType == 'combodate'){
-            if(_currentRule.date == 'date'){
-                return _currentRule.format || 'DD-MM-YYYY'
-            }
-            if(_currentRule.date == 'datetime'){
-                return _currentRule.format || 'YYYY-MM-DD HH:mm'
-            }
+    private getType(rule){
+        switch (rule.type) {
+            case "url" :
+                return 'url';
+            default :
+                return rule.type || 'text'
         }
-        return null;
     }
 
-    private get getViewFormat(){
-        let _currentRule =  this.getRule;
-
-        if (this.getType == 'combodate'){
-            if(_currentRule.date == 'date'){
-                return _currentRule.viewformat || 'MMM D, YYYY'
-            }
-            if(_currentRule.date == 'datetime'){
-                return _currentRule.viewformat || 'MMM D, YYYY, HH:mm'
-            }
-        }
-        return null;
-    }
-
-    private get getTemplate(){
-        let _currentRule =  this.getRule;
-
-        if (this.getType == 'combodate'){
-            if(_currentRule.date == 'date'){
-                return _currentRule.template || 'D MMM YYYY'
-            }
-            if(_currentRule.date == 'datetime'){
-                return _currentRule.template || 'D MMM YYYY  HH:mm'
-            }
-        }
-        return null;
-    }
-
-    private get getStep(){
-        return this.getRule.step || "0.001"
-    }
-
-    private get getSource(){
-        return this.getRule.source || null
-    }
-
-    private get getMode(){
-        return this.getRule.mode || 'inline';
-    }
-
-    private get getValue(){
-        let _currentRule =  this.getRule;
-        switch (this.getType) {
+    private getValue(rule){
+        switch (this.getType(rule)) {
             case "combodate" :
                 return this.data[this.field];
             case "password" :
                 return '';
+            case "url" :
+                return 'link';
             default :
-                return (_currentRule.subKey?(this.data[this.field][_currentRule.subKey]):((this.data[this.field]) || "N/A"));
+                return (rule.subKey?( this.data[this.field][rule.subKey] || 'N/A' ):( this.data[this.field] || "N/A"));
         }
     }
+
+    private getDisabled(rule){
+        return this.disabled;
+    }
+
+    private getDisplay(rule){
+        return rule.display || null
+    }
+
+    private getShowbuttons(rule){
+        switch (this.getType(rule)) {
+            case "combodate" :
+                return rule.showbuttons == null?true:rule.showbuttons;
+            case "textarea" :
+                return rule.showbuttons==null?true:rule.showbuttons;
+            default :
+                return rule.showbuttons || false;
+        }
+    }
+
+    private getMode(rule){
+        switch (this.getType(rule)) {
+            case "combodate" :
+                return rule.mode || 'popup';
+            case "textarea" :
+                return rule.mode || 'popup';
+            default :
+                return rule.mode || 'inline';
+        }
+    }
+
+    private getSource(rule){
+        return rule.source || null
+    }
+
+    private getFormat(rule){
+        switch (this.getType(rule)) {
+            case "combodate" :
+                if(rule.date == 'date'){
+                    return rule.format || 'DD-MM-YYYY'
+                }
+                if(rule.date == 'datetime'){
+                    return rule.format || 'YYYY-MM-DD HH:mm'
+                }
+            default :
+                return null;
+        }
+    }
+
+    private getViewFormat(rule){
+        switch (this.getType(rule)) {
+            case "combodate" :
+                if(rule.date == 'date'){
+                    return rule.viewformat || 'MMM D, YYYY';
+                }
+                if(rule.date == 'datetime'){
+                    return rule.viewformat || 'MMM D, YYYY, HH:mm';
+                }
+            default :
+                return null;
+        }
+    }
+
+    private getTemplate(rule){
+
+        switch (this.getType(rule)) {
+            case "combodate" :
+                if(rule.date == 'date'){
+                    return rule.template || 'D MMM YYYY';
+                }
+                if(rule.date == 'datetime'){
+                    return rule.template || 'D MMM YYYY  HH:mm';
+                }
+            default :
+                return null;
+        }
+
+    }
+
+    private getStep(rule){
+        return rule.step || "0.001"
+    }
+
+    private getCombodate(rule){
+        switch (this.getType(rule)) {
+            case "combodate" :
+                return {
+                        minYear: parseFloat(this.db.myglobal.getParams('MIN_DATE') || '2000'),
+                        maxYear: parseFloat(this.db.myglobal.getParams('MAX_DATE') || '2020'),
+                    };
+            default :
+                return null;
+        }
+
+    }
+
+    private eventSetValue(rule,data=null){
+        switch (this.getType(rule)) {
+            case "url" :
+                jQuery(this.el.nativeElement).editable('setValue','link', true);
+            default :
+                jQuery(this.el.nativeElement).editable('setValue',( data || this.data[this.field]), true);
+        }
+    }
+
+
 
 
 }
