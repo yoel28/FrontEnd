@@ -6,7 +6,7 @@ import {Http} from "@angular/http";
 import {ToastyService, ToastyConfig} from "ng2-toasty";
 
 /**
- * @Params
+ * @Params API
  * Optional
  *      MODE_DEBUG
  *
@@ -64,9 +64,9 @@ export class globalService extends RestController{
 
     existLocalStorage(){
         if (typeof(Storage) !== "undefined") {
-            console.log("habemus localstorage")
+            this.debugLog(["habemus localstorage"])
         } else {
-            console.log("no habemus localstorage")
+            this.debugLog(["no habemus localstorage"])
         }
     }
     initSession():void{
