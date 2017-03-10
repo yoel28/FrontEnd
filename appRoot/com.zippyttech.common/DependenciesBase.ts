@@ -11,6 +11,7 @@ import {WebSocket} from "../com.zippyttech.utils/websocket";
 @Injectable()
 export class DependenciesBase {
     public msg = StaticValues.msg;
+    public msgParams = StaticValues.msgParams;
     public classCol=StaticFunction.classCol;
     public classOffset=StaticFunction.classOffset;
     public pathElements=StaticValues.pathElements;
