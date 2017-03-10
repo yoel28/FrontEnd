@@ -193,9 +193,19 @@ export class StaticValues {
         msg.results="resultados";
         msg.imageError="Por favor ingrese una imagen valida";
         msg.listError="Lista vacia";
+        msg.errorMaxlength="El campo debe ser menor a $0 caracteres";
+        msg.errorMinlength="El campo debe ser mayor a $0 caracteres";
 
         return msg;
 
+    }
+    public static msgParams(id:string,params:Array<string | number> = [])
+    {
+        let currentMsg = this.msg[id];
+        params.forEach((value,index)=>{
+            currentMsg.replace('$'+index,value)
+        })
+        return currentMsg;
     }
 
 }
