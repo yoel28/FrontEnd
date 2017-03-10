@@ -3,13 +3,14 @@ import {RestController} from "../../../com.zippyttech.rest/restController";
 import {FormComponent} from "../form/form.component";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
-declare var SystemJS:any;
 var moment = require('moment');
 var jQuery = require('jquery');
+
 @Component({
+    moduleId:module.id,
     selector: 'save-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/save/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/save/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     inputs:['params','rules'],
     outputs:['save','getInstance'],
 })
@@ -22,7 +23,6 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
     public save:any;
     public getInstance:any;
     public actions:any;
-    public configId = moment().valueOf();
 
     constructor(public db:DependenciesBase) {
         super(db);
