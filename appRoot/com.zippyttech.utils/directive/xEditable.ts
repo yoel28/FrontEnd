@@ -59,6 +59,10 @@ export class XEditable extends RestController implements OnInit {
             combodate: this.getCombodate(currentRule),
 
             validate: function (newValue) {
+                let msg = this.isValid(currentRule,newValue);
+                if(msg)
+                    return msg;
+
                 if(this.function)
                 {
                     this.function(this.field, this.data, newValue, this.endpoint).then(
@@ -201,6 +205,20 @@ export class XEditable extends RestController implements OnInit {
             default :
                 jQuery(this.el.nativeElement).editable('setValue',( data || this.data[this.field]), true);
         }
+    }
+
+    private isValid(rule,newValue){
+        if(rule.required && !newValue)
+            return this.db.msg.required;
+
+        if(rule.maxLength && newValue && newValue.length > rule.maxLength )
+            return this.db.msgParams('errorMaxlength',[rule.maxLength]);
+
+        if(rule.minLength && newValue && newValue.length < rule.minLength )
+            return this.db.msgParams('errorMinlength',[rule.minLength]);
+
+
+
     }
 
 
