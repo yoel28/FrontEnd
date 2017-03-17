@@ -140,7 +140,7 @@
         <save-view [params]="model.paramsSave" [rules]="model.rulesSave" (save)="model.setLoadData($event)"></save-view>
     </div>
     <div *ngIf="model.permissions.filter">
-        <filter-view [params]="model.paramsSearch" [rules]="model.rules" (whereFilter)="model.loadWhere($event,null,'filter')"></filter-view>
+        <filter-view [model]="model" ></filter-view>
     </div>
 </div>
 
