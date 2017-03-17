@@ -63,6 +63,8 @@ export class XEditable extends RestController implements OnInit {
                 if(msg)
                     return msg;
 
+                newValue = this.parseValueValidate(currentRule,newValue);
+
                 if(this.function)
                 {
                     this.function(this.field, this.data, newValue, this.endpoint).then(
@@ -93,6 +95,8 @@ export class XEditable extends RestController implements OnInit {
     private getValue(rule){
         switch (this.getType(rule)) {
             case "combodate" :
+                if(this.data[this.field])
+                    return moment(this.data[this.field]);
                 return this.data[this.field];
             case "password" :
                 return '';
@@ -221,7 +225,19 @@ export class XEditable extends RestController implements OnInit {
 
     }
 
-
+    private parseValueValidate(rule,newValue){
+        switch (this.getType(rule)) {
+            case "combodate" :
+                if(rule.date == 'date'){
+                    return newValue.format('YYYY-DD-MM');
+                }
+                if(rule.date == 'datetime'){
+                    return newValue.format('YYYY-DD-MM HH:mm');
+                }
+            default :
+                return newValue;
+        }
+    }
 
 
 }
