@@ -1,9 +1,11 @@
-import {Component, EventEmitter, OnInit} from '@angular/core';
-import {IModal, ModalViewComponent} from "../../com.zippyttech.ui/components/modalView/modalView.component";
+import {
+    Component, OnInit, DoCheck, TemplateRef, ElementRef, AfterContentInit,
+    AfterContentChecked, AfterViewInit, ApplicationRef, ViewChild, ViewChildren
+} from '@angular/core';
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
-import {ModalService, IStatusModal} from "./modal.service";
+import {ModalService} from "./modal.service";
+import {IModalConfig} from "./modal.types";
 declare var SystemJS:any;
-
 
 var jQuery = require('jquery');
 
@@ -11,30 +13,44 @@ var jQuery = require('jquery');
     moduleId:module.id,
     selector: 'modal',
     templateUrl: 'template.html',
-    inputs: ['sync','config']
+    styleUrls:['modal.style.css']
 })
 export class ModalComponent implements OnInit{
-    public config:IModal;
-    public sync:boolean = true;
-    private _visible:boolean = false;
-    private modalView:ModalViewComponent;
+    public config:IModalConfig;
+    private _visible:boolean;
+    private $frame:HTMLElement;
 
-    public constructor(public db:DependenciesBase,private ms:ModalService){}
+    public constructor(private db:DependenciesBase, private el:ElementRef){
+        this.el.nativeElement.classList.add("not-blur");
+    }
 
     ngOnInit(){
-        if(this.sync || !this.config)
-            this.config = this.ms.configs['default'];
-        if(this.sync)
-            this.ms.onVisible.subscribe((value)=>{ this.visible = value; });
+        this.$frame = this.el.nativeElement.firstChild;
+        if(!this.config) this.config = this.db.ms.configs['default'];
+        this.db.ms.onVisible.subscribe((value)=>{ this.visible = value; });
     }
 
     public set visible(value:boolean){
-        if(value != this.visible) {
-            this._visible = value;
-            if (!value) this.ms.hideCurrentModal();
-            else this.config = this.ms.configs[this.ms.currentModal] || this.ms.configs['default'];
-            this.modalView.visible = value;
+        if(value != this.visible){
+            if (value) this.show();
+            else this.hide();
         }
     }
     public get visible():boolean{ return this._visible; }
+
+    private hide(){
+        this.db.$elements.app.classList.remove('blur-content');
+        this.$frame.classList.remove("shown");
+        setTimeout((()=>{
+            this._visible = false;
+            this.db.ms.hideCurrentModal();
+        }).bind(this) ,500);
+    }
+
+    private show(){
+        this.config = this.db.ms.configs[this.db.ms.currentModal] || this.db.ms.configs['default'];
+        this.db.$elements.app.classList.add('blur-content');
+        this._visible = true;
+        setTimeout( (()=>{ this.$frame.classList.add("shown"); }).bind(this) ,100);
+    }
 }
