@@ -105,6 +105,18 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                         });
                 }
 
+                if(that.rules[key].required && that.rules[key].type == 'list')
+                {
+                    validators.push(
+                        (c:FormControl)=> {
+                            if(c.value && c.value.length > 0){
+                                return null;
+                            }
+                            return {listError: {valid: false}};
+                        });
+                }
+
+
                 that.data[key] = new FormControl('',Validators.compose(validators));
                 if(that.rules[key].value)
                     that.data[key].setValue(that.rules[key].value);
@@ -136,16 +148,6 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                                 if(that.search && that.search.key == key)
                                     that.getSearch(null,'');
                             }
-                        });
-                }
-                if(that.rules[key].required && that.rules[key].type == 'list')
-                {
-                    validators.push(
-                        (c:FormControl)=> {
-                            if(c.value && c.value.length > 0){
-                                return null;
-                            }
-                            return {listError: {valid: false}};
                         });
                 }
 
