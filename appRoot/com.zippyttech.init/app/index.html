@@ -152,14 +152,18 @@
         </div>
     </div>
 
-    <div *ngIf="info && (info.permissions.add || info.permissions.update)">
-        <save-view *ngIf="info" [rules]="info.rulesSave" [params]="info.paramsSave" (getInstance)="setInstance($event,info.prefix)" ></save-view>
-    </div>
+
 
 </div>
 
-<modal-view [params]="getIModalTerm()">
-    <div body>
-        <term-conditions></term-conditions>
-    </div>
-</modal-view>
+<modal></modal>
+
+<!--<div *ngIf="info && (info.permissions.add || info.permissions.update)">-->
+<!--<save-view *ngIf="info" [rules]="info.rulesSave" [params]="info.paramsSave" (getInstance)="setInstance($event,info.prefix)" ></save-view>-->
+<!--</div>-->
+
+<!--<modal-view [params]="getIModalTerm()">-->
+    <!--<div body>-->
+        <!--<term-conditions></term-conditions>-->
+    <!--</div>-->
+<!--</modal-view>-->
