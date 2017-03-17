@@ -1,38 +1,21 @@
-<div *ngIf="params && rules">
-    <div [attr.id]="configId+'_ADD'" class="modal fade" [attr.id]="params.idModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" [class.modal-lg]="existloadSearch()">
-            <div class="modal-content">
-                <div class="modal-header text-center bg-green-club">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" [attr.title]="db.msg.close"><span
-                            aria-hidden="true">&times;</span></button>
-                    <h3 class="modal-title" id="myModalLabel">{{params.title}}</h3>
-                </div>
-                <div class="modal-body">
-                    <form-view
-                            (getInstance)="setForm($event)"
-                            [params]="params"
-                            [rules]="rules">
-                    </form-view>
-                </div>
-                <div class="modal-footer">
-                    <button *ngIf="existloadDelete()" (click)="loadDelete($event)" data-dismiss="modal" type="button"
-                            class="btn btn-success">
-                        <i class="fa fa-trash"></i>
-                        &nbsp;Eliminar
-                    </button>
-
-                    <button (click)="submitForm($event)" data-dismiss="modal" type="button" class="btn btn-primary"
-                            [disabled]="!formValid()">
-                        <i class="fa fa-save"></i>
-                        &nbsp;{{params.updateField?'Actualizar':'Registrar'}}
-                    </button>
-                    <!-- Botones no hacen dissmis y se tiene q clickear dos veces...-->
-                    <!--<button *ngFor="let action of formActions()" (click)="submitForm($event,action.addBody)" data-dismiss="modal" type="button" class="{{action.class}}" [disabled]="!formValid()">-->
-                    <!--<i class="{{action.icon || 'fa fa-list'}}"></i>-->
-                    <!--&nbsp;{{action.title}}-->
-                    <!--</button>-->
-                </div>
-            </div>
-        </div>
+<div *ngIf="params && rules" class="save-view">
+    <div class="save-body">
+        <form-view
+                (getInstance)="setForm($event)"
+                [params]="params"
+                [rules]="rules">
+        </form-view>
+    </div>
+    <div class="save-footer">
+        <button *ngIf="existloadDelete()" (click)="loadDelete($event)" data-dismiss="modal" type="button"
+                class="btn btn-success">
+            <i class="fa fa-trash"></i>
+            &nbsp;Eliminar
+        </button>
+        <button (click)="submitForm($event)" data-dismiss="modal" type="button" class="btn btn-primary"
+                [disabled]="!formValid()">
+            <i class="fa fa-save"></i>
+            &nbsp;{{params.updateField?'Actualizar':'Registrar'}}
+        </button>
     </div>
 </div>

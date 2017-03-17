@@ -22,7 +22,6 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
     public save:any;
     public getInstance:any;
     public actions:any;
-    public configId = moment().valueOf();
 
     constructor(public db:DependenciesBase) {
         super(db);
