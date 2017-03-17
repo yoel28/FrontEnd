@@ -1,0 +1,10 @@
+@import "styles_config/theme-config";
+
+
+@function themeColor($colorKey, $alpha: 1){
+  @return rgba(map-get($colors,$colorKey), $alpha);
+}
+
+@function themeFont($key){
+  @return map_get($fonts,$key);
+}
