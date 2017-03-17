@@ -7,6 +7,8 @@
 }
 
 .content-wrapper{
+  position: relative;
+  height: 100%;
   border-radius: 0px !important;
 }
 
