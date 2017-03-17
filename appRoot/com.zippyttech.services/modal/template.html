@@ -1,21 +1,38 @@
-<div>
-    <modal-view [params]="config" (getInstance)="modalView = $event" (onVisible)="visible = $event">
-        <div body>
-            <div [ngSwitch]="ms._currentModal">
+<div class="frame {{config.size||'md'}}" [class.show]="_visible">
+    <div class="backdrop" (click)="visible=false"></div>
+    <div class="window">
+        <div class="header {{config.header.classes||'bg-primary'}}"> <!--BOOTSTRAP-->
+            <h3 class="title">{{config.header.title || ''}}</h3>
+            <div class="btn-toolbar">
+                <button class="close" title='cerrar' (click)="visible=false"><i class="fa fa-times"></i></button> <!--BOOTSTRAP-->
+            </div>
+        </div>
+
+        <div class="body">
+            <div [ngSwitch]="db.ms.currentModal">
                 <template [ngSwitchCase]="'delete'">
-                    {{ms.params.model.actions['delete'].message}} <strong>'{{ms.params.cfgParams.dataSelect[ms.params.model.actions['delete'].key]}}'</strong>
+                    <div>
+                        {{db.ms.params.model.actions['delete'].message}}
+                        <strong>'{{db.ms.params.selectedData[db.ms.params.model.actions['delete'].key]}}'</strong>
+                    </div>
                 </template>
 
                 <template [ngSwitchCase]="'save'">
-                    <!--<save-view [rules]="saveModels[key].rulesSave" [params]="saveModels[key].paramsSave"-->
-                               <!--(save)="">-->
-                    <!--</save-view>-->
-                </template>
-
-                <template [ngSwitchCase]="'search'">
-
+                    <save-view  [rules]  ="db.ms.params.model.rulesSave "
+                                [params] ="db.ms.params.model.paramsSave"
+                                (save)   ="db.ms.params.afterRunning()">
+                    </save-view>
                 </template>
             </div>
         </div>
-    </modal-view>
+
+        <div class="footer" *ngIf="config.footer">
+            <div class="actions" *ngIf="config.footer.actions">
+                <button *ngFor="let action of config.footer.actions"
+                        class="btn {{action.classes||'btn-default'}}" (click)="action.call();">
+                    <i class="{{action.icon || 'fa fa-list'}}"></i>&nbsp;{{action.name}}
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
