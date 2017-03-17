@@ -137,9 +137,9 @@
             </div>
         </div>
     </div>
-    <div *ngIf="model.permissions.add">
-        <save-view [params]="model.paramsSave" [rules]="model.rulesSave" (save)="model.setLoadData($event)"></save-view>
-    </div>
+    <!--<div *ngIf="model.permissions.add">-->
+        <!--<save-view [params]="model.paramsSave" [rules]="model.rulesSave" (save)="model.setLoadData($event)"></save-view>-->
+    <!--</div>-->
     <div *ngIf="model.permissions.filter">
         <filter-view [params]="model.paramsSearch" [rules]="model.rules" (whereFilter)="model.loadWhere($event)"></filter-view>
     </div>
