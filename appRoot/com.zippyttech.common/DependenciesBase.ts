@@ -6,7 +6,11 @@ import {Injectable} from "@angular/core";
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {WebSocket} from "../com.zippyttech.utils/websocket";
+import {ModalService} from "../com.zippyttech.services/modal/modal.service";
 
+export interface IElementsApp{
+    app?:HTMLElement;
+}
 
 @Injectable()
 export class DependenciesBase {
@@ -14,6 +18,7 @@ export class DependenciesBase {
     public classCol=StaticFunction.classCol;
     public classOffset=StaticFunction.classOffset;
     public pathElements=StaticValues.pathElements;
+    public $elements:IElementsApp = {};
 
     constructor(
                 public router: Router,
@@ -21,14 +26,11 @@ export class DependenciesBase {
                 public myglobal:globalService,
                 public toastyService:ToastyService,
                 public toastyConfig:ToastyConfig,
-                public ws:WebSocket
+                public ws:WebSocket,
+                public ms:ModalService
     ){}
 
     public debugLog(log){
         console.log(log);
-    }
-
-    public templateTypeOf(value){
-        return typeof (value);
     }
 }
