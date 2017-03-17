@@ -30,7 +30,6 @@ export class DependenciesBase {
                 public ms:ModalService
     ){}
 
-    public debugLog(log){
-        console.log(log);
-    }
+    public debugLog =  this.myglobal.debugLog.bind(this.myglobal);
+
 }

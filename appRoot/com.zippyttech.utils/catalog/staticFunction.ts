@@ -22,23 +22,23 @@ export class StaticFunction {
                 break;
             case "2" ://Semana Actual
                 range.start = moment().startOf('week').format('DD-MM-YYYY');
-                range.end   = moment().endOf('week').format('DD-MM-YYYY');
+                range.end   = moment().endOf('week').add(1,'day').format('DD-MM-YYYY');
                 break;
             case "3" ://mes actual
                 range.start = moment().startOf('month').format('DD-MM-YYYY');
-                range.end   = moment().endOf('month').format('DD-MM-YYYY');
+                range.end   = moment().add(1,'month').startOf('month').format('DD-MM-YYYY');
                 break;
             case "4" ://mes anterior
                 range.start = moment().subtract(1, 'month').startOf('month').format('DD-MM-YYYY');
-                range.end   = moment().subtract(1, 'month').endOf('month').format('DD-MM-YYYY');
+                range.end   = moment().startOf('month').format('DD-MM-YYYY');
                 break;
             case "5" ://ultimos 3 meses
                 range.start = moment().subtract(3, 'month').startOf('month').format('DD-MM-YYYY');
-                range.end   = moment().endOf('month').format('DD-MM-YYYY');
+                range.end   = moment().add(1,'month').startOf('month').format('DD-MM-YYYY');
                 break;
             case "6" ://ano actual
                 range.start = moment().startOf('year').format('DD-MM-YYYY');
-                range.end   = moment().endOf('year').format('DD-MM-YYYY');
+                range.end   = moment().endOf('year').add(1,'day').format('DD-MM-YYYY');
                 break;
         }
         return range;

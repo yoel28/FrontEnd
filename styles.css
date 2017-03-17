@@ -68,11 +68,11 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
 }
 
 .btn.redondo {
-    -webkit-border-radius: 30px!important;
-    -moz-border-radius: 30px!important;
-    border-radius: 30px!important;
-    padding-top: 9px;
-    padding-bottom: 9px;
+    border-radius: 50% !important;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    padding: 0px;
 }
 
 .btn{
@@ -297,8 +297,10 @@ ul.ui-autocomplete {
 }
 
 .sidebar-collapse .user-panel>.image>img {
+    width: 30px !important;
+    height: 30px !important;
     min-width: 0px !important;
-    width: 100% !important;
+
 }
 
 .sidebar-collapse .user-panel:hover>.image {
@@ -341,6 +343,14 @@ body {
 
 body::-webkit-scrollbar-track {
     background: rgb(236, 240, 245) !important;
+}
+
+register-full .nav-btn:disabled{
+    display:none !important;
+}
+
+register-full .view-data-internal{
+    border-radius: 10px !important;
 }
 
 .blur-content>*:not(.not-blur){

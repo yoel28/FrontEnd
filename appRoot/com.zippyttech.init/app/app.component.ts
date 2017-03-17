@@ -35,23 +35,22 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
 
     constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire, private el:ElementRef) {
         super(db);
+        this.routerEvents();
         let url="https://cdg.zippyttech.com:8080";
         localStorage.setItem('urlAPI', url + '/api');
         localStorage.setItem('url', url);
-        this.routerEvents();
     }
 
     ngOnInit(): void {
         this.db.$elements.app = this.el.nativeElement;
 
         this.menuType = new FormControl(null);
-        this.menuItems = new FormControl([]);
-
-        if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
-            this.goPage(null,'/init/load');
-        }
-
+        this.menuItems = this.db.myglobal.menuItems;
         this.loadPublicData();
+
+        // if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
+        //      this.goPage(null,'/init/load');
+        // }
     }
 
     routerEvents(){
@@ -73,8 +72,9 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     that.db.router.navigate(link);
                 }
                 else if (localStorage.getItem('userTemp')){
-                    if(componentName!='AccountSelectComponent' && componentName!='LoadComponent'){
-                        that.db.myglobal.saveUrl = event.url;
+                    if(componentName!='AccountSelectComponent'){
+                        if(componentName!='LoadComponent')
+                            that.db.myglobal.saveUrl = event.url;
                         let link = ['/auth/accountSelect', {}];
                         that.db.router.navigate(link);
                     }

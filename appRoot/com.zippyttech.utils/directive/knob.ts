@@ -39,6 +39,10 @@ export class Knob implements OnInit{
         this.checkParams();
         jQuery(this.el.nativeElement).knob(this.params);
 
+        jQuery(this.el.nativeElement)
+            .val(this.params.value)
+            .trigger('change');
+
     }
     checkParams(){
         if(this.params){
@@ -55,7 +59,8 @@ export class Knob implements OnInit{
                 min:0,
                 max:100,
                 readOnly:true,
-                fontWeight:'900'
+                fontWeight:'900',
+                value:(this.data[this.key] || 0)
             }
         }
     }

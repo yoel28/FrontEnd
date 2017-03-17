@@ -110,7 +110,7 @@ export const componentsView = [
     ChartViewComponent,
     LocationPickerComponent,
     ChartViewComponent,
-    DataViewComponent
+    DataViewComponent,
 ];
 export const componentsApp = [];
 export const componentsPublic = [

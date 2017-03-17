@@ -34,6 +34,8 @@ export class WebSocket{
     public webSocket:IWebSocket={};
     public channelsByModel={};
 
+    private debugLog =  this.myglobal.debugLog.bind(this.myglobal);
+
     constructor(public myglobal:globalService){}
 
     setWebSocket(channel,instance?:ModelRoot){
@@ -144,10 +146,29 @@ export class WebSocket{
         let that = this;
         this.findChannelByModel(model);
         this.channelsByModel[model].forEach(obj=>{
+            that.replaceMetaChannel(obj);
             that.setWebSocket(obj.target,instance);
             that.onConnect(obj.target,obj);
         });
     }
+
+    private replaceMetaChannel(channel:any){
+        try {
+            if(channel.target && typeof channel.target === 'string'){
+                let currentUser =  this.myglobal.user;
+                let meta = "$account.name";
+                if(channel.target.includes(meta)){
+                    channel.target = channel.target.replace(meta,currentUser.accountName);
+                }
+            }else {
+                this.debugLog(['Warning: replaceMetaChannel',channel])
+            }
+        }catch (exception){
+            this.debugLog(['Error: replaceMetaChannel',channel,exception])
+        }
+
+    }
+
     eventChannel(eventChannel:any){
         let that = this;
         let body = that.webSocket[eventChannel.target].data.value;

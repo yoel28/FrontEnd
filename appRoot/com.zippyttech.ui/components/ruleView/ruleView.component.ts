@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, AfterViewInit} from "@angular/core";
+import {Component, EventEmitter, OnInit, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
@@ -14,13 +14,12 @@ export interface IRuleView{
     arrayData:any[];
 }
 
-declare var SystemJS:any;
 var moment = require('moment');
-
 @Component({
+    moduleId:module.id,
     selector: 'rule-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/ruleView/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/ruleView/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     inputs:['key','type','data','model','paramsData','disabled'],
     outputs:['getInstance'],
 })
@@ -40,10 +39,16 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     constructor(public db: DependenciesBase) {
         this.getInstance = new EventEmitter();
     }
+    ngOnInit() {}
 
-    ngOnInit() {
-
+    private get currentRule(){
+        return this.model.rules[this.key];
     }
+
+    public isCurrentType(list:Array<string>):boolean{
+        return list.indexOf(this.model.rules[this.key].type) >= 0 ? true:false;
+    }
+
 
     ngAfterViewInit() {
         this.getInstance.emit(this);
@@ -133,9 +138,10 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         this.paramsData.viewListData['data'] =  data[key];
         if(typeof data[key] === 'string'){
             try{
-                this.paramsData.viewListData['data'] = JSON.parse(data[key])
+                this.paramsData.viewListData['data'] = JSON.parse(data[key]);
             }
             catch (exception){
+                this.paramsData.viewListData['data'] = [];
                 console.log(exception);
             }
         }

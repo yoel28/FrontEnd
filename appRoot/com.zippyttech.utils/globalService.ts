@@ -5,6 +5,14 @@ import {FormControl, Validators} from "@angular/forms";
 import {Http} from "@angular/http";
 import {ToastyService, ToastyConfig} from "ng2-toasty";
 
+/**
+ * @Params
+ * Optional
+ *      MODE_DEBUG
+ *
+ *
+ */
+
 @Injectable()
 export class globalService extends RestController{
     user:any={};
@@ -23,6 +31,7 @@ export class globalService extends RestController{
     public channelWebsocket:any={};
 
     public navigationStart:boolean=false;
+    public menuItems:FormControl = new FormControl([]);
 
     public dataSesion = new FormControl(
         null,
@@ -76,6 +85,8 @@ export class globalService extends RestController{
         this.permissions=[];
         this.rules=[];
         this.channels=[];
+
+        this.menuItems.setValue([]);
         this.dataSesion.setValue({
             'token':        {'status':value,'title':'Validando usuario'},
             'user':         {'status':value,'title':'Consultando datos del usuario'},
@@ -253,5 +264,20 @@ export class globalService extends RestController{
         return equalKeys;
     }
 
+    public debugLog(logs:string|Array<any>){
+        let modeDebug = this.getParams('MODE_DEBUG')=='true'?true:false;
+        if(modeDebug)
+        {
+            console.log('BEGIN-------------------------------------------------------------------------------------------');
+            if(typeof logs === 'string')
+                console.log(logs);
+            if(typeof logs === 'object' && logs.length){
+                logs.forEach(log=>{
+                    console.log(log)
+                })
+            }
+            console.log('END-------------------------------------------------------------------------------------------');
+        }
+    }
     
 }

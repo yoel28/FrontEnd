@@ -5,7 +5,7 @@
     background:#FFF;
     overflow: auto;
     width:100%;
-    color:#0059b4;
+    color:#116f34;
 }
 
 i{
@@ -19,7 +19,7 @@ i{
 .view-header{
     padding: 4px 15px;
     border-bottom: 3px solid rgb(167, 167, 167);
-    color:#0059b4;
+    color:#116f34;
     /*box-shadow: 0px 5px 5px -5px rgba(0, 0, 0, 0.5);*/
 }
 
@@ -50,10 +50,12 @@ i{
     overflow-y:auto;
     border-radius: 0px !important;
     padding: 10px 5px;
+    min-height: 100px;
+    transition: .5s;
 }
 
 .view-data-internal{
-    border:1px solid rgba(0, 89, 180, .2);
+    border:1px solid rgba(17, 111, 52, 0.2);
 }
 
 .view-item{
@@ -95,6 +97,9 @@ i{
     font-size:16px;
     color:#000;
     height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .view-item-detail-content,
@@ -108,7 +113,7 @@ i{
 }
 
 a:not(.editable-empty){
-    color:#0059b4 !important;
+    color:#116f34 !important;
 }
 
 .view-item-detail-content>rule-view>button{
@@ -142,7 +147,7 @@ a:not(.editable-empty){
 }
 
 .nav-left:hover, .nav-right:hover{
-    background: rgb(0, 89, 180) !important;
+    background: #116f34 !important;
     color: #FFF;
 }
 
@@ -157,6 +162,16 @@ a:not(.editable-empty){
     top: 45px;
     width: 10%;
     max-width: 60px;
+    min-height: 50px;
+}
+
+.aside-hidden{
+    width: 0px;
+    display: none;
+}
+
+.aside-hidden ~.view-body{
+    width: 100%;
 }
 
 .view-tools-group{
@@ -166,7 +181,7 @@ a:not(.editable-empty){
     width: 100%;
     min-width: 25px;
     max-width: 40px;
-    background: #0059b4 !important;
+    background: #116f34 !important;
     overflow: hidden;
     font-size:20px;
     transition: .2s;
@@ -200,4 +215,39 @@ a:not(.editable-empty){
 
 .view-tools-group>*:hover>i {
     transform: scale(.9);
+}
+
+.preloadSpin{
+    color:black;
+    display: flex;
+    flex-flow: row nowrap;
+    vertical-align: middle;
+    align-items: center;
+    font-size: 32px;
+    width: 100%;
+    height: 200px;
+}
+
+.preloadSpin *{
+    color:black;
+    margin: 0 auto;
+}
+
+@media(max-width: 425px){
+    .view-item, .view-item-detail-content{
+        height: auto !important;
+    }
+    .view-tools-group{
+        display:none;
+    }
+    .view-body{
+        width:100%;
+    }
+    .view{
+        padding:0;
+    }
+    .view-data-internal{
+        border:none;
+        padding: 0;
+    }
 }

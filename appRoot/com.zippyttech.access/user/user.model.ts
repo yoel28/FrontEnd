@@ -118,6 +118,7 @@ export class UserModel extends ModelBase{
             'type': 'password',
             'required':true,
             'exclude':true,
+            'minLength':6,
             'update':this.permissions.update,
             'visible':this.permissions.visible,
             'key': 'password',
@@ -188,7 +189,9 @@ export class UserModel extends ModelBase{
     }
     loadRoles(){
         this.db.myglobal.publicData['roles'].forEach((obj=> {
-            this.rules['roles'].source.push({'value': obj.id, 'text': obj.authority});
+            if(this.rules['roles']){
+                this.rules['roles'].source.push({'value': obj.id, 'text': obj.authority});
+            }
         }).bind(this));
         this.completed = true;
     }

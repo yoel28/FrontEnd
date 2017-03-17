@@ -20,8 +20,9 @@ export class AccountSelectComponent extends RestController implements OnInit{
     }
 
     ngOnInit(){
+        this.dataList=[];
         localStorage.setItem("userTemp","true");
-        if(!localStorage.getItem('accountList')){
+        if(!localStorage.getItem('accountList') && this.db.myglobal.dataSesion.valid){
             localStorage.removeItem('userTemp');
             let link = ['/init/dashboard', {}];
             this.db.router.navigate(link);
