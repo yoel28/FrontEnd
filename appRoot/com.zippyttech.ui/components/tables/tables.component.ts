@@ -1,9 +1,7 @@
 import {Component, EventEmitter, OnInit, NgModule} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
-import {IModal} from "../modalView/modalView.component";
-import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
-
+import {IModalConfig} from "../../../com.zippyttech.services/modal/modal.types";
 
 declare var SystemJS:any;
 var moment = require('moment');
@@ -29,16 +27,16 @@ export class TablesComponent implements OnInit {
         arrayData:[]
     };
 
-    public modalLocation:IModal={
+    public modalLocation:IModalConfig={
         id:'modalLocation',
-        header:{ title:'Ubicación' },
-        global:{ size:'modal-lg' }
+        size:'lg',
+        header:{ title:'Ubicación' }
     };
 
-    public modalRule:IModal={
+    public modalRule:IModalConfig={
         id:'modalRule',
-        header:{ title:'' },
-        global:{ size:'modal-sm'}
+        size:'sm',
+        header:{ title:'' }
     };
 
     public getInstance:any;
