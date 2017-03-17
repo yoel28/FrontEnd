@@ -102,8 +102,6 @@
 </div>
 
 <filter-view
-        (whereFilter)="data.model.loadWhere($event)"
-        [rules] = "data.model.rules"
-        [params] = "data.model.paramsSearch"
+        [model] = "data.model"
 >
 </filter-view>
