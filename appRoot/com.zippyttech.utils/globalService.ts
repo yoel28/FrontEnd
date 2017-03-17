@@ -185,9 +185,9 @@ export class globalService extends RestController{
         return false;
     }
 
-    getParams(code:string):string{
+    getParams(code:string,defaultValue=''):string{
         let data = this.getByAccountData(this.params,code);
-        return data.value || '';
+        return data.value || defaultValue;
     }
 
     getRule(code:string):string{
