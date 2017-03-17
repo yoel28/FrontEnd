@@ -1,4 +1,7 @@
-import {Component, OnInit, ChangeDetectorRef, AfterViewInit, AfterContentChecked, HostListener, DoCheck } from '@angular/core';
+import {
+    Component, OnInit, ChangeDetectorRef, AfterViewInit, AfterContentChecked, HostListener, DoCheck,
+    ElementRef
+} from '@angular/core';
 import {RestController} from "../../com.zippyttech.rest/restController";
 import {RoutesRecognized, NavigationStart} from "@angular/router";
 import {contentHeaders} from "../../com.zippyttech.rest/headers";
@@ -8,14 +11,14 @@ import {InfoModel} from "../../com.zippyttech.business/info/info.model";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {AngularFire} from "angularfire2";
-import {IModal} from "../../com.zippyttech.ui/components/modalView/modalView.component";
+import {IModalConfig} from "../../com.zippyttech.services/modal/modal.types";
 
 var jQuery = require('jquery');
 
 declare var SystemJS: any;
 @Component({
     moduleId:module.id,
-    selector: 'my-app',
+    selector: 'app',
     templateUrl: 'index.html',
     styleUrls: ['style.css'],
     animations: AnimationsManager.getTriggers("d-fade|expand_down", 150)
@@ -30,7 +33,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     public info: any;
 
 
-    constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire) {
+    constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire, private el:ElementRef) {
         super(db);
         let url="https://cdg.zippyttech.com:8080";
         localStorage.setItem('urlAPI', url + '/api');
@@ -39,13 +42,16 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     }
 
     ngOnInit(): void {
+        this.db.$elements.app = this.el.nativeElement;
+
         this.menuType = new FormControl(null);
         this.menuItems = new FormControl([]);
-        this.loadPublicData();
 
         if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
             this.goPage(null,'/init/load');
         }
+
+        this.loadPublicData();
     }
 
     routerEvents(){
@@ -364,13 +370,11 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
     }
 
     getIModalTerm(){
-        let iModalTerm:IModal = {
+        let iModalTerm:IModalConfig = {
             id:'termConditions',
+            size:'lg',
             header:{
                 title:'Terminos y condiciones'
-            },
-            global:{
-                size:'modal-lg'
             }
         };
         return iModalTerm;
