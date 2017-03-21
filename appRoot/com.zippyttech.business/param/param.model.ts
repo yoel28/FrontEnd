@@ -74,8 +74,8 @@ export class ParamModel extends ModelBase{
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
-    initModelActions(params){
-        params['delete'].message = '¿ Esta seguro de eliminar el parametro: ';
+    initModelActions(){
+        this.actions['delete'].params.message = '¿ Esta seguro de eliminar el parametro: ';
     }
 
 }
