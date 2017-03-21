@@ -5,6 +5,7 @@ export class AccountModel extends ModelRoot{
 
     constructor(db:DependenciesBase){
         super(db,'/accounts/');
+        this.display = 'name';
         this.initModel();
     }
     modelExternal() {}
@@ -151,9 +152,8 @@ export class AccountModel extends ModelRoot{
         delete this.rulesSave.miniLogo;
         delete this.rulesSave.logo;
     }
-    initModelActions(params){
-        params['delete'].message='¿ Esta seguro de eliminar la cuenta: ';
-        params['delete'].key = 'name';
+    initModelActions(){
+        this.actions['delete'].params.message='¿ Esta seguro de eliminar la cuenta: ';
     }
 }
 
