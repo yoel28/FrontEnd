@@ -18,7 +18,6 @@ import {SaveComponent} from "./com.zippyttech.ui/components/save/save.component"
 import {SearchMultipleComponent} from "./com.zippyttech.ui/components/searchMultiple/searchMultiple.component";
 import {ToastyModule} from "ng2-toasty";
 import {FormComponent} from "./com.zippyttech.ui/components/form/form.component";
-import {ModalViewComponent} from "./com.zippyttech.ui/components/modalView/modalView.component";
 import {TermConditionsComponent} from "./com.zippyttech.business/termConditions/termConditions.component";
 import {RuleViewComponent} from "./com.zippyttech.ui/components/ruleView/ruleView.component";
 import {AccountModel} from "./com.zippyttech.access/account/account.model";
@@ -104,7 +103,6 @@ export const componentsView = [
     SaveComponent,
     SearchMultipleComponent,
     FormComponent,
-    ModalViewComponent,
     RuleViewComponent,
     ListActionComponent,
     ChartViewComponent,
