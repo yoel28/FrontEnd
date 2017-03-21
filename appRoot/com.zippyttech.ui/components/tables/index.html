@@ -1,5 +1,5 @@
 <div *ngIf="model.dataList && isUnique()">
-    <data-view [model]="model" [dataParams]="{internal:true, nav:true,paramsData:paramsData, viewActions:viewActions}"></data-view>
+    <data-view [model]="model" [dataParams]="{internal:true, nav:true,viewActions:viewActions, ruleViewOptions: paramsData}"></data-view>
 </div>
 <div *ngIf="model.dataList && !isUnique()" class="table-responsive">
     <table id="footable" class="table table-striped table-hover" ><!--*ngIf="!model.updating"--><!--x-footable -->
@@ -22,7 +22,7 @@
         <tr *ngFor="let data of model.dataList.list; let i=index"  [class.deleted]="data.deleted">
             <div *ngIf="viewActions && model.getActionsArray(data)" class="notHidden">
                 <div *ngIf="model.getActionsArray(data).length == 1">
-                    <a (click)="paramsData.select = data; model.getActionsArray(data)[0].callback(data,i);">
+                    <a (click)="model.getActionsArray(data)[0].callback(data,i);">
                         <i class="{{model.getActionsArray(data)[0].view[0].icon}}"></i> {{model.getActionsArray(data)[0].view[0].title}}
                     </a>
                 </div>
@@ -31,8 +31,8 @@
                         <i class="fa fa-gears fa-lg"></i>
                     </button>
                     <ul role="menu" class="dropdown-menu text-left submenu-config">
-                        <li *ngFor="let action of model.getActionsArray(data)" (click)="paramsData.select = data;action.callback(data,i);">
-                            <a class="cursor-pointer {{action.view[getNumber(data[action.syncKey])].colorClass}}"> <i class="{{action.view[getNumber(data[action.syncKey])].icon}}"></i>&nbsp;{{action.view[getNumber(data[action.syncKey])].title}} </a>
+                        <li *ngFor="let action of model.getActionsArray(data)" (click)="action.callback(data,i);">
+                            <a class="cursor-pointer {{action.view[getNumber(data[action.params.syncKey])].colorClass}}"> <i class="{{action.view[getNumber(data[action.params.syncKey])].icon}}"></i>&nbsp;{{action.view[getNumber(data[action.params.syncKey])].title}} </a>
                         </li>
                     </ul>
                 </div>
