@@ -5,6 +5,7 @@ export class RoleModel extends ModelRoot{
 
     constructor(public db:DependenciesBase){
         super(db,'/roles/');
+        this.display = 'authority';
         this.initModel();
     }
     modelExternal() {}
@@ -43,9 +44,8 @@ export class RoleModel extends ModelRoot{
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
-    initModelActions(params){
-        params['delete'].message = '¿ Esta seguro de eliminar el rol : ';
-        params['delete'].key = 'authority';
+    initModelActions(){
+        this.actions['delete'].params.message = '¿ Esta seguro de eliminar el rol : ';
     }
 
 }
