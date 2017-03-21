@@ -9,6 +9,7 @@ export class UserModel extends ModelBase{
 
     constructor(public db:DependenciesBase){
         super(db,'/users/');
+        this.display = 'username';
         this.initModel(false);
         this.loadDataExternal();
     }
@@ -195,9 +196,9 @@ export class UserModel extends ModelBase{
         }).bind(this));
         this.completed = true;
     }
-    initModelActions(params){
-        params['delete'].message='¿ Esta seguro de eliminar el usuario: ';
-        params['delete'].key = 'username';
+
+    initModelActions(){
+        this.actions['delete'].params.message='¿ Esta seguro de eliminar el usuario: ';
     }
 
 }
