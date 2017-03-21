@@ -1,5 +1,5 @@
 import {HttpUtils} from "./http-utils";
-import {OnInit} from "@angular/core";
+import {OnInit, EventEmitter} from "@angular/core";
 import {FormGroup} from "@angular/forms";
 import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
 import {ToastOptions, ToastData} from "ng2-toasty";
@@ -28,7 +28,13 @@ export interface IRest{
 
 }
 
+export interface IRestEvent{
+    type:string;
+    args:Object;
+}
+
 export class RestController {
+    public events:EventEmitter<IRestEvent>;
 
     dataList:any = {};
     httputils:HttpUtils;
@@ -296,10 +302,14 @@ export class RestController {
         }
     }
 
-    onDelete(event = null, id) {
+    onDelete(id, event = null) {
         if (event)
             event.preventDefault();
-        this.httputils.onDelete(this.endpoint + id, id, this.dataList.list, this.error);
+        return this.httputils.onDelete(this.endpoint + id, id, this.dataList.list, this.error).then(
+            response=>{
+                this.events.emit({type:'onDelete',args:response});
+            }
+        )
     }
 
     onSave(data:FormGroup|Object,successCallback?) {
@@ -313,6 +323,7 @@ export class RestController {
             response=>{
                 if(successCallback)
                     successCallback(response);
+                this.events.emit({type:'onSave',args:response});
             }
         );
     }
