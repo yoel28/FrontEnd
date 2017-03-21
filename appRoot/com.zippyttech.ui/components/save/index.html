@@ -1,9 +1,9 @@
-<div *ngIf="params && rules" class="save-view">
+<div *ngIf="model" class="save-view">
     <div class="save-body">
         <form-view
                 (getInstance)="setForm($event)"
-                [params]="params"
-                [rules]="rules">
+                [params]="currentModel.paramsSave"
+                [rules]="currentModel.rulesSave">
         </form-view>
     </div>
     <div class="save-footer">
@@ -15,7 +15,8 @@
         <button (click)="submitForm($event)" data-dismiss="modal" type="button" class="btn btn-primary"
                 [disabled]="!formValid()">
             <i class="fa fa-save"></i>
-            &nbsp;{{params.updateField?'Actualizar':'Registrar'}}
+            <!--&nbsp;{{params.updateField?'Actualizar':'Registrar'}}-->
+            Registrar
         </button>
     </div>
 </div>
