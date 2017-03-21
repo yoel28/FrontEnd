@@ -1,18 +1,25 @@
 import {ILocation} from "../../com.zippyttech.ui/components/locationPicker/locationPicker.component";
 
-export type ModalParams = IModalDelete | IModalSave;
+export type ModalName = 'delete' | 'save';
 
-export interface IModalDelete{
-    selectedData:any; //TODO:Create interfaces or classes for data structure
+export interface IModalParams<ParamsType extends IModalParamsType>{
+    model:any;
+    extraParams?:ParamsType;
+    onAfterClose?:()=>void;
+};
+
+export interface IModalParamsType{}
+
+export interface IModalDelete extends IModalParamsType{
+    selectedData:any; //TODO: Define DATATYPE, create DATA struct
 }
 
 export interface IModalSave{
-    model:any;
-    afterRunning:()=>void;
+    childKey:string;
 }
 
 export interface IModalLocation{
-    locationParams: ILocation; //TODO: Developing -> content[missing, check]
+    location: ILocation;
 }
 
 export interface IModalRule{}
@@ -28,7 +35,7 @@ export interface IModalConfig{
     };
     body?:{ }; //TODO: define body params
     footer?:{
-        actions?: Array<{
+        btns?: Array<{
             name: string;
             icon?: string;
             classes?: string;
