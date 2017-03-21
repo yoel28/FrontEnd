@@ -7,6 +7,7 @@ import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {WebSocket} from "../com.zippyttech.utils/websocket";
 import {ModalService} from "../com.zippyttech.services/modal/modal.service";
+import {ModelService} from "../com.zippyttech.services/model/model.service";
 
 export interface IElementsApp{
     app?:HTMLElement;
@@ -20,6 +21,8 @@ export class DependenciesBase {
     public pathElements=StaticValues.pathElements;
     public $elements:IElementsApp = {};
 
+    public modelService:ModelService;
+
     constructor(
                 public router: Router,
                 public http:Http,
@@ -28,7 +31,9 @@ export class DependenciesBase {
                 public toastyConfig:ToastyConfig,
                 public ws:WebSocket,
                 public ms:ModalService
-    ){}
+    ){
+        this.modelService = new ModelService(this);
+    }
 
     public debugLog =  this.myglobal.debugLog.bind(this.myglobal);
 
