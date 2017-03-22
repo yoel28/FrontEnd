@@ -1,5 +1,6 @@
-import {ModelRoot} from "../../com.zippyttech.common/modelRoot";
+import {ModelRoot, IView} from "../../com.zippyttech.common/modelRoot";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {TextRule} from "../../com.zippyttech.common/rules/text.rule";
 
 export class RoleModel extends ModelRoot{
 
@@ -7,19 +8,24 @@ export class RoleModel extends ModelRoot{
         super(db,'/roles/');
         this.initModel();
     }
+    initView(params:IView){
+        params.title = "Rol";
+        params.display = "authority";
+    }
     modelExternal() {}
     initRules(){
-        this.rules['authority']={
-            'type': 'text',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'authority',
-            'title': 'Rol',
-            'prefix':'ROLE_',
-            'placeholder': 'Nombre del perfil',
-        };
+        this.rules['authority']= new TextRule({
+            required:true,
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            key: 'authority',
+            title: 'Rol',
+            prefix:'ROLE_',
+            placeholder: 'Nombre del perfil',
+        });
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
     }
     initPermissions() {}
