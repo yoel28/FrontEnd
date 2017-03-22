@@ -7,40 +7,37 @@ declare var SystemJS:any;
 var moment = require('moment');
 var jQuery = require('jquery');
 @Component({
+    moduleId: module.id,
     selector: 'save-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/save/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/save/style.css'],
-    inputs:['params','rules'],
-    outputs:['save','getInstance'],
+    templateUrl: 'index.html',
+    styleUrls: ['style.css'],
+    inputs:['model','childKey'],
+    outputs:['getInstance']
 })
 export class SaveComponent extends RestController implements OnInit,AfterViewInit{
 
-    public params:any={};
-    public rules:any={};
-
+    public childKey:string;
+    private childModel:any;
+    public model:any;
+    private getInstance:EventEmitter<any>;
     public instanceForm:FormComponent;
-    public save:any;
-    public getInstance:any;
     public actions:any;
+
+    private get currentModel(){return this.childModel || this.model}
 
     constructor(public db:DependenciesBase) {
         super(db);
-        this.save = new EventEmitter();
         this.getInstance = new EventEmitter();
     }
     ngOnInit(){
-
+        if(this.childKey && this.model.rules[this.childKey] )
+            this.childModel = this.model.rules[this.childKey].model;
     }
     setForm(form){
         this.instanceForm=form
     }
     ngAfterViewInit(){
         this.getInstance.emit(this);
-        if(this.params.prefix && !this.db.myglobal.objectInstance[this.params.prefix])
-        {
-            this.db.myglobal.objectInstance[this.params.prefix]={};
-            this.db.myglobal.objectInstance[this.params.prefix]=this;
-        }
     }
 
     submitForm(event,addBody=null){
@@ -49,21 +46,23 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
         let successCallback= response => {
             that.addToast('Notificacion','Guardado con éxito');
             that.instanceForm.resetForm();
-            that.save.emit(response.json());
+            if(this.childKey && this.childModel)
+                this.model.afterSave(this.childKey,this.model.currentData,response.json().id);
         };
-        this.setEndpoint(this.params.endpoint);
+        this.setEndpoint(this.currentModel.paramsSave.endpoint);
         let body = this.instanceForm.getFormValues(addBody);
-        if(this.params.updateField)
+        if(this.currentModel.paramsSave.updateField)
             this.httputils.onUpdate(this.endpoint+this.instanceForm.rest.id,JSON.stringify(body),this.instanceForm.dataSelect,this.error);
         else
             this.httputils.doPost(this.endpoint,JSON.stringify(body),successCallback,this.error);
+
     }
     formActions(){
-        if(this.params.updateField)
+        if(this.currentModel.paramsSave.updateField)
             return [{'title':'Actualizar','class':'btn btn-blue','icon':'fa fa-save','addBody':null}];
 
-        if(this.params.customActions && this.params.customActions.length > 0)
-            return this.params.customActions;
+        if(this.currentModel.paramsSave.customActions && this.currentModel.paramsSave.customActions.length > 0)
+            return this.currentModel.paramsSave.customActions;
 
         return [{'title':'Registrar','class':'btn btn-primary','icon':'fa fa-save','addBody':null}]
     }
@@ -93,7 +92,7 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
     loadDelete(event){
         if(event)
             event.preventDefault();
-        this.setEndpoint(this.params.endpoint);
+        this.setEndpoint(this.currentModel.paramsSave.endpoint);
         this.onDelete(event,this.instanceForm.rest.id);
     }
 }
