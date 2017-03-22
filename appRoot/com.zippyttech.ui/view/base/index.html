@@ -11,7 +11,6 @@
                             <span *ngIf="model && model.dataList && model.dataList.count" class="page-info">
                                 &nbsp;{{db.msg.page}}{{getCurrentPage}},&nbsp;cerca de {{model.dataList.count}} {{db.msg.results}}
                             </span>
-
                         </h4>
                         <div class="box-tools pull-right header-tools">
                             <template [ngIf]="model.filters">
@@ -25,49 +24,53 @@
                                 &nbsp;
                             </template>
                             <template [ngIf]="viewOptions.viewActions">
-                                <button *ngFor="let buttom of getViewOptionsButtons('modal')"
-                                        class="btn btn-box-tool {{buttom.class}} {{buttom.evalClass?evalExp(buttom.evalClass):''}}" type="button" data-toggle="modal"
-                                        [attr.data-target]="'#'+buttom.modal"
-                                        [attr.title]="buttom.title | translate"
-                                >
-                                    <i class="{{buttom.icon}}"></i>
-                                </button>
-                                <button *ngFor="let buttom of getViewOptionsButtons('showDeleted')"
-                                        class="btn btn-box-tool {{buttom.class}}" type="button"
-                                        [class.deleted-all]="model.rest.deleted=='all'"
-                                        [class.deleted-only]="model.rest.deleted=='only'"
-                                        [attr.title]="buttom.title | translate"
-                                        (click)="model.changeDeleted($event)"
-                                >
-                                    <i class="{{buttom.icon}}"></i>
-                                </button>
-                                <button class="btn btn-box-tool" type="button"
-                                        [attr.title]="db.msg.refresh | translate"
-                                        (click)="model.loadData('',$event)">
-                                    <i *ngIf="!model.rest.findData" class="fa fa-refresh"></i>
-                                    <i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin"></i>
-                                </button>
+                                <template [ngIf]="model.modelActions">
+                                    <button *ngFor="let action of model.modelActions.toArray(true,model)"
+                                            (click)="action.callback()"
+                                            title="{{action.currentView(model).title}}"
+                                            class="btn btn-box-tool {{action.currentView(model).colorClass}}"
+                                            >
+                                        <i class="{{action.currentView(model).icon}}"></i>
+                                    </button>
+                                </template>
+                                <!---->
+                                <!--<button *ngFor="let buttom of getViewOptionsButtons('modal')"-->
+                                        <!--class="btn btn-box-tool {{buttom.class}} {{buttom.evalClass?evalExp(buttom.evalClass):''}}"-->
+                                        <!--type="button" [attr.title]="buttom.title | translate"-->
+                                        <!--data-toggle="modal" [attr.data-target]="'#'+buttom.modal"-->
+                                <!--&gt;-->
+                                    <!--<i class="{{buttom.icon}}"></i>-->
+                                <!--</button>-->
+                                <!--<button *ngFor="let buttom of getViewOptionsButtons('showDeleted')"-->
+                                        <!--class="btn btn-box-tool {{buttom.class}}" type="button"-->
+                                        <!--[class.deleted-all]="model.rest.deleted=='all'"-->
+                                        <!--[class.deleted-only]="model.rest.deleted=='only'"-->
+                                        <!--[attr.title]="buttom.title | translate"-->
+                                        <!--(click)="model.changeDeleted($event)"-->
+                                <!--&gt;-->
+                                    <!--<i class="{{buttom.icon}}"></i>-->
+                                <!--</button>-->
+                                <!--<button class="btn btn-box-tool" type="button"-->
+                                        <!--[attr.title]="db.msg.refresh | translate"-->
+                                        <!--(click)="model.loadData('',$event)">-->
+                                    <!--<i *ngIf="!model.rest.findData" class="fa fa-refresh"></i>-->
+                                    <!--<i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin"></i>-->
+                                <!--</button>-->
 
+                                <!--<a *ngIf="model.permissions.exportPdf && getEnabledReport('PDF')" target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">-->
+                                    <!--<i class="fa fa-file-pdf-o text-red"></i>-->
+                                <!--</a>&nbsp;-->
+                                <!--<a *ngIf="model.permissions.exporXls && getEnabledReport('EXCEL')" target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">-->
+                                    <!--<i class="fa fa-file-excel-o text-green"></i>-->
+                                <!--</a>-->
 
-
-                                <a *ngIf="model.permissions.exportPdf && getEnabledReport('PDF')" target="_blank" [attr.title]="db.msg.exportPdf | translate" [attr.href]="getUrlExport('pdf')">
-                                    <i class="fa fa-file-pdf-o text-red"></i>
-                                </a>&nbsp;
-                                <a *ngIf="model.permissions.exporXls && getEnabledReport('EXCEL')" target="_blank" [attr.title]="db.msg.exportXls | translate" [attr.href]="getUrlExport('xls')">
-                                    <i class="fa fa-file-excel-o text-green"></i>
-                                </a>
-
-                                <span *ngIf="model.permissions.exportPdf && !getEnabledReport('PDF')" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
-                                    <i class="fa fa-file-pdf-o text-red"></i>
-                                </span>&nbsp;
-                                <span *ngIf="model.permissions.exporXls && !getEnabledReport('EXCEL')" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS_EXCEL')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">
-                                    <i class="fa fa-file-excel-o text-green"></i>
-                                </span>
-
-
+                                <!--<span *ngIf="model.permissions.exportPdf && !getEnabledReport('PDF')" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">-->
+                                    <!--<i class="fa fa-file-pdf-o text-red"></i>-->
+                                <!--</span>&nbsp;-->
+                                <!--<span *ngIf="model.permissions.exporXls && !getEnabledReport('EXCEL')" [attr.title]="(db.msg.exportDisabled | translate)+db.myglobal.getParams('REPORT_LIMIT_ROWS_EXCEL')+' '+(db.msg.rows | translate)" style="cursor: no-drop;">-->
+                                    <!--<i class="fa fa-file-excel-o text-green"></i>-->
+                                <!--</span>-->
                             </template>
-
-
 
                             <div class="btn-group">
                                 <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false" [attr.title]="db.msg.config">
@@ -75,7 +78,6 @@
                                 </button>
                                 <ul class="dropdown-menu submenu-config" role="menu">
                                     <li *ngFor="let key of getObjectKeys(model.rules)" class="text-blue flex" [class.check]="model.rules[key].check">
-
                                         <button class="btn btn-box-tool fa"
                                                 [class.fa-eye-slash]="!model.rules[key].visible"
                                                 [class.text-red]="!model.rules[key].visible"
@@ -84,14 +86,10 @@
                                                 (click)="setVisibleField($event,model.rules[key])"
                                                 title="{{model.rules[key].visible?'Ocultar':'Ver'}}"
                                         >
-
                                         </button>
                                         <button (click)="changePosition($event,key,'up')" class="btn btn-box-tool fa fa-angle-up" title="Subir"></button>&nbsp;
                                         <button (click)="changePosition($event,key,'down')" class="btn btn-box-tool fa fa-angle-down" title="Bajar"></button>&nbsp;
-                                        <span class="btn" (click)="setCheckField($event,model.rules[key])">
-                                            {{model.rules[key].title}}
-                                        </span>
-
+                                        <span class="btn" (click)="setCheckField($event,model.rules[key])">{{model.rules[key].title}}</span>
                                     </li>
                                     <li>
                                         <button (click)="savePreference()" class="btn btn-box-tool" title="Guardar">

@@ -336,9 +336,9 @@ ul.ui-autocomplete {
     outline: none;
 }
 
-body {
+body{
     transition: .2s;
-    overflow: scroll !important;
+    overflow-y: scroll !important;
 }
 
 body::-webkit-scrollbar-track {

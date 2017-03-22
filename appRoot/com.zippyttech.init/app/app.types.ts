@@ -11,7 +11,7 @@ export interface IAction<ParamsType>{
     stateEval:string;
     callback: (data?: any, index?: number) => any;
     params?: ParamsType;
-    currentView?:(data)=>IActionView;
+    currentView?:(data?)=>IActionView;
 }
 
 export class Actions<ParamsType>{
@@ -26,8 +26,7 @@ export class Actions<ParamsType>{
     }
 
     public add(key:string,value:IAction<ParamsType>){
-
-        value.currentView = (data)=>{ return value.views[eval(value.stateEval)] };
+        value.currentView = (data?)=>{ return value.views[eval(value.stateEval || '0')] };
 
         this.refs[key] = value;
         this.length++;

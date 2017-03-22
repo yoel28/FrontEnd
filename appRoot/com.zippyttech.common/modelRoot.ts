@@ -65,8 +65,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.endpoint = endpoint;
         this.useGlobal = useGlobal;
         this.display = 'code';
-        this.dataActions = new Actions<IDataActionParams>();
-        this.modelActions = new Actions<IModelActionParams>();
         this._initModel();
     }
 
@@ -151,6 +149,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
     abstract initDataActions();
     private _initDataActions(){
+        this.dataActions = new Actions<IDataActionParams>();
         this.dataActions.add("view", {
             permission: this.permissions.list,
             views:[{ title: 'ver', icon: "fa fa-vcard" }],
@@ -224,6 +223,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
     abstract initModelActions();
     private _initModelActions(){
+        this.modelActions = new Actions<IModelActionParams>();
         this.modelActions.add( "add",{
             permission: this.permissions.add,
             views:[{ title: 'agregar', icon: "fa fa-plus", colorClass:'text-green'}],
@@ -271,7 +271,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
         this.modelActions.add("exportPdf",{
             permission: this.permissions.exportPdf,
-            views:[{ icon: "fa fa-file-pdf", title: 'exportar como pdf', colorClass:"text-red" }],
+            views:[{ icon: "fa fa-file-pdf-o", title: 'exportar como pdf', colorClass:"text-red" }],
             callback:((data?,index?)=>{
 
             }).bind(this),
@@ -281,7 +281,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
         this.modelActions.add("exporXls",{
             permission: this.permissions.exporXls,
-            views:[{ icon: "fa fa-file-excel", title: 'exportar como excel', colorClass:"text-green" }],
+            views:[{ icon: "fa fa-file-excel-o", title: 'exportar como excel', colorClass:"text-green" }],
             callback:((data?,index?)=>{
 
             }).bind(this),
@@ -632,15 +632,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
             event.preventDefault();
         let link = [url, {}];
         this.db.router.navigate(link);
-    }
-
-    public getActionsArray(actionsName:'data'|'model', data:Object) { //data se usa en tiempo de ejecucion segun el string dentro de "eval()"
-        let array=[];
-        let actions = (actionsName == 'data')?this.dataActions:this.modelActions;
-        Object.keys(actions).forEach((key=>{
-            if(actions[key].permission) array.push(actions[key]);
-        }).bind(this));
-        return array;
     }
 
     public updateModelFilter(event,key){
