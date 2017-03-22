@@ -5,10 +5,9 @@ import {TextRule} from "../../com.zippyttech.common/rules/text.rule";
 import {SelectRule, ISelect} from "../../com.zippyttech.common/rules/select.rule";
 import {TextareaRule} from "../../com.zippyttech.common/rules/textarea.rule";
 import {IView} from "../../com.zippyttech.common/modelRoot";
+import {ObjectRule} from "../../com.zippyttech.common/rules/object.rule";
 
 export class EventModel extends ModelBase{
-
-    public rule:RuleModel;
 
     constructor(public db:DependenciesBase){
         super(db,'/events/');
@@ -17,12 +16,10 @@ export class EventModel extends ModelBase{
     }
 
     initView(params:IView){
-        params.title = "Evento";
+        params.title = "evento";
     }
 
-    modelExternal() {
-        this.rule = new RuleModel(this.db);
-    }
+    modelExternal() {}
 
     initRules(){
 
@@ -91,9 +88,11 @@ export class EventModel extends ModelBase{
             placeholder: 'Ingrese el mensaje',
         });
 
-        this.rules['rule']=this.rule.ruleObject;
-        this.rules['rule'].required = true;
-        this.rules['rule'].update=this.permissions.update;
+        this.rules['rule'] = new ObjectRule({
+            model: new RuleModel(this.db),
+            required:true,
+            update:this.permissions.update
+        });
 
         this.rules['target']= new TextRule({
             required:true,
