@@ -32,17 +32,9 @@
             </template>
 
             <template [ngIf]="isCurrentType(['location'])">
-                <template [ngIf]="getEnabled()">
-                    <button class="btn btn-box-tool" (click)="loadLocationParams($event,data)" data-toggle="modal"
-                            data-target="#modalLocation" [attr.title]="db.msg.viewLocation"><i
-                            class="fa fa-map-marker fa-lg text-red"></i></button>
-                </template>
-
-                <template [ngIf]="!getEnabled()">
-                    <button class="btn btn-box-tool" (click)="loadLocationParams($event,data)" data-toggle="modal"
-                            data-target="#modalLocation" [attr.title]="db.msg.viewLocation"><i
-                            class="fa fa-map-marker fa-lg text-red"></i></button>
-                </template>
+                <button class="btn btn-box-tool" (click)="showModal('location')" [attr.title]="db.msg.viewLocation">
+                    <i class="fa fa-map-marker fa-lg text-red"></i>
+                </button>
             </template>
 
             <template [ngIf]="isCurrentType(['progress'])">
@@ -69,11 +61,12 @@
             <template [ngIf]="model.rules[key] && isCurrentType(['image'])">
                 <img [attr.id]="'img'+data.id+'_'+key"
                      [attr.src]="data[key] || model.rules[key].default"
-                     width="30" height="30"
-                     data-toggle="modal" [attr.data-target]="'#'+data.id+'_'+key"
                      class="image-editor"
                      [attr.title]="model.rules[key].update?db.msg.imageEdit:''"
-                >
+                     (click)="showModal('image')"
+                ><!--data-toggle="modal" [attr.data-target]="'#'+data.id+'_'+key"-->
+
+                <!--MODAL NO IMPLEMENT-->
                 <div [attr.id]="data.id+'_'+key" class="modal fade" tabindex="-1" role="dialog"
                      aria-labelledby="myModalLabel">
                     <div class="modal-dialog" role="document">
@@ -204,8 +197,7 @@
                     </div>
                 </template>
                 <template [ngIf]="model.rules[key].typeView=='modal'">
-                    <a (click)="paramsData.select.title=model.rules[key].title; paramsData.arrayData=model.fieldToArray(data,key)"
-                       data-toggle="modal" data-target="#modalRule">
+                    <a (click)="showModal('rule')"> <!--(click)="paramsData.select.title=model.rules[key].title; paramsData.arrayData=model.fieldToArray(data,key)"-->
                         <i class="fa fa-list fa-lg text-info"></i>
                     </a>
                 </template>
@@ -253,7 +245,6 @@
                 </template>
 
                 <template [ngIf]="isCurrentType(['text'])">
-
                     <template [ngIf]="model.rules[key].multiple">
                         <button *ngIf="data[key] && data[key].length > 0"
                                 (click)="setViewListData($event,data,key)"
@@ -282,17 +273,13 @@
 
                                 <button *ngIf="model.rules[key].paramsSave && model.rules[key].permissions.add"
                                         type="button" class="btn btn-box-tool"
-                                        (click)="loadSaveModal($event,key,data)" title="Asignar nuevo"
-                                        data-toggle="modal"
-                                        [attr.data-target]="'#'+model.rules[key].paramsSave.idModal">
+                                        (click)="showModal('save',currentRule.model)" title="Asignar nuevo">
                                     <i class="fa fa-plus text-green"></i>
                                 </button>
 
                                 <button *ngIf="model.rules[key].paramsSearch && model.rules[key].permissions.search"
                                         type="button" class="btn btn-box-tool"
-                                        (click)="loadSearchTable($event,key,data)" title="Buscar"
-                                        data-toggle="modal"
-                                        [attr.data-target]="'#'+model.rules[key].paramsSearch.idModal">
+                                        (click)="showModal('searh')" title="Buscar">
                                     <i class="fa fa-search text-blue"></i>
                                 </button>
 

@@ -3,6 +3,7 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {ILocation} from "../locationPicker/locationPicker.component";
+import {IModalSave, IModalParams, IModalDelete, ModalName} from "../../../com.zippyttech.services/modal/modal.types";
 
 export interface IRuleView{
     select:Object;//objecto que se selecciona
@@ -156,12 +157,6 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
             this.db.debugLog(data);
             this.db.debugLog('-------------------------------------------------------------------------');
         }
-
-    }
-
-    loadSaveModal(event,key,data) {
-        event.preventDefault();
-        this.paramsData.select=data;
     }
 
     loadSearchTable(event,key,data) {
@@ -182,7 +177,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
 
     loadDataFieldReference(data,key,setNull=false){
         this.checkAllSearch();
-        this.paramsData.ruleReference=Object.assign({},this.model.rules[key]);
+        this.paramsData.ruleReference = Object.assign({},this.model.rules[key]);
         this.paramsData.select = data;
         if(setNull)
             this.setDataFieldReference(data,true);
@@ -253,10 +248,27 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
             lng : this.model.rules[this.key].lng
         }
         this.paramsData.locationParams.address = this.getEnabled();
-
-
     }
 
+    showModal(name:ModalName,childKey?:any){
+        let params: IModalParams<any> = { model:this.model };
+        switch (name){
+            case 'save':
+                params.extraParams = { childKey:childKey };
+                break;
 
+            // case 'search':
+            //     break;
+
+            case 'delete':
+
+                break;
+
+            default:
+                alert('no implement '+name+' modal..');
+                return;
+        }
+        this.db.ms.show(name,params);
+    }
 }
 
