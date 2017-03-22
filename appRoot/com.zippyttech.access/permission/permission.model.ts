@@ -1,5 +1,6 @@
-import {ModelRoot} from "../../com.zippyttech.common/modelRoot";
+import {ModelRoot, IView} from "../../com.zippyttech.common/modelRoot";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {TextRule} from "../../com.zippyttech.common/rules/text.rule";
 
 export class PermissionModel extends ModelRoot{
 
@@ -7,59 +8,73 @@ export class PermissionModel extends ModelRoot{
         super(db,'/permissions/');
         this.initModel();
     }
+    initView(params:IView){
+        params.title = "permiso";
+    }
     modelExternal() {}
     initRules(){
-        this.rules['code']={
-            'type': 'text',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'code',
-            'title': 'Código',
-            'placeholder': 'Código',
-        };
-        this.rules['title']={
-            'type': 'text',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'title',
-            'title': 'Título',
-            'placeholder': 'Título',
-        };
-        this.rules['module']={
-            'type': 'text',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'module',
-            'title': 'Módulo',
-            'placeholder': 'Módulo',
-        };
-        this.rules['controlador']={
-            'type': 'text',
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'controlador',
-            'title': 'Controlador',
-            'placeholder': 'Controlador',
-        };
-        this.rules['accion']={
-            'type': 'text',
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'accion',
-            'title': 'Acción',
-            'placeholder': 'Acción',
-        };
+
+        this.rules['code'] = new TextRule({
+            required:true,
+            key: 'code',
+            title: 'Código',
+            placeholder: 'Código',
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            }
+        });
+
+        this.rules['title']= new TextRule({
+            required:true,
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            key: 'title',
+            title: 'Título',
+            placeholder: 'Título',
+        });
+
+        this.rules['module']=new TextRule({
+            required:true,
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            key: 'module',
+            title: 'Módulo',
+            placeholder: 'Módulo',
+        });
+
+        this.rules['controlador']= new TextRule({
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            key: 'controlador',
+            title: 'Controlador',
+            placeholder: 'Controlador',
+        });
+
+        this.rules['accion']=new TextRule({
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            key: 'accion',
+            title: 'Acción',
+            placeholder: 'Acción',
+        });
+
+        this.setRuleDetail(true,true);
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
-        this.rules['detail'].required=true;
     }
     initPermissions() {}
     initParamsSearch() {
