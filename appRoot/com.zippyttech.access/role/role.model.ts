@@ -9,7 +9,7 @@ export class RoleModel extends ModelRoot{
         this.initModel();
     }
     initView(params:IView){
-        params.title = "Rol";
+        params.title = "rol";
         params.display = "authority";
     }
     modelExternal() {}
