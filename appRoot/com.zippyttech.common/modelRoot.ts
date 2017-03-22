@@ -163,7 +163,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
         this.dataActions.add("enabled",{
             permission: this.permissions.lock && this.permissions.update,
-            disabled:'!data.deleted',
+            disabled:'data.deleted',
             views: [
                 {icon: "fa fa-lock", title: "Deshabilitado", colorClass:"text-red"},
                 {icon: "fa fa-unlock", title: "Habilitado", colorClass:"text-green"}
@@ -177,7 +177,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
         this.dataActions.add("editable",{
             permission: this.permissions.lock && this.permissions.update,
-            disabled:'data.enabled && !data.deleted',
+            disabled:'!data.enabled || data.deleted',
             views: [
                 {icon: "fa fa-edit", title: "No Editable", colorClass:"text-red"},
                 {icon: "fa fa-pencil", title: "Editable", colorClass:"text-green"},
@@ -191,7 +191,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
         this.dataActions.add("visible",{
             permission: this.permissions.update && this.permissions.visible,
-            disabled:'data.enabled && !data.deleted',
+            disabled:'!data.enabled || data.deleted',
             views: [
                 {icon: "fa fa-eye-slash", title: "Oculto", colorClass:"text-red"},
                 {icon: "fa fa-eye", title: "Visible", colorClass:"text-green"}
@@ -205,7 +205,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
         this.dataActions.add("delete",{
             permission: this.permissions.delete,
-            disabled:'data.enabled && data.editable && !data.deleted',
+            disabled:'!data.enabled || !data.editable || data.deleted',
             views:[
                 { icon: "fa fa-trash", title: 'Eliminar'}
             ],

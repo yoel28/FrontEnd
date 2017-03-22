@@ -46,7 +46,7 @@ export class Actions<ParamsType>{
     public toArray(evaluate?:boolean, data?):IAction<ParamsType>[]{
         let array:IAction<ParamsType>[]=[];
         Object.keys(this.refs).forEach((k)=>{
-            if(!evaluate || (eval(this.refs[k].disabled) && this.refs[k].permission) )
+            if(!evaluate || (!eval(this.refs[k].disabled) && this.refs[k].permission))
                 array.push(this.refs[k]);
         });
         return array;
