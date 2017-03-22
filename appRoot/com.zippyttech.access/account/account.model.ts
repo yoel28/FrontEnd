@@ -22,7 +22,9 @@ export class AccountModel extends ModelRoot{
                 visible:this.permissions.visible,
             },
             include:{
-                filter:false
+                filter:false,
+                save:false,
+                list:true,
             },
             exclude:true,
             key: 'logo',
@@ -137,7 +139,9 @@ export class AccountModel extends ModelRoot{
                 search:false,
             },
             include:{
-                filter:false
+                filter:false,
+                save:false,
+                list:true,
             },
             exclude:true,
             key: 'miniLogo',
