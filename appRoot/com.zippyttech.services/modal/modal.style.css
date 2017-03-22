@@ -80,12 +80,18 @@
 .frame>.window>.footer{
     border-top: 1px solid #dadada;
     padding: 10px;
+    display: inline-flex;
+    flex-flow: column wrap;
 }
 
-.frame>.window>.footer>.actions{
+.frame>.window>.footer>.btns{
     font-weight: bold;
     align-self: flex-end;
-    margin: 0;
+}
+
+
+.frame>.window>.footer>.btns>*{
+    margin: 0 5px;
 }
 
 

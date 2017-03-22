@@ -4,27 +4,26 @@ export type ModalName = 'delete' | 'save';
 
 export interface IModalParams<ParamsType extends IModalParamsType>{
     model:any;
-    extraParams?:ParamsType;
     onAfterClose?:()=>void;
+    extraParams?:ParamsType;
 };
 
 export interface IModalParamsType{}
 
-export interface IModalDelete extends IModalParamsType{
-    selectedData:any; //TODO: Define DATATYPE, create DATA struct
-}
+export interface IModalDelete extends IModalParamsType{}
 
-export interface IModalSave{
+export interface IModalSave extends IModalParamsType{
     childKey:string;
 }
 
-export interface IModalLocation{
+export interface IModalLocation extends IModalParamsType{
     location: ILocation;
 }
 
+export interface IModalSearch{}
+
 export interface IModalRule{}
 
-export interface IModalSearch{}
 
 export interface IModalConfig{
     id:string;
