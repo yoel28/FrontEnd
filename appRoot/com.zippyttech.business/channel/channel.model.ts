@@ -155,8 +155,10 @@ export class ChannelModel extends ModelBase{
             });
         }
     }
-    initModelActions(){
-        this.actions['delete'].params.message = '¿ Esta seguro de eliminar el canal : ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el canal : ';
     }
 
+    initModelActions(){}
 }

@@ -197,8 +197,10 @@ export class UserModel extends ModelBase{
         this.completed = true;
     }
 
-    initModelActions(){
-        this.actions['delete'].params.message='¿ Esta seguro de eliminar el usuario: ';
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar el usuario: ';
     }
+
+    initModelActions(){}
 
 }

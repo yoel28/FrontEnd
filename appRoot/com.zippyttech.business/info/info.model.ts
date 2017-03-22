@@ -114,12 +114,16 @@ export class InfoModel extends ModelBase{
         this.ruleObject.keyDisplay="infoCode";
         this.ruleObject.keyDisplay="infoId";
     }
+
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
-    initModelActions(){
-        this.actions['delete'].params.message='¿Esta seguro de eliminar la ayuda : ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿Esta seguro de eliminar la ayuda : ';
     }
+
+    initModelActions(){}
 
 }

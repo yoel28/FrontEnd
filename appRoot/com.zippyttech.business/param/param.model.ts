@@ -60,9 +60,11 @@ export class ParamModel extends ModelBase{
         this.paramsSearch.label.title="Codigo: ";
         this.paramsSearch.label.detail="Detalle: "
     }
+
     initParamsSave() {
         this.paramsSave.title="Agregar parámetro"
     }
+
     initRuleObject() {
         this.ruleObject.title="Parámetro";
         this.ruleObject.placeholder="Ingrese el parámetro";
@@ -70,12 +72,15 @@ export class ParamModel extends ModelBase{
         this.ruleObject.keyDisplay="paramKey";
         this.ruleObject.code="paramId";
     }
+
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
-    initModelActions(){
-        this.actions['delete'].params.message = '¿ Esta seguro de eliminar el parametro: ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el parametro: ';
     }
 
+    initModelActions(){}
 }

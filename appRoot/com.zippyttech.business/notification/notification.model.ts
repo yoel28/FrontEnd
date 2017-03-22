@@ -58,13 +58,17 @@ export class NotificationModel extends ModelRoot{
         this.ruleObject.keyDisplay="notificationTitle";
         this.ruleObject.keyDisplay="notificationId";
     }
+
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
         delete this.rulesSave.image;
     }
-    initModelActions(){
-        this.actions['delete'].params.message='¿ Esta seguro de eliminar la notificación: ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la notificación: ';
     }
+
+    initModelActions(){}
 
 }

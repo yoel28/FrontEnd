@@ -61,11 +61,15 @@ export class RuleModel extends ModelBase{
         this.ruleObject.keyDisplay = "ruleCode";
         this.ruleObject.code = "ruleId";
     }
+
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
-    initModelActions(){
-        this.actions['delete'].params.message = '¿ Esta seguro de eliminar la regla: ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar la regla: ';
     }
+
+    initModelActions(){}
 }

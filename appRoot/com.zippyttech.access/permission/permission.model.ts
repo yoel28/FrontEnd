@@ -78,12 +78,16 @@ export class PermissionModel extends ModelRoot{
         this.ruleObject.keyDisplay="permissionCode";
         this.ruleObject.code="permissionId";
     }
+
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
-    initModelActions(){
-        this.actions['delete'].params.message = '¿ Esta seguro de eliminar el permiso : ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el permiso : ';
     }
+
+    initModelActions(){}
 
 }

@@ -152,8 +152,11 @@ export class AccountModel extends ModelRoot{
         delete this.rulesSave.miniLogo;
         delete this.rulesSave.logo;
     }
-    initModelActions(){
-        this.actions['delete'].params.message='¿ Esta seguro de eliminar la cuenta: ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la cuenta: ';
     }
+
+    initModelActions(){}
 }
 
