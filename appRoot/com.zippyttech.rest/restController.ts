@@ -470,18 +470,9 @@ export class RestController {
                 callback(response,data);
         }));
     }
-    changeDeleted(event){
-        if(event)
-            event.preventDefault();
-        if(!this.rest.deleted){
-            this.rest.deleted = 'all';
-        }
-        else if(this.rest.deleted=='all'){
-            this.rest.deleted = 'only';
-        }
-        else if(this.rest.deleted=='only'){
-            this.rest.deleted = null;
-        }
+    changeDeleted(event?){
+        if(event) event.preventDefault();
+        this.rest.deleted = (!this.rest.deleted)?'all':(this.rest.deleted=='all')?'only':null
         this.loadData();
     }
 

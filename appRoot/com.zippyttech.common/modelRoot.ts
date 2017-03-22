@@ -227,9 +227,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.modelActions.add( "add",{
             permission: this.permissions.add,
             views:[{ title: 'agregar', icon: "fa fa-plus", colorClass:'text-green'}],
-            callback:((data?,index?)=>{
-                alert('agregar no defined');
-            }).bind(this),
+            callback:((data?,index?)=>{ this.db.ms.show('save',{ model: this }); }).bind(this),
             stateEval:'0',
             params:{}
         });
@@ -250,10 +248,8 @@ export abstract class ModelRoot extends RestController implements OnInit{
             views: [ {icon: "fa fa-trash", title: "Eliminados ocultos", colorClass:""},
                     {icon: "fa fa-trash", title: "Solo eliminados"   , colorClass:"text-red"},
                     {icon: "fa fa-trash", title: "Todo"   , colorClass:"text-yellow"}, ],
-            callback: function (data?, index?){
-
-            }.bind(this),
-            stateEval:'0',
+            callback: function (data?, index?){ this.changeDeleted();}.bind(this),
+            stateEval:"(data.rest.deleted=='all')?2:(data.rest.deleted=='only')?1:0",
             params: {}
         });
 
@@ -261,31 +257,45 @@ export abstract class ModelRoot extends RestController implements OnInit{
             permission: this.permissions.update && this.permissions.visible,
             views: [ {icon: "fa fa-refresh", title: "Actualizar", colorClass:"text-blue"},
                     {icon: "fa fa-refresh fa-spin", title: "Actualizando", colorClass:"text-yellow"} ],
-            callback: function (data?, index?) {
-
-            }.bind(this),
-            stateEval:'0',
+            callback: function (data?, index?) { this.loadData(); }.bind(this),
+            stateEval:'data.rest.findData?1:0',
             params: {}
 
         });
 
         this.modelActions.add("exportPdf",{
             permission: this.permissions.exportPdf,
-            views:[{ icon: "fa fa-file-pdf-o", title: 'exportar como pdf', colorClass:"text-red" }],
+            views:[ { icon: "fa fa-file-pdf-o", colorClass:"",
+                      title:this.db.msg.exportDisabled+this.db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')+' '+this.db.msg.rows},
+                    { icon: "fa fa-file-pdf-o", title:this.db.msg.exportPdf, colorClass:"text-red" }],
             callback:((data?,index?)=>{
-
+                if(this.getEnabledReport('PDF')){
+                    let url = localStorage.getItem('urlAPI') + this.endpoint +
+                        this.getRestParams() + '&access_token=' +
+                        localStorage.getItem('bearer') + '&formatType=pdf' +
+                        '&tz=' + moment().format('Z').replace(':', '');
+                    window.open(url, '_blank');
+                }
             }).bind(this),
-            stateEval:'0',
+            stateEval:"data.getEnabledReport('PDF')?1:0",
             params: {}
         });
 
         this.modelActions.add("exporXls",{
             permission: this.permissions.exporXls,
-            views:[{ icon: "fa fa-file-excel-o", title: 'exportar como excel', colorClass:"text-green" }],
+            views:[ { icon: "fa fa-file-excel-o", colorClass:"",
+                      title:this.db.msg.exportDisabled+this.db.myglobal.getParams('REPORT_LIMIT_ROWS_XLS')+' '+this.db.msg.rows},
+                    { icon: "fa fa-file-excel-o", title:this.db.msg.exportXls, colorClass:"text-green" }],
             callback:((data?,index?)=>{
-
+                if(this.getEnabledReport('XLS')){
+                    let url = localStorage.getItem('urlAPI')+ this.endpoint +
+                    this.getRestParams()+ '&access_token='+
+                    localStorage.getItem('bearer')+'&formatType=xls'+
+                    '&tz='+moment().format('Z').replace(':','');
+                    window.open(url,'_blank');
+                }
             }).bind(this),
-            stateEval:'0',
+            stateEval:"data.getEnabledReport('XLS')?1:0",
             params: {}
         });
     }
@@ -680,6 +690,10 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
     public afterSave(field,data,id?){
         this.onPatch(field,data,id);
+    }
+
+    public getEnabledReport(type:'PDF'|'XLS'='PDF'){
+        return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_'+type)) >= this.dataList.count);
     }
 
 }

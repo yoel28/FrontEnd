@@ -28,18 +28,6 @@ export class TablesComponent implements OnInit {
         arrayData:[]
     };
 
-    public modalLocation:IModalConfig={
-        id:'modalLocation',
-        size:'lg',
-        header:{ title:'Ubicación' }
-    };
-
-    public modalRule:IModalConfig={
-        id:'modalRule',
-        size:'sm',
-        header:{ title:'' }
-    };
-
     public getInstance:any;
     private _currentPage: number;
 
