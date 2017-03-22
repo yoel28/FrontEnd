@@ -12,25 +12,24 @@
             <div [ngSwitch]="db.ms.currentModal">
                 <template [ngSwitchCase]="'delete'">
                     <div>
-                        {{db.ms.params.model.actions['delete'].message}}
-                        <strong>'{{db.ms.params.selectedData[db.ms.params.model.actions['delete'].key]}}'</strong>
+                        {{db.ms.params.model.dataActions.get('delete').params.message}}
+                        <strong>'{{db.ms.params.model.currentData[db.ms.params.model.display]}}'</strong>
                     </div>
                 </template>
 
                 <template [ngSwitchCase]="'save'">
-                    <save-view  [rules]  ="db.ms.params.model.rulesSave "
-                                [params] ="db.ms.params.model.paramsSave"
-                                (save)   ="db.ms.params.afterRunning()">
+                    <save-view  [model]  = "db.ms.params.model"
+                                [childKey] ="db.ms.params.childKey || null">
                     </save-view>
                 </template>
             </div>
         </div>
 
         <div class="footer" *ngIf="config.footer">
-            <div class="actions" *ngIf="config.footer.actions">
-                <button *ngFor="let action of config.footer.actions"
-                        class="btn {{action.classes||'btn-default'}}" (click)="action.call();">
-                    <i class="{{action.icon || 'fa fa-list'}}"></i>&nbsp;{{action.name}}
+            <div class="btns" *ngIf="config.footer.btns">
+                <button *ngFor="let btn of config.footer.btns"
+                        class="btn {{btn.classes||'btn-default'}}" (click)="btn.call();">
+                    <i class="{{btn.icon || 'fa fa-list'}}"></i>&nbsp;{{btn.name}}
                 </button>
             </div>
         </div>
