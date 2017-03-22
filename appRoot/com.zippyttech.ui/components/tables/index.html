@@ -20,19 +20,23 @@
         </thead>
         <tbody >
         <tr *ngFor="let data of model.dataList.list; let i=index"  [class.deleted]="data.deleted">
-            <div *ngIf="viewActions && model.getActionsArray(data)" class="notHidden">
-                <div *ngIf="model.getActionsArray(data).length == 1">
-                    <a (click)="model.getActionsArray(data)[0].callback(data,i);">
-                        <i class="{{model.getActionsArray(data)[0].view[0].icon}}"></i> {{model.getActionsArray(data)[0].view[0].title}}
+            <div *ngIf="viewActions && model.dataActions" class="notHidden">
+                <div *ngIf="model.dataActions.length == 1 && model.dataActions.getFirst(data)">
+                    <a (click)="model.dataActions.getFirst(data).callback(data,i);">
+                        <i class="{{model.dataActions.getFirst(data).view[0].icon}}"></i>
+                        &nbsp;{{model.dataActions.getFirst(data).view[0].title}}
                     </a>
                 </div>
-                <div *ngIf="model.getActionsArray(data).length > 1" class="btn-group dropdown">
+                <div *ngIf="model.dataActions.length > 1" class="btn-group dropdown">
                     <button type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
                         <i class="fa fa-gears fa-lg"></i>
                     </button>
                     <ul role="menu" class="dropdown-menu text-left submenu-config">
-                        <li *ngFor="let action of model.getActionsArray(data)" (click)="action.callback(data,i);">
-                            <a class="cursor-pointer {{action.view[getNumber(data[action.params.syncKey])].colorClass}}"> <i class="{{action.view[getNumber(data[action.params.syncKey])].icon}}"></i>&nbsp;{{action.view[getNumber(data[action.params.syncKey])].title}} </a>
+                        <li *ngFor="let action of model.dataActions.toArray(true,data)" (click)="action.callback(data,i);">
+                            <a class="cursor-pointer {{action.currentView(data).colorClass || ''}}">
+                                <i class="{{action.currentView(data).icon || ''}}"></i>
+                                &nbsp;{{action.currentView(data).title || ''}}
+                            </a>
                         </li>
                     </ul>
                 </div>
