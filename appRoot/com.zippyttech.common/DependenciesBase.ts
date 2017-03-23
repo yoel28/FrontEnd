@@ -30,4 +30,13 @@ export class DependenciesBase {
     public templateTypeOf(value){
         return typeof (value);
     }
+
+    public evalMe(data:any,exp){
+        try{
+            return eval(exp);
+        }catch (exception){
+            this.debugLog(['Error evalMe',data,exp,exception])
+        }
+    }
+
 }
