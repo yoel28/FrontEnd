@@ -15,7 +15,7 @@ export class ChannelModel extends ModelBase{
     }
 
     initView(params:IView){
-        params.title = "canal";
+        params.title = "Canal";
     }
 
     modelExternal() {}
@@ -135,19 +135,6 @@ export class ChannelModel extends ModelBase{
 
     initParamsSave() {
         this.paramsSave.title="Agregar canal"
-    }
-
-    initRuleObject() {
-        this.ruleObject.title="Canal";
-        this.ruleObject.placeholder="Ingrese codigo del canal";
-        this.ruleObject.key="channel";
-        this.ruleObject.keyDisplay="channelCode";
-        this.ruleObject.keyDisplay="channelId";
-    }
-
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.enabled;
     }
 
     loadDataModel(){
