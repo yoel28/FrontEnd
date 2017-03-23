@@ -8,10 +8,13 @@ export class PermissionModel extends ModelRoot{
         super(db,'/permissions/');
         this.initModel();
     }
+
     initView(params:IView){
-        params.title = "permiso";
+        params.title = "Permiso";
     }
+
     modelExternal() {}
+
     initRules(){
 
         this.rules['code'] = new TextRule({
@@ -86,17 +89,7 @@ export class PermissionModel extends ModelRoot{
     initParamsSave() {
         this.paramsSave.title="Agregar permiso"
     }
-    initRuleObject() {
-        this.ruleObject.title="permiso";
-        this.ruleObject.placeholder="Ingrese permiso";
-        this.ruleObject.key="permission";
-        this.ruleObject.keyDisplay="permissionCode";
-        this.ruleObject.code="permissionId";
-    }
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.enabled;
-    }
+
     initModelActions(params){
         params['delete'].message = '¿ Esta seguro de eliminar el permiso : ';
     }
