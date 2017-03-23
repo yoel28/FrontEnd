@@ -84,11 +84,16 @@ export class XEditable extends RestController implements OnInit {
     }
 
     private getType(rule){
-        switch (rule.type) {
+        let type = rule.constructor.name.replace('Rule','').toLowerCase();
+        switch (type) {
             case "url" :
                 return 'url';
+            case "object":
+                return rule.mode;
             default :
-                return rule.type || 'text'
+                return type || 'text'
+
+
         }
     }
 
@@ -121,6 +126,12 @@ export class XEditable extends RestController implements OnInit {
                 return rule.showbuttons == null?true:rule.showbuttons;
             case "textarea" :
                 return rule.showbuttons==null?true:rule.showbuttons;
+            case "object":{
+                if(rule.mode == 'checklist')
+                    return true;
+            }
+            case "checklist":
+                return true;
             default :
                 return rule.showbuttons || false;
         }
@@ -206,6 +217,10 @@ export class XEditable extends RestController implements OnInit {
         switch (this.getType(rule)) {
             case "url" :
                 jQuery(this.el.nativeElement).editable('setValue','link', true);
+            case "combodate" :
+                if(data)
+                    return moment(data);
+                return data;
             default :
                 jQuery(this.el.nativeElement).editable('setValue',( data || this.data[this.field]), true);
         }
@@ -229,7 +244,7 @@ export class XEditable extends RestController implements OnInit {
         switch (this.getType(rule)) {
             case "combodate" :
                 if(rule.date == 'date'){
-                    return newValue.format('YYYY-DD-MM');
+                    return newValue.format('DD-MM-YYYY');
                 }
                 if(rule.date == 'datetime'){
                     return newValue.format('YYYY-DD-MM HH:mm');
