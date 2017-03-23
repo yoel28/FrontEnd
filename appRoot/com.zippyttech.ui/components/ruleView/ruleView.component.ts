@@ -1,9 +1,8 @@
-import {Component, EventEmitter, OnInit, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
+import {Component, EventEmitter, OnInit, AfterViewInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {ILocation} from "../locationPicker/locationPicker.component";
-import {isUndefined} from "util";
 
 /**
  * @Params API
@@ -59,9 +58,20 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         return this.data[this.key];
     }
 
-    public isCurrentType(list:Array<string>):boolean{
-        return list.indexOf(this.currentRule.type) >= 0 ? true:false;
+    private get currentType(){
+        let rule = this.currentRule;
+        let type = rule.constructor.name.replace('Rule','').toLowerCase();
+        return type;
     }
+
+    public isCurrentType(list:Array<string>):boolean{
+        return list.indexOf(this.currentType) >= 0 ? true:false;
+    }
+
+    public isCurrentMode(list:Array<string>):boolean{
+        return list.indexOf(this.currentRule.mode) >= 0 ? true:false;
+    }
+
 
 
     ngAfterViewInit() {
@@ -252,7 +262,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     get getEnabled(){
         let rule= this.currentRule;
         let permitUpdate = (this.data.enabled && !this.data.deleted  && !this.data.blockField && this.data.editable);
-        return permitUpdate && rule.update && !this.disabled;
+        return permitUpdate && rule.permissions.update && !this.disabled;
     }
     loadLocationParams(event){
         if(event)
