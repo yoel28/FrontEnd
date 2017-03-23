@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
 import {IModal} from "../modal/modal.component";
+import {IRule} from "../../../com.zippyttech.common/rules/rule";
 
 var moment = require('moment');
 
@@ -70,13 +71,12 @@ export class TablesComponent implements OnInit {
         this.paramsData.searchInstances[type] =  instance;
     }
 
-    private keyVisible() {
+    private get keyVisible() {
         let data=[];
-        let that=this;
-        Object.keys(this.model.rules).forEach((key)=>{
-            if(that.model.rules[key].visible)
+        Object.keys(this.model.rules).forEach(((key)=>{
+            if((<IRule>this.model.rules[key]).permissions.visible && (<IRule>this.model.rules[key]).include.list)
                 data.push(key)
-        });
+        }).bind(this));
         return data;
     }
 
