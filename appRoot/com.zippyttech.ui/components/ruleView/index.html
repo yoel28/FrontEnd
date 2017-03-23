@@ -3,9 +3,7 @@
     <i *ngIf="currentRule.iconVisible" class="{{currentRule.iconVisible}}">&nbsp;</i>
     <i *ngIf="isCurrentType(['icon'])" class="{{currentValue}}">&nbsp;</i>
 
-    <template [ngIf]="currentRule">
-
-        <template [ngIf]="!currentRule.object">
+    <template [ngIf]="!isCurrentType(['object'])">
 
             <template [ngIf]="isCurrentType(['text','textarea','number','checklist','select','password','combodate'])">
 
@@ -217,7 +215,7 @@
 
         </template>
 
-        <template [ngIf]="currentRule.object">
+    <template [ngIf]="isCurrentType(['object'])">
 
             <template [ngIf]="key=='roles'">
                 <template [ngIf]="getEnabled">
@@ -256,7 +254,7 @@
 
                 </template>
 
-                <template [ngIf]="isCurrentType(['text'])">
+                <template [ngIf]="isCurrentMode(['reference'])">
 
                     <template [ngIf]="currentRule.multiple">
                         <button *ngIf="currentValue && currentValue.length > 0"
@@ -274,7 +272,7 @@
                             {{evalExp(data,currentRule.eval)}}
                         </template>
                         <template [ngIf]="!currentRule.eval">
-                            {{data[currentRule.keyDisplay]}}
+                            {{data[currentRule.display]}}
                         </template>
                     </span>
 
@@ -355,8 +353,6 @@
             </template>
 
         </template>
-
-    </template>
 
 </template>
 
