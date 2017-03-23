@@ -10,10 +10,15 @@ export class AccountModel extends ModelRoot{
         super(db,'/accounts/');
         this.initModel();
     }
+
     initView(params:IView){
-        params.title = "cuenta";
+        params.title = "Cuenta";
+        params.display = this.nameClass+"Name";
+        params.eval = this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB')
     }
+
     modelExternal() {}
+
     initRules(){
 
         this.rules['logo']= new ImageRule({
@@ -162,20 +167,6 @@ export class AccountModel extends ModelRoot{
     }
     initParamsSave() {
         this.paramsSave.title="Agregar cuenta"
-    }
-    initRuleObject() {
-        this.ruleObject.title="Cuenta";
-        this.ruleObject.placeholder="Ingrese la cuenta";
-        this.ruleObject.key="account";
-        this.ruleObject.keyDisplay='accountName';
-        this.ruleObject.eval=this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB');
-        this.ruleObject.code="accountId";
-    }
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.enabled;
-        delete this.rulesSave.miniLogo;
-        delete this.rulesSave.logo;
     }
     initModelActions(params){
         params['delete'].message='¿ Esta seguro de eliminar la cuenta: ';
