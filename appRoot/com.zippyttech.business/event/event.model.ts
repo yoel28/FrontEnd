@@ -16,7 +16,7 @@ export class EventModel extends ModelBase{
     }
 
     initView(params:IView){
-        params.title = "evento";
+        params.title = "Evento";
     }
 
     modelExternal() {}
@@ -89,10 +89,10 @@ export class EventModel extends ModelBase{
         });
 
         this.rules['rule'] = new ObjectRule({
-            model: new RuleModel(this.db),
+            model:new RuleModel(this.db),
             required:true,
-            update:this.permissions.update
-        });
+            update:this.permissions.update,
+        }) ;
 
         this.rules['target']= new TextRule({
             required:true,
@@ -158,20 +158,6 @@ export class EventModel extends ModelBase{
 
     initParamsSave() {
         this.paramsSave.title="Agregar evento"
-    }
-
-    initRuleObject() {
-        this.ruleObject.title="Eventos";
-        this.ruleObject.placeholder="Ingrese codigo del evento";
-        this.ruleObject.key="event";
-        this.ruleObject.keyDisplay="eventCode";
-        this.ruleObject.code="eventId";
-    }
-
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.detail;
-        delete this.rulesSave.enabled;
     }
 
     loadDataPublic() {
