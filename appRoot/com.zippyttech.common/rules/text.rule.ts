@@ -5,7 +5,14 @@ export interface IText extends IRule{
 }
 export class TextRule extends Rule{
 
-    constructor(public rule:IText){
+    constructor(private rule:IText){
         super(rule);
+    }
+
+    set email(value:boolean){
+        this.attributes.email = value;
+    }
+    get email():boolean{
+        return this.attributes.email;
     }
 }

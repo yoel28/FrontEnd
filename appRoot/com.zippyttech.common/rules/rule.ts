@@ -1,4 +1,3 @@
-//type:'text'|'number'|'date'|'list'|'boolean'|'image'|'location';
 export interface IRule{
     key?:string;
     title?:string;
@@ -27,7 +26,8 @@ export interface IRule{
     },
     components?:{
         form?:{
-            hidden:string
+            hidden?:string;
+            force?:boolean;
         }
     }
 
@@ -35,39 +35,138 @@ export interface IRule{
 
 export class Rule {
 
-    private _default:IRule={
-        key:'default',
-        title:'Título',
-        protected:false,
-        placeholder:'placeholder',
-        required:false,
-        exclude:false,
-        icon: 'fa fa-list',
-        disabled:'false',
-        showbuttons:false,
-        check:false,
-        readOnly:false,
-        permissions:{
-            search:false,
-            update:false,
-            visible:false,
-        },
-        include:{
-            save:true,
-            filter:true,
-            list:true
-        },
-        components:{
-            form:{
-                hidden:'false'
-            }
-        }
-    };
-    constructor(data:Object){
-        this.attributes = data;
+    public attributes:any={};
+
+    constructor(private data:Object){
+        Object.assign(this.attributes,data);
     }
-    set attributes(data:Object){
-        Object.assign(this,this._default,data);
+
+    get key():string{
+        return this.attributes.key || 'keyDefault';
+    }
+    set key(value:string){
+        this.attributes.key = value;
+    }
+
+    get title():string{
+        return this.attributes.title || 'title default';
+    }
+    set title(value:string){
+        this.attributes.title = value;
+    }
+
+    get protected():boolean{
+        return this.attributes.protected || false;
+    }
+    set protected(value:boolean){
+        this.attributes.protected = value;
+    }
+
+    get placeholder():string{
+        return this.attributes.placeholder || 'placeholder default';
+    }
+    set placeholder(value:string){
+        this.attributes.placeholder = value;
+    }
+
+    get required():boolean{
+        return this.attributes.required || false;
+    }
+    set required(value:boolean){
+        this.attributes.required = value;
+    }
+
+    get exclude():boolean{
+        return this.attributes.exclude || false;
+    }
+    set exclude(value:boolean){
+        this.attributes.exclude = value;
+    }
+
+    get icon():string{
+        return this.attributes.icon || 'fa fa-list';
+    }
+    set icon(value:string){
+        this.attributes.icon = value;
+    }
+
+    get prefix():string{
+        return this.attributes.prefix || null;
+    }
+    set prefix(value:string){
+        this.attributes.prefix = value;
+    }
+
+    get disabled():string{
+        return this.attributes.disabled || 'false';
+    }
+    set disabled(value:string){
+        this.attributes.disabled = value;
+    }
+
+    get showbuttons():boolean{
+        return this.attributes.showbuttons || false;
+    }
+    set showbuttons(value:boolean){
+        this.attributes.showbuttons = value;
+    }
+
+    get check():boolean{
+        return this.attributes.check || false;
+    }
+    set check(value:boolean){
+        this.attributes.check = value;
+    }
+
+    get readOnly():boolean{
+        return this.attributes.readOnly || false;
+    }
+    set readOnly(value:boolean){
+        this.attributes.readOnly = value;
+    }
+
+    get refreshField():Object{
+        return this.attributes.refreshField || {};
+    }
+    set refreshField(value:Object){
+        this.attributes.refreshField = value;
+    }
+
+    get permissions():Object{
+        return this.attributes.permissions ||
+                {
+                    search:false,
+                    update:false,
+                    visible:false,
+                };
+    }
+    set permissions(value:Object){
+        this.attributes.permissions = value;
+    }
+
+    get include():any{
+        return this.attributes.include ||
+            {
+                save:true,
+                filter:true,
+                list:true
+            };
+    }
+    set include(value:any){
+        this.attributes.include = value;
+    }
+
+    get components():any{
+        return this.attributes.components ||
+            {
+                form:{
+                    hidden:'false',
+                    force:false
+                }
+            };
+    }
+    set components(value:any){
+        this.attributes.components = value
     }
 
 

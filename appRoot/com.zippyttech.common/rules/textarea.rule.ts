@@ -5,7 +5,7 @@ export interface ITextarea  extends IRule{
 }
 export class TextareaRule extends Rule{
 
-    constructor(public rule:ITextarea){
+    constructor(private rule:ITextarea){
         super(rule);
     }
 }

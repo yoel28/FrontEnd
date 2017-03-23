@@ -5,7 +5,14 @@ interface INumber  extends IRule{
 }
 export class NumberRule extends Rule{
 
-    constructor(public rule:INumber){
+    constructor(private rule:INumber){
         super(rule);
+    }
+
+    get step():string{
+        return this.attributes.step;
+    }
+    set step(value:string){
+        this.attributes.step = value;
     }
 }
