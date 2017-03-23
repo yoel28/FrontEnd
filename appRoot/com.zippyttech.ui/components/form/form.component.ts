@@ -52,10 +52,26 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
         }
     }
 
+    private currentType(rule){
+        let type = rule.constructor.name.replace('Rule','').toLowerCase();
+        return type;
+    }
+
+    public isCurrentType(list:Array<string>,rule:string):boolean{
+        return list.indexOf(this.currentType(rule)) >= 0 ? true:false;
+    }
+
     initForm() {
         let that = this;
         Object.keys(this.rules).forEach((key)=> {
-            if((that.params.onlyRequired && (that.rules[key].required || that.rules[key].forceInSave)) || !that.params.onlyRequired){
+            if(
+                (
+                    (that.params.onlyRequired && (that.rules[key].required || that.rules[key].forceInSave)) ||
+                    !that.params.onlyRequired
+                ) && that.rules[key].include.save
+            )
+
+            {
                 that.data[key] = [];
                 let validators=[];
                 if(that.rules[key].required)
@@ -431,7 +447,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
 
     }
     hiddenFormControl(exp='false'){
-        return eval(exp);
+        return this.db.evalMe(this,exp);
     }
 
     isValidForm():boolean{
