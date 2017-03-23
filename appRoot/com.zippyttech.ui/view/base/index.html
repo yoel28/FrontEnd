@@ -5,7 +5,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">
-                            <i class="{{model.ruleObject.icon||'fa fa-list-alt'}}"></i>{{'   '+(model.ruleObject.title | translate)}}
+                            <i class="{{model.ruleObject.icon||'fa fa-list-alt'}}"></i>{{'   '+(model.view.title | translate)}}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
                             &nbsp;<i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                             <span *ngIf="model && model.dataList && model.dataList.count" class="page-info">
@@ -74,15 +74,15 @@
                                     <i class="fa fa-wrench"></i>
                                 </button>
                                 <ul class="dropdown-menu submenu-config" role="menu">
-                                    <li *ngFor="let key of getObjectKeys(model.rules)" class="text-blue flex" [class.check]="model.rules[key].check">
+                                    <li *ngFor="let key of getRulesList" class="text-blue flex" [class.check]="model.rules[key].check">
 
                                         <button class="btn btn-box-tool fa"
-                                                [class.fa-eye-slash]="!model.rules[key].visible"
-                                                [class.text-red]="!model.rules[key].visible"
-                                                [class.fa-eye]="model.rules[key].visible"
-                                                [class.text-green]="model.rules[key].visible"
+                                                [class.fa-eye-slash]="!model.rules[key].permissions.visible"
+                                                [class.text-red]="!model.rules[key].permissions.visible"
+                                                [class.fa-eye]="model.rules[key].permissions.visible"
+                                                [class.text-green]="model.rules[key].permissions.visible"
                                                 (click)="setVisibleField($event,model.rules[key])"
-                                                title="{{model.rules[key].visible?'Ocultar':'Ver'}}"
+                                                title="{{model.rules[key].permissions.visible?'Ocultar':'Ver'}}"
                                         >
 
                                         </button>
