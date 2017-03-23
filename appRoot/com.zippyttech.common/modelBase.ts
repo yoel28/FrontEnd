@@ -1,6 +1,7 @@
 import {ModelRoot} from "./modelRoot";
 import {AccountModel} from "../com.zippyttech.access/account/account.model";
 import {DependenciesBase} from "./DependenciesBase";
+import {ObjectRule, IObject} from "./rules/object.rule";
 
 export abstract class ModelBase extends ModelRoot{
 
@@ -11,15 +12,19 @@ export abstract class ModelBase extends ModelRoot{
     private checkGlobal(){
         if(this.permissions['global'])
         {
-            let account = new AccountModel(this.db);
-            this.rules['account'] =  account.ruleObject;
-            this.rules['account'].required = true;
-            this.rules['account'].update = this.permissions.update;
+            this.rules['account'] = new ObjectRule({
+                model:new AccountModel(this.db),
+                required:true,
+                update:this.permissions.update,
+            }) ;
         }
     }
     public globalOptional(){
         if(this.permissions['global']){
-            this.rules['account'].required = false;
+            if(this.rules['account'])
+                (<IObject>this.rules['account']).required = false;
+            else
+                this.db.debugLog(['Error','Optional with global',this.rules])
         }
     }
 
