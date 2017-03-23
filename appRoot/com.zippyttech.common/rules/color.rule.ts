@@ -5,7 +5,14 @@ export interface IColor  extends IRule{
 }
 export class ColorRule extends Rule{
 
-    constructor(public rule:IColor){
+    constructor(private rule:IColor){
         super(rule);
+    }
+
+    get value():string{
+        return this.attributes.value;
+    }
+    set value(value:string){
+        this.attributes.value = value;
     }
 }
