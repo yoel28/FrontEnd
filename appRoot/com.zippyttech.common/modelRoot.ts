@@ -1,8 +1,10 @@
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {RestController, IWhere} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
-import {FormControl} from "@angular/forms";
-import {IRules} from "./rulesInterface";
+import {TextRule} from "./rules/text.rule";
+import {NumberRule} from "./rules/number.rule";
+import {CombodateRule} from "./rules/combodate.rule";
+import {TextareaRule} from "./rules/textarea.rule";
 
 var moment = require('moment');
 var jQuery = require('jquery');
@@ -37,6 +39,17 @@ export interface IModelFilter{
         callback(model?:ModelRoot);
     };
 }
+export interface IView{
+    title:string;
+    display:string;
+    key:string;
+    code:string;
+    icon?:string;
+    eval?:string;
+    visible?:boolean;
+    mode?:'reference'|'checklist';
+    exclude?:boolean;
+}
 
 export abstract class ModelRoot extends RestController{
     public prefix = ((this.constructor.name).toUpperCase()).replace('MODEL','');
@@ -50,6 +63,8 @@ export abstract class ModelRoot extends RestController{
     public rulesSave:any={};
     public actions:IModelActions={};
     public filters:IModelFilter={};
+
+    public view:IView;
 
     public lockList:boolean = false;
 
@@ -83,16 +98,6 @@ export abstract class ModelRoot extends RestController{
     private rulesDefault:any = {};
     public rules:Object={};
 
-    // private _dataList:FormControl;
-    //
-    // public set dataList(value:any){
-    //     if(this._dataList)
-    //         this._dataList.setValue(value);
-    // }
-    //
-    // public get dataList(){
-    //     return this._dataList.value;
-    // }
 
 
     constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
@@ -101,41 +106,44 @@ export abstract class ModelRoot extends RestController{
             this.prefix = prefix;
         this.endpoint = endpoint;
         this.useGlobal = useGlobal;
-        // this._dataList = new FormControl({});
         this._initModel();
-        // this._dataList.valueChanges.subscribe((values=>{
-        //     console.log("CHANGED!");
-        // }).bind(this));
     }
 
     private _initModel(){
+        this._initView();
         this._initPermissions();
         this._initRules();
         this._initParamsSearch();
         this._initParamsSave();
-        this._initRuleObject();
         this._initModelActions();
     }
     public initModel(completed=true){
+        this.initView(this.view);
         this.initPermissions();
         this.modelExternal();
         this.initRules();
-        this.initRulesSave();
         this.initParamsSearch();
         this.initParamsSave();
-        this.initRuleObject();
 
-        this.loadObjectRule();
         this.loadParamsSave();
         this.loadParamsSearch();
 
-        this.addCustomField();
         this.initModelActions(this.actions);
 
         this.db.ws.loadChannelByModel(this.constructor.name,this);
 
-        this.removeRuleExtraSave();
         this.completed=completed;
+    }
+
+    abstract initView(params:IView);
+    private _initView(){
+        this.view ={
+            title:'Title default',
+            code:this.nameClass+'Id',
+            display:this.nameClass+"Code",
+            key:this.nameClass,
+            visible:true,
+        }
     }
 
     abstract initPermissions();
@@ -228,23 +236,9 @@ export abstract class ModelRoot extends RestController{
 
     abstract modelExternal();
     abstract initRules();
-    abstract initRulesSave();
 
     private _initRules() {
-        this.rulesDefault["detail"] = {
-            "update": this.permissions.update,
-            "visible": this.permissions.visible,
-            "search": this.permissions.filter,
-            'icon': 'fa fa-list',
-            "type": "textarea",
-            "key": "detail",
-            "title": "Detalle",
-            "placeholder": "Ingrese el detalle",
-        };
-        this.loadRulesExtra();
-
-    }
-    private loadRulesExtra(){
+        this.setRuleDetail();
         this.setRuleId();
         this.setRuleIp();
         this.setRuleUserAgent();
@@ -254,117 +248,146 @@ export abstract class ModelRoot extends RestController{
         this.setRuleDateUpdated();
     }
 
+    setRuleDetail(save=false,required=false){
+        this.rulesDefault["detail"] = new TextareaRule({
+            required:required,
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            include:{
+                save:save,
+                filter:true,
+                list:true
+            },
+            key: "detail",
+            title: "Detalle",
+            placeholder: "Ingrese el detalle",
+        });
+    }
+
     setRuleId(force=false){
         if(this.permissions.audit || force){
-            this.rulesDefault["id"] = {
-                "update": false,
-                "visible": this.permissions.visible,
-                "search": this.permissions.filter,
-                'icon': 'fa fa-list',
-                "type": "number",
-                "key": "id",
-                "title": "ID",
-                "placeholder": "Ingrese el ID",
-            };
+            this.rulesDefault["id"] = new NumberRule({
+                permissions:{
+                    search: this.permissions.filter,
+                },
+                include:{
+                    save:false,
+                    filter:true,
+                    list:true
+                },
+                key: "id",
+                title: "ID",
+                placeholder: "Ingrese el ID",
+            });
         }
     }
     setRuleIp(force=false){
         if(this.permissions.audit || force){
-            this.rulesDefault["ip"] = {
-                "update": false,
-                "visible": false,
-                "search": this.permissions.filter,
-                'icon': 'fa fa-list',
-                "type": "text",
+            this.rulesDefault["ip"] = new TextRule({
+                permissions:{
+                    search: this.permissions.filter,
+                },
+                include:{
+                    save:false,
+                    filter:true,
+                    list:true
+                },
                 "key": "ip",
                 "title": "IP",
                 "placeholder": "Ingrese la IP",
-            };
+            });
         }
     }
     setRuleUserAgent(force=false){
         if(this.permissions.audit || force){
-            this.rulesDefault["userAgent"] = {
-                "update": false,
-                "visible": false,
-                "search": this.permissions.filter,
-                'icon': 'fa fa-list',
-                "type": "text",
-                "key": "userAgent",
-                "title": "userAgent",
-                "placeholder": "Ingrese el userAgent",
-            };
+            this.rulesDefault["userAgent"] = new TextRule({
+                permissions:{
+                    search: this.permissions.filter,
+                },
+                include:{
+                    save:false,
+                    filter:true,
+                    list:true
+                },
+                key: "userAgent",
+                title: "userAgent",
+                placeholder: "Ingrese el userAgent",
+            });
         }
     }
     setRuleUsernameCreator(force=false){
         if(this.permissions.audit || force){
-            this.rulesDefault["usernameCreator"] = {
-                "update": false,
-                "visible": false,
-                "search": this.permissions.filter,
-                'icon': 'fa fa-list',
-                "type": "text",
-                "key": "usernameCreator",
-                "title": "Creador",
-                "placeholder": "Ingrese el usuario creador",
-            };
+            this.rulesDefault["usernameCreator"] = new TextRule({
+                permissions:{
+                    search: this.permissions.filter,
+                },
+                include:{
+                    save:false,
+                    filter:true,
+                    list:true
+                },
+                key: "usernameCreator",
+                title: "Creador",
+                placeholder: "Ingrese el usuario creador",
+            });
         }
     }
     setRuleUsernameUpdater(force=false){
         if(this.permissions.audit || force){
-            this.rulesDefault["usernameUpdater"] = {
-                "update": false,
-                "visible": false,
-                "search": this.permissions.filter,
-                'icon': 'fa fa-list',
-                "type": "text",
-                "key": "usernameUpdater",
-                "title": "Actualizador",
-                "placeholder": "Ingrese el usuario que actualizo",
-            };
+            this.rulesDefault["usernameUpdater"] = new TextRule ({
+                permissions:{
+                    search: this.permissions.filter,
+                },
+                include:{
+                    save:false,
+                    filter:true,
+                    list:true
+                },
+                key: "usernameUpdater",
+                title: "Actualizador",
+                placeholder: "Ingrese el usuario que actualizo",
+            });
         }
     }
     setRuleDateCreated(force=false){
         if(this.permissions.audit || force){
-            this.rulesDefault["dateCreated"] = {
-                "update": false,
-                "visible": false,
-                "search": this.permissions.filter,
-                'icon': 'fa fa-list',
-                "type": "combodate",
-                "date":"datetime",
-                "key": "dateCreated",
-                "title": "Creación",
-                "placeholder": "Ingrese la fecha de creación",
-            };
+            this.rulesDefault["dateCreated"] = new CombodateRule({
+                permissions:{
+                    search: this.permissions.filter,
+                },
+                include:{
+                    save:false,
+                    filter:true,
+                    list:true
+                },
+                date:"datetime",
+                key: "dateCreated",
+                title: "Fecha de creación",
+                placeholder: "Ingrese la fecha de creación",
+            });
         }
     }
     setRuleDateUpdated(force=false){
         if(this.permissions.audit || force){
-            this.rulesDefault["dateUpdated"] = {
-                "update": false,
-                "visible": false,
-                "search": this.permissions.filter,
-                'icon': 'fa fa-list',
-                "type": "combodate",
-                "date":"datetime",
-                "key": "dateUpdated",
-                "title": "Actualización",
-                "placeholder": "Ingrese la fecha de actualización",
-            };
+            this.rulesDefault["dateUpdated"] = new CombodateRule({
+                permissions:{
+                    search: this.permissions.filter,
+                },
+                include:{
+                    save:false,
+                    filter:true,
+                    list:true
+                },
+                date:"datetime",
+                key: "dateUpdated",
+                title: "Fecha de actualización",
+                placeholder: "Ingrese la fecha de actualización",
+            });
         }
     }
-
-    private removeRuleExtraSave(){
-        delete this.rulesSave['id'];
-        delete this.rulesSave['ip'];
-        delete this.rulesSave['userAgent'];
-        delete this.rulesSave['usernameCreator'];
-        delete this.rulesSave['usernameUpdater'];
-        delete this.rulesSave['dateCreated'];
-        delete this.rulesSave['dateUpdated'];
-    }
-
 
     abstract initParamsSearch();
     private _initParamsSearch() {
@@ -404,43 +427,10 @@ export abstract class ModelRoot extends RestController{
         };
     }
 
-    abstract initRuleObject();
-    private _initRuleObject() {
-        this.ruleObject = {
-            'icon': 'fa fa-list',
-            'update':false,
-            'search':false,
-            "type": "text",
-            "required":true,
-            "visible":true,
-            "key": "keyDefault",
-            "keyDisplay": "keyDefault",
-            "title": "TipoDefault",
-            'object': true,
-            'objectOrSave': null,
-            'code': 'default',
-            'prefix':'',
-            "placeholder": "PlaceHolder default",
-            'paramsSearch': {},
-            "permissions": {},
-            "rulesSave":{},
-            "paramsSave":{}
-        }
-    }
-
     getRulesDefault(){
         return this.rulesDefault;
     }
 
-    private loadObjectRule(){
-        this.ruleObject.rulesSave = this.rulesSave;
-        this.ruleObject.paramsSave = this.paramsSave;
-        this.ruleObject.permissions = this.permissions;
-        this.ruleObject.paramsSearch = this.paramsSearch;
-        this.ruleObject.prefix = this.prefix;
-        this.ruleObject.search = this.permissions.search;
-
-    }
     private loadParamsSave(){
         this.paramsSave.prefix = this.prefix+'_ADD';
     }
@@ -460,12 +450,7 @@ export abstract class ModelRoot extends RestController{
     public capitalizeFirstLetter (data) {
         return data.charAt(0).toUpperCase() + data.slice(1);
     }
-    public addCustomField(){
-        let that = this;
-        Object.keys(this.rules).forEach(key=>{
-            that.rules[key].check =  false;
-        });
-    }
+
     public spliceId(id:string)
     {
         if(this.dataList['list']) {
@@ -605,6 +590,10 @@ export abstract class ModelRoot extends RestController{
             }
             this.loadData();
         }
+    }
+
+    public get nameClass(){
+        return (this.constructor.name).replace('MODEL','').toLowerCase();
     }
 
 }
