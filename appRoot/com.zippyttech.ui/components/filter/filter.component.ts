@@ -3,29 +3,35 @@ import {FormGroup, FormControl} from "@angular/forms";
 import {isNumeric} from "rxjs/util/isNumeric";
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
+import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
+
+/**
+ * @Params API
+ * Optional
+ *      WAIT_TIME_SEARCH
+ *
+ *
+ */
 
 declare var SystemJS:any;
 @Component({
+    moduleId:module.id,
     selector: 'filter-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/filter/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/filter/style.css'],
-    inputs: ['rules', 'params'],
-    outputs: ['whereFilter'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
+    inputs: ['model'],
+    outputs: ['getInstance'],
 })
 export class FilterComponent extends RestController implements OnInit{
 
-    //objeto con las reglas de modelo
-    public rules:any = {};
-    //parametro de salida
-    public whereFilter:any;
-    //Parametros para visualizar el modal
-    public params:any = {
-        title: "sin titulo",
-        idModal: "nomodal",
-        endpoint: "sin endpoint",
-        placeholder: "sin placeholder",
-        where:[]
-    };
+    private getInstance:any;
+    private model:ModelRoot;
+    private params:any={};
+
+    private readonly code:string='filter';
+
+
+
     //objecto del search actual
     public search:any={};
     //lista de operadores condicionales
@@ -131,52 +137,51 @@ export class FilterComponent extends RestController implements OnInit{
 
     constructor(public db:DependenciesBase) {
         super(db);
-        this.whereFilter = new EventEmitter();
+        this.getInstance = new EventEmitter();
     }
     ngOnInit() {
         this.loadForm();
     }
     loadForm() {
+
         let that = this;
-        Object.keys(this.rules).forEach((key)=> {
-            if (that.rules[key].search) {
-                that.data[key] = [];
-                that.data[key] = new FormControl("");
+        let _rule =  this.currentRule;
 
-                that.data[key+'Cond'] = [];
+        this.loadParams();
+        Object.keys(_rule).forEach((key)=> {
 
-                let cond = this.cond[this.rules[key].object?'object':this.rules[key].type];
-                that.data[key+'Cond'] = new FormControl(cond?cond[0].id:'eq');
+            if (_rule[key].search) {
 
+                that.newDataControl(key);
 
-                if(that.rules[key].object)
+                if(_rule[key].object)
                 {
                     that.data[key].
                         valueChanges.
-                        debounceTime(this.db.myglobal.getParams('WAIT_TIME_SEARCH') || '500').
+                        debounceTime(that.getParam('WAIT_TIME_SEARCH')).
                         subscribe((value: string) => {
                             if(value && value.length > 0){
-                                that.search=that.rules[key];
+                                that.search=_rule[key];
                                 that.findControl = value;
-                                that.dataList=[];
-                                that.setEndpoint(that.rules[key].paramsSearch.endpoint+value);
+                                that.dataList={};
+                                that.setEndpoint(_rule[key].paramsSearch.endpoint+value);
                                 if( !that.searchId[key]){
-                                    that.loadData().then(((response)=>{
-                                        if(this.dataList && this.dataList.count == 1){
-                                            this.getDataSearch(this.dataList.list[0])
+                                    that.loadData().then((response)=>{
+                                        if(that.dataList && that.dataList.count == 1){
+                                            that.getDataSearch(that.dataList.list[0])
                                         }
-                                    }).bind(this));
+                                    });
                                 }
                                 else if(that.searchId[key].detail != value){
-                                    that.loadData().then(((response)=>{
-                                        if(this.dataList && this.dataList.count==1){
-                                            this.getDataSearch(this.dataList.list[0])
+                                    that.loadData().then((response)=>{
+                                        if(that.dataList && that.dataList.count==1){
+                                            that.getDataSearch(that.dataList.list[0])
                                         }
-                                    }).bind(this));
+                                    });
                                     delete that.searchId[key];
                                 }
                                 else{
-                                    this.findControl="";
+                                    that.findControl="";
                                     that.search = [];
                                 }
                             }else{
@@ -190,12 +195,58 @@ export class FilterComponent extends RestController implements OnInit{
         });
 
         this.form = new FormGroup(this.data);
-        this.keys = Object.keys(this.rules);
+        this.keys = Object.keys(_rule);
+    }
+
+    private get currentRule(){
+        return this.model.rules;
+    }
+
+    private get currentParams(){
+        return this.model.paramsSearch;
+    }
+
+    private loadParams(){
+        this.params['WAIT_TIME_SEARCH']= this.db.myglobal.getParams('WAIT_TIME_SEARCH','500');
+    }
+
+    private getParam(code:string){
+        return this.params[code];
+    }
+
+    private newDataControl(key){
+
+        this.data[key] = [];
+        this.data[key] = new FormControl("");
+
+        let cond = this.getCondition(this.currentRule[key]);
+        this.data[key+'Cond'] = [];
+        this.data[key+'Cond'] = new FormControl(cond[0].id);
+
+    }
+
+    private loadWhereFilter(where){
+        this.model.loadWhere(where,null,'filter')
+    }
+
+    private getCondition(currentRule:any){
+        let type = currentRule.type;
+
+        if(currentRule.object){
+            if(currentRule.join){
+                return this.cond['text']
+            }
+            return this.cond['object']
+        }
+        return this.cond[type]
+
     }
 
     //Al hacer click en la lupa guarda los valores del objecto
     getLoadSearch(event,data){
-        event.preventDefault();
+        if(event)
+            event.preventDefault();
+
         this.findControl="";
         this.dataList={};
         this.rest.max=5;
@@ -225,156 +276,253 @@ export class FilterComponent extends RestController implements OnInit{
     assignDate(data,key){
         this.data[key].setValue(data);
     }
-    
-    // public search=
-    //
-    //     {
-    //         title:"Vehiculo",
-    //         idModal:"searchVehicle",
-    //         endpoint:"/search/vehicles/",
-    //         placeholder:"Ingrese la placa del vehiculo",
-    //         label:{'name':"Placa: ",'detail':"Empresa: "},
-    //         where:"&where="+encodeURI("[['op':'isNull','field':'tag.id']]")
-    //     }
-    
-    
+
     submitForm(event) {
-        event.preventDefault();
+        if(event)
+            event.preventDefault();
+        let _rules = this.currentRule;
         let dataWhere=[];
         let that=this;
-        Object.keys(this.rules).forEach( key=>{
-            if(that.rules[key].type=='boolean' && that.form.value[key]=='-1')
+
+        Object.keys(_rules).forEach( key=>{
+
+            if(_rules[key].type=='boolean' && that.form.value[key]=='-1')
                 that.form.controls[key].setValue(null);
-            if(that.rules[key].type=='select' && that.form.value[key]=='-1')
+
+            if(_rules[key].type=='select' && that.form.value[key]=='-1')
                 that.form.controls[key].setValue(null);
-            if(that.rules[key].type=='filter' && that.form.value[key]=='-1')
+
+            if(_rules[key].type=='filter' && that.form.value[key]=='-1')
                 that.form.controls[key].setValue(null);
 
             if ((this.form.value[key] && this.form.value[key] != "") || that.form.value[key + 'Cond'] == 'isNull' || that.form.value[key + 'Cond'] == 'isNotNull')
             {
                 let whereTemp:any = {};//Fila de where para un solo elemento
-                let whereTemp2:any;//Fila para codificiones multiples
 
-                whereTemp.code = 'filter';
+                whereTemp.code = that.code;
                 whereTemp.op = that.form.value[key + 'Cond'];//condicion
-                whereTemp.field = that.rules[key].key || key;//columna
+                whereTemp.field = _rules[key].key || key;//columna
 
-                if(that.rules[key].type=='filter'){
-                    whereTemp = that.rules[key].where[this.form.value[key]];
+
+                if(_rules[key].type=='filter'){
+                    whereTemp = _rules[key].where[that.form.value[key]];
                 }
 
-
-                if (that.rules[key].subType)//si existe un subtype lo agregamos
+                if (_rules[key].subType)//si existe un subtype lo agregamos
                 {
-                    whereTemp.type = that.rules[key].subType;
+                    whereTemp.type = _rules[key].subType;
                 }
 
                 if (whereTemp.op != 'isNull' && whereTemp.op != 'isNotNull')// si es diferente de nulo, carge el value
                 {
-                    whereTemp.value = that.form.value[key];//valor
-
-                    if (whereTemp.op.substr(0, 1) == "%")//inicia con
-                    {
-                        whereTemp.op = whereTemp.op.substr(1);
-                        whereTemp.value = "%" + whereTemp.value;
-                    }
-
-                    if (whereTemp.op.substr(-1) == "%")//termina en
-                    {
-                        whereTemp.op = whereTemp.op.slice(0, -1);
-                        whereTemp.value = whereTemp.value + "%";
-                    }
-
-                    if ( (that.rules[key].type == 'number' || that.rules[key].type == 'time') && isNumeric(whereTemp.value))// tipo numerico...
-                    {
-                        whereTemp.value = parseFloat(whereTemp.value);
-                        if (that.rules[key].double)
-                        {
-                            whereTemp.type = 'double';
-                        }
-                    }
-
-                    if (that.rules[key].type == 'date' || that.rules[key].type == 'combodate')//si es tipo date..
-                    {
-                        whereTemp.type='date';
-
-                        whereTemp2={};
-                        if (this.data[key + 'Cond'].value == 'eq') // Si esta en rango..
-                        {
-                            whereTemp.value = that.form.value[key].start;
-                            whereTemp.op = 'ge';
-
-                            whereTemp2.value = that.form.value[key].end;
-                            whereTemp2.op='le';
-                            whereTemp2.code = 'filter';
-
-                            whereTemp2.field = whereTemp.field;
-                            whereTemp2.type = whereTemp.type;
-                        }
-                        if (this.data[key + 'Cond'].value == 'ne')// para fechas fuera del rango
-                        {
-                            whereTemp2.or=[];
-
-                            whereTemp.value = that.form.value[key].start;
-                            whereTemp.op    =  'le';
-
-                            whereTemp2.or.push(Object.assign({},whereTemp));
-
-                            whereTemp.value = that.form.value[key].end;
-                            whereTemp.op    =  'ge';
-
-                            whereTemp2.or.push(Object.assign({},whereTemp));
-
-                            whereTemp = Object.assign({},whereTemp2);
-
-                            whereTemp2=null;
-                        }
-                    }
-
-                    if (that.rules[key].object) // si es un objecto y existe el id
-                    {
-                        if(that.searchId[key] && that.searchId[key].id){
-                            whereTemp.value = that.searchId[key].id;
-                        }
-                        else
-                        {
-                            try {
-                                whereTemp.value  = parseFloat(whereTemp.value);
-                            }catch (e){
-                                this.db.debugLog('Error: Filter parse: '+e)
-                            }
-                        }
-                    }
-
-                    if(that.rules[key].type == 'boolean'){
-                        whereTemp.value = whereTemp.value=='true'?true:false;
-                    }
-                }
-
-                if (that.rules[key].object) // si es un objecto y existe el id
-                {
-                    whereTemp.field = that.rules[key].paramsSearch.field;
-                }
-
-                if(that.rules[key].join){
-                    whereTemp=Object.assign({},{'join':that.rules[key].join,'where':[whereTemp]});
-                    if(whereTemp2)
-                        whereTemp2=Object.assign({},{'join':that.rules[key].join,'where':[whereTemp2]});
+                    whereTemp.value = that.form.value[key];
+                    that.getValue(whereTemp);
+                    whereTemp = that.parseWhere(_rules[key],whereTemp);
                 }
 
                 dataWhere.push(whereTemp);
-                if(whereTemp2)
-                {
-                    dataWhere.push(whereTemp2);
-                }
             }
         });
         if(this.params.where && this.params.where.length > 0 ){
             let temp = dataWhere.concat(this.params.where);
             dataWhere = temp;
         }
-        this.whereFilter.emit(dataWhere);
+        this.loadWhereFilter(dataWhere);
     }
+    private getValue(where){
+
+        if (where.op.substr(0, 1) == "%")//inicia con
+        {
+            where.op = where.op.substr(1);
+            where.value = "%" + where.value;
+        }
+
+        if (where.op.substr(-1) == "%")//termina en
+        {
+            where.op = where.op.slice(0, -1);
+            where.value = where.value + "%";
+        }
+    }
+
+    private getCurrentType(key){
+        let _type = this.currentRule[key].type;
+        switch(_type){
+            case 'checklist':
+                return 'text';
+            default:
+                return _type;
+        }
+
+    }
+
+    private parseWhere(rule,where,value?):Object{
+
+        let that = this;
+        let _whereTemp:any={code:that.code};
+
+        if ( (rule.type == 'number' || rule.type == 'time') && isNumeric(where.value)) {
+            where.value = parseFloat(where.value);
+            if (rule.double) {
+                where.type = 'double';
+            }
+        }
+
+        if (rule.type == 'date' || rule.type == 'combodate'){
+            let _tmpValue = where.value;
+            where.type='date';
+
+            if (where.op == 'eq'){ // Si esta en rango..
+
+                _whereTemp.and=[];
+
+                where.value = _tmpValue.start;
+                where.op = 'ge';
+
+                _whereTemp.and.push(Object.assign({},where));
+
+                where.value = _tmpValue.end;
+                where.op='le';
+
+                _whereTemp.and.push(Object.assign({},where));
+
+                where =_whereTemp;
+            }
+            if (where.op == 'ne'){// para fechas fuera del rango
+
+                _whereTemp.or=[];
+
+                where.value = _tmpValue.start;
+                where.op    =  'le';
+
+                _whereTemp.or.push(Object.assign({},where));
+
+                where.value = _tmpValue.end;
+                where.op    =  'ge';
+
+                _whereTemp.or.push(Object.assign({},where));
+
+                where = _whereTemp;
+            }
+        }
+
+        if(rule.type == 'boolean') {
+            where.value = where.value=='true'?true:false;
+        }
+
+        if (rule.object) {
+
+            if (this.searchId[rule.key] && this.searchId[rule.key].id) {
+                where.value = this.searchId[rule.key].id;
+                where.field = rule.paramsSearch.field;
+            }
+            else {
+                if(!rule.join){
+                    try {
+                        where.value = parseFloat(where.value);
+                    } catch (e) {
+                        this.db.debugLog(['Error: parseWhere ', e])
+                    }
+                }
+            }
+        }
+
+        if(rule.join && typeof rule.join === 'object'){
+
+            let test = {
+                tracer: ['alias1', 'alias2'],
+                conditions: [
+                    {
+                        rule: {
+                            type: 'text',
+                            double: true
+                        },
+                        where: {
+                            field: 'name',
+                        }
+                    },
+                    {
+                        rule: {
+                            type: 'text',
+                        },
+                        where: {
+                            field: 'name',
+                            op: 'ilike'
+                        }
+                    },
+                    {
+                        or: [
+                            {
+                                rule: {
+                                    type: 'text',
+                                    double: true
+                                },
+                                where: {
+                                    field: 'name',
+                                    op: 'ilike'
+                                }
+                            },
+                            {
+                                rule: {
+                                    type: 'text',
+                                    double: true
+                                },
+                                where: {
+                                    field: 'name',
+                                    op: 'ilike'
+                                }
+                            }
+                        ]
+                    }
+                ]
+            };
+
+            let join:any = [];
+            rule.join.conditions.forEach(obj=>{
+                if(obj.and){
+                    let join_and={and:[]};
+                    obj.and.forEach(obj=>{
+                        obj.where.value = where.value;
+                        obj.where = that.parseWhere(obj.rule,obj.where);
+                        join_and.and.push(obj.where);
+                    });
+                    let data = join.concat(join_and);
+                    join = data;
+                }
+                if(obj.or){
+                    let join_or={or:[]};
+                    obj.or.forEach(obj=>{
+                        obj.where.value = where.value;
+                        obj.where = that.parseWhere(obj.rule,obj.where);
+                        join_or.or.push(obj.where);
+                    });
+                    let data = join.concat(join_or);
+                    join = data;
+                }
+                if(obj.rule && obj.where){
+                    obj.where.value = where.value;
+                    obj.where = that.parseWhere(obj.rule,obj.where);
+                    let data = join.concat(obj.where);
+                    join = data;
+                }
+
+            });
+            (rule.join.tracer.reverse()).forEach(((alias,i)=>{
+                if(!i){
+                    where=Object.assign({},{code:this.code,'join':alias,'where':join});
+                }
+                else{
+                    where={code:this.code,join:alias,where:[where]}
+                }
+            }).bind(this));
+            rule.join.tracer.reverse();
+
+        }
+
+        return where;
+    }
+
+
+
     //reset
     onReset(event) {
         event.preventDefault();
@@ -387,10 +535,10 @@ export class FilterComponent extends RestController implements OnInit{
             }
         })
         let where=[];
-        if(this.params.where && this.params.where.length > 0 ){
-             where=this.params.where;
+        if(this.currentParams.where && this.currentParams.where.length > 0 ){
+             where=this.currentParams.where;
         }
-        this.whereFilter.emit(where);
+        this.loadWhereFilter(where);
     }
     //guardar condicion en el formulario
     setCondicion(cond,id){
@@ -398,7 +546,7 @@ export class FilterComponent extends RestController implements OnInit{
     }
     searchLength() {
         if(this.searchId)
-            return Object.keys(this.searchId).length
+            return Object.keys(this.searchId).length;
         return 0;
     }
     searchIdKeys(){
@@ -410,8 +558,6 @@ export class FilterComponent extends RestController implements OnInit{
             this.data[key].setValue(null);
 
     }
-    debugLog(log){
-        console.log(log);
-    }
+
 }
 
