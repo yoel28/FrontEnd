@@ -1,9 +1,14 @@
 import {IRule, Rule} from "./rule";
 import {ModelRoot} from "../modelRoot";
 
+interface IObjectSource {
+    value:number;
+    text:string;
+}
 export interface IObject  extends IRule{
     model: ModelRoot;
     update?:boolean;
+    source?:Array<IObjectSource>
 }
 export class ObjectRule extends Rule{
 
@@ -67,7 +72,12 @@ export class ObjectRule extends Rule{
         (<IObject>this.rule).model.view.mode = value;
     }
 
-
+    get source():Array<IObjectSource>{ //TODO:Eliminar y usar data en el objecto
+        return this.attributes.source || null;
+    }
+    set source(value:Array<IObjectSource>){
+        this.attributes.source = value;
+    }
 
 
 
