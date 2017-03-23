@@ -7,7 +7,7 @@
         <tr>
             <div></div><!--[attr.data-breakpoints]="((i<1)?'':(i<2)?'xs':(i<4)?'xs sm': (i<=6)?'xs sm md':'xs sm md lg')" -->
             <th
-                    data-type = "html" *ngFor="let key of keyVisible(); let i=index" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
+                    data-type = "html" *ngFor="let key of keyVisible; let i=index" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
                 <i *ngIf="model.rest.sort==key && model.rest.order == 'asc' && !model.rest.findData" class="fa fa-caret-up text-blue"></i>
                 <i *ngIf="model.rest.sort==key && model.rest.order == 'desc' && !model.rest.findData" class="fa fa-caret-down text-blue"></i>
                 <i *ngIf="model.rest.sort==key && model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
@@ -37,14 +37,14 @@
                     </ul>
                 </div>
             </div>
-            <td *ngFor="let key of keyVisible()" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
+            <td *ngFor="let key of keyVisible" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
                 <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
             </td>
         </tr>
         </tbody>
         <tfoot *ngIf="model.dataList && model.dataList.page && model.dataList.page.length > 1">
         <tr>
-            <td [attr.colspan]="keyVisible().length + 1">
+            <td [attr.colspan]="keyVisible.length + 1">
                 <div class="btn-group pull-right">
                     <button (click)="currentPage=val" [class.btn-green]="val == currentPage" *ngFor="let val of model.dataList.page" type="button" class="btn btn-default">
                         <span *ngIf="val == currentPage">
