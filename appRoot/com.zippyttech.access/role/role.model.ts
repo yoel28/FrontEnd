@@ -9,9 +9,12 @@ export class RoleModel extends ModelRoot{
         this.initModel();
     }
     initView(params:IView){
-        params.title = "rol";
-        params.display = "authority";
+        params.title = "Rol";
+        params.display = this.nameClass+"Authority";
+        params.mode = 'checklist';
+        params.exclude = true;
     }
+
     modelExternal() {}
     initRules(){
         this.rules['authority']= new TextRule({
@@ -37,13 +40,6 @@ export class RoleModel extends ModelRoot{
     }
     initParamsSave() {
         this.paramsSave.title="Agregar rol"
-    }
-    initRuleObject() {
-        this.ruleObject.title="Roles";
-        this.ruleObject.placeholder="Ingrese un rol";
-        this.ruleObject.key="roles";
-        this.ruleObject.keyDisplay="roleAuthority";
-        this.ruleObject.code="roleId";
     }
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);
