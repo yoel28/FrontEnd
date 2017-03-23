@@ -20,6 +20,7 @@ export interface IRest{
     where:IWhere;
     max:number;
     offset:number;
+    whereDefault?:IWhere;
     findData?:boolean;
     sort?:string;
     order?:'desc'|'asc';
@@ -225,7 +226,7 @@ export class RestController {
         this.rest.findData = true;
         let that = this;
         if (offset && offset == '#')
-            that.getLoadDataAll([], null, null, 0, 1000, null);
+            return that.getLoadDataAll([], null, null, 0, 1000, null);
         else {
             this.getOffset(offset);
             return this.httputils.onLoadList(this.endpoint+that.getRestParams(), this.dataList, this.rest.max, this.error).then(
