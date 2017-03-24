@@ -1,49 +1,11 @@
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed,
-figure, figcaption, footer, header, hgroup,
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-}
-/* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
-footer, header, hgroup, menu, nav, section {
-    display: block;
-}
-ol, ul {
-    list-style: none;
-}
-blockquote, q {
-    quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-    content: '';
-    content: none;
-}
-table {
-    border-collapse: collapse;
-    border-spacing: 0;
-}
+@import "reset.css";
 
 main{
     background-color: #0d5628;
     width: 100%;
     height: 100%;
 }
+
 .skin-blue .wrapper{
     background-color: #e1e7da !important;
 }
@@ -51,12 +13,15 @@ main{
 .table-striped > tbody > tr:nth-of-type(odd) {
     background-color: #e8e7e7 ;
 }
+
 tbody{
     font-weight: 100 !important;
 }
+
 .padding-error{
     padding: 5px;
 }
+
 .cargar{
     color: white;
     font-size: 16pt;
@@ -86,7 +51,6 @@ div:not(.modal-content) ,section
     border-radius: 0px !important;
 }
 
-
 .colorpicker, .colorpicker * {
     z-index: 9999;
 }
@@ -94,12 +58,15 @@ div:not(.modal-content) ,section
 body.no-menu .content-wrapper, body.no-menu .main-footer {
     margin-left: 0px !important;
 }
+
 .margin-right-2{
     margin-right: 2px !important;
 }
+
 .popover{
     max-width: none !important;
 }
+
 .btn.redondo {
     border-radius: 50% !important;
     width: 40px;
@@ -107,6 +74,7 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
     line-height: 40px;
     padding: 0px;
 }
+
 .btn{
     border-radius: 3px !important;
 }
@@ -115,31 +83,16 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
     border-radius: 0px !important;
 }
 
-.modal-dialog .close
-{
-    color: #FFF;
-    opacity: .85;
-}
-
-.modal-dialog .close:hover
-{
-    color: #FFF;
-    opacity: 1;
-}
-
-.modal-dialog .close:focus
-{
-    border-width: 0px;
-}
-
 .cursor-pointer{
     cursor: pointer;
 }
+
 .image-editor{
     border-radius: 5px;
     cursor: pointer;
     transition: 0.3s;
 }
+
 .image-editor:hover {opacity: 0.7;}
 
 .img-responsive img{
@@ -147,24 +100,29 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
     max-width: 100%;
     height: auto;
 }
+
 .content-wrapper{
     background-image: url('assets/img/clubGolf/BolaGolf.png'), url('assets/img/clubGolf/RobotTransparent.png');
     background-position: left bottom, right bottom;
     background-repeat: no-repeat, no-repeat;
     background-size: 15% ,25%;
 }
+
 .focus-error{
     border-bottom: 1px solid red !important;
 }
+
 .block-float{
     position: fixed;
     z-index: 1000;
     bottom: 10%;
     right: 1.5%;
 }
+
 .margin-bottom-5{
     margin-bottom: 5px;
 }
+
 .text-x-large{
     font-weight: 900;
     font-size: x-large;
@@ -174,29 +132,30 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
     background-color: #0d5628;
     color: white;
 }
+
 .btn.btn-green-club:hover , .btn.btn-green-club:focus {
     color: #eaeaea;
     background-color: green;
 }
+
 .btn-red-club, .bg-red-club{
     background-color: #c73332;
     color: white;
 }
+
 .btn.btn-red-club:hover , .btn.btn-red-club:focus {
     color: #eaeaea;
     background-color: red;
 }
+
 .input-icon i {
     color: #2f6b2f !important;
 }
+
 .label.label-radius{
     border-radius: 50px !important;
 }
-@media (max-width: 768px) {
-    .btn {
-        padding: 1px 5px 2px 5px !important;
-    }
-}
+
 table>tbody>tr>td:not(.notHidden) a:not(.notHidden) {
     display: inline-block;
     overflow: hidden;
@@ -242,7 +201,6 @@ ul.ui-autocomplete {
     z-index: 10000 !important;
 }
 
-
 /*#######################*/
 /*ANIMATION*/
 .user-panel {
@@ -262,11 +220,12 @@ ul.ui-autocomplete {
 .user-panel>.info{
     overflow: hidden;
     text-overflow: ellipsis;
+    text-align: center;
 }
 
 .user-panel *{
     position: relative  !important;
-    transition-duration:.5s  !important;
+    transition: cubic-bezier(0, 0.8, 0.07, 1.14) .5s  !important;
     left: 0px !important;
     top:0px !important;
 }
@@ -377,16 +336,14 @@ ul.ui-autocomplete {
     outline: none;
 }
 
-
-body {
+body{
     transition: .2s;
-    overflow: scroll !important;
+    overflow-y: scroll !important;
 }
 
 body::-webkit-scrollbar-track {
     background: rgb(236, 240, 245) !important;
 }
-
 
 register-full .nav-btn:disabled{
     display:none !important;
@@ -394,4 +351,14 @@ register-full .nav-btn:disabled{
 
 register-full .view-data-internal{
     border-radius: 10px !important;
+}
+
+.blur-content>*:not(.not-blur){
+    filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+    .btn {
+        padding: 1px 5px 2px 5px !important;
+    }
 }

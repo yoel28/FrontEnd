@@ -13,7 +13,7 @@ var jQuery = require('jquery');
     styleUrls: [ 'style.css'],
     inputs:['params','rules'],
     outputs:['save','getInstance','getForm'],
-})
+})//TODO: CAMBIAR INPUTS --- PARAMS??
 export class FormComponent extends RestController implements OnInit,AfterViewInit{
 
     public params:any={};

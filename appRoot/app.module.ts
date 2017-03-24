@@ -15,6 +15,7 @@ import {QRCodeModule} from "angular2-qrcode/angular2-qrcode";
 import {WebSocket} from "./com.zippyttech.utils/websocket";
 import {DependenciesBase} from "./com.zippyttech.common/DependenciesBase";
 import {ChartModule} from "angular2-highcharts";
+import {ModalService} from "./com.zippyttech.services/modal/modal.service";
 
 var firebase = require('firebase');
 
@@ -55,6 +56,7 @@ const myFirebaseConfig = {
         {provide:LocationStrategy,useClass: HashLocationStrategy},
         DependenciesBase,
         globalService,
+        ModalService
     ],
     bootstrap: [AppComponent]
 })

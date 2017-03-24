@@ -18,7 +18,6 @@ import {SaveComponent} from "./com.zippyttech.ui/components/save/save.component"
 import {SearchMultipleComponent} from "./com.zippyttech.ui/components/searchMultiple/searchMultiple.component";
 import {ToastyModule} from "ng2-toasty";
 import {FormComponent} from "./com.zippyttech.ui/components/form/form.component";
-import {ModalComponent} from "./com.zippyttech.ui/components/modal/modal.component";
 import {TermConditionsComponent} from "./com.zippyttech.business/termConditions/termConditions.component";
 import {RuleViewComponent} from "./com.zippyttech.ui/components/ruleView/ruleView.component";
 import {AccountModel} from "./com.zippyttech.access/account/account.model";
@@ -38,6 +37,7 @@ import {LocationPickerComponent} from "./com.zippyttech.ui/components/locationPi
 import {DataViewComponent} from "./com.zippyttech.ui/components/dataView/dataView.component";
 import {BasicComponent} from "./com.zippyttech.common/basicComponent";
 import {AccountSelectComponent} from "./com.zippyttech.auth/accountSelect/accountSelect.component";
+import {ModalComponent} from "./com.zippyttech.services/modal/modal.component";
 
 const routesDefault: Routes = [
 
@@ -90,7 +90,8 @@ export const componentsDefault = [
     ActivateComponent,
     LoadComponent,
     TermConditionsComponent,
-    BasicComponent
+    BasicComponent,
+    ModalComponent
 ];
 export const componentsView = [
     ImageEditComponent,
@@ -102,10 +103,8 @@ export const componentsView = [
     SaveComponent,
     SearchMultipleComponent,
     FormComponent,
-    ModalComponent,
     RuleViewComponent,
     ListActionComponent,
-    ModalComponent,
     ChartViewComponent,
     LocationPickerComponent,
     ChartViewComponent,

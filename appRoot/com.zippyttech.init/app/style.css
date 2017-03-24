@@ -1,5 +1,6 @@
-.blue .main-sidebar{
+.main-sidebar{
   background-color: #222d32 !important;
+  z-index: 99 !important;
 }
 
 .wrapper{
@@ -7,7 +8,11 @@
 }
 
 .content-wrapper{
-  border-radius: 0px !important;
+    position: relative;
+    height: 100%;
+    border-radius: 0px !important;
+    z-index: 10 !important;
+    overflow: scroll;
 }
 
 .main-footer-container{
@@ -200,7 +205,7 @@
 
 header.main-header{
   box-shadow:0px 1px 5px 0px rgba(0, 0, 0, 0.4);
-  z-index:1000;
+  z-index:100 !important;
 }
 
 .user-menu .dropdown-toggle {

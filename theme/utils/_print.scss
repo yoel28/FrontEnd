@@ -1,0 +1,23 @@
+@media print {
+  *{
+    transition: none !important;
+
+    .noprint{ display:none; }
+  }
+
+  body {
+    letter-spacing: 1pt !important;
+
+    .colorpicker { display: none; }
+
+    td.title-companygroup {
+      background-color: rgba(0, 0, 0, 0.34) !important;
+      color: white !important;
+      -webkit-print-color-adjust: exact;
+    }
+
+    .collapse { display: block !important; height: auto !important; }
+
+    .content-wrapper { margin: 0 !important; padding: 0 !important; }
+  }
+}

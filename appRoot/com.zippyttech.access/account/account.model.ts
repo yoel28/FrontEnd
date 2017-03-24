@@ -168,9 +168,10 @@ export class AccountModel extends ModelRoot{
     initParamsSave() {
         this.paramsSave.title="Agregar cuenta"
     }
-    initModelActions(params){
-        params['delete'].message='¿ Esta seguro de eliminar la cuenta: ';
-        params['delete'].key = 'name';
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la cuenta: ';
     }
+
+    initModelActions(){}
 }
 

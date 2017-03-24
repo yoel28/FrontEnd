@@ -122,8 +122,10 @@ export class InfoModel extends ModelBase{
         this.paramsSave.title="Agregar ayuda"
     }
 
-    initModelActions(params){
-        params['delete'].message='¿Esta seguro de eliminar la ayuda : ';
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿Esta seguro de eliminar la ayuda : ';
     }
+
+    initModelActions(){}
 
 }

@@ -73,12 +73,18 @@
     "zone.js": "^0.6.21"
   },
   "devDependencies": {
+    "@types/core-js": "0.9.36",
+    "@types/jasmine": "*",
+    "@types/node": "*",
+    "@types/selenium-webdriver": "*",
     "concurrently": "*",
     "del": "*",
     "gulp": "3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
     "gulp-gzip": "1.4.0",
     "gulp-load-plugins": "1.3.0",
     "gulp-rename": "1.2.2",
+    "gulp-sass": "^3.1.0",
     "gulp-task-listing": "1.0.1",
     "gulp-util": "3.0.7",
     "lite-server": "*",
@@ -86,10 +92,6 @@
     "rollup-plugin-commonjs": "*",
     "rollup-plugin-node-resolve": "*",
     "rollup-plugin-uglify": "*",
-    "typescript": "*",
-    "@types/core-js": "*",
-    "@types/node": "*",
-    "@types/jasmine": "*",
-    "@types/selenium-webdriver": "*"
+    "typescript": "*"
   }
 }

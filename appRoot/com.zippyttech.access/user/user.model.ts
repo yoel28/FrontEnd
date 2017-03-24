@@ -216,9 +216,11 @@ export class UserModel extends ModelBase{
         }).bind(this));
         this.completed = true;
     }
-    initModelActions(params){
-        params['delete'].message='¿ Esta seguro de eliminar el usuario: ';
-        params['delete'].key = 'username';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar el usuario: ';
     }
+
+    initModelActions(){}
 
 }

@@ -65,7 +65,8 @@ export class RuleModel extends ModelBase{
         this.paramsSave.title="Agregar regla"
     }
 
-    initModelActions(params){
-        params['delete'].message = '¿ Esta seguro de eliminar la regla: ';
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar la regla: ';
     }
+    initModelActions(){}
 }

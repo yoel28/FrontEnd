@@ -30,17 +30,9 @@
             </template>
 
             <template [ngIf]="isCurrentType(['location'])">
-                <template [ngIf]="getEnabled">
-                    <button class="btn btn-box-tool" (click)="loadLocationParams($event)" data-toggle="modal"
-                            data-target="#modalLocation" [attr.title]="db.msg.viewLocation"><i
-                            class="fa fa-map-marker fa-lg text-red"></i></button>
-                </template>
-
-                <template [ngIf]="!getEnabled">
-                    <button class="btn btn-box-tool" (click)="loadLocationParams($event)" data-toggle="modal"
-                            data-target="#modalLocation" [attr.title]="db.msg.viewLocation"><i
-                            class="fa fa-map-marker fa-lg text-red"></i></button>
-                </template>
+                <button class="btn btn-box-tool" (click)="showModal('location')" [attr.title]="db.msg.viewLocation">
+                    <i class="fa fa-map-marker fa-lg text-red"></i>
+                </button>
             </template>
 
             <template [ngIf]="isCurrentType(['progress'])">
@@ -67,11 +59,12 @@
             <template [ngIf]="currentRule && isCurrentType(['image'])">
                 <img [attr.id]="'img'+data.id+'_'+key"
                      [attr.src]="currentValue || currentRule.default"
-                     width="30" height="30"
-                     data-toggle="modal" [attr.data-target]="'#'+data.id+'_'+key"
                      class="image-editor"
                      [attr.title]="currentRule.update?db.msg.imageEdit:''"
-                >
+                     (click)="showModal('image')"
+                ><!--data-toggle="modal" [attr.data-target]="'#'+data.id+'_'+key"-->
+
+                <!--MODAL NO IMPLEMENT-->
                 <div [attr.id]="data.id+'_'+key" class="modal fade" tabindex="-1" role="dialog"
                      aria-labelledby="myModalLabel">
                     <div class="modal-dialog" role="document">
@@ -206,8 +199,7 @@
                     </div>
                 </template>
                 <template [ngIf]="currentRule.typeView=='modal'">
-                    <a (click)="paramsData.select.title=currentRule.title; paramsData.arrayData=model.fieldToArray(data,key)"
-                       data-toggle="modal" data-target="#modalRule">
+                    <a (click)="showModal('rule')"> <!--(click)="paramsData.select.title=model.rules[key].title; paramsData.arrayData=model.fieldToArray(data,key)"-->
                         <i class="fa fa-list fa-lg text-info"></i>
                     </a>
                 </template>
@@ -255,7 +247,6 @@
                 </template>
 
                 <template [ngIf]="isCurrentMode(['reference'])">
-
                     <template [ngIf]="currentRule.multiple">
                         <button *ngIf="currentValue && currentValue.length > 0"
                                 (click)="setViewListData($event)"
@@ -284,17 +275,13 @@
 
                                 <button *ngIf="currentRule.paramsSave && currentRule.permissions.add"
                                         type="button" class="btn btn-box-tool"
-                                        (click)="loadSaveModal($event)" title="Asignar nuevo"
-                                        data-toggle="modal"
-                                        [attr.data-target]="'#'+currentRule.paramsSave.idModal">
+                                        (click)="showModal('save',currentRule.model)" title="Asignar nuevo">
                                     <i class="fa fa-plus text-green"></i>
                                 </button>
 
                                 <button *ngIf="currentRule.paramsSearch && currentRule.permissions.search"
                                         type="button" class="btn btn-box-tool"
-                                        (click)="loadSearchTable($event)" title="Buscar"
-                                        data-toggle="modal"
-                                        [attr.data-target]="'#'+currentRule.paramsSearch.idModal">
+                                        (click)="showModal('searh')" title="Buscar">
                                     <i class="fa fa-search text-blue"></i>
                                 </button>
 

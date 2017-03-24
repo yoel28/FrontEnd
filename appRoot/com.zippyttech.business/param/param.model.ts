@@ -73,6 +73,7 @@ export class ParamModel extends ModelBase{
         this.paramsSearch.label.title="Codigo: ";
         this.paramsSearch.label.detail="Detalle: "
     }
+
     initParamsSave() {
         this.paramsSave.title="Agregar parámetro"
     }
@@ -80,8 +81,10 @@ export class ParamModel extends ModelBase{
         this.rulesSave = Object.assign({},this.rules);
         delete this.rulesSave.enabled;
     }
-    initModelActions(params){
-        params['delete'].message = '¿ Esta seguro de eliminar el parámetro: ';
+
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el parametro: ';
     }
 
+    initModelActions(){}
 }

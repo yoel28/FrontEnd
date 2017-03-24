@@ -1,29 +1,18 @@
 import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
-import {RestController, IWhere} from "../com.zippyttech.rest/restController";
+import {RestController, IWhere, IRestEvent} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "./DependenciesBase";
-import {TextRule} from "./rules/text.rule";
-import {NumberRule} from "./rules/number.rule";
-import {CombodateRule} from "./rules/combodate.rule";
-import {TextareaRule} from "./rules/textarea.rule";
+import {Actions} from "../com.zippyttech.init/app/app.types";
+import {OnInit} from "@angular/core";
 
 var moment = require('moment');
 var jQuery = require('jquery');
 
-export interface IModelActions{
-    [key:string]:{
-        view:[{
-            title: string,
-            icon: string,
-            colorClass?: string;
-        }],
-        permission: boolean;
-        callback(data?:any,index?:number);
-        id?:string;
-        message?: string;
-        exp?: string;
-        key?:string;
-        syncKey?:string;
-    };
+interface IDataActionParams{
+    id?:string;
+    message?: string;
+}
+
+interface IModelActionParams{
 }
 
 export interface IModelFilter{
@@ -51,7 +40,7 @@ export interface IView{
     exclude?:boolean;
 }
 
-export abstract class ModelRoot extends RestController{
+export abstract class ModelRoot extends RestController implements OnInit{
     public prefix = ((this.constructor.name).toUpperCase()).replace('MODEL','');
     public endpoint = "DEFAULT_ENDPOINT";
     public useGlobal:boolean=true;
@@ -61,14 +50,44 @@ export abstract class ModelRoot extends RestController{
     public paramsSave:any = {};
     public ruleObject:any={};
     public rulesSave:any={};
-    public actions:IModelActions={};
+
+    public dataActions:Actions<IDataActionParams>;
+    public modelActions:Actions<IModelActionParams>;
+
     public filters:IModelFilter={};
 
     public view:IView;
 
     public lockList:boolean = false;
+    private _currentData:any;
+    public get currentData(){return this._currentData;};
+    public set currentData(value){this._currentData = value;};
 
+    public onEventDelete:(args:Object)=>void;
+    public onEventSave:(args:Object)=>void;
+    public configId = moment().valueOf();
+    private rulesDefault:any = {};
+    public rules:Object={};
     private _navIndex:number=null;
+
+
+    public configId = moment().valueOf();
+    private rulesDefault:any = {};
+    public rules:Object={};
+
+    constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
+        super(db);
+        if(prefix)
+            this.prefix = prefix;
+        this.endpoint = endpoint;
+        this.useGlobal = useGlobal;
+        this._initModel();
+    }
+
+    ngOnInit(){
+        this.events.subscribe((event)=>this.onEvent(event));
+    }
+
     public set navIndex(value: number|string){
         if(value!=null) {
             let n = (typeof value == "string") ? Number(value) : this._navIndex + value;
@@ -92,29 +111,13 @@ export abstract class ModelRoot extends RestController{
     }
     public get navIndex(){ return this._navIndex; }
 
-
-
-    public configId = moment().valueOf();
-    private rulesDefault:any = {};
-    public rules:Object={};
-
-
-
-    constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
-        super(db);
-        if(prefix)
-            this.prefix = prefix;
-        this.endpoint = endpoint;
-        this.useGlobal = useGlobal;
-        this._initModel();
-    }
-
     private _initModel(){
         this._initView();
         this._initPermissions();
         this._initRules();
         this._initParamsSearch();
         this._initParamsSave();
+        this._initDataActions();
         this._initModelActions();
     }
     public initModel(completed=true){
@@ -128,11 +131,12 @@ export abstract class ModelRoot extends RestController{
         this.loadParamsSave();
         this.loadParamsSearch();
 
-        this.initModelActions(this.actions);
-
         this.db.ws.loadChannelByModel(this.constructor.name,this);
 
         this.completed=completed;
+
+        this.initDataActions();
+        this.initModelActions();
     }
 
     abstract initView(params:IView);
@@ -151,7 +155,6 @@ export abstract class ModelRoot extends RestController{
         this.permissions['exportPdf'] = this.db.myglobal.existsPermission([this.prefix + '_EXPORT_PDF']);
         this.permissions['exporXls'] = this.db.myglobal.existsPermission([this.prefix + '_EXPORT_XLS']);
 
-
         this.permissions['showAll'] = this.db.myglobal.existsPermission([this.prefix + '_SHOW_ALL']);
         this.permissions['showDelete'] = this.db.myglobal.existsPermission([this.prefix + '_SHOW_DELETED']);
         this.permissions['list'] = this.db.myglobal.existsPermission([this.prefix + '_LIST']);
@@ -167,70 +170,157 @@ export abstract class ModelRoot extends RestController{
         this.permissions['global'] = this.db.myglobal.existsPermission(['ACCESS_GLOBAL']) && this.useGlobal;
     }
 
-    abstract initModelActions(params:IModelActions);
-    private _initModelActions(){
-
-        this.actions["view"] = {
-            view:[{ title: 'ver', icon: "fa fa-vcard" }],
+    abstract initDataActions();
+    private _initDataActions(){
+        this.dataActions = new Actions<IDataActionParams>();
+        this.dataActions.add("view", {
+            permission: this.permissions.list,
+            views:[{ title: 'ver', icon: "fa fa-vcard" }],
             callback:function(data?,index?){
+                this.currentData = data;
                 this.navIndex = index;
             }.bind(this),
-            permission: this.permissions.list,
-        };
+            stateEval:'0',
+        });
 
-        this.actions["enabled"] = {
-            view: [
+        this.dataActions.add("enabled",{
+            permission: this.permissions.lock && this.permissions.update,
+            disabled:'data.deleted',
+            views: [
                 {icon: "fa fa-lock", title: "Deshabilitado", colorClass:"text-red"},
                 {icon: "fa fa-unlock", title: "Habilitado", colorClass:"text-green"}
             ],
-            exp:'!data.deleted',
-            permission: this.permissions.lock && this.permissions.update,
             callback: function (data?, index?) {
-                this.onLock('enabled',data);
+                this.currentData = data;
+                this.onLock('enabled', data);
             }.bind(this),
-            syncKey: "enabled"
-        };
+            stateEval:"data.enabled?1:0"
+        });
 
-        this.actions["editable"] = {
-            view: [
+        this.dataActions.add("editable",{
+            permission: this.permissions.lock && this.permissions.update,
+            disabled:'!data.enabled || data.deleted',
+            views: [
                 {icon: "fa fa-edit", title: "No Editable", colorClass:"text-red"},
                 {icon: "fa fa-pencil", title: "Editable", colorClass:"text-green"},
             ],
-            exp:'data.enabled && !data.deleted',
-            permission: this.permissions.lock && this.permissions.update,
             callback: function (data?, index?) {
+                this.currentData = data;
                 this.onLock('editable',data);
             }.bind(this),
-            syncKey: "editable"
-        }
+            stateEval:'data.editable?1:0',
+        });
 
-
-        this.actions["visible"] = {
-            view: [
+        this.dataActions.add("visible",{
+            permission: this.permissions.update && this.permissions.visible,
+            disabled:'!data.enabled || data.deleted',
+            views: [
                 {icon: "fa fa-eye-slash", title: "Oculto", colorClass:"text-red"},
                 {icon: "fa fa-eye", title: "Visible", colorClass:"text-green"}
             ],
-            exp:'data.enabled && !data.deleted',
-            permission: this.permissions.update && this.permissions.visible,
             callback: function (data?, index?) {
+                this.currentData = data;
                 this.onPatch('visible',data);
             }.bind(this),
-            syncKey: "visible"
-        }
+            stateEval:'data.visible?1:0',
+        });
 
-        this.actions["delete"] = {
-            id:this.prefix+'_'+this.configId+'_DEL',
-            view:[
+        this.dataActions.add("delete",{
+            permission: this.permissions.delete,
+            disabled:'!data.enabled || !data.editable || data.deleted',
+            views:[
                 { icon: "fa fa-trash", title: 'Eliminar'}
             ],
-            exp:'data.enabled && data.editable && !data.deleted',
-            callback:function(data?,index?){
-                jQuery("#"+this.prefix+'_'+this.configId+'_DEL').modal('show');
-            }.bind(this),
-            permission: this.permissions.delete,
-            message:'¿ Esta seguro de eliminar el valor con el codigo: ',
-            key: 'code'
-        };
+            callback:((data?,index?)=>{
+                this.currentData = data;
+                this.db.ms.show("delete",{
+                    model:this
+                });
+            }).bind(this),
+            stateEval:'0',
+            params:{
+                message:'Seguro desea Eliminar'
+            }
+        });
+    }
+
+    abstract initModelActions();
+    private _initModelActions(){
+        this.modelActions = new Actions<IModelActionParams>();
+        this.modelActions.add( "add",{
+            permission: this.permissions.add,
+            views:[{ title: 'agregar', icon: "fa fa-plus", colorClass:'text-green'}],
+            callback:((data?,index?)=>{ this.db.ms.show('save',{ model: this }); }).bind(this),
+            stateEval:'0',
+            params:{}
+        });
+
+        this.modelActions.add("filter",{
+            permission: this.permissions.filter,
+            views: [ {icon: "fa fa-filter", title: "sin filtro", colorClass:"text-blue"},
+                    {icon: "fa fa-filter", title: "filtrando" , colorClass:"text-green"}],
+            callback: ((data?, index?)=>{
+                alert('filter no defined');
+            }).bind(this),
+            stateEval:'0',
+            params:{}
+        });
+
+        this.modelActions.add("showDelete", {
+            permission: this.permissions.showDelete,
+            views: [ {icon: "fa fa-trash", title: "Eliminados ocultos", colorClass:""},
+                    {icon: "fa fa-trash", title: "Solo eliminados"   , colorClass:"text-red"},
+                    {icon: "fa fa-trash", title: "Todo"   , colorClass:"text-yellow"}, ],
+            callback: function (data?, index?){ this.changeDeleted();}.bind(this),
+            stateEval:"(data.rest.deleted=='all')?2:(data.rest.deleted=='only')?1:0",
+            params: {}
+        });
+
+        this.modelActions.add("refresh", {
+            permission: this.permissions.update && this.permissions.visible,
+            views: [ {icon: "fa fa-refresh", title: "Actualizar", colorClass:"text-blue"},
+                    {icon: "fa fa-refresh fa-spin", title: "Actualizando", colorClass:"text-yellow"} ],
+            callback: function (data?, index?) { this.loadData(); }.bind(this),
+            stateEval:'data.rest.findData?1:0',
+            params: {}
+
+        });
+
+        this.modelActions.add("exportPdf",{
+            permission: this.permissions.exportPdf,
+            views:[ { icon: "fa fa-file-pdf-o", colorClass:"",
+                      title:this.db.msg.exportDisabled+this.db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')+' '+this.db.msg.rows},
+                    { icon: "fa fa-file-pdf-o", title:this.db.msg.exportPdf, colorClass:"text-red" }],
+            callback:((data?,index?)=>{
+                if(this.getEnabledReport('PDF')){
+                    let url = localStorage.getItem('urlAPI') + this.endpoint +
+                        this.getRestParams() + '&access_token=' +
+                        localStorage.getItem('bearer') + '&formatType=pdf' +
+                        '&tz=' + moment().format('Z').replace(':', '');
+                    window.open(url, '_blank');
+                }
+            }).bind(this),
+            stateEval:"data.getEnabledReport('PDF')?1:0",
+            params: {}
+        });
+
+        this.modelActions.add("exporXls",{
+            permission: this.permissions.exporXls,
+            views:[ { icon: "fa fa-file-excel-o", colorClass:"",
+                      title:this.db.msg.exportDisabled+this.db.myglobal.getParams('REPORT_LIMIT_ROWS_XLS')+' '+this.db.msg.rows},
+                    { icon: "fa fa-file-excel-o", title:this.db.msg.exportXls, colorClass:"text-green" }],
+            callback:((data?,index?)=>{
+                if(this.getEnabledReport('XLS')){
+                    let url = localStorage.getItem('urlAPI')+ this.endpoint +
+                    this.getRestParams()+ '&access_token='+
+                    localStorage.getItem('bearer')+'&formatType=xls'+
+                    '&tz='+moment().format('Z').replace(':','');
+                    window.open(url,'_blank');
+                }
+            }).bind(this),
+            stateEval:"data.getEnabledReport('XLS')?1:0",
+            params: {}
+        });
     }
 
 
@@ -552,16 +642,6 @@ export abstract class ModelRoot extends RestController{
         this.db.router.navigate(link);
     }
 
-    public getActionsArray(data:Object) { //data se usa en tiempo de ejecucion segun el string dentro de "eval()"
-        let action=[];
-        Object.keys(this.actions).forEach((key=>{
-            if(this.actions[key].permission && !(key=='view' && this.navIndex!=null))
-                if(eval(this.actions[key].exp || 'true'))
-                    action.push(this.actions[key]);
-        }).bind(this));
-        return action;
-    }
-
     public updateModelFilter(event,key){
         if(event)
             event.preventDefault();
@@ -594,6 +674,28 @@ export abstract class ModelRoot extends RestController{
 
     public get nameClass(){
         return (this.constructor.name).replace('MODEL','').toLowerCase();
+    }
+
+    private onEvent(eventArgs:IRestEvent){
+        switch (eventArgs.type){
+            case 'onDelete':
+                if(this.onEventDelete)
+                    this.onEventDelete(eventArgs.args);
+                break;
+
+            case 'onSave':
+                if(this.onEventSave)
+                    this.onEventSave(eventArgs.args);
+                break;
+        }
+    }
+
+    public afterSave(field,data,id?){
+        this.onPatch(field,data,id);
+    }
+
+    public getEnabledReport(type:'PDF'|'XLS'='PDF'){
+        return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_'+type)) >= this.dataList.count);
     }
 
 }

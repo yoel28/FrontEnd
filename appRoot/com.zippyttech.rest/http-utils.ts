@@ -174,7 +174,7 @@ export class HttpUtils {
             if (that.toastyService)
                 that.addToast('Notificacion','Borrado con éxito');
         };
-        this.doDelete(endpoint,successCallback,errorCallback,isEndpointAbsolute);
+        return this.doDelete(endpoint,successCallback,errorCallback,isEndpointAbsolute);
     }
     onUpdate(endpoint:string,body,data, errorCallback = null,isEndpointAbsolute = false){
         let that = this;

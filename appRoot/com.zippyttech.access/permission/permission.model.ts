@@ -90,8 +90,10 @@ export class PermissionModel extends ModelRoot{
         this.paramsSave.title="Agregar permiso"
     }
 
-    initModelActions(params){
-        params['delete'].message = '¿ Esta seguro de eliminar el permiso : ';
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el permiso : ';
     }
+
+    initModelActions(){}
 
 }

@@ -1,0 +1,37 @@
+<div class="frame {{config.size||'md'}}" [class.show]="_visible">
+    <div class="backdrop" (click)="visible=false"></div>
+    <div class="window">
+        <div class="header {{config.header.classes||'bg-primary'}}"> <!--BOOTSTRAP-->
+            <h3 class="title">{{config.header.title || ''}}</h3>
+            <div class="btn-toolbar">
+                <button class="close" title='cerrar' (click)="visible=false"><i class="fa fa-times"></i></button> <!--BOOTSTRAP-->
+            </div>
+        </div>
+
+        <div class="body">
+            <div [ngSwitch]="db.ms.currentModal">
+                <template [ngSwitchCase]="'delete'">
+                    <div>
+                        {{db.ms.params.model.dataActions.get('delete').params.message}}
+                        <strong>'{{db.ms.params.model.currentData[db.ms.params.model.display]}}'</strong>
+                    </div>
+                </template>
+
+                <template [ngSwitchCase]="'save'">
+                    <save-view  [model]  = "db.ms.params.model"
+                                [childKey] ="db.ms.params.childKey || null">
+                    </save-view>
+                </template>
+            </div>
+        </div>
+
+        <div class="footer" *ngIf="config.footer">
+            <div class="btns" *ngIf="config.footer.btns">
+                <button *ngFor="let btn of config.footer.btns"
+                        class="btn {{btn.classes||'btn-default'}}" (click)="btn.call();">
+                    <i class="{{btn.icon || 'fa fa-list'}}"></i>&nbsp;{{btn.name}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

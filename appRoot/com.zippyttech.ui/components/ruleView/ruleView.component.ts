@@ -3,6 +3,7 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {ILocation} from "../locationPicker/locationPicker.component";
+import {IModalSave, IModalParams, IModalDelete, ModalName} from "../../../com.zippyttech.services/modal/modal.types";
 
 /**
  * @Params API
@@ -295,9 +296,25 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         }
         this.paramsData.locationParams.address = this.getEnabled;
 
+    showModal(name:ModalName,childKey?:any){
+        let params: IModalParams<any> = { model:this.model };
+        switch (name){
+            case 'save':
+                params.extraParams = { childKey:childKey };
+                break;
 
+            // case 'search':
+            //     break;
+
+            case 'delete':
+
+                break;
+
+            default:
+                alert('no implement '+name+' modal..');
+                return;
+        }
+        this.db.ms.show(name,params);
     }
-
-
 }
 

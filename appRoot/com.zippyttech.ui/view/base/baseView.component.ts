@@ -46,33 +46,6 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     }
     initViewOptions() {
         this.viewOptions = this.instance.viewOptions;
-        this.viewOptions["buttons"] = [];
-
-        this.viewOptions["buttons"].push({
-            'visible': this.model.permissions.add,
-            'title': 'Agregar',
-            'class': 'text-green',
-            'icon': 'fa fa-plus',
-            'type':'modal',
-            'modal': this.model.paramsSave.idModal
-        });
-        this.viewOptions["buttons"].push({
-            'visible': this.model.permissions.filter && this.model.permissions.list,
-            'title': 'Filtrar',
-            'class': 'text-blue',
-            'evalClass':'this.model.rest.where.length>0?"filter-enabled":""',
-            'icon': 'fa fa-filter',
-            'type':'modal',
-            'modal': this.model.paramsSearch.idModal
-        });
-        this.viewOptions["buttons"].push({
-            'visible': this.model.permissions.list && this.model.permissions.showDelete,
-            'title': 'Ver eliminados',
-            'class': 'text-red',
-            'type':'showDeleted',
-            'icon': 'fa fa-trash'
-        });
-
         this.loadPreferenceViewModel();
 
     }

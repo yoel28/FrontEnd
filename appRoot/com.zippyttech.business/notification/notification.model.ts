@@ -66,9 +66,9 @@ export class NotificationModel extends ModelRoot{
         this.paramsSave.title="Agregar notificación"
     }
 
-    initModelActions(params){
-        params['delete'].message='¿ Esta seguro de eliminar la notificación: ';
-        params['delete'].key = 'title';
+    initDataActions(){
+        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la notificación: ';
     }
+    initModelActions(){}
 
 }

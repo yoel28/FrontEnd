@@ -175,8 +175,10 @@ export class EventModel extends ModelBase{
         that.completed = true
 
     }
-    initModelActions(params){
-        params['delete'].message = '¿ Esta seguro de eliminar el evento: ';
+    initDataActions(){
+        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el evento: ';
     }
+
+    initModelActions(){}
 
 }

@@ -9,7 +9,7 @@ var jQuery = require('jquery');
 
 export interface ISave{
     model:ModelRoot;
-    modelRef?:string;
+    childKey?:string;
     onlyRequired?:boolean;
 }
 
@@ -20,12 +20,12 @@ interface ISaveComponent{
 }
 
 @Component({
-    moduleId:module.id,
+    moduleId: module.id,
     selector: 'save-view',
     templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
-    inputs:['params','rules'],
-    outputs:['save','getInstance'],
+    styleUrls: ['style.css'],
+    inputs:['params'],
+    outputs:['getInstance']
 })
 export class SaveComponent implements OnInit,AfterViewInit{
 
@@ -96,8 +96,8 @@ export class SaveComponent implements OnInit,AfterViewInit{
             this.currentModel.addToast('Notificacion','Guardado con éxito');
             this.instanceForm.resetForm();
             this.save.emit(response.json());
-            //this.parentModel.afterSave(); //TODO:
-
+            if(this.params.childKey)//TODO:Arreglar
+                this.model.afterSave(this.childKey,this.model.currentData,response.json().id);
         }).bind(this);
         let body = this.instanceForm.getFormValues(addBody);
         if(!this.attributes.update)
