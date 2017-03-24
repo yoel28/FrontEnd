@@ -13,12 +13,6 @@ export interface ISave{
     onlyRequired?:boolean;
 }
 
-interface ISaveComponent{
-    parentModel?:ModelRoot;
-    childModel?:ModelRoot;
-    update?:boolean;
-}
-
 @Component({
     moduleId: module.id,
     selector: 'save-view',
@@ -29,12 +23,13 @@ interface ISaveComponent{
 })
 export class SaveComponent implements OnInit,AfterViewInit{
 
+    public params:ISave;
     public instanceForm:FormComponent;
     public save:EventEmitter<Object>;
     public getInstance:EventEmitter<SaveComponent>;
-    public params:ISave;
+    public childModel?:ModelRoot;
+    public update?:boolean;
 
-    private attributes:ISaveComponent={};
 
     constructor(public db:DependenciesBase) {
         this.save = new EventEmitter();
@@ -56,32 +51,26 @@ export class SaveComponent implements OnInit,AfterViewInit{
     private loadModels(){
         if(this.params && this.params.model && this.params.model instanceof ModelRoot){
 
-            this.attributes.parentModel = this.params.model;
-
-            if(this.params.modelRef){
+            if(this.params.childKey){
                 if(
-                    this.params.model[this.params.modelRef] &&
-                    this.params.model[this.params.modelRef].model &&
-                    this.params.model[this.params.modelRef].model instanceof ModelRoot
+                    this.params.model[this.params.childKey] &&
+                    this.params.model[this.params.childKey].model &&
+                    this.params.model[this.params.childKey].model instanceof ModelRoot
                 )
                 {
-                    this.attributes.childModel = this.params.model[this.params.modelRef].model;
+                    return this.params.model[this.params.childKey].model;
                 }
-                this.db.debugLog(['Error:02 SaveComponent -> loadModels',this.params.modelRef,this.params.model]);
+                this.db.debugLog(['Error:02 SaveComponent -> loadModels',this.params.childKey,this.params.model]);
                 return;
             }
 
         }
-        this.db.debugLog(['Error:01 SaveComponent -> loadModels',this.params.modelRef,this.params.model]);
+        this.db.debugLog(['Error:01 SaveComponent -> loadModels',this.params.childKey,this.params.model]);
 
     }
 
     private get currentModel():ModelRoot{
-        return (this.attributes.childModel || this.attributes.parentModel);
-    }
-
-    private get parentModel():ModelRoot{
-        return this.attributes.parentModel;
+        return (this.childModel || this.params.model);
     }
 
     private get currentRules():Object{
@@ -97,17 +86,17 @@ export class SaveComponent implements OnInit,AfterViewInit{
             this.instanceForm.resetForm();
             this.save.emit(response.json());
             if(this.params.childKey)//TODO:Arreglar
-                this.model.afterSave(this.childKey,this.model.currentData,response.json().id);
+                this.params.model.afterSave(this.params.childKey,this.params.model.currentData,response.json().id);
         }).bind(this);
         let body = this.instanceForm.getFormValues(addBody);
-        if(!this.attributes.update)
+        if(!this.update)
             this.currentModel.onSave(body,successCallback);
         else
             this.currentModel.onPatchObject(body,this.currentModel['currentData']);
 
     }
     formActions(){
-        if(this.attributes.update)
+        if(this.update)
             return [{'title':'Actualizar','class':'btn btn-blue','icon':'fa fa-save','addBody':null}];
 
         return [{'title':'Registrar','class':'btn btn-primary','icon':'fa fa-save','addBody':null}]

@@ -265,36 +265,37 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         let permitUpdate = (this.data.enabled && !this.data.deleted  && !this.data.blockField && this.data.editable);
         return permitUpdate && rule.permissions.update && !this.disabled;
     }
-    loadLocationParams(event){
-        if(event)
+    loadLocationParams(event) {
+        if (event)
             event.preventDefault();
 
         let rule = this.currentRule;
 
         this.paramsData.select = this.data;
 
-        if(this.paramsData && this.paramsData.locationParams && this.paramsData.locationParams.instance){
-            this.paramsData.locationParams.center={
-                lat:parseFloat(this.data[rule.lat]),
-                lng:parseFloat(this.data[rule.lng])
+        if (this.paramsData && this.paramsData.locationParams && this.paramsData.locationParams.instance) {
+            this.paramsData.locationParams.center = {
+                lat: parseFloat(this.data[rule.lat]),
+                lng: parseFloat(this.data[rule.lng])
             };
             this.paramsData.locationParams.disabled = !this.getEnabled;
             this.paramsData.locationParams.instance.setMarker();
         }
         else {
-            this.paramsData.locationParams={
-                disabled:!this.getEnabled,
-                center:{
-                    lat:parseFloat(this.data[rule.lat]),
-                    lng:parseFloat(this.data[rule.lng])
+            this.paramsData.locationParams = {
+                disabled: !this.getEnabled,
+                center: {
+                    lat: parseFloat(this.data[rule.lat]),
+                    lng: parseFloat(this.data[rule.lng])
                 }
             }
         }
         this.paramsData.locationParams.keys = {
-            lat : rule.lat,
-            lng : rule.lng
+            lat: rule.lat,
+            lng: rule.lng
         }
         this.paramsData.locationParams.address = this.getEnabled;
+    }
 
     showModal(name:ModalName,childKey?:any){
         let params: IModalParams<any> = { model:this.model };

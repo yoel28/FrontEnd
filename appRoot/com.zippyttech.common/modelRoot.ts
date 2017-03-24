@@ -3,6 +3,10 @@ import {RestController, IWhere, IRestEvent} from "../com.zippyttech.rest/restCon
 import {DependenciesBase} from "./DependenciesBase";
 import {Actions} from "../com.zippyttech.init/app/app.types";
 import {OnInit} from "@angular/core";
+import {TextareaRule} from "./rules/textarea.rule";
+import {NumberRule} from "./rules/number.rule";
+import {TextRule} from "./rules/text.rule";
+import {CombodateRule} from "./rules/combodate.rule";
 
 var moment = require('moment');
 var jQuery = require('jquery');
@@ -69,11 +73,9 @@ export abstract class ModelRoot extends RestController implements OnInit{
     private rulesDefault:any = {};
     public rules:Object={};
     private _navIndex:number=null;
+    private transactional:boolean;
+    private pendings:number;
 
-
-    public configId = moment().valueOf();
-    private rulesDefault:any = {};
-    public rules:Object={};
 
     constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
         super(db);
