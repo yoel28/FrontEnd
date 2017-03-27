@@ -11,7 +11,8 @@ System.config({
   paths: {
     // paths serve as alias
     'npm:': 'node_modules/',
-    'npmR:': 'https://unpkg.com/',
+    'npmR:': 'node_modules/',
+    // 'npmR:': 'https://unpkg.com/',
     'app:': 'appRoot/',
   },
   // meta: {
@@ -24,7 +25,7 @@ System.config({
   map: {
     // our app is within the app folder
     'app': 'appRoot/',
-    'main': 'app:main.js',
+    'main': 'app:main',
 
     // angular bundles
     '@angular/core': 'npmR:@angular/core/bundles/core.umd.js',
@@ -46,6 +47,7 @@ System.config({
     'ng2-toasty':                'npmR:ng2-toasty/bundles/index.umd.js',
     'angular2-highcharts':       'npm:angular2-highcharts',
     'highcharts':                'npmR:highcharts',
+    'angular2-notifications':    'npmR:/angular2-notifications',
 
     //Dependencias
     'jquery':           'npm:jquery/dist/',
@@ -77,7 +79,6 @@ System.config({
   },
   // packages tells the System loader how to load when no filename and/or no extension
   packages: {
-    'app': { main: './main.js', defaultExtension: 'js' },
     'api' : { defaultExtension : 'js' },
     'rxjs': { defaultExtension: 'js' },
     'angular2-highcharts': {
@@ -91,6 +92,7 @@ System.config({
 
       defaultExtension: 'js'
     },
+    'angular2-notifications': { main: 'components.js', defaultExtension: 'js' },
 
 
     //Dependencias
@@ -102,6 +104,7 @@ System.config({
     'moment': {
       main:'moment',
       format: 'global',
+      exports:'moment',
       defaultExtension: 'js',
     },
     'humanize': {
