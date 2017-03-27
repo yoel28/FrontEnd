@@ -4,9 +4,10 @@ import {contentHeaders} from "../com.zippyttech.rest/headers";
 import {FormControl, Validators} from "@angular/forms";
 import {Http} from "@angular/http";
 import {ToastyService, ToastyConfig} from "ng2-toasty";
+import {IRule} from "../com.zippyttech.common/rules/rule";
 
 /**
- * @Params
+ * @Params API
  * Optional
  *      MODE_DEBUG
  *
@@ -64,9 +65,9 @@ export class globalService extends RestController{
 
     existLocalStorage(){
         if (typeof(Storage) !== "undefined") {
-            console.log("habemus localstorage")
+            this.debugLog(["habemus localstorage"])
         } else {
-            console.log("no habemus localstorage")
+            this.debugLog(["no habemus localstorage"])
         }
     }
     initSession():void{
@@ -185,9 +186,9 @@ export class globalService extends RestController{
         return false;
     }
 
-    getParams(code:string):string{
+    getParams(code:string,defaultValue=''):string{
         let data = this.getByAccountData(this.params,code);
-        return data.value || '';
+        return data.value || defaultValue;
     }
 
     getRule(code:string):string{
@@ -241,13 +242,16 @@ export class globalService extends RestController{
 
         this.user.preferences.columns[model.replace('Model','')]=[];
         Object.keys(rules).forEach(key=>{
-            if(reset)
-                rules[key].visible = reset;
-            that.user.preferences.columns[model.replace('Model','')].push(
+            if(reset){
+                (<IRule>rules[key]).permissions.visible = reset;
+            }
+            let display:string;
+            that.user.preferences.columns[model.replace('Model','')].push
+            (
                 {   'key':key,
-                    'visible':rules[key].visible,
-                    'exclude':rules[key].exclude?true:false,
-                    'display':rules[key].keyDisplay || rules[key].key,
+                    'visible':(<IRule>rules[key]).permissions.visible,
+                    'exclude':(<IRule>rules[key]).exclude?true:false,
+                    'display':(<IRule>rules[key]).key,//TODO: checkear en instancias ModelRoot
                 }
             )
         });
@@ -279,5 +283,7 @@ export class globalService extends RestController{
             console.log('END-------------------------------------------------------------------------------------------');
         }
     }
+
+
     
 }

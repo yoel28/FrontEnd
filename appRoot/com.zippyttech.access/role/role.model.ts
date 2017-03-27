@@ -1,5 +1,6 @@
-import {ModelRoot} from "../../com.zippyttech.common/modelRoot";
+import {ModelRoot, IView} from "../../com.zippyttech.common/modelRoot";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {TextRule} from "../../com.zippyttech.common/rules/text.rule";
 
 export class RoleModel extends ModelRoot{
 
@@ -8,19 +9,27 @@ export class RoleModel extends ModelRoot{
         this.display = 'authority';
         this.initModel();
     }
+    initView(params:IView){
+        params.title = "Rol";
+        params.display = this.nameClass+"Authority";
+        params.mode = 'checklist';
+        params.exclude = true;
+    }
+
     modelExternal() {}
     initRules(){
-        this.rules['authority']={
-            'type': 'text',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'authority',
-            'title': 'Rol',
-            'prefix':'ROLE_',
-            'placeholder': 'Nombre del perfil',
-        };
+        this.rules['authority']= new TextRule({
+            required:true,
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            key: 'authority',
+            title: 'Rol',
+            prefix:'ROLE_',
+            placeholder: 'Nombre del perfil',
+        });
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
     }
     initPermissions() {}
@@ -32,13 +41,6 @@ export class RoleModel extends ModelRoot{
     }
     initParamsSave() {
         this.paramsSave.title="Agregar rol"
-    }
-    initRuleObject() {
-        this.ruleObject.title="Roles";
-        this.ruleObject.placeholder="Ingrese un rol";
-        this.ruleObject.key="roles";
-        this.ruleObject.keyDisplay="roleAuthority";
-        this.ruleObject.code="roleId";
     }
     initRulesSave() {
         this.rulesSave = Object.assign({},this.rules);

@@ -2,67 +2,102 @@ import {Component, EventEmitter, OnInit, AfterViewInit} from "@angular/core";
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {FormComponent} from "../form/form.component";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
+import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 
-declare var SystemJS:any;
 var moment = require('moment');
 var jQuery = require('jquery');
+
+export interface ISave{
+    model:ModelRoot;
+    childKey?:string;
+    onlyRequired?:boolean;
+}
+
 @Component({
     moduleId: module.id,
     selector: 'save-view',
     templateUrl: 'index.html',
     styleUrls: ['style.css'],
-    inputs:['model','childKey'],
+    inputs:['params'],
     outputs:['getInstance']
 })
-export class SaveComponent extends RestController implements OnInit,AfterViewInit{
+export class SaveComponent implements OnInit,AfterViewInit{
 
-    public childKey:string;
-    private childModel:any;
-    public model:any;
-    private getInstance:EventEmitter<any>;
+    public params:ISave;
     public instanceForm:FormComponent;
-    public actions:any;
+    public save:EventEmitter<Object>;
+    public getInstance:EventEmitter<SaveComponent>;
+    public childModel?:ModelRoot;
+    public update?:boolean;
 
-    private get currentModel(){return this.childModel || this.model}
 
     constructor(public db:DependenciesBase) {
-        super(db);
-        this.getInstance = new EventEmitter();
+        this.save = new EventEmitter();
+        this.getInstance = new EventEmitter<SaveComponent>();
     }
+
     ngOnInit(){
-        if(this.childKey && this.model.rules[this.childKey] )
-            this.childModel = this.model.rules[this.childKey].model;
+        this.loadModels();
     }
-    setForm(form){
+
+    setForm(form:FormComponent){
         this.instanceForm=form
     }
+
     ngAfterViewInit(){
         this.getInstance.emit(this);
     }
 
-    submitForm(event,addBody=null){
+    private loadModels(){
+        if(this.params && this.params.model && this.params.model instanceof ModelRoot){
 
-        let that = this;
-        let successCallback= response => {
-            that.addToast('Notificacion','Guardado con éxito');
-            that.instanceForm.resetForm();
-            if(this.childKey && this.childModel)
-                this.model.afterSave(this.childKey,this.model.currentData,response.json().id);
-        };
-        this.setEndpoint(this.currentModel.paramsSave.endpoint);
+            if(this.params.childKey){
+                if(
+                    this.params.model[this.params.childKey] &&
+                    this.params.model[this.params.childKey].model &&
+                    this.params.model[this.params.childKey].model instanceof ModelRoot
+                )
+                {
+                    return this.params.model[this.params.childKey].model;
+                }
+                this.db.debugLog(['Error:02 SaveComponent -> loadModels',this.params.childKey,this.params.model]);
+                return;
+            }
+
+        }
+        this.db.debugLog(['Error:01 SaveComponent -> loadModels',this.params.childKey,this.params.model]);
+
+    }
+
+    private get currentModel():ModelRoot{
+        return (this.childModel || this.params.model);
+    }
+
+    private get currentRules():Object{
+        return this.currentModel? this.currentModel.rules:{};
+    }
+
+    private submitForm(event?,addBody=null){
+        if(event)
+            event.preventDefault();
+
+        let successCallback = (response => {
+            this.currentModel.addToast('Notificacion','Guardado con éxito');
+            this.instanceForm.resetForm();
+            this.save.emit(response.json());
+            if(this.params.childKey)//TODO:Arreglar
+                this.params.model.afterSave(this.params.childKey,this.params.model.currentData,response.json().id);
+        }).bind(this);
         let body = this.instanceForm.getFormValues(addBody);
-        if(this.currentModel.paramsSave.updateField)
-            this.httputils.onUpdate(this.endpoint+this.instanceForm.rest.id,JSON.stringify(body),this.instanceForm.dataSelect,this.error);
+        if(!this.update)
+            this.currentModel.onSave(body,successCallback);
         else
-            this.httputils.doPost(this.endpoint,JSON.stringify(body),successCallback,this.error);
+            this.currentModel.onPatchObject(body,this.currentModel['currentData']);
 
     }
     formActions(){
-        if(this.currentModel.paramsSave.updateField)
+        if(this.update)
             return [{'title':'Actualizar','class':'btn btn-blue','icon':'fa fa-save','addBody':null}];
-
-        if(this.currentModel.paramsSave.customActions && this.currentModel.paramsSave.customActions.length > 0)
-            return this.currentModel.paramsSave.customActions;
 
         return [{'title':'Registrar','class':'btn btn-primary','icon':'fa fa-save','addBody':null}]
     }
@@ -73,27 +108,32 @@ export class SaveComponent extends RestController implements OnInit,AfterViewIni
         }
         return false;
     }
-    setLoadDataModel(data,_delete=false)
-    {
+
+    setLoadDataModel(data,_delete=false) {
         this.instanceForm.setLoadDataModel(data,_delete);
     }
+
     existloadSearch():boolean{
+
         if(this.instanceForm && this.instanceForm.search && this.instanceForm.search.object){
             return this.instanceForm.searchView;
         }
         return false;
     }
-    existloadDelete():boolean{
+
+    existloadDelete():boolean {
+
         if(this.instanceForm && this.instanceForm.delete && this.instanceForm.rest.id && parseFloat(this.instanceForm.rest.id || '-1')>0 ){
             return true;
         }
         return false;
     }
+
     loadDelete(event){
         if(event)
             event.preventDefault();
-        this.setEndpoint(this.currentModel.paramsSave.endpoint);
-        this.onDelete(event,this.instanceForm.rest.id);
+        this.currentModel.onDelete(event,this.currentModel.rest.id);
     }
+
 }
 

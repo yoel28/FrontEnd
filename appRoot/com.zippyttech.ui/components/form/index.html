@@ -4,26 +4,30 @@
               *ngIf="keys && keys.length > 0">
             <div *ngFor="let key of keys">
                 <div *ngIf="rules[key]">
-                    <div *ngIf="!rules[key].object || (rules[key].object && rules[key].permissions.search)">
-                        <div class="form-group input-icon right" *ngIf="!rules[key].hidden">
-                            <div [hidden]="hiddenFormControl(rules[key].hiddenOnly)">
-                                <div class="row" *ngIf="rules[key].type!='image'">
-                                    <div class="{{(rules[key].object || rules[key].refreshField)?db.classCol(10,10,10,10):db.classCol(12,12,12,12)}}">
+                    <div *ngIf="!isCurrentType(['object'],rules[key]) || (isCurrentType(['object'],rules[key]) && rules[key].model.permissions.search)">
+                        <div class="form-group input-icon right">
+                            <div [hidden]="hiddenFormControl(rules[key].components.form.hidden)">
+                                <div class="row" *ngIf="!isCurrentType(['image'],rules[key])">
+                                    <div class="{{( isCurrentType(['object'],rules[key]) || rules[key].refresh)?db.classCol(10,10,10,10):db.classCol(12,12,12,12)}}">
                                         <div class="input-group input-icon right">
                                             <i class="{{rules[key].icon}} z-index"></i>
-                                            <span class="input-group-addon" [attr.id]="key">{{rules[key].title}}
-                                                                <label *ngIf="rules[key].required" class="text-red">&nbsp;*</label>
-                                                                </span>
+                                            <span class="input-group-addon" [attr.id]="key">
+                                                {{rules[key].title}}
+                                                <label *ngIf="rules[key].required" class="text-red">&nbsp;*</label>
+                                            </span>
 
-                                            <input *ngIf="rules[key].type == 'text' || rules[key].type == 'number' || rules[key].type == 'email' || rules[key].type == 'password'"
-                                                   formControlName="{{key}}" class="form-control"
-                                                   formControlName="{{key}}"
-                                                   placeholder="{{rules[key].placeholder}}"
-                                                   type="{{rules[key].type}}"
-                                                   [attr.aria-describedby]="key"
-                                                   [readonly]="rules[key].readOnly"
-                                                   [attr.accesskey]="key"
-                                            >
+
+                                            <template [ngIf]="isCurrentType(['text','number','email','password'],rules[key])">
+                                                <input formControlName="{{key}}" class="form-control"
+                                                       formControlName="{{key}}"
+                                                       placeholder="{{rules[key].placeholder}}"
+                                                       type="{{currentType(rules[key])}}"
+                                                       [attr.aria-describedby]="key"
+                                                       [readonly]="rules[key].readOnly"
+                                                       [attr.accesskey]="key"
+                                                >
+                                            </template>
+
 
                                             <div *ngIf="rules[key].type == 'list'">
                                                 <input tags-input data-role="tagsinput"
@@ -48,14 +52,18 @@
                                                    class="form-control" [hexControl]="data[key]"
                                                    readonly>
 
-                                            <textarea *ngIf="rules[key].type == 'textarea'"
-                                                      formControlName="{{key}}" class="form-control"
-                                                      rows="5"
-                                                      formControlName="{{key}}"
-                                                      placeholder="{{rules[key].placeholder}}"
-                                                      [readonly]="rules[key].readOnly">
 
-                                                                </textarea>
+                                            <template [ngIf]="isCurrentType(['textarea'],rules[key])">
+                                                <textarea
+                                                        formControlName="{{key}}" class="form-control"
+                                                        rows="5"
+                                                        formControlName="{{key}}"
+                                                        placeholder="{{rules[key].placeholder}}"
+                                                        [readonly]="rules[key].readOnly">
+
+                                                </textarea>
+                                            </template>
+
 
 
                                             <input *ngIf="rules[key].type == 'date'"
@@ -151,7 +159,7 @@
                                     </div>
                                 </div>
 
-                                <div class="row padding-bottom-4" *ngIf="rules[key].type=='image'">
+                                <div class="row padding-bottom-4" *ngIf="isCurrentType(['image'],rules[key])">
                                     <div class="col-lg-10 col-lg-offset-1">
                                         <image-edit-view [default]="rules[key].default"
                                                          (out)="saveImage($event,key)"

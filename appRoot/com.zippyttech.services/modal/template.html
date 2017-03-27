@@ -18,8 +18,7 @@
                 </template>
 
                 <template [ngSwitchCase]="'save'">
-                    <save-view  [model]  = "db.ms.params.model"
-                                [childKey] ="db.ms.params.childKey || null">
+                    <save-view  [params]  = "{model: db.params.model, childKey:db.ms.params.extraParams.childKey}">
                     </save-view>
                 </template>
             </div>

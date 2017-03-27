@@ -1,9 +1,18 @@
-import {Component, EventEmitter, OnInit, AfterViewInit, CUSTOM_ELEMENTS_SCHEMA, NgModule} from "@angular/core";
+import {Component, EventEmitter, OnInit, AfterViewInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {ILocation} from "../locationPicker/locationPicker.component";
 import {IModalSave, IModalParams, IModalDelete, ModalName} from "../../../com.zippyttech.services/modal/modal.types";
+
+/**
+ * @Params API
+ * Optional
+ *      {MODEL_PREFIX}_DATE_FORMAT_HUMAN
+ *      DATE_MAX_HUMAN
+ *
+ *
+ */
 
 export interface IRuleView{
     select:Object;//objecto que se selecciona
@@ -46,25 +55,45 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         return this.model.rules[this.key];
     }
 
-    public isCurrentType(list:Array<string>):boolean{
-        return list.indexOf(this.model.rules[this.key].type) >= 0 ? true:false;
+    private get currentValue(){
+        return this.data[this.key];
     }
+
+    private get currentType(){
+        let rule = this.currentRule;
+        let type = rule.constructor.name.replace('Rule','').toLowerCase();
+        return type;
+    }
+
+    public isCurrentType(list:Array<string>):boolean{
+        return list.indexOf(this.currentType) >= 0 ? true:false;
+    }
+
+    public isCurrentMode(list:Array<string>):boolean{
+        return list.indexOf(this.currentRule.mode) >= 0 ? true:false;
+    }
+
 
 
     ngAfterViewInit() {
         this.getInstance.emit(this);
     }
 
-    getBooleandData(key,data){
+
+    get getBooleandData(){
+
+        let rule = this.currentRule;
+        let value = this.currentValue;
+
         let field = {'class':'btn btn-orange','text':'n/a','disabled':true};
 
-        if( (!eval(this.model.rules[key].disabled || 'false')))
+        if(!this.evalExp(this.data,(rule.disabled || 'false')))
         {
-            let index = this.model.rules[key].source.findIndex(obj => (obj.value == data[key] || obj.id == data[key]));
+            let index = rule.source.findIndex(obj => (obj.value == value || obj.id == value));
             if(index > -1)
             {
-                this.model.rules[key].source[index].disabled=!this.model.rules[key].update;
-                return this.model.rules[key].source[index];
+                rule.source[index].disabled=!rule.update;
+                return rule.source[index];
             }
         }
         return field;
@@ -81,9 +110,9 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
                 var diff = moment().valueOf() - moment(date).valueOf();
                 if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) {
                     if (diff < 1800000)//menor a 30min
-                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m', 's']})
+                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m', 's']});
                     if (diff < 3600000) //menor a 1hora
-                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m']})
+                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m']});
                     return 'Hace ' + this.dateHmanizer(diff, {units: ['h', 'm']})
                 }
             }
@@ -104,46 +133,51 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         this.formatDateId[id].value = !this.formatDateId[id].value;
     }
 
-    formatTimeView(data) {
-        if (data) {
-            if (data < 1800000)//menor a 30min
-                return this.dateHmanizer(data, {units: ['m', 's']});
-            if (data < 3600000) //menor a 1hora
-                return this.dateHmanizer(data, {units: ['m']});
-            if(data < 86400000)
-                return  this.dateHmanizer(data, {units: ['h', 'm']});
+    get formatTimeView() {
+        let value = this.currentValue;
+        if (value) {
+            if (value < 1800000)//menor a 30min
+                return this.dateHmanizer(value, {units: ['m', 's']});
+            if (value < 3600000) //menor a 1hora
+                return this.dateHmanizer(value, {units: ['m']});
+            if(value < 86400000)
+                return  this.dateHmanizer(value, {units: ['h', 'm']});
 
-            return  this.dateHmanizer(data)
+            return  this.dateHmanizer(value)
         }
         return '-'
 
     }
 
-    getDisabledField(key,data){
-        return (eval(this.model.rules[key].disabled || 'false'));
+    getDisabledField(data){
+        return this.evalExp(data,(this.currentRule.disabled || 'false'));
     }
 
-    setViewListData(event,data,key){
+    setViewListData(event){
         let that=this;
+        let rule = this.currentRule;
+        let value = this.currentValue;
+
         if(event)
             event.preventDefault();
-        this.paramsData.viewListData['title'] = this.model.rules[key].title;
+        this.paramsData.viewListData['title'] = rule.title;
         this.paramsData.viewListData['label']={};
-        if(typeof data[key] == 'object' && data[key].length>0)
+
+        if(typeof value == 'object' && value.length>0)
         {
-            Object.keys(data[key][0]).forEach(subkey=>{
-                if(that.model.rules[key].rulesSave[subkey])
-                    that.paramsData.viewListData['label'][subkey] = that.model.rules[key].rulesSave[subkey].title;
+            Object.keys(value[0]).forEach(subkey=>{
+                if(rule.rulesSave[subkey])
+                    that.paramsData.viewListData['label'][subkey] = rule.rulesSave[subkey].title;
             });
         }
-        this.paramsData.viewListData['data'] =  data[key];
-        if(typeof data[key] === 'string'){
+        this.paramsData.viewListData['data'] =  value;
+        if(typeof value === 'string'){
             try{
-                this.paramsData.viewListData['data'] = JSON.parse(data[key]);
+                this.paramsData.viewListData['data'] = JSON.parse(value);
             }
             catch (exception){
                 this.paramsData.viewListData['data'] = [];
-                console.log(exception);
+                this.db.debugLog(['Error: setViewListData',exception]);
             }
         }
     }
@@ -151,39 +185,48 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     evalExp(data,exp){
         try{
             return eval(exp);
-        }catch (e){
-            this.db.debugLog(e);
-            this.db.debugLog('Verificar la regla en: ');
-            this.db.debugLog(data);
-            this.db.debugLog('-------------------------------------------------------------------------');
+        }catch (exception){
+            this.db.debugLog(['Error evalExp: ',exception,data])
         }
     }
 
-    loadSearchTable(event,key,data) {
+    loadSaveModal(event) {
+        if(event)
+            event.preventDefault();
+        this.paramsData.select=this.data;
+    }
+
+    loadSearchTable(event) {
+        let rule = this.currentRule;
+        let value = this.currentValue;
+
         if(event)
             event.preventDefault();
         this.checkAllSearch();
-        this.paramsData.select=data;
-        if(this.model.rules[key].multiple){//TODO:Falta completar el comportamiento
-            this.model.rules[key].paramsSearch.multiple=true;
-            this.model.rules[key].paramsSearch.valuesData=[];
-            this.model.rules[key].paramsSearch.valuesData = data[key];
-            if(this.model.rules[key].paramsSearch.eval)
-                eval(this.model.rules[key].paramsSearch.eval);
+        this.paramsData.select=this.data;
+        if(rule.multiple){//TODO:Falta completar el comportamiento
+            rule.paramsSearch.multiple=true;
+            rule.paramsSearch.valuesData=[];
+            rule.paramsSearch.valuesData = value;
+            if(rule.paramsSearch.eval)
+                this.evalExp(this.data,rule.paramsSearch.eval);
         }
-        this.paramsData.searchParams =  Object.assign({},this.model.rules[key].paramsSearch);
-        this.paramsData.searchParams['field'] =  key;
+        this.paramsData.searchParams =  Object.assign({},rule.paramsSearch);
+        this.paramsData.searchParams['field'] =  this.key;
     }
 
-    loadDataFieldReference(data,key,setNull=false){
+    loadDataFieldReference(setNull=false){
+        let rule = this.currentRule;
+        let value = this.currentValue;
+
         this.checkAllSearch();
-        this.paramsData.ruleReference = Object.assign({},this.model.rules[key]);
-        this.paramsData.select = data;
+        this.paramsData.ruleReference=Object.assign({},rule);
+        this.paramsData.select = this.data;
         if(setNull)
-            this.setDataFieldReference(data,true);
+            this.setDataFieldReference(true);
 
     }
-    public setDataFieldReference(data,setNull=false) {
+    public setDataFieldReference(setNull=false) {
         let value=null;
         let that = this;
 
@@ -193,13 +236,13 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
             if(that.paramsData.select[that.paramsData.ruleReference.code]!=null && that.paramsData.ruleReference.unique)
                 that.paramsData.ruleReference.model.setDataField(that.paramsData.select[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.paramsData.select).then(
                     response=>{
-                        that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+                        that.paramsData.ruleReference.model.setDataField(that.data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
                     });
             else
-                that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+                that.paramsData.ruleReference.model.setDataField(that.data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
         }
         else
-            that.paramsData.ruleReference.model.setDataField(data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,data);
+            that.paramsData.ruleReference.model.setDataField(this.data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.data);
 
     }
 
@@ -212,42 +255,46 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         })
     }
 
-    public getTypeEval(key,data){
-        if(this.model.rules[key])
-            return eval(this.model.rules[key].eval);
+    get getTypeEval(){
+        let rule = this.currentRule;
+        return this.evalExp(this.data,this.currentRule.eval);
     }
 
-    getEnabled(){
-        return (this.model.rules[this.key].update && this.data.enabled && !this.data.deleted && !this.disabled && !this.data.blockField && this.data.editable)
+    get getEnabled(){
+        let rule= this.currentRule;
+        let permitUpdate = (this.data.enabled && !this.data.deleted  && !this.data.blockField && this.data.editable);
+        return permitUpdate && rule.permissions.update && !this.disabled;
     }
-    loadLocationParams(event,data){
-        if(event)
+    loadLocationParams(event) {
+        if (event)
             event.preventDefault();
 
-        this.paramsData.select = data;
+        let rule = this.currentRule;
 
-        if(this.paramsData && this.paramsData.locationParams && this.paramsData.locationParams.instance){
-            this.paramsData.locationParams.center={
-                lat:parseFloat(data[this.model.rules[this.key].lat]),
-                lng:parseFloat(data[this.model.rules[this.key].lng])
+        this.paramsData.select = this.data;
+
+        if (this.paramsData && this.paramsData.locationParams && this.paramsData.locationParams.instance) {
+            this.paramsData.locationParams.center = {
+                lat: parseFloat(this.data[rule.lat]),
+                lng: parseFloat(this.data[rule.lng])
             };
-            this.paramsData.locationParams.disabled = !this.getEnabled();
+            this.paramsData.locationParams.disabled = !this.getEnabled;
             this.paramsData.locationParams.instance.setMarker();
         }
         else {
-            this.paramsData.locationParams={
-                disabled:!this.getEnabled(),
-                center:{
-                    lat:parseFloat(data[this.model.rules[this.key].lat]),
-                    lng:parseFloat(data[this.model.rules[this.key].lng])
+            this.paramsData.locationParams = {
+                disabled: !this.getEnabled,
+                center: {
+                    lat: parseFloat(this.data[rule.lat]),
+                    lng: parseFloat(this.data[rule.lng])
                 }
             }
         }
         this.paramsData.locationParams.keys = {
-            lat : this.model.rules[this.key].lat,
-            lng : this.model.rules[this.key].lng
+            lat: rule.lat,
+            lng: rule.lng
         }
-        this.paramsData.locationParams.address = this.getEnabled();
+        this.paramsData.locationParams.address = this.getEnabled;
     }
 
     showModal(name:ModalName,childKey?:any){

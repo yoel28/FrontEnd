@@ -1,5 +1,9 @@
 import {ModelBase} from "../../com.zippyttech.common/modelBase";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {TextRule} from "../../com.zippyttech.common/rules/text.rule";
+import {ColorRule} from "../../com.zippyttech.common/rules/color.rule";
+import {SelectRule} from "../../com.zippyttech.common/rules/select.rule";
+import {IView} from "../../com.zippyttech.common/modelRoot";
 
 export class InfoModel extends ModelBase{
 
@@ -8,92 +12,102 @@ export class InfoModel extends ModelBase{
         this.initModel();
     }
     modelExternal() {}
+
+    initView(params:IView){
+        params.title = "Información (Ayudas)";
+    }
+
     initRules(){
-        this.rules['code']={
-            'type': 'text',
-            'readOnly':false,
-            'protected':true,
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'code',
-            'icon': 'fa fa-key',
-            'title': 'Código',
-            'placeholder': 'Ingrese el código',
-        }
-        this.rules['title']={
-            'type': 'text',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'title',
-            'icon': 'fa fa-key',
-            'title': 'Título',
-            'placeholder': 'Ingrese el título',
-        }
-        this.rules['color']={
-            'type': 'color',
-            'required':true,
-            'update':this.permissions.update,
-            'search':false,
-            'visible':this.permissions.visible,
-            'key': 'color',
-            'value':'00ff00',
-            'title': 'Color',
-            'placeholder': '#000',
-        }
-        this.rules['position']={
-            'type': 'select',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'source': [
-                {'value': 'top', 'text': 'Arriba'},
-                {'value': 'bottom', 'text':'Abajo'},
-                {'value': 'left', 'text': 'Izquierda'},
-                {'value': 'right', 'text': 'Derecha'},
+        this.rules['code']= new TextRule({
+            protected:true,
+            readOnly:true, //TODO : change in save
+            required:true,
+            permissions: {
+                update: this.permissions.update,
+                search: this.permissions.filter,
+                visible: this.permissions.visible,
+            },
+            key: 'code',
+            icon: 'fa fa-key',
+            title: 'Código',
+            placeholder: 'Ingrese el código',
+        });
+        this.rules['title']=new TextRule( {
+            required:true,
+            permissions: {
+                'update': this.permissions.update,
+                'search': this.permissions.filter,
+                'visible': this.permissions.visible,
+            },
+            key: 'title',
+            icon: 'fa fa-key',
+            title: 'Título',
+            placeholder: 'Ingrese el título',
+        });
+        this.rules['color']= new ColorRule({
+            required:true,
+            permissions: {
+                update: this.permissions.update,
+                visible: this.permissions.visible,
+            },
+            key: 'color',
+            value:'00ff00',
+            title: 'Color',
+            placeholder: '#000',
+        })
+        this.rules['position']= new SelectRule({
+            required:true,
+            permissions: {
+                update: this.permissions.update,
+                search: this.permissions.filter,
+                visible: this.permissions.visible,
+            },
+            source: [
+                {value: 'top',      text: 'Arriba'},
+                {value: 'bottom',   text:'Abajo'},
+                {value: 'left',     text: 'Izquierda'},
+                {value: 'right',    text: 'Derecha'},
             ],
-            'key': 'position',
-            'title': 'Posición',
-            'placeholder': 'Seleccione una posición',
-        }
-        this.rules['size']={
-            'type': 'select',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'source': [
-                {'value': 'fa', 'text': 'Normal'},
-                {'value': 'fa-lg', 'text':'Lg'},
-                {'value': 'fa-2x', 'text':'2x'},
-                {'value': 'fa-3x', 'text':'3x'},
-                {'value': 'fa-4x', 'text':'4x'},
-                {'value': 'fa-5x', 'text':'5x'},
+            key: 'position',
+            title: 'Posición',
+            placeholder: 'Seleccione una posición',
+        }),
+        this.rules['size']= new SelectRule({
+            required:true,
+            permissions: {
+                update: this.permissions.update,
+                search: this.permissions.filter,
+                visible: this.permissions.visible,
+            },
+            source: [
+                {value: 'fa',    text: 'Normal'},
+                {value: 'fa-lg', text:'Lg'},
+                {value: 'fa-2x', text:'2x'},
+                {value: 'fa-3x', text:'3x'},
+                {value: 'fa-4x', text:'4x'},
+                {value: 'fa-5x', text:'5x'},
 
             ],
-            'key': 'size',
-            'title': 'Tamaño',
-            'placeholder': 'Seleccione un tamaño',
-        }
-        this.rules['icon']={
-            'type': 'select',
-            'exclude':true,
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'source': [
-                {'value': 'fa fa-question-circle', 'text': 'Interrogante 1'},
-                {'value': 'fa fa-question', 'text': 'Interrogante 2'},
+            key: 'size',
+            title: 'Tamaño',
+            placeholder: 'Seleccione un tamaño',
+        });
+        this.rules['icon']= new SelectRule({
+            exclude:true,
+            required:true,
+            permissions: {
+                update: this.permissions.update,
+                search: this.permissions.filter,
+                visible: this.permissions.visible,
+            },
+            source: [
+                {value: 'fa fa-question-circle',    text: 'Interrogante 1'},
+                {value: 'fa fa-question',           text: 'Interrogante 2'},
             ],
-            'key': 'icon',
-            'title': 'Icono',
-            'placeholder': 'Seleccione un icono',
-        }
+            key: 'icon',
+            title: 'Icono',
+            placeholder: 'Seleccione un icono',
+        });
 
         this.globalOptional();
 
@@ -106,18 +120,6 @@ export class InfoModel extends ModelBase{
     }
     initParamsSave() {
         this.paramsSave.title="Agregar ayuda"
-    }
-    initRuleObject() {
-        this.ruleObject.title="Información (Ayudas)";
-        this.ruleObject.placeholder="Ingrese codigo de la ayuda";
-        this.ruleObject.key="info";
-        this.ruleObject.keyDisplay="infoCode";
-        this.ruleObject.keyDisplay="infoId";
-    }
-
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.enabled;
     }
 
     initDataActions(){

@@ -1,32 +1,32 @@
-<div class="modal fade" [attr.id]="params.idModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" [attr.id]="currentParams.idModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" [class.modal-lg]="search.object" >
         <div class="modal-content">
             <div class="modal-header bg-green-club text-center">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" [attr.title]="db.msg.close"><span
                         aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title" id="myModalLabel">{{params.title}}</h3>
+                <h3 class="modal-title" id="myModalLabel">{{currentParams.title}}</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="{{db.classCol()}} margin-bottom">
                         <form role="form" [formGroup]="form" class="{{search.object?db.classCol(5,5,5,5):db.classCol()}}">
                             <div *ngFor="let key of keys">
-                                <div *ngIf="rules[key].search">
+                                <div *ngIf="currentRule[key].search">
                                     <div class="{{db.classCol()}}">
                                         <div class="form-group input-icon right row">
                                             <div class="{{db.classCol(8,8,8,8)}}">
                                                 <div class="row">
                                                     <div class="{{db.classCol(10,10,10,10)}}">
 
-                                                        <div *ngIf="rules[key].type=='text' || rules[key].type=='number' || rules[key].type=='time' || rules[key].type=='textarea' " class="row">
-                                                            <i class="{{rules[key].icon || 'fa fa-list'}}"></i>
-                                                            <input  *ngIf="rules[key].type!='time'"
+                                                        <div *ngIf="getCurrentType(key)=='text' || getCurrentType(key)=='number' || getCurrentType(key)=='time' || getCurrentType(key)=='textarea' " class="row">
+                                                            <i class="{{currentRule[key].icon || 'fa fa-list'}}"></i>
+                                                            <input  *ngIf="getCurrentType(key)!='time'"
                                                                     formControlName="{{key}}" class="form-control"
-                                                                    placeholder="{{rules[key].placeholder}}"
-                                                                    type="{{rules[key].type}}">
-                                                            <input  *ngIf="rules[key].type=='time'"
+                                                                    placeholder="{{currentRule[key].placeholder}}"
+                                                                    type="{{getCurrentType(key)}}">
+                                                            <input  *ngIf="getCurrentType(key)=='time'"
                                                                     formControlName="{{key}}" class="form-control"
-                                                                    placeholder="{{rules[key].placeholder}}"
+                                                                    placeholder="{{currentRule[key].placeholder}}"
                                                                     type="number">
 
                                                             <div [hidden]="data[key].valid ||data[key].pristine"
@@ -35,35 +35,34 @@
                                                             </div>
                                                         </div>
 
-                                                        <div *ngIf="rules[key].type=='date' || rules[key].type=='combodate'" class="row">
+                                                        <div *ngIf="getCurrentType(key)=='date' || getCurrentType(key)=='combodate'" class="row">
                                                             <div date-range-picker [params]="paramsDate" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" (fecha)="assignDate($event,key)">
                                                                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                                                                 <span *ngIf="data[key].value && data[key].value.start && data[key].value.end">{{(data[key].value.start || 'Inicio') +' - '+ (data[key].value.end || 'Fin') }}</span>
-                                                                <span *ngIf="!data[key].value">{{rules[key].title}}</span> <b class="caret"></b>
+                                                                <span *ngIf="!data[key].value">{{currentRule[key].title}}</span> <b class="caret"></b>
                                                             </div>
                                                         </div>
 
-                                                        <div *ngIf="rules[key].type=='select' || rules[key].type=='boolean' || rules[key].type=='filter'" class="row">
+                                                        <div *ngIf="getCurrentType(key)=='select' || getCurrentType(key)=='boolean' || getCurrentType(key)=='filter'" class="row">
                                                             <select formControlName="{{key}}" sm-dropdown class="ui fluid search selection dropdown">
-                                                                <option value="-1">{{rules[key].placeholder || 'Seleccione una opción'}}</option>
-                                                                <option *ngFor="let n of rules[key].source"  [attr.value]="n.id || n.value" >{{n.text}}</option>
+                                                                <option value="-1">{{currentRule[key].placeholder || 'Seleccione una opción'}}</option>
+                                                                <option *ngFor="let n of currentRule[key].source"  [attr.value]="n.id || n.value" >{{n.text}}</option>
                                                             </select>
                                                         </div>
 
                                                     </div>
 
                                                     <div class="{{db.classCol(2,2,2,2)}} padding-top-4">
-                                                        <button *ngIf="rules[key].object" type="button"
+                                                        <button *ngIf="currentRule[key].object" type="button"
                                                                 class="btn btn-box-tool fa fa-search text-blue" [attr.title]="db.msg.find"
-                                                                (click)="getLoadSearch($event,rules[key])">
+                                                                (click)="getLoadSearch($event,currentRule[key])">
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="{{db.classCol(4,4,4,4)}}" *ngIf="cond[rules[key].object?'object':rules[key].type]">
+                                            <div class="{{db.classCol(4,4,4,4)}}" *ngIf="getCondition(currentRule[key])">
                                                 <select formControlName="{{key+'Cond'}}" sm-dropdown class="ui fluid search selection dropdown">
-                                                    <option *ngFor="let n of cond[rules[key].object?'object':rules[key].type]"
-                                                            [attr.value]="n.id">{{n.text}}
+                                                    <option *ngFor="let n of getCondition(currentRule[key])" [attr.value]="n.id">{{n.text}}
                                                     </option>
                                                 </select>
                                             </div>

@@ -1,11 +1,9 @@
-import {
-    Component, OnInit, HostBinding, trigger, state, style, transition, animate, EventEmitter,
-    AfterViewInit
-} from '@angular/core';
+import {Component, OnInit,EventEmitter, AfterViewInit} from '@angular/core';
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {AnimationsManager} from "../../animations/AnimationsManager";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {TablesComponent} from "../../components/tables/tables.component";
+import {IRule} from "../../../com.zippyttech.common/rules/rule";
 
 var jQuery = require('jquery');
 var moment = require('moment');
@@ -30,9 +28,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     ngOnInit(){
         super.ngOnInit();
         this.initViewOptions();
-        this.loadPage().then(()=>{
-            this.model.refreshList();
-        });
+        this.loadPage();
     }
     ngAfterViewInit(){
         this.getInstance.emit(this);
@@ -70,14 +66,24 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_EXCEL')) >= this.model.dataList.count);
     }
 
-    setVisibleField(event,data)
+    setVisibleField(event,data:IRule)
     {
         if(event){
             event.preventDefault();
             event.stopPropagation();
         }
-        data.visible = ! data.visible;
+        data.permissions.visible = ! data.permissions.visible;
     }
+    private get getRulesList(){
+        let keys=[];
+        Object.keys(this.model.rules).forEach((i=>{
+            if((<IRule>this.model.rules[i]).include.list){
+                keys.push(i);
+            }
+        }).bind(this));
+        return keys;
+    }
+
     setCheckField(event,data){
         if(event){
             event.preventDefault();
@@ -112,16 +118,15 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
         }
     }
     loadPreferenceViewModel(){
-        let that = this;
         let temp={};
         let current=[];
         current=this.db.myglobal.getPreferenceViewModel(this.model.constructor.name,this.model.rules);
-        current.forEach(obj=>{
-            temp[obj.key]=that.model.rules[obj.key];
-            temp[obj.key].visible = obj.visible;
-        });
-        that.model.rules={};
-        Object.assign(that.model.rules,temp);
+        current.forEach((obj=>{
+            temp[obj.key]=this.model.rules[obj.key];
+            (<IRule>temp[obj.key]).permissions.visible = obj.visible;
+        }).bind(this));
+        this.model.rules={};
+        Object.assign(this.model.rules,temp);
     }
     savePreference(reset=false){
         let that = this;

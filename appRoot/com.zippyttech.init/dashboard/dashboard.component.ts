@@ -3,7 +3,7 @@ import {Http} from '@angular/http';
 import {ModalService} from "../../com.zippyttech.services/modal/modal.service";
 import {UserModel} from "../../com.zippyttech.access/user/user.model";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
-import {ModalParams, IModalDelete, IModalSave} from "../../com.zippyttech.services/modal/modal.types";
+import {IModalParams, IModalDelete, IModalSave} from "../../com.zippyttech.services/modal/modal.types";
 
 declare var SystemJS:any;
 
@@ -15,7 +15,7 @@ declare var SystemJS:any;
 })
 export class DashboardComponent implements OnInit{
     userModel:any = {};
-    modals:{name:string, params:ModalParams}[] = [];
+    modals:{name:string, params:IModalParams<any>}[] = [];
 
     constructor(public db:DependenciesBase,public http:Http,private ms:ModalService) {
     }
@@ -23,12 +23,13 @@ export class DashboardComponent implements OnInit{
     ngOnInit():void{
         this.userModel = new UserModel(this.db);
         this.userModel.loadData().then((()=> {
+            this.userModel.currentData = this.userModel.dataList.list[0];
             this.modals.push({
                     name: 'delete',
-                    params:{ model: this.userModel, selectedData: this.userModel.dataList.list[0]}
+                    params:{ model: this.userModel }
                 },{
                     name: 'save',
-                    params:{ model: this.userModel, afterRunning:()=>{alert("exit");}}
+                    params:{ model: this.userModel, extraParams:{ childKey:'account'}}
                 }
             );
         }).bind(this));

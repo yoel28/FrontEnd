@@ -16,6 +16,7 @@ export interface IElementsApp{
 @Injectable()
 export class DependenciesBase {
     public msg = StaticValues.msg;
+    public msgParams = StaticValues.msgParams;
     public classCol=StaticFunction.classCol;
     public classOffset=StaticFunction.classOffset;
     public pathElements=StaticValues.pathElements;
@@ -36,6 +37,14 @@ export class DependenciesBase {
     }
 
     public debugLog =  this.myglobal.debugLog.bind(this.myglobal);
+
+    public evalMe(data:any,exp){
+        try{
+            return eval(exp);
+        }catch (exception){
+            this.debugLog(['Error evalMe',data,exp,exception])
+        }
+    }
 
     //TODO: BUSCAR en CLUB y IPANAMA
     public goPage(url:string,event=null,params:NavigationExtras={}) {

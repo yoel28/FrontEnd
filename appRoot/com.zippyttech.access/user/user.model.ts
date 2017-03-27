@@ -1,136 +1,172 @@
 import {ModelBase} from "../../com.zippyttech.common/modelBase";
 import {RoleModel} from "../role/role.model";
-import {StaticValues} from "../../com.zippyttech.utils/catalog/staticValues";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {IView} from "../../com.zippyttech.common/modelRoot";
+import {TextRule} from "../../com.zippyttech.common/rules/text.rule";
+import {ImageRule} from "../../com.zippyttech.common/rules/image.rule";
+import {BooleanRule} from "../../com.zippyttech.common/rules/boolean.rule";
+import {PasswordRule} from "../../com.zippyttech.common/rules/password.rule";
+import {ObjectRule} from "../../com.zippyttech.common/rules/object.rule";
 
 export class UserModel extends ModelBase{
-    private role:any;
-    public pathElements=StaticValues.pathElements;
 
+    private role:any;
     constructor(public db:DependenciesBase){
         super(db,'/users/');
-        this.display = 'username';
         this.initModel(false);
         this.loadDataExternal();
     }
     modelExternal() {
         this.role= new RoleModel(this.db);
     }
+
+    initView(params:IView){
+        params.title = "Usuario";
+        params.display = this.nameClass+"Username";
+        params.eval = this.db.myglobal.getRule('USER_DISPLAY_WEB');
+    }
+
     initRules(){
-        this.rules['email']={
-            'type': 'email',
-            'email':true,
-            'required':true,
-            'setEqual':'username',
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'email',
-            'title': 'Correo electrónico',
-            'placeholder': 'Correo electrónico',
-        };
+        this.rules['email']= new TextRule({
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            email:true,
+            required:true,
+            // 'setEqual':'username', //TODO: ubicar clave en components form
+            key: 'email',
+            title: 'Correo electrónico',
+            placeholder: 'Correo electrónico',
+        });
 
-        this.rules['idCard']={
-            'type': 'text',
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'idCard',
-            'title': 'Cédula',
-            'placeholder': 'Cédula',
-        };
-        this.rules['username']={
-            'type': 'text',
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'username',
-            'title': 'Usuario',
-            'placeholder': 'Usuario',
-        };
-        this.rules['name']={
-            'type': 'text',
-            'required':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'name',
-            'title': 'Nombre',
-            'placeholder': 'Nombre',
-        };
-        this.rules['phone']={
-            'type': 'phone',
-            'forceInSave':true,
-            'update':this.permissions.update,
-            'search':this.permissions.filter,
-            'visible':this.permissions.visible,
-            'key': 'phone',
-            'title': 'Teléfono',
-            'placeholder': 'Teléfono',
-        };
+        this.rules['idCard']= new TextRule({
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            key: 'idCard',
+            title: 'Cédula',
+            placeholder: 'Cédula',
+        });
 
-        this.rules['image']={
-            'type': 'image',
-            'exclude':true,
-            'update':this.permissions.update,
-            'visible':this.permissions.visible,
-            'key': 'image',
-            'default':this.db.pathElements.robot,
-            'title': 'Imagen',
-            'placeholder': 'Imagen',
-        };
-        this.rules["accountLocked"] = {
-            'update':this.permissions.update,
-            'visible':this.permissions.visible,
-            'search':this.permissions.filter,
-            'icon': 'fa fa-list',
-            "type": "boolean",
-            'source': [
+        this.rules['username']= new TextRule({
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            include:{
+                save:false,
+                list:true,
+                filter:true
+            },
+            key: 'username',
+            title: 'Usuario',
+            placeholder: 'Usuario',
+        });
+
+        this.rules['name']= new TextRule({
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            required:true,
+            key: 'name',
+            title: 'Nombre',
+            placeholder: 'Nombre',
+        });
+
+        this.rules['phone']=new TextRule({
+            permissions:{
+                update:this.permissions.update,
+                search:this.permissions.filter,
+                visible:this.permissions.visible,
+            },
+            components:{
+                form:{
+                    force:true //TODO: Agregar regla en el form
+                }
+            },
+            key: 'phone',
+            title: 'Teléfono',
+            placeholder: 'Teléfono',
+        });
+
+        this.rules['image']= new ImageRule({
+            permissions:{
+                update:this.permissions.update,
+                visible:this.permissions.visible,
+            },
+            include:{
+                save:false,
+                list:true,
+                filter:false
+            },
+            exclude:true,
+            key: 'image',
+            title: 'Imagen',
+            placeholder: 'Imagen',
+        });
+
+        this.rules["accountLocked"] = new BooleanRule({
+            permissions:{
+                update:this.permissions.update,
+                visible:this.permissions.visible,
+                search:this.permissions.filter,
+            },
+            include:{
+                save:false,
+                list:true,
+                filter:true
+            },
+            source: [
                 {
-                    'value': true,
-                    'text': 'Sin verificar',
-                    'class': 'btn-transparent  text-red',
-                    'title': 'Sin verificar',
-                    'icon': 'fa fa-exclamation-circle'
+                    value: true,
+                    text: 'Sin verificar',
+                    class: 'btn-transparent  text-red',
+                    title: 'Sin verificar',
+                    icon: 'fa fa-exclamation-circle'
                 },
                 {
-                    'value': false,
-                    'text': 'Verificado',
-                    'class': 'btn-transparent text-blue',
-                    'title': 'Verificado',
-                    'icon': 'fa fa-check-circle'
+                    value: false,
+                    text: 'Verificado',
+                    class: 'btn-transparent text-blue',
+                    title: 'Verificado',
+                    icon: 'fa fa-check-circle'
                 }
             ],
-            "key": "accountLocked",
-            "title": "Verificada",
-            "placeholder": "¿Cuenta verificada?",
-        };
+            key: "accountLocked",
+            title: "Verificada",
+            placeholder: "¿Cuenta verificada?",
+        });
 
-        this.rules['roles']=this.role.ruleObject;
-        this.rules['roles'].type= 'checklist';
-        this.rules['roles'].update= this.permissions.update;
-        this.rules['roles'].mode= 'popup';
-        this.rules['roles'].showbuttons=true;
-        this.rules['roles'].source=[];
-        this.rules['roles'].search=false;
-        this.rules['roles'].exclude=true;
+        this.rules['roles']=new ObjectRule({
+            model: this.role,
+            required:false,
+            update:this.permissions.update,
+            source:[]
+        });
 
-        this.rules['password']={
-            'type': 'password',
-            'required':true,
-            'exclude':true,
-            'minLength':6,
-            'update':this.permissions.update,
-            'visible':this.permissions.visible,
-            'key': 'password',
-            'showbuttons':true,
-            'title': 'Contraseña',
-            'placeholder': 'Contraseña',
-        };
-
+        this.rules['password']= new PasswordRule({
+            permissions:{
+                update:this.permissions.update,
+                visible:this.permissions.visible,
+            },
+            required:true,
+            exclude:true,
+            minLength:6,
+            key: 'password',
+            showbuttons:true,
+            title: 'Contraseña',
+            placeholder: 'Contraseña',
+        });
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
-        delete this.rules['detail'];
+
     }
     public updateProfile(){
         this.setEndpoint('/auto/update');
@@ -156,23 +192,7 @@ export class UserModel extends ModelBase{
     initParamsSave() {
         this.paramsSave.title="Agregar usuario"
     }
-    initRuleObject() {
-        this.ruleObject.title="Usuario";
-        this.ruleObject.placeholder="Ingrese el usuario";
-        this.ruleObject.keyDisplay='user';
-        this.ruleObject.key='user';
-        this.ruleObject.eval=this.db.myglobal.getRule('USER_DISPLAY_WEB');
-        this.ruleObject.code="userId";
-    }
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.id;
-        delete this.rulesSave.roles;
-        delete this.rulesSave.enabled;
-        delete this.rulesSave.image;
-        delete this.rulesSave.accountLocked;
-        delete this.rulesSave.username;
-    }
+
     loadDataExternal() {
         if(this.db.myglobal.publicData && this.db.myglobal.publicData['roles'])
         {
@@ -191,7 +211,7 @@ export class UserModel extends ModelBase{
     loadRoles(){
         this.db.myglobal.publicData['roles'].forEach((obj=> {
             if(this.rules['roles']){
-                this.rules['roles'].source.push({'value': obj.id, 'text': obj.authority});
+                this.rules['roles'].source.push({value: obj.id, text: obj.authority});
             }
         }).bind(this));
         this.completed = true;

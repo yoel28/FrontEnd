@@ -11,7 +11,8 @@ System.config({
   paths: {
     // paths serve as alias
     'npm:': 'node_modules/',
-    'npmR:': 'https://unpkg.com/',
+    'npmR:': 'node_modules/',
+    //'npmR:': 'https://unpkg.com/',
     'app:': 'appRoot/',
   },
   // meta: {
