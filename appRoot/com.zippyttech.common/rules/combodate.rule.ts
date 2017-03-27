@@ -1,9 +1,9 @@
 import {IRule} from "./rule";
 import {IEditable, EditableMethods} from "./editable.types";
 
-
+type dateOptions = 'date' | 'datetime';
 export interface ICombodate  extends IRule,IEditable{
-    date:'date' | 'datetime';
+    date:dateOptions;
 }
 
 export class CombodateRule extends EditableMethods{
@@ -12,10 +12,10 @@ export class CombodateRule extends EditableMethods{
         super(rule);
     }
 
-    get date():'date' | 'datetime'{
+    get date():dateOptions{
         return this.attributes.date || 'date';
     }
-    set date(value:'date' | 'datetime'){ //TODO: validar tipos de date
+    set date(value:dateOptions){
         (<ICombodate>this.attributes).date = value;
     }
 
