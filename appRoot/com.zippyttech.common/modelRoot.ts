@@ -9,7 +9,6 @@ import {TextRule} from "./rules/text.rule";
 import {CombodateRule} from "./rules/combodate.rule";
 
 var moment = require('moment');
-var jQuery = require('jquery');
 
 interface IDataActionParams{
     id?:string;
