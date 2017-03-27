@@ -10,10 +10,10 @@ export class PasswordRule extends Editable{
     }
 
     get value():string{
-        return '....'
+        return '*****'
     }
     get defaultValue():string{
-        return '....'
+        return '*****'
     }
 
 }
