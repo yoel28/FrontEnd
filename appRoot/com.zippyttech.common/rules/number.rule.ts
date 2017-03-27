@@ -1,9 +1,10 @@
-import {IRule, Rule} from "./rule";
+import {IRule} from "./rule";
+import {EditableMethods} from "./editable.types";
 
 interface INumber  extends IRule{
     step?:string;
 }
-export class NumberRule extends Rule{
+export class NumberRule extends EditableMethods{
 
     constructor(private rule:INumber){
         super(rule);
@@ -14,5 +15,9 @@ export class NumberRule extends Rule{
     }
     set step(value:string){
         this.attributes.step = value;
+    }
+
+    get defaultValue():string{
+        return this.attributes.defaultValue || '0'
     }
 }

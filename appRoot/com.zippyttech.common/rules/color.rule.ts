@@ -1,7 +1,6 @@
 import {IRule, Rule} from "./rule";
 
 export interface IColor  extends IRule{
-     value?:string,
 }
 export class ColorRule extends Rule{
 
@@ -10,9 +9,7 @@ export class ColorRule extends Rule{
     }
 
     get value():string{
-        return this.attributes.value;
+        return this.attributes.value || '#FFFFFF'
     }
-    set value(value:string){
-        this.attributes.value = value;
-    }
+
 }

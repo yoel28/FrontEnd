@@ -8,9 +8,11 @@ export interface IRule{
     icon?:string,
     prefix?:string,
     disabled?:string,
-    showbuttons?:boolean,
+    value?:string,
     check?:boolean,
     readOnly?:boolean,
+    minLength?:number;
+    maxLength?:number;
     refreshField?:{
 
     }
@@ -37,7 +39,7 @@ export class Rule {
 
     public attributes:any={};
 
-    constructor(private data:Object){
+    constructor(data:Object){
         Object.assign(this.attributes,data);
     }
 
@@ -104,11 +106,11 @@ export class Rule {
         this.attributes.disabled = value;
     }
 
-    get showbuttons():boolean{
-        return this.attributes.showbuttons || false;
+    get value():string{
+        return this.attributes.value;
     }
-    set showbuttons(value:boolean){
-        this.attributes.showbuttons = value;
+    set value(value:string){
+        this.attributes.value = value;
     }
 
     get check():boolean{
@@ -125,8 +127,22 @@ export class Rule {
         this.attributes.readOnly = value;
     }
 
+    get minLength():number{
+        return this.attributes.minLength || null;
+    }
+    set minLength(value:number){
+        this.attributes.minLength = value;
+    }
+
+    get maxLength():number{
+        return this.attributes.maxLength || null;
+    }
+    set maxLength(value:number){
+        this.attributes.maxLength = value;
+    }
+
     get refreshField():Object{
-        return this.attributes.refreshField || {};
+        return this.attributes.refreshField || null;
     }
     set refreshField(value:Object){
         this.attributes.refreshField = value;

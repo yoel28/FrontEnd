@@ -1,9 +1,10 @@
-import {IRule, Rule} from "./rule";
+import {IRule} from "./rule";
+import {EditableMethods} from "./editable.types";
 
 export interface IText extends IRule{
     email?:boolean;
 }
-export class TextRule extends Rule{
+export class TextRule extends EditableMethods{
 
     constructor(private rule:IText){
         super(rule);
@@ -13,6 +14,6 @@ export class TextRule extends Rule{
         this.attributes.email = value;
     }
     get email():boolean{
-        return this.attributes.email;
+        return this.attributes.email || false;
     }
 }
