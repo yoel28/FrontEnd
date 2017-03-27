@@ -1,15 +1,14 @@
-import {Rule} from "./rule";
-import {EditableMethods} from "./editable.types";
+import {Editable, IEditable} from "./editable.types";
 
 interface ISelectSource {
     value:string;
     text:string;
 }
 
-export interface ISelect  extends EditableMethods{
+export interface ISelect  extends IEditable{
     source?:Array<ISelectSource>;
 }
-export class SelectRule extends Rule{
+export class SelectRule extends Editable{
 
     constructor(private rule:ISelect){
         super(rule);

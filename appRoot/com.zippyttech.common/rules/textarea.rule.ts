@@ -1,10 +1,9 @@
-import {IRule} from "./rule";
-import {EditableMethods} from "./editable.types";
+import {Editable, IEditable} from "./editable.types";
 
-export interface ITextarea  extends IRule{
+export interface ITextarea  extends IEditable{
 
 }
-export class TextareaRule extends EditableMethods{
+export class TextareaRule extends Editable{
 
     constructor(private rule:ITextarea){
         super(rule);

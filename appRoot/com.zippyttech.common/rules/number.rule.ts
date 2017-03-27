@@ -1,10 +1,10 @@
 import {IRule} from "./rule";
-import {EditableMethods} from "./editable.types";
+import {Editable} from "./editable.types";
 
 interface INumber  extends IRule{
     step?:string;
 }
-export class NumberRule extends EditableMethods{
+export class NumberRule extends Editable{
 
     constructor(private rule:INumber){
         super(rule);

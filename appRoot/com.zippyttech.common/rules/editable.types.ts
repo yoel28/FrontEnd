@@ -1,7 +1,8 @@
-import {Rule} from "./rule";
+import {Rule, IRule} from "./rule";
 
 type placementOptions = 'top'|'bottom'|'right'|'left';
-export interface IEditable{
+
+export interface IEditable extends IRule{
     placement?:placementOptions;
     inputclass?:string; //CSS class automatically applied to input
     highlight?:string; //Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.
@@ -9,7 +10,7 @@ export interface IEditable{
     defaultValue?:string; // Value that will be displayed in input if original field value is empty (null|undefined|'').
 }
 
-export class EditableMethods extends Rule{
+export class Editable extends Rule{
 
     constructor(rule:Object){
         super(rule);

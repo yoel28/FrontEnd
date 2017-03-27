@@ -1,12 +1,11 @@
-import {IRule} from "./rule";
-import {IEditable, EditableMethods} from "./editable.types";
+import {IEditable, Editable} from "./editable.types";
 
 type dateOptions = 'date' | 'datetime';
-export interface ICombodate  extends IRule,IEditable{
+export interface ICombodate  extends IEditable{
     date:dateOptions;
 }
 
-export class CombodateRule extends EditableMethods{
+export class CombodateRule extends Editable{
 
     constructor(private rule:ICombodate){
         super(rule);

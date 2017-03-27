@@ -1,10 +1,9 @@
-import {IRule} from "./rule";
-import {EditableMethods} from "./editable.types";
+import {Editable, IEditable} from "./editable.types";
 
-export interface IText extends IRule{
+export interface IText extends IEditable{
     email?:boolean;
 }
-export class TextRule extends EditableMethods{
+export class TextRule extends Editable{
 
     constructor(private rule:IText){
         super(rule);
