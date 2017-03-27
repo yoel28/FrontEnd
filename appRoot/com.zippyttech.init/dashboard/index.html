@@ -1,8 +1,4 @@
 <div class="content">
 
-    <template [ngIf]="userModel.dataList && userModel.dataList.list">
-        <button *ngFor="let N of modals" class="btn btn-green" (click)="ms.show(N.name,N.params)">{{N.name}}</button>
-    </template>
 
-    <div *ngIf="!(userModel.dataList && userModel.dataList.list)"><i class="fa fa-spinner fa-spin"></i></div>
 </div>
