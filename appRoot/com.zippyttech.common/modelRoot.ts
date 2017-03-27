@@ -637,13 +637,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
     }
 
-    goPage(url:string,event?) {
-        if (event)
-            event.preventDefault();
-        let link = [url, {}];
-        this.db.router.navigate(link);
-    }
-
     public updateModelFilter(event,key){
         if(event)
             event.preventDefault();

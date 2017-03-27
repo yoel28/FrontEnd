@@ -1,39 +1,30 @@
-<div class="dm"  *ngIf="sessionValid">
-    {{this.loadPage()}}
-    <header class="main-header">
+<div class="app-view">
+    <header *ngIf="sessionValid" class="main-header">
         <a href="#" [routerLink]="['/init/dashboard']" class="logo">
             <img [attr.src]="db.pathElements.miniLogo" class="img-logo">
         </a>
         <nav class="navbar navbar-static-top" role="navigation">
-            <a *ngIf="menuType.value && menuType.value.list" href="#" class="sidebar-toggle"  data-toggle="offcanvas"
-               role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
-            <a *ngIf="menuType.value && menuType.value.modal" type="button"
-               class="btn btn-blue glyphicon glyphicon-th"
-               style="font-size: x-large" data-toggle="modal" data-target="#myMenu">
-            </a>
+            <span *ngIf="enablesNavMenus.tree" (click)="toggleTreeMenu()">
+                <i class="fa fa-list"></i>
+            </span>
+            <span *ngIf="enablesNavMenus.modal" (click)="toggleModalMenu()">
+                <i class="fa fa-list"></i>
+            </span>
 
-            <a *ngIf="getLocalStorage('accountList')" type="button"
-               class="btn btn-blue glyphicon glyphicon-cog"
-               style="font-size: x-large"  (click)='changeAccount($event)'
-                title="Cambiar cuenta"
-            >
+            <a *ngIf="getLocalStorage('accountList')" type="button" title="Cambiar cuenta"
+               class="btn btn-blue glyphicon glyphicon-cog" style="font-size: x-large"  (click)='changeAccount($event)'>
             </a>
-
 
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
                     <li class="dropdown user user-menu">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="user-image"
-                                 alt="User Image">
+                            <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="user-image" alt="User Image">
                             <span class="hidden-xs">{{db.myglobal.user.email}}</span>
                         </a>
                         <ul class="dropdown-menu">
                             <li class="user-header">
-                                <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle"
-                                     alt="User Image">
+                                <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle" alt="User Image">
                             </li>
                             <li class="user-footer">
                                 <div class="user-btns">
@@ -47,116 +38,59 @@
             </div>
         </nav>
     </header>
-
-    <aside class="main-sidebar" *ngIf="menuType.value && menuType.value.list">
-        <section class="sidebar">
-            <div class="user-panel cursor-pointer" (click)='onProfile()'>
-                <div class="image">
-                    <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle">
-                </div>
-                <div class="info">
-                    <span class="name">{{db.myglobal.user.name}}</span>
-                    <span class="company" *ngIf="db.myglobal.user.companyName && db.myglobal.user.companyName!=''">
-                        <i class="fa fa-industry"></i> {{db.myglobal.user.companyName}}
-                    </span>
-                </div>
-            </div>
-            <ul class="sidebar-menu">
-                <li class="header"><i class="fa fa-circle text-success"></i> {{db.myglobal.user.email}}</li>
-                <li *ngFor="let item of menuItemsVisible(menuItems.value)"
-                    [class.treeview]="item.treeview"
-                    [class.active]="item.key && item.select"
-                >
-                    <a *ngIf="item.routerLink" href="#" [routerLink]="[item.routerLink]">
-                        <i class="{{item.icon}}"></i>
-                        <span>{{item.title}}</span>
-                    </a>
-                    <a *ngIf="item.key" (click)="activeMenu($event,item.key)">
-                        <i class="{{item.icon}}"></i>
-                        <span>{{item.title}}</span>
-                        <i class="fa fa-angle-left pull-right"></i>
-                    </a>
-
-                    <ul [@animation_0] = 'item.select?"true":"false"' *ngIf="item.treeview" class="treeview-menu">
-                        <li *ngFor="let subItem of menuItemsVisible(item.treeview)">
-                            <a *ngIf="subItem.routerLink" href="#" [routerLink]="[subItem.routerLink]">
-                                <i class="{{subItem.icon}}"></i>
-                                <span>{{subItem.title}}</span>
-                            </a>
-                            <a *ngIf="subItem.modal" (click)="subItem.function($event,db.myglobal)" data-toggle="modal"
-                               [attr.data-target]="subItem.modalId">
-                                <i class="{{subItem.icon}}"></i> <span>{{subItem.title}}</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+    <main>
+        <aside class="main-sidebar" *ngIf="sessionValid && enablesNavMenus.tree">
+            <nav-menu [state]="navMenuState"> </nav-menu>
+        </aside>
+        <section class="content-wrapper">
+            <router-outlet></router-outlet>
         </section>
-    </aside>
+    </main>
+    <footer *ngIf="sessionValid" class="main-footer">
+        <div class="pull-right hidden-xs"> {{db.myglobal.user.account}} </div>
+        <strong>Copyright &copy; 2017 <a href="#">{{db.myglobal.user.account}}</a>.</strong> Todos los derechos reservados.
+        <br/>En caso de error comunicarse al {{db.myglobal.getParams('PHONE_SUPPORT')}} / {{ replace(db.myglobal.getParams('EMAIL_SUPPORT')) }}
+        <a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{db.msg.termConditions}}</a>
+    </footer>
 </div>
-<div [class.content-wrapper]="sessionValid" >
-
-    <router-outlet></router-outlet>
-
-    <ng2-toasty [position]="'top-right'"></ng2-toasty>
-</div>
-<div *ngIf="sessionValid" class="subir-top">
-    <div class="main-footer-container noprint">
-        <footer class="main-footer">
-            <div class="pull-right hidden-xs">
-                {{db.myglobal.user.account}}
-            </div>
-            <strong>Copyright &copy; 2017 <a href="#">{{db.myglobal.user.account}}</a>.</strong> Todos los derechos reservados.
-            <br/>En caso de error comunicarse al
-            {{db.myglobal.getParams('PHONE_SUPPORT')}} / {{ replace(db.myglobal.getParams('EMAIL_SUPPORT')) }}
-            <a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{db.msg.termConditions}}</a>
-        </footer>
-    </div>
-    <div *ngIf="menuType.value && menuType.value.modal" class="modal fade" id="myMenu" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"
-                            style="color:#fff; opacity: 1;"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel" style="color:#fff; font-size:15pt;">Men&uacute;
-                        Principal</h4>
-                </div>
-                <div class="modal-body menu-modal">
-                    <div *ngFor="let item of menuItemsTreeview(menuItems.value)"
-                         [class.treeview]="item.treeview">
-                        <a *ngIf="item.routerLink" data-dismiss="modal" class="a-menu-modal" href="#"
-                           [routerLink]="[item.routerLink]">
-                            <i *ngIf="!item.image" class="{{item.icon}}"></i>
-                            <img *ngIf="item.image" src="{{item.image}}"/>
-                            <p>{{item.title}}</p>
-                        </a>
-                        <div class="row" *ngIf="item.treeview">
-                            <h1 style="color:#ffffff; font-size: 12pt;">{{item.title}}</h1><br/>
-                            <div class="col-lg-2 col-md-2" *ngFor="let subItem of menuItemsVisible(item.treeview)">
-                                <a *ngIf="subItem.routerLink" data-dismiss="modal" href="#" class="a-menu-modal"
-                                   [routerLink]="[subItem.routerLink]">
-                                    <i class="{{subItem.icon}}"></i>
-                                    <p>{{subItem.title}}</p>
-                                </a>
-                                <a *ngIf="subItem.modal" data-dismiss="modal" (click)="subItem.function($event)"
-                                   class="a-menu-modal" data-toggle="modal" [attr.data-target]="subItem.modalId">
-                                    <i class="{{subItem.icon}}"></i>
-                                    <p>{{subItem.title}}</p>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-</div>
-
+<ng2-toasty [position]="'top-right'"></ng2-toasty>
 <modal></modal>
+
+<!--<div *ngIf="enablesNavMenus.modal && false" class="modal fade" id="myMenu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
+    <!--<div class="modal-dialog" role="document">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity: 1;">-->
+                    <!--<span aria-hidden="true">&times;</span>-->
+                <!--</button>-->
+                <!--<h4 class="modal-title" id="myModalLabel" style="color:#fff; font-size:15pt;">Men&uacute; Principal</h4>-->
+            <!--</div>-->
+            <!--<div class="modal-body menu-modal">-->
+                <!--<div *ngFor="let item of menuItemsTreeview(menuItems.value)" [class.treeview]="item.treeview">-->
+                    <!--<a *ngIf="item.routerLink" data-dismiss="modal" class="a-menu-modal" href="#" [routerLink]="[item.routerLink]">-->
+                        <!--<i *ngIf="!item.image" class="{{item.icon}}"></i>-->
+                        <!--<img *ngIf="item.image" src="{{item.image}}"/>-->
+                        <!--<p>{{item.title}}</p>-->
+                    <!--</a>-->
+                    <!--<div class="row" *ngIf="item.treeview">-->
+                        <!--<h1 style="color:#ffffff; font-size: 12pt;">{{item.title}}</h1><br/>-->
+                        <!--<div class="col-lg-2 col-md-2" *ngFor="let subItem of menuItemsVisible(item.treeview)">-->
+                            <!--<a *ngIf="subItem.routerLink" data-dismiss="modal" href="#" class="a-menu-modal" [routerLink]="[subItem.routerLink]">-->
+                                <!--<i class="{{subItem.icon}}"></i>-->
+                                <!--<p>{{subItem.title}}</p>-->
+                            <!--</a>-->
+                            <!--<a *ngIf="subItem.modal" data-dismiss="modal" (click)="subItem.function($event)"-->
+                               <!--class="a-menu-modal" data-toggle="modal" [attr.data-target]="subItem.modalId">-->
+                                <!--<i class="{{subItem.icon}}"></i>-->
+                                <!--<p>{{subItem.title}}</p>-->
+                            <!--</a>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
 
 <!--<div *ngIf="info && (info.permissions.add || info.permissions.update)">-->
 <!--<save-view *ngIf="info" [rules]="info.rulesSave" [params]="info.paramsSave" (getInstance)="setInstance($event,info.prefix)" ></save-view>-->

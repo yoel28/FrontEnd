@@ -1,18 +1,17 @@
-.main-sidebar{
-  background-color: #222d32 !important;
-  z-index: 99 !important;
+
+
+
+/*OLD*/
+.content-wrapper{
+  position: relative;
+  height: 100%;
+  border-radius: 0px !important;
+  z-index: 10 !important;
+  overflow: scroll;
 }
 
 .wrapper{
   background-color: #ecf0f5 !important;
-}
-
-.content-wrapper{
-    position: relative;
-    height: 100%;
-    border-radius: 0px !important;
-    z-index: 10 !important;
-    overflow: scroll;
 }
 
 .main-footer-container{
@@ -24,19 +23,10 @@
   overflow: hidden;
 }
 
-.treeview-menu{
-  margin-top: -2px !important;
-  display: block;
-  overflow: hidden;
-}
-
 .tab-content {
   background: black;
 }
 
-.control-sidebar-dark{
-  background: transparent;
-}
 
 .cargar{
   color: white;
@@ -68,34 +58,6 @@
   margin-bottom: 0px !important;
 }
 
-
-.modal-fullscreen {
-  background: transparent;
-}
-
-.modal-fullscreen .modal-content {
-  background: transparent;
-  border: 0;
-  -webkit-box-shadow: none;
-  box-shadow: none;
-}
-
-.modal-backdrop.modal-backdrop-fullscreen {
-  background: #FFF;
-}
-
-.modal-backdrop.modal-backdrop-fullscreen.in {
-  opacity: .97;
-  filter: alpha(opacity=97);
-}
-
-.modal-fullscreen .modal-dialog {
-  margin: 0;
-  margin-right: auto;
-  margin-left: auto;
-  width: 100%;
-}
-
 @media (min-width: 768px) {
   .modal-fullscreen .modal-dialog {
     width: 750px;
@@ -119,43 +81,6 @@
   font-weight: 100;
   font-size: small;
   color: white;
-}
-
-.modal .modal-dialog .modal-content {
-  background: #FFF;
-}
-
-.modal.in .modal-dialog:not(.send){
-  width: 80%;
-}
-
-.a-menu-modal{
-  color: #fff;
-}
-
-.menu-modal .col-lg-2.col-md-2 {
-  height: 100px;
-  text-align: center;
-}
-
-.menu-modal i{
-  font-size: 50pt;
-}
-
-.subir-top{
-  /*margin-top: -50px;*/
-}
-
-.logo{
-  padding: 0px;
-}
-
-.img-logo{
-  position: relative;
-  width: 50px;
-  height: 50px;
-  left: 0px;
-  margin: 0 auto;
 }
 
 /*USER DROPDOWN*/

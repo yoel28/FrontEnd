@@ -73,46 +73,19 @@
 </div>
 
 <!--########################################MODALS########################################-->
-
-<!--<div *ngIf="model.permissions.delete && model.actions && model.actions['delete']">-->
-    <!--<div class="modal fade" [attr.id]="model.actions['delete'].id" tabindex="-1" role="dialog"-->
-         <!--aria-labelledby="myModalLabel">-->
-        <!--<div class="modal-dialog" role="document">-->
-            <!--<div class="modal-content">-->
-                <!--<div class="modal-header btn-red text-center">-->
-                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
-                            <!--aria-hidden="true">&times;</span></button>-->
-                    <!--<h3 class="modal-title" id="myModalLabel"><i-->
-                            <!--class="fa fa-warning"></i>&nbsp;<strong>{{db.msg.warningTitle}}&nbsp;-->
-                        <!--<tooltip-view [code]="model.prefix+'_10'"></tooltip-view>-->
-                    <!--</strong></h3>-->
-                <!--</div>-->
-                <!--<div class="modal-body">-->
-                    <!--{{model.actions['delete'].message}} <strong>'{{paramsData.select[model.actions['delete'].key]}}'</strong>-->
-                    <!--?-->
-                <!--</div>-->
-                <!--<div class="modal-footer">-->
-                    <!--<button type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">&nbsp;{{db.msg.warningButtonExit}}</button>-->
-                    <!--<button (click)="model.onDelete($event,paramsData.select.id)" data-dismiss="modal" type="button"-->
-                            <!--class="btn btn-red fa fa-trash">&nbsp;{{db.msg.delete}}-->
-                    <!--</button>-->
-                <!--</div>-->
-            <!--</div>-->
+<!--LOCATION!!-->
+<!--<template [ngIf]="paramsData && paramsData.locationParams">-->
+    <!--<modal-view [params]="modalLocation">-->
+        <!--<div body>-->
+            <!--<location-picker [params]="paramsData.locationParams"></location-picker>-->
         <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
+        <!--<div  *ngIf="!paramsData.locationParams.disabled" footer>-->
+            <!--<button class="btn btn-success" (click)="saveLocation($event)" >{{db.msg.save}}</button>-->
+        <!--</div>-->
+    <!--</modal-view>-->
+<!--</template>-->
 
-<!--PREGUNTAR DIFERENCIA A YOEL-->
-<!--<div *ngFor="let key of getObjectKeys(modelSave)">-->
-    <!--<save-view [rules]="modelSave[key].rulesSave" [params]="modelSave[key].paramsSave"-->
-               <!--(save)="getDataSave($event,key)"></save-view>-->
-<!--</div>-->
-
-<!--<div *ngIf="paramsData && paramsData.ruleReference && paramsData.ruleReference.paramsSave">-->
-    <!--<save-view [rules]="paramsData.ruleReference.rulesSave" [params]="paramsData.ruleReference.paramsSave" (save)="setDataFieldReference($event)"></save-view>-->
-<!--</div>-->
-
-<!---->
+<!--SEARCH!!-->
 <!--<div *ngIf="paramsData && paramsData.searchParams && !paramsData.searchParams.multiple && paramsData.searchParams.idModal">-->
     <!--<search-view [params]="paramsData.searchParams" (result)="getDataSearch($event)" (getInstance)="setInstanceSearch('unique',$event)"></search-view>-->
 <!--</div>-->
@@ -160,7 +133,6 @@
                         <!--</tr>-->
                         <!--</tbody>-->
                     <!--</table>-->
-
                 <!--</div>-->
                 <!--<div class="modal-footer">-->
                     <!--<button type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">&nbsp;{{db.msg.warningButtonExit}}</button>-->
@@ -170,16 +142,6 @@
     <!--</div>-->
 <!--</div>-->
 
-<!--<template [ngIf]="paramsData && paramsData.locationParams">-->
-    <!--<modal-view [params]="modalLocation">-->
-        <!--<div body>-->
-            <!--<location-picker [params]="paramsData.locationParams"></location-picker>-->
-        <!--</div>-->
-        <!--<div  *ngIf="!paramsData.locationParams.disabled" footer>-->
-            <!--<button class="btn btn-success" (click)="saveLocation($event)" >{{db.msg.save}}</button>-->
-        <!--</div>-->
-    <!--</modal-view>-->
-<!--</template>-->
 
 <!--<template [ngIf]="paramsData && paramsData.arrayData">-->
     <!--<modal-view [params]="modalRule">-->
