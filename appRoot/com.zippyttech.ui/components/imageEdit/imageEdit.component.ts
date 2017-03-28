@@ -1,7 +1,6 @@
 import {Component, EventEmitter} from '@angular/core';
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 
-declare var SystemJS:any;
 var moment = require('moment');
 
 @Component({

@@ -1,15 +1,14 @@
 import {Component} from '@angular/core';
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import {RestController} from "../../com.zippyttech.rest/restController";
-import {StaticValues} from "../../com.zippyttech.utils/catalog/staticValues";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-declare var SystemJS:any;
 @Component({
+    moduleId:module.id,
     selector: 'user-recover',
-    templateUrl: SystemJS.map.app+'com.zippyttech.auth/recover/index.html',
-    styleUrls: [ SystemJS.map.app+'com.zippyttech.auth/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ '../style.css'],
     animations: AnimationsManager.getTriggers("d-expand_down",200)
 })
 export class RecoverComponent extends RestController {

@@ -15,7 +15,6 @@ import {IModalConfig} from "../../com.zippyttech.services/modal/modal.types";
 
 var jQuery = require('jquery');
 
-declare var SystemJS: any;
 @Component({
     moduleId:module.id,
     selector: 'app',

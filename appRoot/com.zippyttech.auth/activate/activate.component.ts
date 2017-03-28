@@ -4,11 +4,10 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {ActivatedRoute} from "@angular/router";
 
 
-declare var SystemJS:any;
 @Component({
     selector: 'user-activate',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.auth/activate/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.auth/style.css']
+    templateUrl: 'index.html',
+    styleUrls: [ '../style.css']
 })
 export class ActivateComponent extends RestController implements OnInit{
     public activate={'status':false,'response':false};

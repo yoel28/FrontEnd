@@ -1,11 +1,12 @@
 import {Component, EventEmitter, OnInit, DoCheck} from '@angular/core';
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
-declare var SystemJS:any;
+
 @Component({
+    moduleId:module.id,
     selector: 'search-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/search/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/search/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     inputs:['params'],
     outputs:['result','getInstance'],
 })
@@ -37,7 +38,7 @@ export class SearchComponent extends RestController implements OnInit,DoCheck{
     ngDoCheck():void{
         this.getInstance.emit(this);
     }
-    getSearch(search){
+    getSearchAll(search){
         this.endpoint=this.params.endpoint+search;
         this.rest.where = this.params.where || [];
         this.loadData();

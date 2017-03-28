@@ -3,11 +3,11 @@ import {BaseViewInstance} from "../com.zippyttech.ui/view/base/baseView.instance
 import {DependenciesBase} from "./DependenciesBase";
 import {ActivatedRoute} from "@angular/router";
 
-declare var SystemJS:any;
 @Component({
+    moduleId:module.id,
     selector: 'basic-component',
-    templateUrl:SystemJS.map.app+'/com.zippyttech.ui/view/base/base.html',
-    styleUrls: [SystemJS.map.app+'/com.zippyttech.ui/view/base/style.css'],
+    templateUrl:'../com.zippyttech.ui/view/base/base.html',
+    styleUrls: ['../com.zippyttech.ui/view/base/style.css'],
     inputs:['model','viewActions'],
     outputs:['getInstance']
 })

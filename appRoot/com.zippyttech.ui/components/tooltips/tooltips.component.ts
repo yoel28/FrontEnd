@@ -3,14 +3,14 @@ import {InfoModel} from "../../../com.zippyttech.business/info/info.model";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
 
-declare var SystemJS:any;
 var moment = require('moment');
 var jQuery = require('jquery');
 
 @Component({
+    moduleId:module.id,
     selector: 'tooltip-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/tooltips/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/tooltips/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     inputs: ['code'],
 })
 export class TooltipComponent implements OnInit{

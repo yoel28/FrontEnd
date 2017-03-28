@@ -1,15 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import  {Validators, FormGroup,FormControl} from '@angular/forms';
 import {RestController} from "../../com.zippyttech.rest/restController";
-import {StaticValues} from "../../com.zippyttech.utils/catalog/staticValues";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {ActivatedRoute} from "@angular/router";
 
-declare var SystemJS:any;
 @Component({
+    moduleId:module.id,
     selector: 'user-recover-password',
-    templateUrl: SystemJS.map.app+'com.zippyttech.auth/recoverPassword/index.html',
-    styleUrls: [ SystemJS.map.app+'com.zippyttech.auth/style.css']
+    templateUrl: 'index.html',
+    styleUrls: [ '../style.css']
 })
 export class RecoverPasswordComponent extends RestController implements OnInit  {
 

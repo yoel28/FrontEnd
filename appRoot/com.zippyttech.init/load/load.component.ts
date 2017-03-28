@@ -1,14 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {globalService} from "../../com.zippyttech.utils/globalService";
 import {Router} from "@angular/router";
-import {FormControl} from "@angular/forms";
 
-declare var SystemJS:any;
 
 @Component({
+    moduleId:module.id,
     selector: 'load-page',
-    templateUrl: SystemJS.map.app+'com.zippyttech.init/load/index.html',
-    styleUrls: [ SystemJS.map.app+'com.zippyttech.init/load/style.css']
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css']
 })
 export class LoadComponent implements OnInit,OnDestroy{
 

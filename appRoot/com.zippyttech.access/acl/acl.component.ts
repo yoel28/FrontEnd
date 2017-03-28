@@ -5,8 +5,6 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {PermissionModel} from "../permission/permission.model";
 import {RoleModel} from "../role/role.model";
 
-declare var SystemJS:any;
-
 @Component({
     moduleId:module.id,
     selector: 'acl',

@@ -7,12 +7,10 @@ import { AngularFire, AuthProviders, AuthMethods } from 'angularfire2';
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-declare var SystemJS:any;
-
 @Component({
     selector: 'user-login',
-    templateUrl: SystemJS.map.app+'com.zippyttech.auth/login/index.html',
-    styleUrls: [ SystemJS.map.app+'com.zippyttech.auth/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ '../style.css'],
     animations: AnimationsManager.getTriggers("d-expand_down",200)
 })
 export class LoginComponent extends RestController implements OnInit,OnDestroy{

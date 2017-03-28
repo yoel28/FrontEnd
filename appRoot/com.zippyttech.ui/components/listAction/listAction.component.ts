@@ -1,11 +1,10 @@
-import {Component, EventEmitter, OnInit, Input} from "@angular/core";
+import {Component} from "@angular/core";
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {AnimationsManager} from "../../animations/AnimationsManager";
 import {FormComponent} from "../form/form.component";
 import {FormControl} from "@angular/forms";
 
-declare var SystemJS:any;
 var moment = require('moment');
 var jQuery = require('jquery');
 

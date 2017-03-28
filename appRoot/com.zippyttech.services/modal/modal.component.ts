@@ -1,11 +1,6 @@
-import {
-    Component, OnInit, DoCheck, TemplateRef, ElementRef, AfterContentInit,
-    AfterContentChecked, AfterViewInit, ApplicationRef, ViewChild, ViewChildren
-} from '@angular/core';
+import {Component, OnInit, ElementRef} from '@angular/core';
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
-import {ModalService} from "./modal.service";
 import {IModalConfig} from "./modal.types";
-declare var SystemJS:any;
 
 var jQuery = require('jquery');
 

@@ -2,8 +2,6 @@ import {Component, EventEmitter, AfterViewInit} from '@angular/core';
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 
-declare var SystemJS:any;
-
 
 var jQuery = require('jquery');
 //var google = require('google');
@@ -44,9 +42,10 @@ export interface ILocation{
 
 
 @Component({
+    moduleId:module.id,
     selector: 'location-picker',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/locationPicker/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/locationPicker/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     inputs:['params','model'],
     outputs:['result','getInstance'],
 })

@@ -6,7 +6,6 @@ export class RoleModel extends ModelRoot{
 
     constructor(public db:DependenciesBase){
         super(db,'/roles/');
-        this.display = 'authority';
         this.initModel();
     }
     initView(params:IView){

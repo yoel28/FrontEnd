@@ -3,13 +3,12 @@ import {RestController} from "../../com.zippyttech.rest/restController";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-declare var SystemJS:any;
 var jQuery = require('jquery');
 
 @Component({
     selector: 'account-select',
-    templateUrl: SystemJS.map.app+'com.zippyttech.auth/accountSelect/index.html',
-    styleUrls: [ SystemJS.map.app+'com.zippyttech.auth/accountSelect/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     animations: AnimationsManager.getTriggers("d-expand_down",200)
 })
 export class AccountSelectComponent extends RestController implements OnInit{
@@ -20,7 +19,6 @@ export class AccountSelectComponent extends RestController implements OnInit{
     }
 
     ngOnInit(){
-        this.dataList=[];
         localStorage.setItem("userTemp","true");
         if(!localStorage.getItem('accountList') && this.db.myglobal.dataSesion.valid){
             localStorage.removeItem('userTemp');
@@ -58,7 +56,7 @@ export class AccountSelectComponent extends RestController implements OnInit{
         this.db.router.navigate(link);
     }
     getClassIndex(index){
-        let size = this.dataList.length;
+        let size = this.dataList['length'];
         let row = Math.floor(size / 4);
 
 

@@ -1,14 +1,12 @@
 import {Component, EventEmitter, OnInit, DoCheck} from '@angular/core';
-import { Http} from '@angular/http';
 import {RestController} from "../../../com.zippyttech.rest/restController";
-import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
-import {ToastyService, ToastyConfig} from "ng2-toasty";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
-declare var SystemJS:any;
+
 @Component({
+    moduleId:module.id,
     selector: 'search-multiple-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/searchMultiple/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/searchMultiple/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     inputs:['params'],
     outputs:['result','getInstance'],
 })
@@ -35,7 +33,7 @@ export class SearchMultipleComponent extends RestController implements OnInit,Do
     ngDoCheck():void{
         this.getInstance.emit(this);
     }
-    getData(event){
+    getDataSearch(event){
         if(event)
             event.preventDefault();
         let data=[];

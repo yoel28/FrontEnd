@@ -4,13 +4,13 @@ import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
-declare var SystemJS:any;
 var moment = require('moment');
 
 @Component({
+    moduleId:module.id,
     selector: 'accordion-view',
-    templateUrl: SystemJS.map.app+'/com.zippyttech.ui/components/accordion/index.html',
-    styleUrls: [ SystemJS.map.app+'/com.zippyttech.ui/components/accordion/style.css'],
+    templateUrl: 'index.html',
+    styleUrls: [ 'style.css'],
     inputs:['params','model','dataList','where'],
     outputs:['getInstance'],
 })

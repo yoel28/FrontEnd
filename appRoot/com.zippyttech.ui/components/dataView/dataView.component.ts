@@ -2,7 +2,6 @@ import {Component, OnInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
 
-declare var SystemJS:any;
 var moment = require('moment');
 
 interface IDataView{

@@ -1,11 +1,9 @@
-import {Component, NgModule} from "@angular/core";
+import {Component} from "@angular/core";
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
-import {checkBinding} from "@angular/core/src/linker/view_utils";
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
 
 
-declare var SystemJS:any;
 var moment = require('moment');
 var jQuery = require('jquery');
 const Highcharts = require('highcharts');
