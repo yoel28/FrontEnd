@@ -1,8 +1,8 @@
 import {Component, EventEmitter, OnInit, AfterViewInit, NgModule} from "@angular/core";
 import {FormControl} from "@angular/forms";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
-import {globalService} from "../../../com.zippyttech.utils/globalService";
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
+import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
 @Component({
     selector: 'find-range-date-view',
@@ -19,7 +19,7 @@ export class FindRangeDateComponent implements OnInit,AfterViewInit {
     public paramsDate = StaticValues.formatDateDDMMYYYY;
     public itemsDate = StaticValues.itemsDate;
 
-    constructor(public myglobal:globalService) {
+    constructor(public db:DependenciesBase) {
         this.control = new FormControl('');
         this.dateRange = new EventEmitter();
     }
