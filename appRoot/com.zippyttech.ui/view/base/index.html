@@ -5,7 +5,7 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">
-                            <i class="{{model.ruleObject.icon||'fa fa-list-alt'}}"></i>{{'   '+(model.view.title | translate)}}
+                            <i class="{{model.icon||'fa fa-list-alt'}}"></i>{{'   '+(model.view.title | translate)}}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
                             &nbsp;<i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
                             <span *ngIf="model && model.dataList && model.dataList.count" class="page-info">
