@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
-import {IRule} from "../../../com.zippyttech.common/rules/rule";
+import {IRule, Rule} from "../../../com.zippyttech.common/rules/rule";
 
 var moment = require('moment');
 
@@ -92,7 +92,7 @@ export class TablesComponent implements OnInit {
     }
 
     changeOrder(sort){
-        if(sort && this.model && this.model.rules[sort] && this.model.rules[sort].search){
+        if(sort && this.model && this.model.rules[sort] && (<Rule>this.model.rules[sort]).permissions['search']){
             this.model.changeOrder(sort);
         }
     }
