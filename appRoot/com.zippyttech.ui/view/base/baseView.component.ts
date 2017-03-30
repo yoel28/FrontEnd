@@ -8,10 +8,9 @@ import {IRule} from "../../../com.zippyttech.common/rules/rule";
 var jQuery = require('jquery');
 var moment = require('moment');
 @Component({
-    moduleId:module.id,
     selector: 'base-view',
-    templateUrl: 'index.html',
-    styleUrls: ['style.css'],
+    templateUrl: './index.html',
+    styleUrls: ['./style.css'],
     inputs: ['instance'],
     outputs:['getInstance'],
     animations: AnimationsManager.getTriggers("d-slide_up|fade-fade",200)

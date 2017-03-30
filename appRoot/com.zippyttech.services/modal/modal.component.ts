@@ -5,10 +5,9 @@ import {IModalConfig} from "./modal.types";
 var jQuery = require('jquery');
 
 @Component({
-    moduleId:module.id,
     selector: 'modal',
-    templateUrl: 'template.html',
-    styleUrls:['modal.style.css']
+    templateUrl: './template.html',
+    styleUrls:['./modal.style.css']
 })
 export class ModalComponent implements OnInit{
     public config:IModalConfig;

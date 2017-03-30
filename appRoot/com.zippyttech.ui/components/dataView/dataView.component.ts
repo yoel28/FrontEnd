@@ -22,10 +22,9 @@ interface IDataView{
 
 
 @Component({
-    moduleId: module.id,
     selector: 'data-view',
-    templateUrl: 'template.html',
-    styleUrls: ['style.css'],
+    templateUrl: './template.html',
+    styleUrls: ['./style.css'],
     inputs:['model','dataParams']
 })
 export class DataViewComponent implements OnInit{

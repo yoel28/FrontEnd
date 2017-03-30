@@ -4,10 +4,9 @@ import {Router} from "@angular/router";
 
 
 @Component({
-    moduleId:module.id,
     selector: 'load-page',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css']
+    templateUrl: './index.html',
+    styleUrls: [ './style.css']
 })
 export class LoadComponent implements OnInit,OnDestroy{
 

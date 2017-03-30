@@ -3,10 +3,9 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
 var jQuery = require('jquery');
 @Component({
-    moduleId:module.id,
     selector: 'term-conditions',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css']
+    templateUrl: './index.html',
+    styleUrls: [ './style.css']
 })
 export class TermConditionsComponent implements OnInit{
     constructor(public db:DependenciesBase) {

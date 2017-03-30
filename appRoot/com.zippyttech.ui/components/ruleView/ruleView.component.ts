@@ -26,10 +26,9 @@ export interface IRuleView{
 
 var moment = require('moment');
 @Component({
-    moduleId:module.id,
     selector: 'rule-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['key','type','data','model','paramsData','disabled'],
     outputs:['getInstance'],
 })

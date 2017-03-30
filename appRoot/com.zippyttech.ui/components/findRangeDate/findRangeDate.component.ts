@@ -5,10 +5,9 @@ import {globalService} from "../../../com.zippyttech.utils/globalService";
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
 
 @Component({
-    moduleId:module.id,
     selector: 'find-range-date-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['params','control'],
     outputs:['dateRange'],
 })

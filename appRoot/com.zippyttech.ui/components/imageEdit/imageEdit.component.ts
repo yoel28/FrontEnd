@@ -4,10 +4,9 @@ import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 var moment = require('moment');
 
 @Component({
-    moduleId:module.id,
     selector: 'image-edit-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['params','image','default','edit'],
     outputs:['out'],
 })

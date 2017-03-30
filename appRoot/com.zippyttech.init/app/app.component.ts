@@ -16,10 +16,9 @@ import {IModalConfig} from "../../com.zippyttech.services/modal/modal.types";
 var jQuery = require('jquery');
 
 @Component({
-    moduleId:module.id,
     selector: 'app',
-    templateUrl: 'index.html',
-    styleUrls: ['style.css'],
+    templateUrl: './index.html',
+    styleUrls: ['./style.css'],
     animations: AnimationsManager.getTriggers("d-fade|expand_down", 150)
 })
 export class AppComponent extends RestController implements OnInit,AfterViewInit,AfterContentChecked,DoCheck {

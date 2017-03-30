@@ -7,10 +7,9 @@ var moment = require('moment');
 var jQuery = require('jquery');
 
 @Component({
-    moduleId:module.id,
     selector: 'tooltip-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs: ['code'],
 })
 export class TooltipComponent implements OnInit{

@@ -5,10 +5,9 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-    moduleId:module.id,
     selector: 'user-recover-password',
-    templateUrl: 'index.html',
-    styleUrls: [ '../style.css']
+    templateUrl: './index.html',
+    styleUrls: [ './../style.css']
 })
 export class RecoverPasswordComponent extends RestController implements OnInit  {
 

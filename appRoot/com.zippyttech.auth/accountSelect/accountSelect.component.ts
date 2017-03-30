@@ -7,8 +7,8 @@ var jQuery = require('jquery');
 
 @Component({
     selector: 'account-select',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     animations: AnimationsManager.getTriggers("d-expand_down",200)
 })
 export class AccountSelectComponent extends RestController implements OnInit{

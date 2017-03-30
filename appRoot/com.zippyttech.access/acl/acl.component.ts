@@ -6,10 +6,9 @@ import {PermissionModel} from "../permission/permission.model";
 import {RoleModel} from "../role/role.model";
 
 @Component({
-    moduleId:module.id,
     selector: 'acl',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     animations: AnimationsManager.getTriggers("d-slide_up|fade-fade",200)
 })
 export class AclComponent extends RestController implements OnInit{

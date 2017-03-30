@@ -1,16 +1,14 @@
 import {Component, EventEmitter, OnInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
-import {IModalConfig} from "../../../com.zippyttech.services/modal/modal.types";
 import {IRule} from "../../../com.zippyttech.common/rules/rule";
 
 var moment = require('moment');
 
 @Component({
-    moduleId:module.id,
     selector: 'tables-view',
-    templateUrl: 'index.html',
-    styleUrls: ['style.css'],
+    templateUrl: './index.html',
+    styleUrls: ['./style.css'],
     inputs:['model','viewActions'],
     outputs:['getInstance'],
 })

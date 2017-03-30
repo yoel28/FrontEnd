@@ -14,10 +14,9 @@ export interface ISave{
 }
 
 @Component({
-    moduleId: module.id,
     selector: 'save-view',
-    templateUrl: 'index.html',
-    styleUrls: ['style.css'],
+    templateUrl: './index.html',
+    styleUrls: ['./style.css'],
     inputs:['params'],
     outputs:['getInstance']
 })

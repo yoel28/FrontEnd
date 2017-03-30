@@ -9,8 +9,8 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
 @Component({
     selector: 'user-login',
-    templateUrl: 'index.html',
-    styleUrls: [ '../style.css'],
+    styleUrls: [ './../style.css'],
+    templateUrl: './index.html',
     animations: AnimationsManager.getTriggers("d-expand_down",200)
 })
 export class LoginComponent extends RestController implements OnInit,OnDestroy{

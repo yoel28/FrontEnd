@@ -42,10 +42,9 @@ export interface ILocation{
 
 
 @Component({
-    moduleId:module.id,
     selector: 'location-picker',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['params','model'],
     outputs:['result','getInstance'],
 })

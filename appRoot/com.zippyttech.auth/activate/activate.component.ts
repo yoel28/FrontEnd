@@ -6,8 +6,8 @@ import {ActivatedRoute} from "@angular/router";
 
 @Component({
     selector: 'user-activate',
-    templateUrl: 'index.html',
-    styleUrls: [ '../style.css']
+    templateUrl: './index.html',
+    styleUrls: [ './../style.css']
 })
 export class ActivateComponent extends RestController implements OnInit{
     public activate={'status':false,'response':false};

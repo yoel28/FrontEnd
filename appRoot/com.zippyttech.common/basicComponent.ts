@@ -4,10 +4,9 @@ import {DependenciesBase} from "./DependenciesBase";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
-    moduleId:module.id,
     selector: 'basic-component',
-    templateUrl:'../com.zippyttech.ui/view/base/base.html',
-    styleUrls: ['../com.zippyttech.ui/view/base/style.css'],
+    templateUrl:'./../com.zippyttech.ui/view/base/base.html',
+    styleUrls: ['./../com.zippyttech.ui/view/base/style.css'],
     inputs:['model','viewActions'],
     outputs:['getInstance']
 })

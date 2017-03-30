@@ -5,10 +5,9 @@ import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsMa
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
 @Component({
-    moduleId:module.id,
     selector: 'user-recover',
-    templateUrl: 'index.html',
-    styleUrls: [ '../style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './../style.css'],
     animations: AnimationsManager.getTriggers("d-expand_down",200)
 })
 export class RecoverComponent extends RestController {

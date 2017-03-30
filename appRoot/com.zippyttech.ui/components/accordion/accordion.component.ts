@@ -7,10 +7,9 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 var moment = require('moment');
 
 @Component({
-    moduleId:module.id,
     selector: 'accordion-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['params','model','dataList','where'],
     outputs:['getInstance'],
 })

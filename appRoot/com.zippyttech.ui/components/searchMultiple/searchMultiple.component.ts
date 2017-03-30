@@ -3,10 +3,9 @@ import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
 @Component({
-    moduleId:module.id,
     selector: 'search-multiple-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['params'],
     outputs:['result','getInstance'],
 })

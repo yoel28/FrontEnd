@@ -18,10 +18,9 @@ export interface IChartData
 }
 
 @Component({
-    moduleId: module.id,
     selector: 'chart-view',
-    templateUrl: 'template.html',
-    styleUrls: ['style.css'],
+    templateUrl: './template.html',
+    styleUrls: ['./style.css'],
     inputs:['chartData']
 })
 export class ChartViewComponent extends ControllerBase

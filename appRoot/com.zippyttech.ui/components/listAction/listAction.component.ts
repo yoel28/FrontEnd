@@ -39,10 +39,9 @@ interface IAction {
 }
 
 @Component({
-    moduleId: module.id,
     selector: 'list-action',
-    templateUrl: 'template.html',
-    styleUrls: ['style.css'],
+    templateUrl: './template.html',
+    styleUrls: ['./style.css'],
     inputs:['data'],
     animations: AnimationsManager.getTriggers("d-expand_down|fade",200)
 })
