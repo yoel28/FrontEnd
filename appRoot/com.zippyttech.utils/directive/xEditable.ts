@@ -47,6 +47,7 @@ export class XEditable extends RestController implements OnInit {
 
             type: this.getType(currentRule),
             value: this.getValue(currentRule),
+            defaultValue: this.getDefaultValue(currentRule),
             disabled: this.getDisabled(currentRule),
             display: this.getDisplay(currentRule),
             showbuttons: this.getShowbuttons(currentRule),
@@ -57,6 +58,7 @@ export class XEditable extends RestController implements OnInit {
             template:this.getTemplate(currentRule),
             step:this.getStep(currentRule),
             combodate: this.getCombodate(currentRule),
+            placement:this.getPlacement(currentRule),
 
             validate: function (newValue) {
                 let msg = this.isValid(currentRule,newValue);
@@ -112,6 +114,19 @@ export class XEditable extends RestController implements OnInit {
         }
     }
 
+    private getDefaultValue(rule){
+        switch (this.getType(rule)) {
+            case "combodate" :
+                return null;
+            case "password" :
+                return '';
+            case "url" :
+                return 'link';
+            default :
+                return 'N/A';
+        }
+    }
+
     private getDisabled(rule){
         return this.disabled;
     }
@@ -121,11 +136,14 @@ export class XEditable extends RestController implements OnInit {
     }
 
     private getShowbuttons(rule){
+        if(this.getMode(this.getRule) == 'popup')
+            return true;
+
         switch (this.getType(rule)) {
             case "combodate" :
-                return rule.showbuttons == null?true:rule.showbuttons;
+                return true;
             case "textarea" :
-                return rule.showbuttons==null?true:rule.showbuttons;
+                return true;
             case "object":{
                 if(rule.mode == 'checklist')
                     return true;
@@ -211,6 +229,9 @@ export class XEditable extends RestController implements OnInit {
                 return null;
         }
 
+    }
+    private getPlacement(rule){
+        return this.getRule.placement || 'top';
     }
 
     private eventSetValue(rule,data=null){
