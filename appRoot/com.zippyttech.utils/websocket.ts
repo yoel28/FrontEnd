@@ -1,7 +1,7 @@
-import {Injectable} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {globalService} from "./globalService";
 import {ModelRoot} from "../com.zippyttech.common/modelRoot";
+import {typeToast} from "../com.zippyttech.rest/restController";
+import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
 
 
 var SockJS = require('sockjs-client');
@@ -21,7 +21,6 @@ export interface IWebSocket{
     }
 }
 
-@Injectable()
 export class WebSocket{
     /**
      * this.ws.client.ws.readyState
@@ -34,9 +33,8 @@ export class WebSocket{
     public webSocket:IWebSocket={};
     public channelsByModel={};
 
-    private debugLog =  this.myglobal.debugLog.bind(this.myglobal);
 
-    constructor(public myglobal:globalService){}
+    constructor(public db:DependenciesBase){}
 
     setWebSocket(channel,instance?:ModelRoot){
         if(!this.webSocket[channel]){
@@ -104,8 +102,8 @@ export class WebSocket{
                     }
                 );
             }
-        }catch (e){
-            console.log('revento')
+        }catch (exception){
+            this.db.debugLog(['Error: onConnect',exception]);
         }
 
     }
@@ -134,7 +132,7 @@ export class WebSocket{
     findChannelByModel(model:string){
         let channels=[];
         if(!this.channelsByModel[model]){
-            this.myglobal.channels.forEach(obj=>{
+            this.db.myglobal.channels.forEach(obj=>{
                 if(obj.model ==  model)
                     channels.push(obj)
             });
@@ -155,16 +153,16 @@ export class WebSocket{
     private replaceMetaChannel(channel:any){
         try {
             if(channel.target && typeof channel.target === 'string'){
-                let currentUser =  this.myglobal.user;
+                let currentUser =  this.db.myglobal.user;
                 let meta = "$account.name";
                 if(channel.target.includes(meta)){
                     channel.target = channel.target.replace(meta,currentUser.accountName);
                 }
             }else {
-                this.debugLog(['Warning: replaceMetaChannel',channel])
+                this.db.debugLog(['Warning: replaceMetaChannel',channel])
             }
         }catch (exception){
-            this.debugLog(['Error: replaceMetaChannel',channel,exception])
+            this.db.debugLog(['Error: replaceMetaChannel',channel,exception])
         }
 
     }
@@ -212,18 +210,18 @@ export class WebSocket{
                 try {
                     eval(eventChannel['callback']);
                 }catch (exception){
-                    console.log(exception);
+                    this.db.debugLog(['Error: eventChannel',exception]);
                 }
             }
 
         }
         else {
-            console.log('Error: not found intance for channel '+eventChannel.target);
+            this.db.debugLog(['Error: eventChannel','Error: not found intance for channel '+eventChannel.target]);
         }
 
     }
-    addToast(title,message,type='info',time=10000){
-        this.myglobal.addToast(title,message,type,time);
+    addToast(title:string,message:string,type:typeToast='info',time:number=10000){
+        this.db.myglobal.addToast(title,message,type,time);
     }
 
 

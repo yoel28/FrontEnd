@@ -1,10 +1,8 @@
-import {Injectable} from '@angular/core';
 import {RestController} from "../com.zippyttech.rest/restController";
 import {contentHeaders} from "../com.zippyttech.rest/headers";
 import {FormControl, Validators} from "@angular/forms";
-import {Http} from "@angular/http";
-import {ToastyService, ToastyConfig} from "ng2-toasty";
 import {IRule} from "../com.zippyttech.common/rules/rule";
+import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
 
 /**
  * @Params API
@@ -16,7 +14,6 @@ import {IRule} from "../com.zippyttech.common/rules/rule";
 
 var moment = require("moment");
 
-@Injectable()
 export class globalService extends RestController{
     user:any={};
     params:any=[];
@@ -59,19 +56,10 @@ export class globalService extends RestController{
 
     objectInstance:any={};//lista de instancias creadas
     
-    constructor(public http:Http, public toastyService:ToastyService, public toastyConfig:ToastyConfig) {
-        super({'http':http,'toastyService':toastyService,'toastyConfig':toastyConfig});
-        this.existLocalStorage();
-
+    constructor(public db:DependenciesBase) {
+        super(db);
     }
 
-    existLocalStorage(){
-        if (typeof(Storage) !== "undefined") {
-            this.debugLog(["habemus localstorage"])
-        } else {
-            this.debugLog(["no habemus localstorage"])
-        }
-    }
     initSession():void{
         this.dataSesionInit();
         this.loadValidToken();
@@ -188,7 +176,7 @@ export class globalService extends RestController{
         return false;
     }
 
-    getParams(code:string,defaultValue=''):any{
+    getParams(code:string,defaultValue?:any):any{
         let data = this.getByAccountData(this.params,code);
         try {
             switch (data.type){
@@ -206,7 +194,7 @@ export class globalService extends RestController{
                     return data.value || defaultValue;
             }
         } catch (exception){
-            this.debugLog(['Error getParams',exception]);
+            this.db.debugLog(['Error getParams',exception]);
             return defaultValue;
         }
     }
@@ -286,22 +274,6 @@ export class globalService extends RestController{
         if(saveKeys.length !=  currentKeys.length)
             equalKeys= false;
         return equalKeys;
-    }
-
-    public debugLog(logs:string|Array<any>){
-        let modeDebug = this.getParams('MODE_DEBUG')=='true'?true:false;
-        if(modeDebug)
-        {
-            console.log('BEGIN-------------------------------------------------------------------------------------------');
-            if(typeof logs === 'string')
-                console.log(logs);
-            if(typeof logs === 'object' && logs.length){
-                logs.forEach(log=>{
-                    console.log(log)
-                })
-            }
-            console.log('END-------------------------------------------------------------------------------------------');
-        }
     }
 
 
