@@ -10,31 +10,31 @@
                 </div>
                 <br/>
             </div>
-            <template [ngIf]="params && params.zoom && params.zoom.visible" >
+            <ng-template [ngIf]="params && params.zoom && params.zoom.visible" >
                 <label>{{db.msg.zoom | translate}}:&nbsp;</label> <input [attr.id]="configId+'zoom'" disabled=disabled> <br/>
-            </template>
+            </ng-template>
 
-            <template [ngIf]="params && params.elements" >
+            <ng-template [ngIf]="params && params.elements" >
                 <span *ngFor="let key of params.elements">
                      <label>{{key}}:&nbsp;</label>
                      <input [attr.id]="configId+key" disabled=disabled> <br/>
                 </span>
-            </template>
+            </ng-template>
         </div>
         <div>
-            <template [ngIf]="params && params.reverse" >
+            <ng-template [ngIf]="params && params.reverse" >
                 <label [attr.id]="configId+'geo_label'" [attr.for]="configId+'reverseGeocode'">Reverse Geocode after Marker Drag?</label>
                 <select [attr.id]="configId+'reverseGeocode'">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
                 </select><br/>
-            </template>
+            </ng-template>
             <div [attr.id]="configId+'map'" class="map"></div>
         </div>
     </div>
-    <template [ngIf]="params && params.debug" >
+    <ng-template [ngIf]="params && params.debug" >
         <div class='input-positioned'>
             <textarea [attr.id]="configId+'callback_result'" rows="15"></textarea>
         </div>
-    </template>
+    </ng-template>
 </div>

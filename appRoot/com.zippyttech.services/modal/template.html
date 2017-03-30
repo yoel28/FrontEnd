@@ -10,17 +10,17 @@
 
         <div class="body">
             <div [ngSwitch]="db.ms.currentModal">
-                <template [ngSwitchCase]="'delete'">
+                <ng-template [ngSwitchCase]="'delete'">
                     <div>
                         {{db.ms.params.model.dataActions.get('delete').params.message}}
                         <strong>'{{db.ms.params.model.currentData[db.ms.params.model.display]}}'</strong>
                     </div>
-                </template>
+                </ng-template>
 
-                <template [ngSwitchCase]="'save'">
+                <ng-template [ngSwitchCase]="'save'">
                     <save-view  [params]  = "{model: db.params.model, childKey:db.ms.params.extraParams.childKey}">
                     </save-view>
-                </template>
+                </ng-template>
             </div>
         </div>
 

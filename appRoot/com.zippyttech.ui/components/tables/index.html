@@ -170,18 +170,18 @@
     <!--</div>-->
 <!--</div>-->
 
-<!--<template [ngIf]="paramsData && paramsData.locationParams">-->
+<!--<ng-template [ngIf]="paramsData && paramsData.locationParams">-->
     <!--<modal-view [params]="modalLocation">-->
         <!--<div body>-->
             <!--<location-picker [params]="paramsData.locationParams"></location-picker>-->
         <!--</div>-->
         <!--<div  *ngIf="!paramsData.locationParams.disabled" footer>-->
-            <!--<button class="btn btn-success" (click)="saveLocation($event)" >{{db.msg.save}}</button>-->
+            <!--<button class="btn btn-success"  (click)="saveLocation($event)" >{{db.msg.save}}</button>-->
         <!--</div>-->
     <!--</modal-view>-->
-<!--</template>-->
+<!--</ng-template>-->
 
-<!--<template [ngIf]="paramsData && paramsData.arrayData">-->
+<!--<ng-template [ngIf]="paramsData && paramsData.arrayData">-->
     <!--<modal-view [params]="modalRule">-->
         <!--<div header>-->
             <!--<h2>{{paramsData.select.title}}</h2>-->
@@ -192,6 +192,6 @@
             <!--</div>-->
         <!--</div>-->
     <!--</modal-view>-->
-<!--</template>-->
+<!--</ng-template>-->
 
 <!--######################################################################################-->

@@ -17,7 +17,7 @@
                                             </span>
 
 
-                                            <template [ngIf]="isCurrentType(['text','number','email','password'],rules[key])">
+                                            <ng-template [ngIf]="isCurrentType(['text','number','email','password'],rules[key])">
                                                 <input formControlName="{{key}}" class="form-control"
                                                        formControlName="{{key}}"
                                                        placeholder="{{rules[key].placeholder}}"
@@ -26,7 +26,7 @@
                                                        [readonly]="rules[key].readOnly"
                                                        [attr.accesskey]="key"
                                                 >
-                                            </template>
+                                            </ng-template>
 
 
                                             <div *ngIf="rules[key].type == 'list'">
@@ -53,7 +53,7 @@
                                                    readonly>
 
 
-                                            <template [ngIf]="isCurrentType(['textarea'],rules[key])">
+                                            <ng-template [ngIf]="isCurrentType(['textarea'],rules[key])">
                                                 <textarea
                                                         formControlName="{{key}}" class="form-control"
                                                         rows="5"
@@ -62,7 +62,7 @@
                                                         [readonly]="rules[key].readOnly">
 
                                                 </textarea>
-                                            </template>
+                                            </ng-template>
 
 
 

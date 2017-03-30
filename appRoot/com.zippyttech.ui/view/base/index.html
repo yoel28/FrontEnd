@@ -13,7 +13,7 @@
                             </span>
                         </h4>
                         <div class="box-tools pull-right header-tools">
-                            <template [ngIf]="model.filters">
+                            <ng-template [ngIf]="model.filters">
                                 <button *ngFor="let key of getObjectKeys(model.filters)"
                                         class="btn btn-box-tool {{model.filters[key].view[model.filters[key].status].colorClass}}" type="button"
                                         [attr.title]="model.filters[key].view[model.filters[key].status].title | translate"
@@ -22,9 +22,9 @@
                                     <i class="{{model.filters[key].view[model.filters[key].status].icon}}"></i>
                                 </button>
                                 &nbsp;
-                            </template>
-                            <template [ngIf]="viewOptions.viewActions">
-                                <template [ngIf]="model.modelActions">
+                            </ng-template>
+                            <ng-template [ngIf]="viewOptions.viewActions">
+                                <ng-template [ngIf]="model.modelActions">
                                     <button *ngFor="let action of model.modelActions.toArray(true,model)"
                                             (click)="action.callback()"
                                             title="{{action.currentView(model).title}}"
@@ -32,7 +32,7 @@
                                             >
                                         <i class="{{action.currentView(model).icon}}"></i>
                                     </button>
-                                </template>
+                                </ng-template>
                                 <!--<button *ngFor="let buttom of getViewOptionsButtons('showDeleted')"-->
                                         <!--class="btn btn-box-tool {{buttom.class}}" type="button"-->
                                         <!--[class.deleted-all]="model.rest.deleted=='all'"-->
@@ -40,7 +40,7 @@
                                         <!--[attr.title]="buttom.title | translate"-->
                                         <!--(click)="model.changeDeleted($event)"-->
                                 <!--&gt;-->
-                            </template>
+                            </ng-template>
 
                             <div class="btn-group">
                                 <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false" [attr.title]="db.msg.config">

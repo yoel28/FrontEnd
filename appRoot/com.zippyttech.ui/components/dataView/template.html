@@ -8,13 +8,13 @@
                     *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)) && (model.dataList.count && model.dataList.count > 1)">
                 <i class="fa fa-reply"></i>
             </button>
-            <template [ngIf]="dataParams.internal && dataParams.viewActions">
+            <ng-template [ngIf]="dataParams.internal && dataParams.viewActions">
                 <button *ngFor="let action of model.dataActions.toArray(true,data)"
                         (click)="action.callback(data,model.navIndex||0)"
                         [attr.title]="action.currentView(data).title">
                     <i class="{{action.currentView(data).icon}}"></i>
                 </button>
-            </template>
+            </ng-template>
         </div>
     </div>
     <div class="view-body {{(dataParams.internal)?'':'box-body'}}" *ngIf="model.completed">
@@ -24,7 +24,7 @@
             <i class="fa fa-caret-up"></i>
         </button>
         <div class="view-data {{((dataParams.internal)?'view-data-internal':'')}}" >
-            <template [ngIf]="!model.rest.findData">
+            <ng-template [ngIf]="!model.rest.findData">
                 <div *ngFor="let key of getDataKeys()"
                      class="view-item {{db.classCol(12/dataParams.cols.lg,12/dataParams.cols.md,12/dataParams.cols.sm,12/dataParams.cols.xs)}}">
                     <div class="view-item-icon {{db.classCol(2,2,2,2)}} hidden-xs">
@@ -39,10 +39,10 @@
                         </div>
                     </div>
                 </div>
-            </template>
-            <template [ngIf]="model.rest.findData">
+            </ng-template>
+            <ng-template [ngIf]="model.rest.findData">
                 <div class="preloadSpin"><i class="fa fa-spinner fa-spin"></i></div>
-            </template>
+            </ng-template>
         </div>
         <button *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir))"
                 [disabled]="model.rest.findData || (model.navIndex + model.rest.offset == model.dataList.count-1)"
