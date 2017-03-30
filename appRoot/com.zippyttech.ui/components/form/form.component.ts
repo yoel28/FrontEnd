@@ -3,14 +3,15 @@ import  {FormControl, Validators, FormGroup} from '@angular/forms';
 
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
+import {Rule} from "../../../com.zippyttech.common/rules/rule";
+import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
 var jQuery = require('jquery');
 
 @Component({
-    moduleId:module.id,
     selector: 'form-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['params','rules'],
     outputs:['save','getInstance','getForm'],
 })//TODO: CAMBIAR INPUTS --- PARAMS??
@@ -45,42 +46,34 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
     }
     ngAfterViewInit(){
         this.getInstance.emit(this);
-        if(this.params.prefix && !this.db.myglobal.objectInstance[this.params.prefix])
-        {
-            this.db.myglobal.objectInstance[this.params.prefix]={};
-            this.db.myglobal.objectInstance[this.params.prefix]=this;
-        }
     }
 
-    private currentType(rule){
-        let type = rule.constructor.name.replace('Rule','').toLowerCase();
-        return type;
-    }
-
-    public isCurrentType(list:Array<string>,rule:string):boolean{
-        return list.indexOf(this.currentType(rule)) >= 0 ? true:false;
+    public isCurrentType(list:Array<string>,rule:Rule):boolean{
+        return list.indexOf(rule.type) >= 0 ? true:false;
     }
 
     initForm() {
         let that = this;
+        let currentRule:Rule;
         Object.keys(this.rules).forEach((key)=> {
+            currentRule = this.rules[key];
             if(
                 (
-                    (that.params.onlyRequired && (that.rules[key].required || that.rules[key].forceInSave)) ||
+                    (that.params.onlyRequired && (currentRule.required || currentRule.componentSave.force)) ||
                     !that.params.onlyRequired
-                ) && that.rules[key].include.save
+                ) && currentRule.include.save
             )
 
             {
                 that.data[key] = [];
                 let validators=[];
-                if(that.rules[key].required)
+                if(currentRule.required)
                     validators.push(Validators.required);
-                if(that.rules[key].maxLength)
-                    validators.push(Validators.maxLength(that.rules[key].maxLength));
-                if(that.rules[key].minLength)
-                    validators.push(Validators.minLength(that.rules[key].minLength));
-                if(that.rules[key].object)
+                if(currentRule.maxLength)
+                    validators.push(Validators.maxLength(currentRule.maxLength));
+                if(currentRule.minLength)
+                    validators.push(Validators.minLength(currentRule.minLength));
+                if(currentRule.type == 'object')
                 {
                     validators.push(
                         (c:FormControl)=> {
@@ -89,12 +82,12 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                                     if(that.searchId[key].detail == c.value)
                                         return null;
                                 }
-                                return that.rules[key].objectOrSave?null:{object: {valid: true}};
+                                return currentRule.componentSave.notReference?null:{object: {valid: true}};
                             }
                             return null;
                         });
                 }
-                if(that.rules[key].email)
+                if(currentRule.type == 'email')
                 {
                     validators.push(
                         (c:FormControl)=> {
@@ -105,14 +98,14 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                             return null;
                         });
                 }
-                if(that.rules[key].customValidator){
-                    validators.push(that.rules[key].customValidator);
+                if(currentRule.componentSave.validator){
+                    validators.push(currentRule.componentSave.validator.bind(this));
                 }
-                if(that.rules[key].type=='select' || that.rules[key].type=='boolean'){
+                if(currentRule.type=='select' || currentRule.type=='boolean'){
                     validators.push(
                         (c:FormControl)=> {
                             if(c.value && c.value.length > 0){
-                                if(c.value!='-1' || (c.value=='-1' && !that.rules[key].required)){
+                                if(c.value!='-1' || (c.value=='-1' && !currentRule.required)){
                                         return null;
                                 }
                                 return {error: {valid: false}};
@@ -121,7 +114,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                         });
                 }
 
-                if(that.rules[key].required && that.rules[key].type == 'list')
+                if(currentRule.required && currentRule.type == 'list')
                 {
                     validators.push(
                         (c:FormControl)=> {
@@ -134,15 +127,15 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
 
 
                 that.data[key] = new FormControl('',Validators.compose(validators));
-                if(that.rules[key].value)
-                    that.data[key].setValue(that.rules[key].value);
+                if(currentRule.value)
+                    that.data[key].setValue(currentRule.value);
 
 
-                if(that.rules[key].object)
+                if(currentRule.type == 'object')
                 {
                     that.data[key]
                         .valueChanges
-                        .debounceTime(this.db.myglobal.getParams('WAIT_TIME_SEARCH') || '500')
+                        .debounceTime(this.db.getParams('WAIT_TIME_SEARCH',API.WAIT_TIME_SEARCH))
                         .subscribe((value: string) => {
                             that.findControl = value;
                             if(value && value.length > 0){
@@ -170,7 +163,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                 if(that.rules[key].events && that.rules[key].events.valueChange){
                     that.data[key]
                         .valueChanges
-                        .debounceTime(this.db.myglobal.getParams('WAIT_TIME_SAVE') || '500')
+                        .debounceTime(this.db.getParams('WAIT_TIME_SAVE',API.WAIT_TIME_SEARCH))
                         .subscribe(((value: string) => {
                             this.rules[key].events.valueChange(this,value)
                         }).bind(this))
@@ -180,7 +173,7 @@ export class FormComponent extends RestController implements OnInit,AfterViewIni
                 if(that.rules[key].url && that.rules[key].url=='image'){
                     that.data[key]
                         .valueChanges
-                        .debounceTime(this.db.myglobal.getParams('WAIT_TIME_SEARCH') || '500')
+                        .debounceTime(this.db.getParams('WAIT_TIME_SEARCH',API.WAIT_TIME_SEARCH))
                         .subscribe((value: string) => {
                             let img = new Image();
                             img.onerror = (()=>{
