@@ -4,21 +4,20 @@ import {isNumeric} from "rxjs/util/isNumeric";
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
+import {IRule} from "../../../com.zippyttech.common/rules/rule";
+import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
-/**
+/*
  * @Params API
  * Optional
  *      WAIT_TIME_SEARCH
  *
- *
- */
+*/
 
-declare var SystemJS:any;
 @Component({
-    moduleId:module.id,
     selector: 'filter-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs: ['model'],
     outputs: ['getInstance'],
 })
@@ -27,103 +26,51 @@ export class FilterComponent extends RestController implements OnInit{
     private getInstance:any;
     private model:ModelRoot;
     private params:any={};
-
     private readonly code:string='filter';
+
+    private filters = {
+        '%ilike%':      {'text': 'Contiene(i)'},
+        'eq':           {'text': 'Igual que'},
+        'isNull':       {'text': 'Nulo'},
+        'isNotNull':    {'text': 'No Nulo'},
+        'ne':           {'text': 'Diferente que'},
+        '%like%':       {'text': 'Contiene'},
+        'like%':        {'text': 'Comienza con'},
+        '%like':        {'text': 'Termina en'},
+        'ilike%':       {'text': 'comienza con(i)'},
+        '%ilike':       {'text': 'Termina en(i)'},
+        'ge':           {'text': 'Mayor Igual'},
+        'gt':           {'text': 'Mayor Que'},
+        'le':           {'text': 'Menor Igual'},
+        'lt':           {'text': 'Menor que'},
+    };
+    private filterType = {
+        'text': this.getFilters(['%ilike%', 'eq', 'isNull', 'isNotNull', 'ne', '%like%', 'like%', '%like', 'ilike%', '%ilike'],'%ilike%'),
+        'number': this.getFilters(['eq', 'isNotNull', 'isNull', 'ne', 'ge', 'gt', 'le', 'lt']),
+        'time': this.getFilters(['eq', 'isNotNull', 'isNull', 'ne', 'ge', 'gt', 'le', 'lt']),
+        'object': this.getFilters(['eq', 'isNotNull', 'isNull', 'ne']),
+        'boolean': this.getFilters(['eq', 'isNotNull', 'isNull', 'ne']),
+        'date': this.getFilters(['eq', 'isNotNull', 'isNull', 'ne']),
+        'combodate': this.getFilters(['eq', 'isNotNull', 'isNull', 'ne']),
+        'email': this.getFilters(['%ilike%', 'eq', 'isNull', 'isNotNull', 'ne', '%like%', 'like%', '%like', 'ilike%', '%ilike'],'%ilike%'),
+        'select': this.getFilters(['eq', 'isNull', 'isNotNull', 'ne']),
+        'textarea': this.getFilters(['%ilike%', 'eq', 'isNull', 'isNotNull', 'ne', '%like%', 'like%', '%like', 'ilike%', '%ilike'],'%ilike%'),
+    };
+    private getFilters(list: Array<string>,check = 'eq') {
+        let data = [];
+        list.forEach(key => {
+            if(key == check)
+                data.push({op:key,data:this.filters[key],check:true});
+            else
+                data.push({op:key,data:this.filters[key]});
+        })
+        return data;
+    }
 
 
 
     //objecto del search actual
     public search:any={};
-    //lista de operadores condicionales
-    public  cond = {
-        'text': [
-            {'id':'%ilike%','text': 'Contiene(i)'},
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNull','text':'Nulo'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'ne','text':'Diferente que'},
-            {'id':'%like%','text': 'Contiene'},
-            {'id':'like%','text': 'Comienza con'},
-            {'id':'%like','text': 'Termina en'},
-            {'id':'ilike%','text': 'Comienza con(i)'},
-            {'id':'%ilike','text': 'Termina en(i)'}
-
-        ],
-        'number':[
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'isNull','text':'Nulo'},
-            {'id':'ne','text':'Diferente que'},
-            {'id':'ge','text':'Mayor Igual'},
-            {'id':'gt','text':'Mayor que'},
-            {'id':'le','text':'Menor Igual'},
-            {'id':'lt','text':'Menor que'},
-        ],
-        'time':[
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'isNull','text':'Nulo'},
-            {'id':'ne','text':'Diferente que'},
-            {'id':'ge','text':'Mayor Igual'},
-            {'id':'gt','text':'Mayor que'},
-            {'id':'le','text':'Menor Igual'},
-            {'id':'lt','text':'Menor que'},
-        ],
-        'object':[
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'isNull','text':'Nulo'},
-            {'id':'ne','text':'Diferente que'},
-        ],
-        'boolean':[
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'isNull','text':'Nulo'},
-            {'id':'ne','text':'Diferente que'},
-        ],
-        'date':[
-            {'id':'eq','text':'En rango'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'ne','text':'Fuera de rango'},
-            {'id':'isNull','text':'Nulo'},
-        ],
-        'combodate':[
-            {'id':'eq','text':'En rango'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'ne','text':'Fuera de rango'},
-            {'id':'isNull','text':'Nulo'},
-        ],
-        'email': [
-            {'id':'%ilike%','text': 'Contiene(i)'},
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'isNull','text':'Nulo'},
-            {'id':'ne','text':'Diferente que'},
-            {'id':'%like%','text': 'Contiene'},
-            {'id':'like%','text': 'Comienza con'},
-            {'id':'%like','text': 'Termina en'},
-            {'id':'ilike%','text': 'Comienza con(i)'},
-            {'id':'%ilike','text': 'Termina en(i)'}
-        ],
-        'select': [
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'ne','text':'Diferente que'},
-            {'id':'isNull','text':'Nulo'},
-        ],
-        'textarea': [
-            {'id':'%ilike%','text': 'Contiene(i)'},
-            {'id':'eq','text':'Igual que'},
-            {'id':'isNotNull','text':'No nulo'},
-            {'id':'isNull','text':'Nulo'},
-            {'id':'ne','text':'Diferente que'},
-            {'id':'%like%','text': 'Contiene'},
-            {'id':'like%','text': 'Comienza con'},
-            {'id':'%like','text': 'Termina en'},
-            {'id':'ilike%','text': 'Comienza con(i)'},
-            {'id':'%ilike','text': 'Termina en(i)'}
-        ],
-    };
     //foormato de fecha
     public paramsDate={'format':"DD-MM-YYYY","minDate":"01-01-2016"};
     public date={};
@@ -145,26 +92,25 @@ export class FilterComponent extends RestController implements OnInit{
     loadForm() {
 
         let that = this;
-        let _rule =  this.currentRule;
+        let rule =  this.currentRule;
 
-        this.loadParams();
-        Object.keys(_rule).forEach((key)=> {
+        Object.keys(rule).forEach((key)=> {
 
-            if (_rule[key].search) {
+            if ((<IRule>rule[key]).permissions.search && (<IRule>rule[key]).include.filter) {
 
                 that.newDataControl(key);
 
-                if(_rule[key].object)
+                if(rule[key].type == 'object')
                 {
                     that.data[key].
                         valueChanges.
-                        debounceTime(that.getParam('WAIT_TIME_SEARCH')).
+                        debounceTime(that.db.getParams('WAIT_TIME_SEARCH',API.WAIT_TIME_SEARCH)).
                         subscribe((value: string) => {
                             if(value && value.length > 0){
-                                that.search=_rule[key];
+                                that.search=rule[key];
                                 that.findControl = value;
-                                that.dataList={};
-                                that.setEndpoint(_rule[key].paramsSearch.endpoint+value);
+                                that.setData({},true);
+                                that.setEndpoint(rule[key].paramsSearch.endpoint+value);//TODO:Cambiar por modelRoot
                                 if( !that.searchId[key]){
                                     that.loadData().then((response)=>{
                                         if(that.dataList && that.dataList.count == 1){
@@ -193,9 +139,8 @@ export class FilterComponent extends RestController implements OnInit{
                 }
             }
         });
-
         this.form = new FormGroup(this.data);
-        this.keys = Object.keys(_rule);
+        this.keys = Object.keys(this.data);
     }
 
     private get currentRule(){
@@ -206,13 +151,6 @@ export class FilterComponent extends RestController implements OnInit{
         return this.model.paramsSearch;
     }
 
-    private loadParams(){
-        this.params['WAIT_TIME_SEARCH']= this.db.myglobal.getParams('WAIT_TIME_SEARCH','500');
-    }
-
-    private getParam(code:string){
-        return this.params[code];
-    }
 
     private newDataControl(key){
 
@@ -221,7 +159,7 @@ export class FilterComponent extends RestController implements OnInit{
 
         let cond = this.getCondition(this.currentRule[key]);
         this.data[key+'Cond'] = [];
-        this.data[key+'Cond'] = new FormControl(cond[0].id);
+        this.data[key+'Cond'] = new FormControl(cond[0].op);
 
     }
 
@@ -232,14 +170,13 @@ export class FilterComponent extends RestController implements OnInit{
     private getCondition(currentRule:any){
         let type = currentRule.type;
 
-        if(currentRule.object){
+        if(currentRule.type == 'object'){
             if(currentRule.join){
-                return this.cond['text']
+                return this.filterType['text']
             }
-            return this.cond['object']
+            return this.filterType['object']
         }
-        return this.cond[type]
-
+        return this.filterType[type]
     }
 
     //Al hacer click en la lupa guarda los valores del objecto
