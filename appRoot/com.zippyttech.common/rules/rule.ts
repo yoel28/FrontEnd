@@ -1,3 +1,5 @@
+import {FormControl} from "@angular/forms";
+
 export interface IRule{
     key?:string;
     title?:string;
@@ -30,6 +32,7 @@ export interface IRule{
         form?:{
             hidden?:string;
             force?:boolean;
+            validator?:(c:FormControl)=>Object;
         }
     }
 
@@ -183,6 +186,10 @@ export class Rule {
     }
     set components(value:any){
         this.attributes.components = value
+    }
+
+    get type():string{
+        return this.constructor.name.replace('Rule','').toLowerCase();
     }
 
 
