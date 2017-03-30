@@ -3,10 +3,9 @@ import {RestController} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 
 @Component({
-    moduleId:module.id,
     selector: 'search-view',
-    templateUrl: 'index.html',
-    styleUrls: [ 'style.css'],
+    templateUrl: './index.html',
+    styleUrls: [ './style.css'],
     inputs:['params'],
     outputs:['result','getInstance'],
 })
@@ -38,12 +37,12 @@ export class SearchComponent extends RestController implements OnInit,DoCheck{
     ngDoCheck():void{
         this.getInstance.emit(this);
     }
-    getSearchAll(search){
+    getSearch(search){
         this.endpoint=this.params.endpoint+search;
         this.rest.where = this.params.where || [];
         this.loadData();
     }
-    getData(data){
+    getDataAll(data){
         this.result.emit(data);
     }
 }
