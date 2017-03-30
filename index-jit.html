@@ -50,17 +50,19 @@
 </main>
 </body>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBUI8SaDROnAVPINsv34tIn6kwyO5FoypM&libraries=places&ext=.js"></script>
-<!--<script src="build.gz"></script>-->
+
+<script src="systemjs.config.js" type="text/javascript"></script>
 <script>
-    System.import('system-config.js').then(function () {
-        System.import('main');
-    }).catch(console.error.bind(console));
+    System.import('app').catch(function(err){ console.error(err); });
 </script>
-<!--<script type="text/javascript" src="build.js"></script>-->
+
 <!--<script>-->
-    <!--System.import('main').then(function () {-->
-        <!--//System.import('main');-->
+    <!--System.import('systemjs.config.js').then(function () {-->
+        <!--System.import('build.js').then(function () {-->
+            <!--System.import('main').catch(function(err){ console.error(err); });-->
+        <!--}).catch(console.error.bind(console));-->
     <!--}).catch(console.error.bind(console));-->
+
 <!--</script>-->
 
 
