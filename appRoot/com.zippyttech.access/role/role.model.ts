@@ -38,14 +38,6 @@ export class RoleModel extends ModelRoot{
         this.paramsSearch.label.title="Título: ";
         this.paramsSearch.label.detail="Detalle: "
     }
-    initParamsSave() {
-        this.paramsSave.title="Agregar rol"
-    }
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.enabled;
-    }
-
     initDataActions(){
         this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el rol : ';
     }

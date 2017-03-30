@@ -166,7 +166,7 @@ export class UserModel extends ModelBase{
         });
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
-
+        delete this.rules['detail'];
     }
     public updateProfile(){
         this.setEndpoint('/auto/update');

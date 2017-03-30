@@ -74,14 +74,6 @@ export class ParamModel extends ModelBase{
         this.paramsSearch.label.detail="Detalle: "
     }
 
-    initParamsSave() {
-        this.paramsSave.title="Agregar parámetro"
-    }
-    initRulesSave() {
-        this.rulesSave = Object.assign({},this.rules);
-        delete this.rulesSave.enabled;
-    }
-
     initDataActions(){
         this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el parametro: ';
     }
