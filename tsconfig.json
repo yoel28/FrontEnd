@@ -1,28 +1,46 @@
 {
   "compilerOptions": {
-    //"outFile": "build.js",
+   //"outFile": "build.js",
     "rootDir": ".",
-    "target": "es5",
+    "target": "es6",
     "moduleResolution": "node",
     "sourceMap": true,
+    "declaration": false,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": true,
     "noImplicitAny": false,
-    "module": "commonjs",
+    "allowJs":true,
+//    "preserveConstEnums": true,
+    "module": "amd",
+//    "lib": ["dom","es2016"],
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true
+//    "noEmitOnError": false
+//    "typeRoots": [
+//      "node_modules/@types/"
+//    ]
+    //    ,"types": [
+//      "firebase"
+//    ]
    // "declaration": false,
 //    "rootDirs": [
 //      "appRoot/",
 //      "generated/"
 //    ]
   },
+//  "compileOnSave": true,
   //"compileOnSave": true,
   "exclude": [
-    "node_modules/*",
+    "node_modules",
     "aot/*",
-    "appRoot/*-aot.ts"
+    "appRoot/*-aot.ts",
+    "systemjs.config.js",
+    "systemjs-angular-loader.js",
+    "gulpfile.js",
+    "rollup-config.js",
+    "bs-config.js",
+    "assets"
     //"generated/**"
   ]
 }
