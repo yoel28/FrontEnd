@@ -14,6 +14,8 @@ import {IRule} from "../com.zippyttech.common/rules/rule";
  *
  */
 
+var moment = require("moment");
+
 @Injectable()
 export class globalService extends RestController{
     user:any={};
@@ -186,9 +188,27 @@ export class globalService extends RestController{
         return false;
     }
 
-    getParams(code:string,defaultValue=''):string{
+    getParams(code:string,defaultValue=''):any{
         let data = this.getByAccountData(this.params,code);
-        return data.value || defaultValue;
+        try {
+            switch (data.type){
+                case 'number':
+                    return parseFloat(data.value);
+                case 'boolean':
+                    return data.value=='true'?true:false;
+                case 'object':
+                    return JSON.parse(data.value);
+                case 'date':
+                    return moment(data.value).format('DD/MM/YYYY');
+                case 'datetime':
+                    return moment(data.value).format('DD/MM/YYYY  HH:mm');
+                default:
+                    return data.value || defaultValue;
+            }
+        } catch (exception){
+            this.debugLog(['Error getParams',exception]);
+            return defaultValue;
+        }
     }
 
     getRule(code:string):string{
