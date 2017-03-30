@@ -52,8 +52,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
     public permissions:any = {};
     public paramsSearch:any = {};
     public paramsSave:any = {};
-    public ruleObject:any={};
-    public rulesSave:any={};
 
     public dataActions:Actions<IDataActionParams>;
     public modelActions:Actions<IModelActionParams>;
@@ -62,7 +60,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
     public view:IView;
 
-    public lockList:boolean = false;
     private _currentData:any;
     public get currentData(){return this._currentData;};
     public set currentData(value){this._currentData = value;};
@@ -76,12 +73,14 @@ export abstract class ModelRoot extends RestController implements OnInit{
     private transactional:boolean;
     private pendings:number;
 
+    private readonly LIMIT_ROWS_DEFAULT = 1000;
+
 
     constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
         super(db);
         if(prefix)
             this.prefix = prefix;
-        this.endpoint = endpoint;
+        this.setEndpoint(endpoint);
         this.useGlobal = useGlobal;
         this._initModel();
     }
@@ -93,21 +92,21 @@ export abstract class ModelRoot extends RestController implements OnInit{
     public set navIndex(value: number|string){
         if(value!=null) {
             let n = (typeof value == "string") ? Number(value) : this._navIndex + value;
-            if(n < 0 && this.rest.offset+n > 0){
-                this.loadData(this.rest.offset/this.rest.max).then(function(response){
-                    this._navIndex = this.rest.max + n;
-                    this.refreshData(this.dataList.list[this.navIndex]);
+            if(n < 0 && this.getRest().offset+n > 0){
+                this.loadData(this.getRest().offset/this.getRest().max).then(function(response){
+                    this._navIndex = this.getRest().max + n;
+                    this.refreshData(this.getData().list[this.navIndex]);
                 }.bind(this));
             }
-            else if(n > this.rest.max-1 && this.rest.offset+n < this.dataList.count){
-                this.loadData(2+this.rest.offset/this.rest.max).then(function(response){
-                    this._navIndex = n - this.rest.max;
-                    this.refreshData(this.dataList.list[this.navIndex]);
+            else if(n > this.getRest().max-1 && this.getRest().offset+n < this.getData().count){
+                this.loadData(2+this.getRest().offset/this.getRest().max).then(function(response){
+                    this._navIndex = n - this.getRest().max;
+                    this.refreshData(this.getData().list[this.navIndex]);
                 }.bind(this));
             }
-            else if(n >= 0 &&  n <= this.rest.max-1 && this.rest.offset+n < this.dataList.count)
+            else if(n >= 0 &&  n <= this.getRest().max-1 && this.getRest().offset+n < this.getData().count)
                 this._navIndex = n;
-            this.refreshData(this.dataList.list[this.navIndex]);
+            this.refreshData(this.getData().list[this.navIndex]);
         }
         else this._navIndex = null;
     }
@@ -127,18 +126,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.initPermissions();
         this.modelExternal();
         this.initRules();
-        this.initParamsSearch();
-        this.initParamsSave();
-
-        this.loadParamsSave();
-        this.loadParamsSearch();
 
         this.db.ws.loadChannelByModel(this.constructor.name,this);
 
-        this.completed=completed;
-
         this.initDataActions();
         this.initModelActions();
+
+        this.completed=completed;
     }
 
     abstract initView(params:IView);
@@ -262,7 +256,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
             views: [ {icon: "fa fa-filter", title: "sin filtro", colorClass:"text-blue"},
                     {icon: "fa fa-filter", title: "filtrando" , colorClass:"text-green"}],
             callback: ((data?, index?)=>{
-                alert('filter no defined');
+                jQuery('#modalfilter').modal('show');
             }).bind(this),
             stateEval:'0',
             params:{}
@@ -291,7 +285,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.modelActions.add("exportPdf",{
             permission: this.permissions.exportPdf,
             views:[ { icon: "fa fa-file-pdf-o", colorClass:"",
-                      title:this.db.msg.exportDisabled+this.db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')+' '+this.db.msg.rows},
+                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_PDF',this.LIMIT_ROWS_DEFAULT)+' '+this.db.msg.rows},
                     { icon: "fa fa-file-pdf-o", title:this.db.msg.exportPdf, colorClass:"text-red" }],
             callback:((data?,index?)=>{
                 if(this.getEnabledReport('PDF')){
@@ -309,7 +303,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.modelActions.add("exporXls",{
             permission: this.permissions.exporXls,
             views:[ { icon: "fa fa-file-excel-o", colorClass:"",
-                      title:this.db.msg.exportDisabled+this.db.myglobal.getParams('REPORT_LIMIT_ROWS_XLS')+' '+this.db.msg.rows},
+                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_XLS',this.LIMIT_ROWS_DEFAULT)+' '+this.db.msg.rows},
                     { icon: "fa fa-file-excel-o", title:this.db.msg.exportXls, colorClass:"text-green" }],
             callback:((data?,index?)=>{
                 if(this.getEnabledReport('XLS')){
@@ -340,13 +334,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.setRuleDateUpdated();
     }
 
-    setRuleDetail(save=false,required=false){
+    setRuleDetail(save=false,required=false,visible=false){
         this.rulesDefault["detail"] = new TextareaRule({
             required:required,
             permissions:{
                 update:this.permissions.update,
                 search:this.permissions.filter,
-                visible:this.permissions.visible,
+                visible:this.permissions.visible || visible,
             },
             include:{
                 save:save,
@@ -359,11 +353,12 @@ export abstract class ModelRoot extends RestController implements OnInit{
         });
     }
 
-    setRuleId(force=false){
+    setRuleId(force=false,visible=false){
         if(this.permissions.audit || force){
             this.rulesDefault["id"] = new NumberRule({
                 permissions:{
                     search: this.permissions.filter,
+                    visible:visible
                 },
                 include:{
                     save:false,
@@ -376,11 +371,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
             });
         }
     }
-    setRuleIp(force=false){
+
+    setRuleIp(force=false,visible=false){
         if(this.permissions.audit || force){
             this.rulesDefault["ip"] = new TextRule({
                 permissions:{
                     search: this.permissions.filter,
+                    visible:visible
                 },
                 include:{
                     save:false,
@@ -393,11 +390,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
             });
         }
     }
-    setRuleUserAgent(force=false){
+
+    setRuleUserAgent(force=false,visible=false){
         if(this.permissions.audit || force){
             this.rulesDefault["userAgent"] = new TextRule({
                 permissions:{
                     search: this.permissions.filter,
+                    visible:visible
                 },
                 include:{
                     save:false,
@@ -410,11 +409,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
             });
         }
     }
-    setRuleUsernameCreator(force=false){
+
+    setRuleUsernameCreator(force=false,visible=false){
         if(this.permissions.audit || force){
             this.rulesDefault["usernameCreator"] = new TextRule({
                 permissions:{
                     search: this.permissions.filter,
+                    visible:visible
                 },
                 include:{
                     save:false,
@@ -427,11 +428,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
             });
         }
     }
-    setRuleUsernameUpdater(force=false){
+
+    setRuleUsernameUpdater(force=false,visible=false){
         if(this.permissions.audit || force){
             this.rulesDefault["usernameUpdater"] = new TextRule ({
                 permissions:{
                     search: this.permissions.filter,
+                    visible:visible
                 },
                 include:{
                     save:false,
@@ -444,11 +447,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
             });
         }
     }
-    setRuleDateCreated(force=false){
+
+    setRuleDateCreated(force=false,visible=false){
         if(this.permissions.audit || force){
             this.rulesDefault["dateCreated"] = new CombodateRule({
                 permissions:{
                     search: this.permissions.filter,
+                    visible:visible
                 },
                 include:{
                     save:false,
@@ -462,11 +467,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
             });
         }
     }
-    setRuleDateUpdated(force=false){
+
+    setRuleDateUpdated(force=false,visible=false){
         if(this.permissions.audit || force){
             this.rulesDefault["dateUpdated"] = new CombodateRule({
                 permissions:{
                     search: this.permissions.filter,
+                    visible:visible
                 },
                 include:{
                     save:false,
@@ -481,8 +488,8 @@ export abstract class ModelRoot extends RestController implements OnInit{
         }
     }
 
-    abstract initParamsSearch();
-    private _initParamsSearch() {
+
+    private _initParamsSearch() { //TODO: Eliminar
         this.paramsSearch = {
             'title': 'Title Default',
             'permission': (this.permissions.search && this.permissions.list),
@@ -501,11 +508,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
             'count':0
         };
     }
-    private loadParamsSearch(){
-        this.paramsSearch.field = this.ruleObject.key+'.id';
-    }
 
-    abstract initParamsSave();
     private _initParamsSave() {
         this.paramsSave = {
             'title': 'Title Default',
@@ -523,11 +526,8 @@ export abstract class ModelRoot extends RestController implements OnInit{
         return this.rulesDefault;
     }
 
-    private loadParamsSave(){
-        this.paramsSave.prefix = this.prefix+'_ADD';
-    }
 
-    public extendRulesObjectInRules(rules){
+    public extendRulesObjectInRules(rules){//TODO: Recorrer todo el object rule para mostrar la dat que devuelva la aPI
         let that = this;
 
         Object.keys(rules).forEach(key=>{
@@ -539,76 +539,77 @@ export abstract class ModelRoot extends RestController implements OnInit{
             }
         })
     }
+
     public capitalizeFirstLetter (data) {
         return data.charAt(0).toUpperCase() + data.slice(1);
     }
 
-    public spliceId(id:string)
-    {
-        if(this.dataList['list']) {
-            let index = this.dataList['list'].findIndex(obj => obj.id == id);
+    public spliceId(id:string) {
+        if(this.getData().list) {
+            let index = this.getIndexById(id);
             if (index != -1)
-                this.dataList['list'].splice(index,1);
+                this.getData().list.splice(index,1);
         }
     }
 
-    public getIndexById(id:string):number
-    {
-        if(this.dataList['list'])
-            return this.dataList['list'].findIndex(obj => obj.id == id);
+    public getIndexById(id:string):number {
+        if(this.getData().list)
+            return this.getData().list.findIndex(obj => obj['id'] == id);
         return -1;
     }
 
-    public getIncludeKeys(keys:Array<string>,useRuleSave=false){
+    public getIncludeKeys(keys:Array<string>,inSave=false){
         let data={};
-        let that = this;
-        keys.forEach(key=>{
-            if(that.rules && that.rules[key] && !useRuleSave)
-                data[key] = that.rules[key];
-            if(that.rulesSave && that.rulesSave[key] && useRuleSave)
-                data[key] = that.rulesSave[key];
+        keys.forEach((key=>{
+            if(this.rules && this.rules[key]){
+                if(!inSave || (inSave && this.rules[key].permissions.save))
+                    data[key] = this.rules[key];
+            }
+        }).bind(this));
+        return data;
+    }
+
+    public getExcludeKeys(exclude:Array<string>,inSave=false){
+        let data={};
+        Object.keys(this.rules).forEach(key=>{
+            if(exclude.indexOf(key)<0){
+                if(!inSave || (inSave && this.rules[key].permissions.save))
+                    data[key] = this.rules[key];
+            }
         });
         return data;
     }
-    public getExcludeKeys(keys:Array<string>,useRuleSave=false){
-        let data={};
-        let that = this;
-        let keysModel = Object.keys(useRuleSave?this.rulesSave:this.rules)
-        keysModel.forEach(key=>{
-            if(keys.indexOf(key)<0 && !useRuleSave)
-                data[key] = that.rules[key];
-            if(keys.indexOf(key)<0 && useRuleSave)
-                data[key] = that.rulesSave[key];
-        });
-        return data;
-    }
+
     public setLoadData(data) {
-        this.dataList.list.unshift(data);
-        this.dataList.count++;
-        if (this.dataList.count > this.rest.max)
-            this.dataList.list.pop();
+        this.getData().list.unshift(data);
+        this.getData().count++;
+        if (this.getData().count > this.getRest().max)
+            this.getData().list.pop();
     }
+
     public setUpdateData(data){
         if(data.id){
             let index = this.getIndexById(data.id);
             if(index >= 0){
-                Object.assign(this.dataList.list[index],data);
+                Object.assign(this.getData().list[index],data);
             }
         }
     }
+
     public setDeleteData(data){
         if(data.id){
             let index = this.getIndexById(data.id);
             if(index >= 0){
-                this.dataList.list.splice(index,1);
+                this.getData().list.splice(index,1);
             }
         }
     }
+
     public setBlockField(data,value?:boolean){
         if(data.id){
             let index = this.getIndexById(data.id);
             if(index >= 0){
-                this.dataList['list'][index].blockField= value==null?!this.dataList['list'][index].blockField:value;
+                this.getData().list[index]['blockField'] = value==null?!this.getData().list[index]['blockField']:value;
             }
         }
     }
@@ -617,27 +618,23 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.setBlockField(data,true);
         setTimeout(function(){
             this.setBlockField(data,false);
-        }.bind(this), 1);
+        }.bind(this), 100);
     }
 
     public refreshList(){
-        // this.lockList = true;
-        // setTimeout(()=>{
-        //     this.lockList=false;
-        // },100);
-        if(this.dataList) {
-            if (this.dataList.list) {
-                this.dataList.list.forEach(function (data) {
+        if(this.getData()) {
+            if (this.getData().list) {
+                this.getData().list.forEach(function (data) {
                     this.refreshData(data);
                 }.bind(this));
             }
             else
-                this.refreshData(this.dataList);
+                this.refreshData(this.getData());
         }
 
     }
 
-    goPage(url:string,event?) {
+    public goPage(url:string,event?) {
         if (event)
             event.preventDefault();
         let link = [url, {}];
@@ -661,12 +658,12 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
                 if(currentFilter.view[currentFilter.status] && currentFilter.view[currentFilter.status].where){
                     let where:IWhere;
-                    if(this.rest.where)
-                        where = (<any>this.rest.where).concat(currentFilter.view[currentFilter.status].where);
+                    if(this.getRest().where)
+                        where = (<any>this.getRest().where).concat(currentFilter.view[currentFilter.status].where);
                     else
                         where =  currentFilter.view[currentFilter.status].where;
 
-                    this.rest.where = where;
+                    this.getRest().where = where;
                 }
 
             }
@@ -675,7 +672,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
     }
 
     public get nameClass(){
-        return (this.constructor.name).replace('MODEL','').toLowerCase();
+        return (this.constructor.name).replace('Model','').toLowerCase();
     }
 
     private onEvent(eventArgs:IRestEvent){
@@ -697,7 +694,11 @@ export abstract class ModelRoot extends RestController implements OnInit{
     }
 
     public getEnabledReport(type:'PDF'|'XLS'='PDF'){
-        return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_'+type)) >= this.dataList.count);
+        return (parseFloat(this.getParams('REPORT_LIMIT_ROWS_'+type,this.LIMIT_ROWS_DEFAULT)) >= this.getData().count);
+    }
+
+    public getParams(code:string,defaultValue?){
+        return this.db.myglobal.getParams(code,defaultValue)
     }
 
 }
