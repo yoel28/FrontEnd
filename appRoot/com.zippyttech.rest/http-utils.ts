@@ -1,13 +1,31 @@
 import {Http} from '@angular/http';
 import {contentHeaders} from './headers';
 import {ToastyConfig, ToastyService, ToastData, ToastOptions} from "ng2-toasty";
+import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
+import {IData, typeToast} from "./restController";
 
 export class HttpUtils {
 
-    constructor(public http:Http,public toastyService?:ToastyService,public toastyConfig?:ToastyConfig) {
-    }
 
-    addToast(title,message,type='info',time=10000) {
+
+    constructor(public http:Http,public toastyService?:ToastyService,public toastyConfig?:ToastyConfig) {}
+
+    private valideVersion(){
+        if(localStorage.getItem('VERSION_CACHE') && localStorage.getItem('VERSION_CACHE_HEADER')!='null')
+            if(localStorage.getItem('bearer') && (localStorage.getItem('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE_HEADER')))
+            {
+                localStorage.setItem('VERSION_CACHE',localStorage.getItem('VERSION_CACHE_HEADER'));
+                location.reload(true);
+            }
+    }
+    private setCookie(cookie=null){
+        if(cookie && cookie!='null')
+        {
+            localStorage.setItem('VERSION_CACHE_HEADER',cookie);
+        }
+
+    }
+    private addToast(title:string,message:string,type:typeToast='info',time:number=10000) {
 
         if(this.toastyService) {
             var toastOptions:ToastOptions = {
@@ -45,160 +63,146 @@ export class HttpUtils {
             }
         }
     }
-
-    createEndpoint(endpoint:string,isAbosulte=false){
+    private createEndpoint(endpoint:string,isAbosulte:boolean=false){
         return (isAbosulte?'':localStorage.getItem('urlAPI')) + endpoint;
     }
 
-    doGet(endpoint:string, successCallback, errorCallback ,isEndpointAbsolute = false) {
+    private responseAPI(response,successCallback?){
+        this.setCookie(response.headers.get('Cookie'));
+        this.valideVersion();
+        if (successCallback != null)
+        {
+            let json = response.json();
+            try {
+                successCallback(json);
+            }catch (exception){
+                successCallback(response)
+            }
+        }
+
+    }
+    private errorAPI(error,errorCallback){
+        this.setCookie(error.headers.get('Cookie'));
+        this.valideVersion();
+        if (errorCallback != null)
+            errorCallback(error);
+    }
+
+
+
+    public doGet(endpoint:string, successCallback, errorCallback ,isEndpointAbsolute = false) {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
             this.http.get(endpoint, {headers: contentHeaders})
                 .subscribe(
                     response => {
-                        that.setCookie(response.headers.get('Cookie'));
-                        that.valideVersion();
-                        if (successCallback != null)
-                            successCallback(response);
-                        resolve(response.json());
+                        that.responseAPI(response,successCallback);
+                        resolve(response);
                     },
                     error => {
-                        if (errorCallback != null)
-                            errorCallback(error);
+                        that.errorAPI(error,errorCallback);
                         reject(error);
                     }
                 )
         });
     }
 
-    doDelete(endpoint:string, successCallback, errorCallback,isEndpointAbsolute = false) {
+    public doDelete(endpoint:string, successCallback, errorCallback,isEndpointAbsolute = false) {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
             this.http.delete(endpoint, {headers: contentHeaders})
                 .subscribe(
                     response => {
-                        that.setCookie(response.headers.get('Cookie'));
-                        that.valideVersion();
-                        if (successCallback != null)
-                            successCallback(response);
+                        that.responseAPI(response,successCallback);
                         resolve(response);
                     },
                     error => {
-                        if (errorCallback != null)
-                            errorCallback(error);
+                        that.errorAPI(error,errorCallback);
                         reject(error);
                     }
                 )
         });
     }
 
-    doPost(endpoint:string,body, successCallback, errorCallback,isEndpointAbsolute = false) {
+    public doPost(endpoint:string,body, successCallback, errorCallback,isEndpointAbsolute = false) {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
             this.http.post(endpoint,body, {headers: contentHeaders})
                 .subscribe(
                     response => {
-                        try
-                        {
-                            that.setCookie(response.headers.get('Cookie'));
-                            that.valideVersion();
-                            if (successCallback != null)
-                                successCallback(response);
-                            resolve(response.json());
-                        }
-                        catch(e)
-                        {
-                            resolve({});
-                        }
+                        that.responseAPI(response,successCallback);
+                        resolve(response);
                     },
                     error => {
-                        if (errorCallback != null)
-                            errorCallback(error);
+                        that.errorAPI(error,errorCallback);
                         reject(error);
                     }
                 )
         });
     }
-    doPut(endpoint:string,body, successCallback, errorCallback,isEndpointAbsolute = false) {
+
+    public doPut(endpoint:string,body, successCallback, errorCallback,isEndpointAbsolute = false) {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
             this.http.put(endpoint,body, {headers: contentHeaders})
                 .subscribe(
                     response => {
-                        that.setCookie(response.headers.get('Cookie'));
-                        that.valideVersion();
-                        if (successCallback != null)
-                            successCallback(response);
-                        resolve(response.json());
+                        that.responseAPI(response,successCallback);
+                        resolve(response);
                     },
                     error => {
-                        if (errorCallback != null)
-                            errorCallback(error);
+                        that.errorAPI(error,errorCallback);
                         reject(error);
                     }
                 )
         });
     }
 
-    onSave(endpoint:string, body,list, errorCallback = null,isEndpointAbsolute = false) {
-        let that = this;
-        let successCallback= response => {
+
+
+    public onSave(endpoint:string, body:string,list:Array<Object>, errorCallback = null,isEndpointAbsolute = false) {
+
+        let successCallback = (response => {
             if(list != null)
-                list.unshift( response.json());
-            if (that.toastyService)
-                that.addToast('Notificacion','Guardado con éxito');
-        };
+                list.unshift(response);
+            if (this.toastyService)
+                this.addToast('Notificacion','Guardado con éxito');
+        }).bind(this);
         return this.doPost(endpoint,body,successCallback,errorCallback,isEndpointAbsolute)
     }
 
-    onLoadList(endpoint:string, list,max, errorCallback = null,isEndpointAbsolute = false) {
-        let that = this;
+    public onLoadList(endpoint:string, list:IData, errorCallback = null,isEndpointAbsolute = false) {
         let successCallback= response => {
-            Object.assign(list, response.json());
+            Object.assign(list, response);
         };
         return this.doGet(endpoint,successCallback,errorCallback,isEndpointAbsolute);
     }
 
-    onDelete(endpoint:string,id, list ,errorCallback = null,isEndpointAbsolute = false) {
-        let that = this;
-        let successCallback= response => {
+    public onDelete(endpoint:string,id:number, list:Array<Object> ,errorCallback = null,isEndpointAbsolute = false) {
+        let successCallback = (response => {
             if(list != null){
-                let index = list.findIndex(obj => obj.id == id);
+                let index = list.findIndex(obj => obj['id'] == id);
                 if(index!=-1)
                     list.splice(index,1);
             }
-            if (that.toastyService)
-                that.addToast('Notificacion','Borrado con éxito');
-        };
+            if (this.toastyService)
+                this.addToast('Notificacion','Borrado con éxito');
+        }).bind(this);
         return this.doDelete(endpoint,successCallback,errorCallback,isEndpointAbsolute);
     }
-    onUpdate(endpoint:string,body,data, errorCallback = null,isEndpointAbsolute = false){
-        let that = this;
-        let successCallback= response => {
-            Object.assign(data, response.json());
-            if (that.toastyService)
-                that.addToast('Notificacion','Actualizado con éxito');
-        };
+
+    public onUpdate(endpoint:string,body:string,data:Object, errorCallback = null,isEndpointAbsolute = false){
+        let successCallback = (response => {
+            Object.assign(data, response);
+            if (this.toastyService)
+                this.addToast('Notificacion','Actualizado con éxito');
+        }).bind(this);
         return this.doPut(endpoint,body,successCallback,errorCallback,isEndpointAbsolute)
     }
 
-    valideVersion(){
-        if(localStorage.getItem('VERSION_CACHE') && localStorage.getItem('VERSION_CACHE_HEADER')!='null')
-            if(localStorage.getItem('bearer') && (localStorage.getItem('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE_HEADER')))
-            {
-                localStorage.setItem('VERSION_CACHE',localStorage.getItem('VERSION_CACHE_HEADER'));
-                location.reload(true);
-            }
-    }
-    setCookie(cookie?){
-        if(cookie && cookie!='null')
-        {
-            localStorage.setItem('VERSION_CACHE_HEADER',cookie);
-        }
 
-    }
 }
