@@ -23,7 +23,7 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
 
     constructor(public af: AngularFire,public db:DependenciesBase,private routeActive:ActivatedRoute) {
         super(db);
-        this.setEndpoint("/login");
+        this.setEndpoint("/login/");
     }
     loginFirebase(token){
         let that = this;

@@ -15,7 +15,7 @@ export class AccountSelectComponent extends RestController implements OnInit{
 
     constructor(public db:DependenciesBase) {
         super(db);
-        this.setEndpoint("/current/account");
+        this.setEndpoint("/current/account/");
     }
 
     ngOnInit(){
