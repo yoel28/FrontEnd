@@ -48,8 +48,8 @@
             'rxjs':                      'npm:rxjs',
             'ng2-translate':             'npmR:ng2-translate/bundles/ng2-translate.umd.js',
             'angularfire2':              'npm:angularfire2/bundles/angularfire2.umd.js',
-            // 'angular2-qrcode':           'npm:angular2-qrcode',
-            // 'qrcode-generator':          'npm:qrcode-generator/qrcode.js',
+            'angular2-qrcode':           'npmR:angular2-qrcode',
+            'qrcode-generator':          'npm:qrcode-generator/qrcode.js',
             'ng2-toasty':                'npmR:ng2-toasty/bundles/index.umd.js',
             'angular2-highcharts':       'npmR:angular2-highcharts',
             'highcharts':                'npmR:highcharts',
@@ -106,7 +106,9 @@
                 defaultExtension: 'js'
             },
             'angular2-notifications': { main: 'components.js', defaultExtension: 'js' },
-
+            'angular2-qrcode':{
+                defaultExtension: 'js',
+            },
 
             //Dependencias
             'jquery': {
