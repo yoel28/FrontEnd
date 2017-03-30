@@ -7,6 +7,7 @@ import {TextareaRule} from "./rules/textarea.rule";
 import {NumberRule} from "./rules/number.rule";
 import {TextRule} from "./rules/text.rule";
 import {CombodateRule} from "./rules/combodate.rule";
+import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
 
 var moment = require('moment');
 var jQuery = require('jquery');
@@ -72,8 +73,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
     private _navIndex:number=null;
     private transactional:boolean;
     private pendings:number;
-
-    private readonly LIMIT_ROWS_DEFAULT = 1000;
 
 
     constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
@@ -285,7 +284,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.modelActions.add("exportPdf",{
             permission: this.permissions.exportPdf,
             views:[ { icon: "fa fa-file-pdf-o", colorClass:"",
-                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_PDF',this.LIMIT_ROWS_DEFAULT)+' '+this.db.msg.rows},
+                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_PDF',API.REPORT_LIMIT_ROWS_PDF)+' '+this.db.msg.rows},
                     { icon: "fa fa-file-pdf-o", title:this.db.msg.exportPdf, colorClass:"text-red" }],
             callback:((data?,index?)=>{
                 if(this.getEnabledReport('PDF')){
@@ -303,10 +302,10 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.modelActions.add("exporXls",{
             permission: this.permissions.exporXls,
             views:[ { icon: "fa fa-file-excel-o", colorClass:"",
-                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_XLS',this.LIMIT_ROWS_DEFAULT)+' '+this.db.msg.rows},
+                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_EXCEL',API.REPORT_LIMIT_ROWS_EXCEL)+' '+this.db.msg.rows},
                     { icon: "fa fa-file-excel-o", title:this.db.msg.exportXls, colorClass:"text-green" }],
             callback:((data?,index?)=>{
-                if(this.getEnabledReport('XLS')){
+                if(this.getEnabledReport('EXCEL')){
                     let url = localStorage.getItem('urlAPI')+ this.endpoint +
                     this.getRestParams()+ '&access_token='+
                     localStorage.getItem('bearer')+'&formatType=xls'+
@@ -693,8 +692,10 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.onPatch(field,data,id);
     }
 
-    public getEnabledReport(type:'PDF'|'XLS'='PDF'){
-        return (parseFloat(this.getParams('REPORT_LIMIT_ROWS_'+type,this.LIMIT_ROWS_DEFAULT)) >= this.getData().count);
+    public getEnabledReport(type:'PDF'|'EXCEL'='PDF'){
+        if(type=='PDF')
+            return (this.getParams('REPORT_LIMIT_ROWS_PDF',API.REPORT_LIMIT_ROWS_PDF) >= this.getData().count);
+        return (this.getParams('REPORT_LIMIT_ROWS_EXCEL',API.REPORT_LIMIT_ROWS_EXCEL) >= this.getData().count);
     }
 
     public getParams(code:string,defaultValue?){

@@ -1,6 +1,7 @@
 import {Component, EventEmitter, AfterViewInit} from '@angular/core';
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
+import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
 
 var jQuery = require('jquery');
@@ -58,11 +59,11 @@ export class LocationPickerComponent extends ControllerBase implements  AfterVie
     public mapGoogle:any;
     public marker:any;
 
-    private _lat=parseFloat(this.db.myglobal.getParams('LOCATION_LAT') || '36.1616691929742');
-    private _lng=parseFloat(this.db.myglobal.getParams('LOCATION_LNG') || '-115.14521675092624');
-    private _zoom=parseFloat(this.db.myglobal.getParams('LOCATION_ZOON') || '4');
-    private _regionBias=(this.db.myglobal.getParams('LOCATION_REGION_BIAS') || 'us');
-    private _mapTypeId=( this.db.myglobal.getParams('LOCATION_MAP_TYPE_ID') || 'roadmap');
+    private _lat=this.db.myglobal.getParams('LOCATION_LAT',API.LOCATION_LAT);
+    private _lng=this.db.myglobal.getParams('LOCATION_LNG',API.LOCATION_LNG);
+    private _zoom=this.db.myglobal.getParams('LOCATION_ZOON',API.LOCATION_ZOON);
+    private _regionBias=this.db.myglobal.getParams('LOCATION_REGION_BIAS',API.LOCATION_REGION_BIAS);
+    private _mapTypeId=this.db.myglobal.getParams('LOCATION_MAP_TYPE_ID',API.LOCATION_MAP_TYPE_ID);
 
 
 

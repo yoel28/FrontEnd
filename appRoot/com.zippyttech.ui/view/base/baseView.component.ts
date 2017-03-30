@@ -4,6 +4,7 @@ import {AnimationsManager} from "../../animations/AnimationsManager";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {TablesComponent} from "../../components/tables/tables.component";
 import {IRule} from "../../../com.zippyttech.common/rules/rule";
+import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
 var jQuery = require('jquery');
 var moment = require('moment');
@@ -36,7 +37,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
         this.model = this.instance.model;
     }
     get getCurrentPage(){
-        return ((this.model.rest.offset/this.model.rest.max)+1);
+        return ((this.model.getRest().offset/this.model.getRest().max)+1);
     }
 
     public instanceTable:TablesComponent;
@@ -60,9 +61,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     }
     public getEnabledReport(type='PDF'){
         if(type=='PDF')
-            return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_PDF')) >= this.model.dataList.count);
+            return (this.db.getParams('REPORT_LIMIT_ROWS_PDF',API.REPORT_LIMIT_ROWS_PDF) >= this.model.getData().count);
         if(type=='EXCEL')
-            return (parseFloat(this.db.myglobal.getParams('REPORT_LIMIT_ROWS_EXCEL')) >= this.model.dataList.count);
+            return ( this.db.getParams('REPORT_LIMIT_ROWS_EXCEL',API.REPORT_LIMIT_ROWS_EXCEL) >= this.model.getData().count);
     }
 
     setVisibleField(event,data:IRule)
@@ -118,7 +119,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
     }
     loadPreferenceViewModel(){
         let temp={};
-        let current=[];
+        let current;
         current=this.db.myglobal.getPreferenceViewModel(this.model.constructor.name,this.model.rules);
         current.forEach((obj=>{
             temp[obj.key]=this.model.rules[obj.key];

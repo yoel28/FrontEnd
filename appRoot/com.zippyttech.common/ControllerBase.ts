@@ -2,7 +2,14 @@ import {StaticValues} from "../com.zippyttech.utils/catalog/staticValues";
 import {OnInit} from "@angular/core";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "./DependenciesBase";
-import {ModelRoot} from "./modelRoot";
+import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
+/**
+ * @Params API
+ * Optional
+ *      {PREFIX}_DATE_MAX_HUMAN
+ *
+ *
+ */
 
 var jQuery = require('jquery');
 var humanizeDuration = require('humanize');
@@ -63,14 +70,14 @@ export abstract class ControllerBase implements OnInit {
         if (date) {
             if (id && this.formatDateId[id])
                 force = this.formatDateId[id].value;
-            if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN') == 'true' && !force) {
+            if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN) && !force) {
                 var diff = moment().valueOf() - moment(date).valueOf();
-                if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) {
+                if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN))) {
                     if (diff < 1800000)//menor a 30min
-                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m', 's']})
+                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m', 's']});
                     if (diff < 3600000) //menor a 1hora
-                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m']})
-                    return 'Hace ' + this.dateHmanizer(diff, {units: ['h', 'm']})
+                        return 'Hace ' + this.dateHmanizer(diff, {units: ['m']});
+                    return 'Hace ' + this.dateHmanizer(diff, {units: ['h', 'm']});
                 }
             }
             return moment(date).format(format);
@@ -87,7 +94,10 @@ export abstract class ControllerBase implements OnInit {
     public viewChangeDate(date) {
         //<i *ngIf="viewChangeDate(data.rechargeReferenceDate)" class="fa fa-exchange" (click)="changeFormatDate(data.id)"></i>
         var diff = moment().valueOf() - moment(date).valueOf();
-        return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) && this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN') == 'true')
+        return (
+                    (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN)) &&
+                    this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN)
+                );
     }
 
     public modalIn:boolean=true;

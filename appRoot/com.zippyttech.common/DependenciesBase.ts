@@ -1,4 +1,4 @@
-import {Router, ActivatedRoute} from "@angular/router";
+import {Router} from "@angular/router";
 import {Http} from "@angular/http";
 import {globalService} from "../com.zippyttech.utils/globalService";
 import {ToastyService, ToastyConfig} from "ng2-toasty";
@@ -8,6 +8,7 @@ import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {WebSocket} from "../com.zippyttech.utils/websocket";
 import {ModalService} from "../com.zippyttech.services/modal/modal.service";
 import {ModelService} from "../com.zippyttech.services/model/model.service";
+import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
 
 export interface IElementsApp{
     app?:HTMLElement;
@@ -24,19 +25,24 @@ export class DependenciesBase {
 
     public modelService:ModelService;
 
+    public myglobal:globalService;
+    public ws:WebSocket;
+
     constructor(
                 public router: Router,
                 public http:Http,
-                public myglobal:globalService,
                 public toastyService:ToastyService,
                 public toastyConfig:ToastyConfig,
-                public ws:WebSocket,
                 public ms:ModalService
     ){
-        this.modelService = new ModelService(this);
+        this.ngOnInit();
     }
 
-    public debugLog =  this.myglobal.debugLog.bind(this.myglobal);
+    ngOnInit(){
+        this.myglobal = new globalService(this);
+        this.ws = new WebSocket(this);
+        this.modelService = new ModelService(this);
+    }
 
     public templateTypeOf(value){
         return typeof (value);
@@ -48,6 +54,26 @@ export class DependenciesBase {
         }catch (exception){
             this.debugLog(['Error evalMe',data,exp,exception])
         }
+    }
+
+    public debugLog(logs:string|Array<any>){
+        let modeDebug = this.getParams('MODE_DEBUG',API.MODE_DEBUG);
+        if(modeDebug)
+        {
+            console.log('BEGIN-------------------------------------------------------------------------------------------');
+            if(typeof logs === 'string')
+                console.log(logs);
+            if(typeof logs === 'object' && logs.length){
+                logs.forEach(log=>{
+                    console.log(log)
+                })
+            }
+            console.log('END-------------------------------------------------------------------------------------------');
+        }
+    }
+
+    public getParams(code:string,defaultValue?:any):any{
+        return this.myglobal.getParams(code,defaultValue)
     }
 
 }

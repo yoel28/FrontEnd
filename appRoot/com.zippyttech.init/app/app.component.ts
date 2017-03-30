@@ -1,34 +1,36 @@
-import {
-    Component, OnInit, ChangeDetectorRef, AfterViewInit, AfterContentChecked, HostListener, DoCheck,
-    ElementRef
-} from '@angular/core';
+import {Component, OnInit, ChangeDetectorRef,HostListener, DoCheck, ElementRef} from '@angular/core';
 import {RestController} from "../../com.zippyttech.rest/restController";
 import {RoutesRecognized, NavigationStart} from "@angular/router";
 import {contentHeaders} from "../../com.zippyttech.rest/headers";
 import {FormControl} from "@angular/forms";
 import {componentsPublic} from "../../app-routing.module";
-import {InfoModel} from "../../com.zippyttech.business/info/info.model";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {AngularFire} from "angularfire2";
 import {IModalConfig} from "../../com.zippyttech.services/modal/modal.types";
+import {API} from "../../com.zippyttech.utils/catalog/defaultAPI";
+
+/**
+ * @Params API
+ * Optional
+ *      {PREFIX}_DATE_MAX_HUMAN
+ *
+ *
+ */
 
 var jQuery = require('jquery');
-
 @Component({
     selector: 'app',
     templateUrl: './index.html',
     styleUrls: ['./style.css'],
     animations: AnimationsManager.getTriggers("d-fade|expand_down", 150)
 })
-export class AppComponent extends RestController implements OnInit,AfterViewInit,AfterContentChecked,DoCheck {
+export class AppComponent extends RestController implements OnInit,DoCheck {
 
     public menuType: FormControl;
     public menuItems: FormControl;
 
     public activeMenuId: string;
-
-    public info: any;
 
 
     constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire, private el:ElementRef) {
@@ -46,9 +48,6 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         this.menuItems = this.db.myglobal.menuItems;
         this.loadPublicData();
 
-        // if(this.validToken()  && !this.db.myglobal.dataSesion.valid){
-        //      this.goPage(null,'/init/load');
-        // }
     }
 
     routerEvents(){
@@ -98,10 +97,10 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
                     that.db.router.navigate(link);
                 }
 
-                if (that.db.myglobal.dataSesion.valid  && that.db.myglobal.getParams('VERSION_CACHE') != localStorage.getItem('VERSION_CACHE')) {
+                if (that.db.myglobal.dataSesion.valid  && that.db.myglobal.getParams('VERSION_CACHE',API.VERSION_CACHE) != localStorage.getItem('VERSION_CACHE')) {
                     if(!localStorage.getItem('userTemp'))
                     {
-                        localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE'));
+                        localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE',API.VERSION_CACHE));
                         location.reload(true);
                     }
                 }
@@ -109,24 +108,17 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         });
     }
 
-    initModels() {
-        this.info = new InfoModel(this.db);
-        this.info.rules['code'].readOnly = true;
-        this.info.paramsSave.updateField = true;
-    }
-
-    public ngAfterViewInit() {
-
+    initModels() {//TODO: Agregar info
+        // this.info = new InfoModel(this.db);
+        // this.info.rules['code'].readOnly = true;
+        // this.info.paramsSave.updateField = true;
     }
 
     ngDoCheck() {
         this.cdRef.detectChanges();
     }
 
-    ngAfterContentChecked() {
-
-    }
-    public get sessionValid(){
+    get sessionValid(){
         return this.db.myglobal.dataSesion.valid && !localStorage.getItem('userTemp');
     }
 
@@ -144,34 +136,34 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         return localStorage.getItem('bearer') ? true : false;
     }
 
-    logout(event: Event) {
-        event.preventDefault();
-        let that = this;
-        let successCallback = (response: any) => {
+    logout(event:Event) {
+        if(event)
+            event.preventDefault();
+
+        let successCallback = ((response: any) => {
             this.db.myglobal.dataSesionInit();
             localStorage.removeItem('bearer');
             localStorage.removeItem('userTemp');
             localStorage.removeItem('accountList');
             contentHeaders.delete('Authorization');
-            that.af.auth.logout();
+            this.af.auth.logout();
             this.menuItems.setValue([]);
             this.menuType.setValue(null);
             this.activeMenuId = "";
             let link = ['/auth/login', {}];
-            that.db.router.navigate(link);
-        };
-        this.httputils.doPost('/logout', null, successCallback, this.error);
+            this.db.router.navigate(link);
+        }).bind(this);
+        this.httputils.doPost('/logout/', null, successCallback, this.error);
 
     }
-    public changeAccount(event){
+
+    public changeAccount(event:Event){
         if(event)
             event.preventDefault();
 
         localStorage.setItem('userTemp','true');
-
         let link = ['/auth/accountSelect', {}];
         this.db.router.navigate(link);
-
     }
 
     public replace(data: string): string {
@@ -183,7 +175,6 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             event.preventDefault();
         let link = ['/access/user/profile', {}];
         this.db.router.navigate(link);
-
     }
 
     activeMenu(event, id) {
@@ -213,8 +204,8 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
             this.loadMenu();
             this.initModels();
             this.menuType.setValue({
-                'list': this.db.myglobal.getParams('MENU_LIST') == '1' ? true : false,
-                'modal': this.db.myglobal.getParams('MENU_MODAL') == '1' ? true : false,
+                'list': this.db.myglobal.getParams('MENU_LIST',API.MENU_LIST) ? true : false,
+                'modal': this.db.myglobal.getParams('MENU_MODAL',API.MENU_MODAL) ? true : false,
             });
 
             if (!this.menuType.value.list) {
@@ -320,7 +311,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         }
     }
 
-    getLocalStorage(item){
+    getLocalStorage(item:string){
         return localStorage.getItem(item);
     }
 
@@ -346,13 +337,7 @@ export class AppComponent extends RestController implements OnInit,AfterViewInit
         return data;
     }
 
-    setInstance(instance, prefix) {
-        if (!this.db.myglobal.objectInstance[prefix])
-            this.db.myglobal.objectInstance[prefix] = {};
-        this.db.myglobal.objectInstance[prefix] = instance;
-    }
-
-    goPage(event=null, url) {
+    goPage(event:Event=null, url:string) {
         if (event)
             event.preventDefault();
         let link = [url, {}];

@@ -3,7 +3,8 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {ILocation} from "../locationPicker/locationPicker.component";
-import {IModalSave, IModalParams, IModalDelete, ModalName} from "../../../com.zippyttech.services/modal/modal.types";
+import {IModalParams, ModalName} from "../../../com.zippyttech.services/modal/modal.types";
+import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
 /**
  * @Params API
@@ -105,9 +106,9 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         if (date) {
             if (id && this.formatDateId[id])
                 force = this.formatDateId[id].value;
-            if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN') == 'true' && !force) {
+            if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN) && !force) {
                 var diff = moment().valueOf() - moment(date).valueOf();
-                if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) {
+                if (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN)) {
                     if (diff < 1800000)//menor a 30min
                         return 'Hace ' + this.dateHmanizer(diff, {units: ['m', 's']});
                     if (diff < 3600000) //menor a 1hora
@@ -123,7 +124,10 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     viewChangeDate(date) {
         //<i *ngIf="viewChangeDate(data.rechargeReferenceDate)" class="fa fa-exchange" (click)="changeFormatDate(data.id)"></i>
         var diff = moment().valueOf() - moment(date).valueOf();
-        return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) && this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN') == 'true')
+        return (
+                    (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN)) &&
+                    this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN)
+            );
     }
 
     changeFormatDate(id) {
@@ -227,21 +231,21 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
     public setDataFieldReference(setNull=false) {
         let value=null;
-        let that = this;
+        let that = this; //TODO:Importante recrear todo el proceso
 
-        if(!setNull)//no colocar valor nulo
-        {
-            value=this.paramsData.select['id'];
-            if(that.paramsData.select[that.paramsData.ruleReference.code]!=null && that.paramsData.ruleReference.unique)
-                that.paramsData.ruleReference.model.setDataField(that.paramsData.select[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.paramsData.select).then(
-                    response=>{
-                        that.paramsData.ruleReference.model.setDataField(that.data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
-                    });
-            else
-                that.paramsData.ruleReference.model.setDataField(that.data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
-        }
-        else
-            that.paramsData.ruleReference.model.setDataField(this.data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.data);
+        // if(!setNull)//no colocar valor nulo
+        // {
+        //     value=this.paramsData.select['id'];
+        //     if(that.paramsData.select[that.paramsData.ruleReference.code]!=null && that.paramsData.ruleReference.unique)
+        //         that.paramsData.ruleReference.model.setDataField(that.paramsData.select[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.paramsData.select).then(
+        //             response=>{
+        //                 that.paramsData.ruleReference.model.setDataField(that.data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+        //             });
+        //     else
+        //         that.paramsData.ruleReference.model.setDataField(that.data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+        // }
+        // else
+        //     that.paramsData.ruleReference.model.setDataField(this.data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.data);
 
     }
 

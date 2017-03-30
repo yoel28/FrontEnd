@@ -1,8 +1,9 @@
-import {Component, EventEmitter, OnInit, AfterViewInit, NgModule} from "@angular/core";
+import {Component, EventEmitter, OnInit, AfterViewInit} from "@angular/core";
 import {RestController} from "../../../com.zippyttech.rest/restController";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
+import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
 var moment = require('moment');
 
@@ -66,7 +67,7 @@ export class AccordionComponent extends RestController implements OnInit,AfterVi
                 force = this.formatDateId[id].value;
             if (!force) {
                 var diff = moment().valueOf() - moment(date).valueOf();
-                if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))) {
+                if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN))) {
                     return 'Hace '+this.formatTime(diff);
                 }
             }
@@ -82,9 +83,8 @@ export class AccordionComponent extends RestController implements OnInit,AfterVi
     }
 
     public viewChangeDate(date) {
-        //<i *ngIf="viewChangeDate(data.rechargeReferenceDate)" class="fa fa-exchange" (click)="changeFormatDate(data.id)"></i>
         var diff = moment().valueOf() - moment(date).valueOf();
-        return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN'))))
+        return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN))))
     }
 
     public getObjectKey(data){
