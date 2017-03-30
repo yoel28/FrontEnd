@@ -1,4 +1,20 @@
 import {FormControl} from "@angular/forms";
+interface IComponentForm{
+    hidden?:string;
+    force?:boolean;
+    notReference?:boolean
+    validator?:(c:FormControl)=>Object;
+}
+interface IPermissions{
+    search?:boolean;
+    update?:boolean;
+    visible?:boolean;
+}
+interface IInclude{
+    save: boolean,
+    filter: boolean,
+    list: boolean
+}
 
 export interface IRule{
     key?:string;
@@ -15,25 +31,11 @@ export interface IRule{
     readOnly?:boolean,
     minLength?:number;
     maxLength?:number;
-    refreshField?:{
-
-    }
-    permissions?:{
-        search?:boolean;
-        update?:boolean;
-        visible?:boolean;
-    }
-    include?: {
-        save: boolean,
-        filter: boolean,
-        list: boolean
-    },
+    refreshField?:{}
+    permissions?:IPermissions,
+    include?: IInclude,
     components?:{
-        form?:{
-            hidden?:string;
-            force?:boolean;
-            validator?:(c:FormControl)=>Object;
-        }
+        form?:IComponentForm
     }
 
 }
@@ -151,19 +153,14 @@ export class Rule {
         this.attributes.refreshField = value;
     }
 
-    get permissions():Object{
-        return this.attributes.permissions ||
-                {
-                    search:false,
-                    update:false,
-                    visible:false,
-                };
+    get permissions():IPermissions{
+        return this.attributes.permissions || {};
     }
-    set permissions(value:Object){
+    set permissions(value:IPermissions){
         this.attributes.permissions = value;
     }
 
-    get include():any{
+    get include():IInclude{
         return this.attributes.include ||
             {
                 save:true,
@@ -171,7 +168,7 @@ export class Rule {
                 list:true
             };
     }
-    set include(value:any){
+    set include(value:IInclude){
         this.attributes.include = value;
     }
 
@@ -190,6 +187,12 @@ export class Rule {
 
     get type():string{
         return this.constructor.name.replace('Rule','').toLowerCase();
+    }
+
+    get componentSave():IComponentForm{
+        if(this.attributes.components && this.attributes.components.save)
+            return this.attributes.components.save;
+        return {};
     }
 
 
