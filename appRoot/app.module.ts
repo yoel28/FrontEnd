@@ -2,22 +2,18 @@ import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule, Http} from '@angular/http';
-import {AngularFireModule} from 'angularfire2';
+import { AngularFireModule } from 'angularfire2';
 import {TranslateLoader,TranslateStaticLoader,TranslateModule} from 'ng2-translate';
-import './rxjs-extensions';
-
 import {AppRoutingModule, componentsApp, componentsDefault, componentsView} from './app-routing.module';
-import {globalService} from "./com.zippyttech.utils/globalService";
 import {AppComponent} from "./com.zippyttech.init/app/app.component";
 import {LocationStrategy,HashLocationStrategy} from "@angular/common";
 import {directivesApp, directivesDefault} from "./app.directives";
 import {QRCodeModule} from "angular2-qrcode/angular2-qrcode";
-import {WebSocket} from "./com.zippyttech.utils/websocket";
 import {DependenciesBase} from "./com.zippyttech.common/DependenciesBase";
 import {ChartModule} from "angular2-highcharts";
 import {ModalService} from "./com.zippyttech.services/modal/modal.service";
-
-var firebase = require('firebase');
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import './rxjs-extensions';
 
 const myFirebaseConfig = {
     apiKey: "AIzaSyD7yBfAAGV9pSCHqkqJXGW2g6R70209Kl4",
@@ -35,13 +31,14 @@ const myFirebaseConfig = {
         AppRoutingModule,
         HttpModule,
         ChartModule,
+        BrowserAnimationsModule,
         QRCodeModule,
         AngularFireModule.initializeApp(myFirebaseConfig),
         TranslateModule.forRoot({
             provide: TranslateLoader,
             useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
             deps: [Http]
-        }),
+        })
     ],
     declarations: [
         AppComponent,
@@ -52,10 +49,8 @@ const myFirebaseConfig = {
         directivesDefault
     ],
     providers: [
-        WebSocket,
         {provide:LocationStrategy,useClass: HashLocationStrategy},
         DependenciesBase,
-        globalService,
         ModalService
     ],
     bootstrap: [AppComponent]
