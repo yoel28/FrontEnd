@@ -1,7 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {globalService} from "../../com.zippyttech.utils/globalService";
-import {Router} from "@angular/router";
-
+import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
 @Component({
     selector: 'load-page',
@@ -12,29 +10,31 @@ export class LoadComponent implements OnInit,OnDestroy{
 
     public subscribe:any;
 
-    constructor(public router: Router,public myglobal:globalService) {}
+    constructor(public db:DependenciesBase) {
+
+    }
     ngOnInit():void{
         let that=this;
-        this.subscribe = this.myglobal.dataSesion.valueChanges.subscribe(
+        this.subscribe = this.db.myglobal.dataSesion.valueChanges.subscribe(
             (value:string) => {
                 that.onLoadPage();
             }
         );
         if(localStorage.getItem('bearer')){
-            if(this.myglobal.dataSesion.valid)
+            if(this.db.myglobal.dataSesion.valid)
                 this.onLoadPage();
             else
-                this.myglobal.initSession();
+                this.db.myglobal.initSession();
         }
     }
     public onLoadPage(){
-        if(this.myglobal.dataSesion.valid)
+        if(this.db.myglobal.dataSesion.valid)
         {
-            if(!this.myglobal.saveUrl || (this.myglobal.saveUrl && this.myglobal.saveUrl=='/'))
-                this.myglobal.saveUrl='/init/dashboard';
-            let link = [ this.myglobal.saveUrl, {}];
-            this.myglobal.saveUrl=null;
-            this.router.navigate(link);
+            if(!this.db.myglobal.saveUrl || (this.db.myglobal.saveUrl && this.db.myglobal.saveUrl=='/'))
+                this.db.myglobal.saveUrl='/init/dashboard';
+            let link = [ this.db.myglobal.saveUrl, {}];
+            this.db.myglobal.saveUrl=null;
+            this.db.router.navigate(link);
         }
     }
     ngOnDestroy():void {
