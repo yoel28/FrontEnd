@@ -107,7 +107,6 @@ export const componentsView = [
     ListActionComponent,
     ChartViewComponent,
     LocationPickerComponent,
-    ChartViewComponent,
     DataViewComponent,
 ];
 export const componentsApp = [];
