@@ -28,9 +28,7 @@
                 <div *ngFor="let key of getDataKeys()"
                      class="view-item {{db.classCol(12/dataParams.cols.lg,12/dataParams.cols.md,12/dataParams.cols.sm,12/dataParams.cols.xs)}}">
                     <div class="view-item-icon {{db.classCol(2,2,2,2)}} hidden-xs">
-                        <span>
-                            <i class="{{(model.rules[key].icon)?model.rules[key].icon:'fa fa-list-alt'}}"></i>
-                        </span>
+                        <span><i class="{{(model.rules[key].icon)?model.rules[key].icon:'fa fa-list-alt'}}"></i></span>
                     </div>
                     <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
                         <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
