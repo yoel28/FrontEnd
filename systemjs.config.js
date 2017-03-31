@@ -120,8 +120,7 @@
             },
             'moment': {
                 main:'moment',
-                format: 'global',
-                exports:'moment',
+                // exports:'moment',
                 defaultExtension: 'js',
             },
             'humanize': {
@@ -213,7 +212,11 @@
                 defaultExtension: 'js',
             },
 
+        },
+        meta: {
+            '*.js.wii': {
+                format: 'amd'
+            }
         }
     });
-
 })(this);
