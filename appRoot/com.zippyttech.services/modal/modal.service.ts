@@ -1,10 +1,10 @@
 import {Injectable, EventEmitter} from "@angular/core";
-import {IModalConfig, IModalParams, IModalDelete, IModalParamsType, ModalName} from "./modal.types";
+import {IModalConfig, IModalParams, ModalName} from "./modal.types";
 
 @Injectable()
 export class ModalService {
     private _currentModal = "none";
-    public params:IModalParams<any>;
+    public params:IModalParams;
     public onVisible: EventEmitter<boolean>;
     public configs:{[key:string]:IModalConfig};
 
@@ -16,7 +16,7 @@ export class ModalService {
     }
     public get currentModal(): string { return this._currentModal };
 
-    public show(name:ModalName, params:IModalParams<any>) {
+    public show(name:ModalName, params:IModalParams) {
         if (this._currentModal == "none") {
             this.params = params;
             this._currentModal = name;
@@ -40,7 +40,6 @@ export class ModalService {
             id:this.modalID,
             size:'md',
             header:{classes:'',title:''},
-            body:{},
             footer:{}
         };
 
@@ -65,6 +64,32 @@ export class ModalService {
             id:this.modalID,
             size:'lg',
             header:{ title: 'Guardar', classes: 'bg-green'}
+        };
+
+        this.configs['filter'] = {
+            id:this.modalID,
+            size:'lg',
+            header:{ title: 'Guardar', classes: 'bg-info'}
+        };
+
+        this.configs['location'] = {
+            id:this.modalID,
+            size:'md',
+            header:{ title:'Ubicación', classes: 'bg-green'},
+            footer: {
+                btns:[{ name: 'Cancelar', classes: 'btn-default', icon: 'fa fa-ban',
+                        call:()=>{ this.hideCurrentModal(); }
+                    },
+                    { name:'Guardar', classes: 'btn-green', icon: 'fa fa-save', exp:'params.extraParams.disabled',
+                        call:()=>{
+                            let json={};
+                            json[this.params.extraParams.keys.lat] =  (this.params.extraParams.data.lat).toString();
+                            json[this.params.extraParams.keys.lng] =  (this.params.extraParams.data.lng).toString();
+                            this.params.model.onPatchObject(json,this.params.extraParams.select);
+                            this.hideCurrentModal();
+                        }
+                    }]
+            }
         };
     }
 }
