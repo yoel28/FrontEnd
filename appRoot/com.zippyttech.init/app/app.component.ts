@@ -24,8 +24,9 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
 
     private navMenuState:NavStatus;
     private enablesNavMenus:IEnablesMenu;
+    private userDrop:boolean = false;
 
-    public info: any;
+    public info:InfoModel;
 
 
     constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire, private el:ElementRef) {
@@ -179,8 +180,8 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
     loadPage() {
         this.initModels();
         this.enablesNavMenus = {
-            tree: (this.db.myglobal.getParams('MENU_LIST') == '1'),
-            modal: (this.db.myglobal.getParams('MENU_MODAL')=='1')
+            tree: (this.db.myglobal.getParams('MENU_LIST') == 'true'),
+            modal: (this.db.myglobal.getParams('MENU_MODAL')=='true')
         };
     }
 
@@ -221,4 +222,8 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
     }
     toggleModalMenu(){}
 
+
+    getNavState(){
+        return NavStatus[this.navMenuState];
+    }
 }

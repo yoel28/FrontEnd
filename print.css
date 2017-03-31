@@ -1,27 +1,21 @@
-*{
-    -webkit-transition: none !important;
-    -moz-transition: none !important;
-    -o-transition: none !important;
-    transition: none !important;
-}
-.content-wrapper, .right-side, .main-footer, div {
-    -webkit-transition: none !important;
-    -moz-transition: none !important;
-    -o-transition: none !important;
-    transition: none !important;
-}
+*{ transition: none !important; }
+.app-view{position: relative !important;}
+
+ nav-menu,
+.app-header,
+.app-footer,
+.box-header,
+.box-footer,
+.colorpicker,
+.data-actions,
+.data-actions-th,
 .noprint{
-    display:none;
+    display: none !important;
 }
-.content-wrapper{
-    margin: 0 !important;
-    padding: 0 !important;
-}
+
+
 body{
     letter-spacing: 1pt !important;
-}
-.colorpicker{
-    display: none;
 }
 td.title-companygroup{
     background-color: rgba(0, 0, 0,0.34) !important;

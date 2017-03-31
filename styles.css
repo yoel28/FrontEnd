@@ -1,10 +1,4 @@
 @import "reset.css";
-/*
-main{
-    background-color: #0d5628;
-    width: 100%;
-    height: 100%;
-}*/
 
 .skin-blue .wrapper{
     background-color: #e1e7da !important;
@@ -33,13 +27,6 @@ table, .modal-dialog{
     -moz-border-radius: 5px !important;
     border-radius: 5px !important;
     overflow: hidden;
-}
-
-div:not(.modal-content) ,section
-{
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
-    border-radius: 5px;
 }
 
 .dm{
@@ -100,14 +87,7 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
     max-width: 100%;
     height: auto;
 }
-/*
-.content-wrapper{
-    background-image: url('assets/img/clubGolf/BolaGolf.png'), url('assets/img/clubGolf/RobotTransparent.png');
-    background-position: left bottom, right bottom;
-    background-repeat: no-repeat, no-repeat;
-    background-size: 15% ,25%;
-}
-*/
+
 .focus-error{
     border-bottom: 1px solid red !important;
 }
@@ -251,22 +231,8 @@ register-full .view-data-internal{
     }
 }
 
-
-
-
-.main-sidebar{
-    background-color: #222d32 !important;
-    z-index: 99 !important;
-}
-
-.logo{
-    padding: 0px;
-}
-
-.img-logo{
-    position: relative;
-    width: 50px;
-    height: 50px;
-    left: 0px;
-    margin: 0 auto;
+/*MY*/
+.app-view>.app-body>.app-router>*{
+    flex:1 0;
+    width: 100%;
 }

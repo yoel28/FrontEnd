@@ -1,58 +1,51 @@
-<div class="app-view">
-    <header *ngIf="sessionValid" class="main-header">
-        <a href="#" [routerLink]="['/init/dashboard']" class="logo">
-            <img [attr.src]="db.pathElements.miniLogo" class="img-logo">
+<main class="app-view">
+    <header class="app-header nav-{{getNavState()}}" *ngIf="sessionValid">
+        <a class="logo" href="#" [routerLink]="['/init/dashboard']">
+            <img [attr.src]="db.pathElements.miniLogo">
         </a>
-        <nav class="navbar navbar-static-top" role="navigation">
-            <span *ngIf="enablesNavMenus.tree" (click)="toggleTreeMenu()">
-                <i class="fa fa-list"></i>
-            </span>
-            <span *ngIf="enablesNavMenus.modal" (click)="toggleModalMenu()">
-                <i class="fa fa-list"></i>
-            </span>
-
-            <a *ngIf="getLocalStorage('accountList')" type="button" title="Cambiar cuenta"
-               class="btn btn-blue glyphicon glyphicon-cog" style="font-size: x-large"  (click)='changeAccount($event)'>
+        <div class="bar">
+            <span class="btn navMenu" *ngIf="enablesNavMenus.tree" (click)="toggleTreeMenu()"><i class="fa"></i></span>
+            <span class="btn modalMenu" *ngIf="enablesNavMenus.modal" (click)="toggleModalMenu()"><i class="fa fa-list"></i></span>
+            <a class="btn btn-blue glyphicon glyphicon-cog" type="button" title="Cambiar cuenta"
+               *ngIf="getLocalStorage('accountList')" style="font-size: x-large"  (click)='changeAccount($event)'>
             </a>
+        </div>
 
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <li class="dropdown user user-menu">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="user-image" alt="User Image">
-                            <span class="hidden-xs">{{db.myglobal.user.email}}</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li class="user-header">
-                                <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle" alt="User Image">
-                            </li>
-                            <li class="user-footer">
-                                <div class="user-btns">
-                                    <button (click)='onProfile($event)' class="btn btn-success text-white pull-left">Perfil</button>
-                                    <button (click)='logout($event)' class="btn btn-success pull-right">Salir</button>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <div class="user-menu" [class.open]="userDrop">
+            <a class="info" (click)=" userDrop = !userDrop">
+                <img  class="image" [attr.src]="db.myglobal.user.image || db.pathElements.robot" alt="User Image">
+                <span class="email hidden-xs">{{db.myglobal.user.email}}</span>
+            </a>
+            <ul class="drop">
+                <li class="image">
+                    <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle" alt="User Image">
+                </li>
+                <li class="footer">
+                    <button class="btn" (click)="onProfile($event)">Perfil</button>
+                    <button class="btn" (click)="logout($event)">Salir</button>
+                </li>
+            </ul>
+        </div>
     </header>
-    <main>
-        <aside class="main-sidebar" *ngIf="sessionValid && enablesNavMenus.tree">
-            <nav-menu [state]="navMenuState"> </nav-menu>
-        </aside>
-        <section class="content-wrapper">
-            <router-outlet></router-outlet>
+    <section class="app-body">
+        <nav-menu [state]="navMenuState" *ngIf="sessionValid && enablesNavMenus.tree"></nav-menu>
+        <section class="app-router">
+            <router-outlet style="display: none"></router-outlet>
+
         </section>
-    </main>
-    <footer *ngIf="sessionValid" class="main-footer">
-        <div class="pull-right hidden-xs"> {{db.myglobal.user.account}} </div>
-        <strong>Copyright &copy; 2017 <a href="#">{{db.myglobal.user.account}}</a>.</strong> Todos los derechos reservados.
-        <br/>En caso de error comunicarse al {{db.myglobal.getParams('PHONE_SUPPORT')}} / {{ replace(db.myglobal.getParams('EMAIL_SUPPORT')) }}
-        <a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{db.msg.termConditions}}</a>
+    </section>
+    <footer class="app-footer" *ngIf="sessionValid">
+        <div>
+            <span><strong>Copyright &copy; 2017 <a href="#">{{db.myglobal.user.account}}</a>.</strong> Todos los derechos reservados.</span>
+            <span>En caso de error comunicarse al {{db.myglobal.getParams('PHONE_SUPPORT')}}/{{ replace(db.myglobal.getParams('EMAIL_SUPPORT'))}}</span>
+        </div>
+        <div>
+            <div class="text-right"> {{db.myglobal.user.account}} </div>
+            <a href="#" data-target="#termConditions" data-toggle="modal">{{db.msg.termConditions}}</a>
+        </div>
     </footer>
-</div>
+</main>
+
 <ng2-toasty [position]="'top-right'"></ng2-toasty>
 <modal></modal>
 
