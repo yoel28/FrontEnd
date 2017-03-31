@@ -260,9 +260,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
             permission: this.permissions.filter,
             views: [ {icon: "fa fa-filter", title: "sin filtro", colorClass:"text-blue"},
                     {icon: "fa fa-filter", title: "filtrando" , colorClass:"text-green"}],
-            callback: ((data?, index?)=>{
-                alert('filter no defined');
-            }).bind(this),
+            callback:((data?,index?)=>{ this.db.ms.show('filter',{model: this}); }).bind(this),
             stateEval:'0',
             params:{}
         });
