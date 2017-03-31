@@ -1,22 +1,15 @@
-<div *ngIf="model && false" class="save-view">
+<div *ngIf="currentModel" class="save-view">
     <div class="save-body">
-        <form-view
-                (getInstance)="setForm($event)"
-                [params]="currentModel.paramsSave"
-                [rules]="currentModel.rulesSave">
+        <form-view  (getInstance)="setForm($event)"
+                    [params]="currentModel.paramsSave" [rules]="currentModel.rulesSave">
         </form-view>
     </div>
     <div class="save-footer">
-        <button *ngIf="existloadDelete()" (click)="loadDelete($event)" data-dismiss="modal" type="button"
-                class="btn btn-success">
-            <i class="fa fa-trash"></i>
-            &nbsp;Eliminar
+        <button *ngIf="existloadDelete()" (click)="loadDelete($event)" class="btn btn-success">
+            <i class="fa fa-trash"></i>&nbsp;Eliminar
         </button>
-        <button (click)="submitForm($event)" data-dismiss="modal" type="button" class="btn btn-primary"
-                [disabled]="!formValid()">
-            <i class="fa fa-save"></i>
-            <!--&nbsp;{{params.updateField?'Actualizar':'Registrar'}}-->
-            Registrar
+        <button (click)="submitForm($event)" class="btn btn-primary" [disabled]="!formValid()">
+            <i class="fa fa-save"></i>&nbsp;{{params.update?'Actualizar':'Registrar'}}
         </button>
     </div>
 </div>
