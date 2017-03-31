@@ -24,7 +24,6 @@ export class TablesComponent implements OnInit {
         searchInstances:{},
         viewListData:{},
         ruleReference:{},
-        locationParams:null,
         arrayData:[]
     };
 
@@ -119,17 +118,17 @@ export class TablesComponent implements OnInit {
 
     }
 
-    saveLocation(event){
-        if(event)
-            event.preventDefault();
-
-        let json={};
-        json[this.paramsData.locationParams.keys.lat] =  (this.paramsData.locationParams.data.lat).toString();
-        json[this.paramsData.locationParams.keys.lng] =  (this.paramsData.locationParams.data.lng).toString();
-
-        this.model.onPatchObject(json,this.paramsData.select);
-
-    }
+    // saveLocation(event){ TODO: Implementar nuevo
+    //     if(event)
+    //         event.preventDefault();
+    //
+    //     let json={};
+    //     json[this.paramsData.locationParams.keys.lat] =  (this.paramsData.locationParams.data.lat).toString();
+    //     json[this.paramsData.locationParams.keys.lng] =  (this.paramsData.locationParams.data.lng).toString();
+    //
+    //     this.model.onPatchObject(json,this.paramsData.select);
+    //
+    // }
 
     isUnique():boolean{
         if(this.model.dataList.id || this.model.dataList.count==1 || this.model.navIndex != null)
