@@ -5,7 +5,7 @@
     <table id="footable" class="table table-striped table-hover" ><!--*ngIf="!model.updating"--><!--x-footable -->
         <thead>
         <tr>
-            <div></div><!--[attr.data-breakpoints]="((i<1)?'':(i<2)?'xs':(i<4)?'xs sm': (i<=6)?'xs sm md':'xs sm md lg')" -->
+            <th class="data-actions-th"></th><!--[attr.data-breakpoints]="((i<1)?'':(i<2)?'xs':(i<4)?'xs sm': (i<=6)?'xs sm md':'xs sm md lg')" -->
             <th
                     data-type = "html" *ngFor="let key of keyVisible; let i=index" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
                 <i *ngIf="model.rest.sort==key && model.rest.order == 'asc' && !model.rest.findData" class="fa fa-caret-up text-blue"></i>
@@ -20,7 +20,7 @@
         </thead>
         <tbody >
         <tr *ngFor="let data of model.dataList.list; let i=index"  [class.deleted]="data.deleted">
-            <div *ngIf="viewActions && model.dataActions" class="notHidden">
+            <div *ngIf="viewActions && model.dataActions" class="data-actions notHidden">
                 <div *ngIf="model.dataActions.length == 1 && model.dataActions.getFirst(data)">
                     <a (click)="model.dataActions.getFirst(data).callback(data,i);">
                         <i class="{{model.dataActions.getFirst(data).view[0].icon}}"></i>
@@ -73,18 +73,6 @@
 </div>
 
 <!--########################################MODALS########################################-->
-<!--LOCATION!!-->
-<!--<template [ngIf]="paramsData && paramsData.locationParams">-->
-    <!--<modal-view [params]="modalLocation">-->
-        <!--<div body>-->
-            <!--<location-picker [params]="paramsData.locationParams"></location-picker>-->
-        <!--</div>-->
-        <!--<div  *ngIf="!paramsData.locationParams.disabled" footer>-->
-            <!--<button class="btn btn-success" (click)="saveLocation($event)" >{{db.msg.save}}</button>-->
-        <!--</div>-->
-    <!--</modal-view>-->
-<!--</template>-->
-
 <!--SEARCH!!-->
 <!--<div *ngIf="paramsData && paramsData.searchParams && !paramsData.searchParams.multiple && paramsData.searchParams.idModal">-->
     <!--<search-view [params]="paramsData.searchParams" (result)="getDataSearch($event)" (getInstance)="setInstanceSearch('unique',$event)"></search-view>-->
