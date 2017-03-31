@@ -113,7 +113,12 @@ export class NavMenuComponent{
             routerLink: 'access/account'
         });
     }
-
+    onProfile(event?: Event){
+        if (event)
+            event.preventDefault();
+        let link = ['/access/user/profile', {}];
+        this.db.router.navigate(link);
+    }
     getNavState(){
         return NavStatus[this.state];
     }

@@ -1,5 +1,5 @@
 <section class="nav {{getNavState()}}">
-    <div class="header" (click)="alert('implement!!')">
+    <div class="header" (click)="onProfile($event)">
         <img class="image" [attr.src]="db.myglobal.user.image || db.pathElements.robot">
         <div class="info">
             <span class="name">{{db.myglobal.user.name}}</span>
@@ -7,26 +7,26 @@
                 <i class="fa fa-industry"></i> {{db.myglobal.user.companyName}}
             </span>
         </div>
-        <div class="email">
-            <i class="fa fa-circle text-success"></i> {{db.myglobal.user.email}}
-        </div>
     </div>
-    <ul class="menu" *ngIf="menu">
-        <li class="item" *ngFor="let sub of menu.items; let i=index" [class.selected]="menu.selectedItem == i  && state!=1">
-            <template [ngTemplateOutlet]="info" [ngOutletContext]="{context:{parent:menu, data:sub, i:i}}"></template>
-        </li>
+    <div class="status">
+        <i class="fa fa-circle text-success"></i> {{db.myglobal.user.email}}
+    </div>
+    <ul class="menu" *ngIf="menu && menu.items.length > 0">
+        <template [ngTemplateOutlet]="tree" [ngOutletContext]="{menu:menu}"></template>
     </ul>
 </section>
 
-<template #info let-context="context">
-    <div class="item-info" (click)="context.parent.click(context.i)" *ngIf="context.data">
-        <i class="item-icon {{context.data.icon || 'fa fa-list'}}"></i>
-        <span class="item-title"> {{context.data.title || 'Sin titulo'}} </span>
-        <i class="item-exp fa fa-angle-left" *ngIf="context.data.items.length > 0"></i>
-    </div>
-    <ul class="sub-menu" *ngIf="context.data && context.data.items && context.data.items.length > 0">
-        <li *ngFor="let sub of context.data.items; let i=index" class="item" [class.selected]="context.data.selectedItem == i && state!=1">
-            <template [ngTemplateOutlet]="info" [ngOutletContext]="{context:{parent:context.data, data:sub, i:i}}"></template>
+<template #tree let-menu="menu">
+    <template [ngIf]="menu">
+        <li class="item" *ngFor="let sub of menu.items; let i=index" [class.selected]="menu.selectedItem==i && state!=1">
+            <div class="item-info" (click)="menu.click(i);">
+                <i class="item-icon {{sub.icon || 'fa fa-list'}}"></i>
+                <span class="item-title">&nbsp;&nbsp;{{sub.title || 'Sin titulo'}}</span>
+                <i class="item-exp fa fa-angle-left" *ngIf="sub.items.length > 0"></i>
+            </div>
+            <ul class="sub-menu" *ngIf="sub.items.length > 0">
+                <template [ngTemplateOutlet]="tree" [ngOutletContext]="{menu:sub}"></template>
+            </ul>
         </li>
-    </ul>
+    </template>
 </template>
