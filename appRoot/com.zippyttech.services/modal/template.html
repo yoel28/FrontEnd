@@ -13,21 +13,41 @@
                 <ng-template [ngSwitchCase]="'delete'">
                     <div>
                         {{db.ms.params.model.dataActions.get('delete').params.message}}
-                        <strong>'{{db.ms.params.model.currentData[db.ms.params.model.display]}}'</strong>
+                        <strong>'{{db.ms.params.model.currentData[db.ms.params.model.view.display]}}'</strong>
                     </div>
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'save'">
-                    <save-view  [params]  = "{model: db.params.model, childKey:db.ms.params.extraParams.childKey}">
+                    <save-view  [params]  = "
+                    {
+                        model: db.ms.params.model,
+                        childKey:(db.ms.params.extraParams &&
+                                  db.ms.params.extraParams.childKey)?db.ms.params.extraParams.childKey:null
+                    }"
+                    >
                     </save-view>
                 </ng-template>
+
+                <template [ngSwitchCase]="'filter'">
+                    filter :'(
+                </template>
+
+                <template [ngSwitchCase]="'search'">
+                    search -.-
+                </template>
+
+                <template [ngSwitchCase]="'location'">
+                    location :)
+                    <!--<location-picker [params]=""></location-picker> TODO:PARAMETROS de la rule-->
+                </template>
             </div>
         </div>
 
         <div class="footer" *ngIf="config.footer">
             <div class="btns" *ngIf="config.footer.btns">
                 <button *ngFor="let btn of config.footer.btns"
-                        class="btn {{btn.classes||'btn-default'}}" (click)="btn.call();">
+                        class="btn {{btn.classes||'btn-default'}}" (click)="btn.call();"
+                        [disabled]="db.evalMe(btn.exp || 'false')">
                     <i class="{{btn.icon || 'fa fa-list'}}"></i>&nbsp;{{btn.name}}
                 </button>
             </div>

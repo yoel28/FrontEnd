@@ -47,7 +47,7 @@ export class DataViewComponent implements OnInit{
         let keys:string[]=[];
         if(this.data)
             Object.keys(this.model.rules).forEach((key=>{
-                if(this.model.rules[key].visible)
+                if(this.model.rules[key].permissions.visible)
                     keys.push(key);
             }).bind(this));
         return keys;

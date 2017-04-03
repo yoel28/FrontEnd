@@ -1,29 +1,15 @@
 import {ILocation} from "../../com.zippyttech.ui/components/locationPicker/locationPicker.component";
+import {ISave} from "../../com.zippyttech.ui/components/save/save.component";
 
-export type ModalName = 'delete' | 'save';
+export type ModalName = 'delete' | 'save' | 'filter' | 'location' | 'search';
 
-export interface IModalParams<ParamsType extends IModalParamsType>{
+export type ModalParamsType = any;
+
+export interface IModalParams{
     model:any;
     onAfterClose?:()=>void;
-    extraParams?:ParamsType;
+    extraParams?:ModalParamsType;
 };
-
-export interface IModalParamsType{}
-
-export interface IModalDelete extends IModalParamsType{}
-
-export interface IModalSave extends IModalParamsType{
-    childKey:string;
-}
-
-export interface IModalLocation extends IModalParamsType{
-    location: ILocation;
-}
-
-export interface IModalSearch{}
-
-export interface IModalRule{}
-
 
 export interface IModalConfig{
     id:string;
@@ -32,12 +18,12 @@ export interface IModalConfig{
         title:string,
         classes?:string
     };
-    body?:{ }; //TODO: define body params
     footer?:{
         btns?: Array<{
             name: string;
             icon?: string;
             classes?: string;
+            exp?:string;
             call:()=>void;
         }>
     }

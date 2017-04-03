@@ -51,3 +51,8 @@ export class Actions<ParamsType>{
         return array;
     }
 }
+
+export interface IEnablesMenu{
+    tree:boolean;
+    modal:boolean;
+}

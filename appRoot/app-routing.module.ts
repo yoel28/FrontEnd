@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import {Routes, RouterModule, Route} from '@angular/router';
 
 import {DashboardComponent} from "./com.zippyttech.init/dashboard/dashboard.component";
 import {LoginComponent} from "./com.zippyttech.auth/login/login.component";
@@ -38,9 +38,17 @@ import {DataViewComponent} from "./com.zippyttech.ui/components/dataView/dataVie
 import {BasicComponent} from "./com.zippyttech.common/basicComponent";
 import {AccountSelectComponent} from "./com.zippyttech.auth/accountSelect/accountSelect.component";
 import {ModalComponent} from "./com.zippyttech.services/modal/modal.component";
+import {NavMenuComponent} from "./com.zippyttech.init/app/navmenu/navmenu.component";
 
-const routesDefault: Routes = [
+interface MyRoute extends Route{
+    menuOptions?:{
+        ignored:boolean
+    }
+}
 
+type MyRoutes = MyRoute[];
+
+const routesDefault: MyRoutes = [
     { path: '', redirectTo: 'init/dashboard', pathMatch: 'full'},
     { path: 'init/dashboard', component: DashboardComponent},
     { path: 'init/load', component: LoadComponent},
@@ -71,7 +79,7 @@ const routesDefault: Routes = [
 const routesApp: Routes = [];
 @NgModule({
     imports: [
-        RouterModule.forRoot(routesDefault.concat(routesApp)),
+        RouterModule.forRoot(<Routes>routesDefault.concat(routesApp)),
         ToastyModule.forRoot()
     ],
     exports: [RouterModule,ToastyModule]
@@ -91,7 +99,8 @@ export const componentsDefault = [
     LoadComponent,
     TermConditionsComponent,
     BasicComponent,
-    ModalComponent
+    ModalComponent,
+    NavMenuComponent
 ];
 export const componentsView = [
     ImageEditComponent,

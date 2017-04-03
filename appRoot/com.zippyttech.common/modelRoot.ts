@@ -10,7 +10,6 @@ import {CombodateRule} from "./rules/combodate.rule";
 import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
 
 var moment = require('moment');
-var jQuery = require('jquery');
 
 interface IDataActionParams{
     id?:string;
@@ -254,9 +253,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
             permission: this.permissions.filter,
             views: [ {icon: "fa fa-filter", title: "sin filtro", colorClass:"text-blue"},
                     {icon: "fa fa-filter", title: "filtrando" , colorClass:"text-green"}],
-            callback: ((data?, index?)=>{
-                jQuery('#modalfilter').modal('show');
-            }).bind(this),
+            callback:((data?,index?)=>{ this.db.ms.show('filter',{model: this}); }).bind(this),
             stateEval:'0',
             params:{}
         });
@@ -302,10 +299,10 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.modelActions.add("exporXls",{
             permission: this.permissions.exporXls,
             views:[ { icon: "fa fa-file-excel-o", colorClass:"",
-                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_EXCEL',API.REPORT_LIMIT_ROWS_EXCEL)+' '+this.db.msg.rows},
+                      title:this.db.msg.exportDisabled+this.getParams('REPORT_LIMIT_ROWS_XLS',API.REPORT_LIMIT_ROWS_XLS)+' '+this.db.msg.rows},
                     { icon: "fa fa-file-excel-o", title:this.db.msg.exportXls, colorClass:"text-green" }],
             callback:((data?,index?)=>{
-                if(this.getEnabledReport('EXCEL')){
+                if(this.getEnabledReport('XLS')){
                     let url = localStorage.getItem('urlAPI')+ this.endpoint +
                     this.getRestParams()+ '&access_token='+
                     localStorage.getItem('bearer')+'&formatType=xls'+
@@ -633,13 +630,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
     }
 
-    public goPage(url:string,event?) {
-        if (event)
-            event.preventDefault();
-        let link = [url, {}];
-        this.db.router.navigate(link);
-    }
-
     public updateModelFilter(event,key){
         if(event)
             event.preventDefault();
@@ -692,10 +682,10 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.onPatch(field,data,id);
     }
 
-    public getEnabledReport(type:'PDF'|'EXCEL'='PDF'){
+    public getEnabledReport(type:'PDF'|'XLS'='PDF'){
         if(type=='PDF')
             return (this.getParams('REPORT_LIMIT_ROWS_PDF',API.REPORT_LIMIT_ROWS_PDF) >= this.getData().count);
-        return (this.getParams('REPORT_LIMIT_ROWS_EXCEL',API.REPORT_LIMIT_ROWS_EXCEL) >= this.getData().count);
+        return (this.getParams('REPORT_LIMIT_ROWS_XLS',API.REPORT_LIMIT_ROWS_XLS) >= this.getData().count);
     }
 
     public getParams(code:string,defaultValue?){

@@ -1,4 +1,4 @@
-import {Router} from "@angular/router";
+import {Router, NavigationExtras} from "@angular/router";
 import {Http} from "@angular/http";
 import {globalService} from "../com.zippyttech.utils/globalService";
 import {ToastyService, ToastyConfig} from "ng2-toasty";
@@ -76,4 +76,10 @@ export class DependenciesBase {
         return this.myglobal.getParams(code,defaultValue)
     }
 
+    //TODO: BUSCAR en CLUB y IPANAMA
+    public goPage(url:string,event=null,params:NavigationExtras={}) {
+        if (event)
+            event.preventDefault();
+        this.router.navigate([url,params]);
+    }
 }
