@@ -3,10 +3,9 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 import {NavItem, NavStatus} from "./navmenu.types";
 
 @Component({
-    moduleId:module.id,
     selector: 'nav-menu',
-    templateUrl: 'navmenu.template.html',
-    styleUrls: ['navmenu.style.css'],
+    templateUrl: './navmenu.template.html',
+    styleUrls: ['./navmenu.style.css'],
     inputs:['state']
 })
 export class NavMenuComponent{

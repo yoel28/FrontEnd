@@ -12,12 +12,12 @@
         <i class="fa fa-circle text-success"></i> {{db.myglobal.user.email}}
     </div>
     <ul class="menu" *ngIf="menu && menu.items.length > 0">
-        <template [ngTemplateOutlet]="tree" [ngOutletContext]="{menu:menu}"></template>
+        <ng-template [ngTemplateOutlet]="tree" [ngOutletContext]="{menu:menu}"></ng-template>
     </ul>
 </section>
 
-<template #tree let-menu="menu">
-    <template [ngIf]="menu">
+<ng-template #tree let-menu="menu">
+    <ng-template [ngIf]="menu">
         <li class="item" *ngFor="let sub of menu.items; let i=index" [class.selected]="menu.selectedItem==i && state!=1">
             <div class="item-info" (click)="menu.click(i);">
                 <i class="item-icon {{sub.icon || 'fa fa-list'}}"></i>
@@ -25,8 +25,8 @@
                 <i class="item-exp fa fa-angle-left" *ngIf="sub.items.length > 0"></i>
             </div>
             <ul class="sub-menu" *ngIf="sub.items.length > 0">
-                <template [ngTemplateOutlet]="tree" [ngOutletContext]="{menu:sub}"></template>
+                <ng-template [ngTemplateOutlet]="tree" [ngOutletContext]="{menu:sub}"></ng-template>
             </ul>
         </li>
-    </template>
-</template>
+    </ng-template>
+</ng-template>
