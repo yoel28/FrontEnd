@@ -3,6 +3,7 @@ import {OnInit} from "@angular/core";
 import {StaticFunction} from "../com.zippyttech.utils/catalog/staticFunction";
 import {DependenciesBase} from "./DependenciesBase";
 import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
+import {ModelRoot} from "./modelRoot";
 /**
  * @Params API
  * Optional
@@ -23,7 +24,7 @@ export abstract class ControllerBase implements OnInit {
     public configId = moment().valueOf();
     public viewOptions:any = {};
     public dateHmanizer = StaticValues.dateHmanizer;
-    public model:any;
+    public model:ModelRoot;
 
     public classCol=StaticFunction.classCol;
     public classOffset=StaticFunction.classOffset;
@@ -120,19 +121,7 @@ export abstract class ControllerBase implements OnInit {
         let link = ['init/dashboard', {}];
         this.db.router.navigate(link);
     }
-    
-    public export(type){
-        let that=this;
-        this.model.getLoadDataAll([],null,null,0,1000,null,()=>{
-                setTimeout(function(_jQuery=jQuery){
-                    if(type=='xls')
-                        that.exportXls();
-                    else if (type == 'print')
-                        that.exportPrint();
-                }, 3000)
-            }
-        )
-    }
+
 
     public exportXls(){
         let table2excel = new Table2Excel({
