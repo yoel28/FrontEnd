@@ -57,14 +57,9 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         return this.data[this.key];
     }
 
-    private get currentType(){
-        let rule = this.currentRule;
-        let type = rule.constructor.name.replace('Rule','').toLowerCase();
-        return type;
-    }
 
     public isCurrentType(list:Array<string>):boolean{
-        return list.indexOf(this.currentType) >= 0 ? true:false;
+        return list.indexOf(this.currentRule.type) >= 0 ? true:false;
     }
 
     public isCurrentMode(list:Array<string>):boolean{
