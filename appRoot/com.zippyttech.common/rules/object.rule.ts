@@ -1,5 +1,7 @@
-import {IRule, Rule} from "./rule";
-import {ModelRoot} from "../modelRoot";
+import {IRule, Rule, IIncludeComponents} from "./rule";
+import {ModelRoot, modeOptions, IComponents} from "../modelRoot";
+import {Actions} from "../../com.zippyttech.init/app/app.types";
+import {FormComponent} from "../../com.zippyttech.ui/components/form/form.component";
 
 interface IObjectSource {
     value:number;
@@ -14,17 +16,28 @@ export class ObjectRule extends Rule{
 
     constructor(rule:IObject){
         super(rule);
+        this._loadActions();
+    }
+    private _loadActions(){
+        this.attributes.actions = new Actions<IIncludeComponents>();
+        this.attributes.actions.add('search_save',{
+            permission:this.permissions['search'],
+            views:[
+                {icon:'fa fa-search',title:'Buscar',colorClass:"text-blue"},
+                {icon:'fa fa-refresh fa-spin',title:'Buscando..',colorClass:"text-yellow"}
+            ],
+            callback:(data:FormComponent, key:string) => {
+                data.loadSearch(key,'search');
+                this.model.loadData(null,true);
+            },
+            stateEval:'data.getRest(true).findData?1:0',
+            params:{
+                save:true
+            }
+        });
     }
 
     //region Overwrite methods to access object attributes
-
-    get title():string{
-        return (<IObject>this.attributes).model.view.title || 'title default';
-    }
-    set title(value:string){
-        (<IObject>this.attributes).model.view.title = value;
-    }
-
     get key():string{
         return (<IObject>this.attributes).model.view.key || 'keyDefault';
     }
@@ -44,6 +57,13 @@ export class ObjectRule extends Rule{
     }
     set display(value:string){
         (<IObject>this.attributes).model.view.display = value;
+    }
+
+    get actions():Actions<IIncludeComponents>{
+        return this.attributes.actions || null;
+    }
+    set actions(value:Actions<IIncludeComponents>){
+        this.attributes.actions = value;
     }
 
     //endregion
@@ -70,12 +90,19 @@ export class ObjectRule extends Rule{
         (<IObject>this.attributes).model.permissions = value;
     }
 
-    get mode():'reference'|'checklist'{
+    get mode():modeOptions{
         return (<IObject>this.attributes).model.view.mode || 'reference';
     }
-    set mode(value:'reference'|'checklist'){
+    set mode(value:modeOptions){
         (<IObject>this.attributes).model.view.mode = value;
     }
+
+    get componentsForm():IComponents{
+        if((<IObject>this.attributes).model.view.components && (<IObject>this.attributes).model.view.components.form)
+            return (<IObject>this.attributes).model.view.components.form;
+        return {};
+    }
+
     //endregion
 
     get model():ModelRoot{
