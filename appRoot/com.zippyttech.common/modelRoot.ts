@@ -8,6 +8,7 @@ import {NumberRule} from "./rules/number.rule";
 import {TextRule} from "./rules/text.rule";
 import {CombodateRule} from "./rules/combodate.rule";
 import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
+import {modelsOptions} from "../app-routing.module";
 
 var moment = require('moment');
 
@@ -18,7 +19,7 @@ interface IDataActionParams{
 
 interface IModelActionParams{
 }
-
+export type modeOptions = 'reference'|'checklist';
 export interface IModelFilter{
     [key:string]:{
         view:[{
@@ -33,15 +34,20 @@ export interface IModelFilter{
     };
 }
 export interface IView{
-    title:string;
     display:string;
     key:string;
     code:string;
     icon?:string;
     eval?:string;
     visible?:boolean;
-    mode?:'reference'|'checklist';
+    mode?:modeOptions;
     exclude?:boolean;
+    components?:IComponents
+}
+export interface IComponents{
+    form?:{
+        onlyRequired?:boolean
+    }
 }
 
 export abstract class ModelRoot extends RestController implements OnInit{
@@ -136,7 +142,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
     abstract initView(params:IView);
     private _initView(){
         this.view ={
-            title:'Title default',
             code:this.nameClass+'Id',
             display:this.nameClass+"Code",
             key:this.nameClass,
@@ -215,7 +220,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
             callback: function (data?, index?) {
                 this.currentData = data;
                 this.onPatch('visible',data);
-            }.bind(this),
+            },
             stateEval:'data.visible?1:0',
         });
 
@@ -315,6 +320,23 @@ export abstract class ModelRoot extends RestController implements OnInit{
         });
     }
 
+    private addActionsSearcForm(){
+        let action = new Actions();
+        action.add( "search",{
+            permission: this.permissions.search,
+            views:[
+                { title: 'Buscar', icon: "fa fa-search", colorClass:'text-blue'}
+            ],
+            callback:((data?,index?)=>
+                {
+                    this.loadData(null,true);
+                }
+            ).bind(this),
+            stateEval:'0',
+            params:{}
+        });
+    }
+
 
     abstract modelExternal();
     abstract initRules();
@@ -343,9 +365,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                 filter:true,
                 list:true
             },
-            key: "detail",
-            title: "Detalle",
-            placeholder: "Ingrese el detalle",
+            key: "detail"
         });
     }
 
@@ -361,9 +381,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "id",
-                title: "ID",
-                placeholder: "Ingrese el ID",
+                key: "id"
             });
         }
     }
@@ -380,9 +398,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                "key": "ip",
-                "title": "IP",
-                "placeholder": "Ingrese la IP",
+                "key": "ip"
             });
         }
     }
@@ -399,9 +415,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "userAgent",
-                title: "userAgent",
-                placeholder: "Ingrese el userAgent",
+                key: "userAgent"
             });
         }
     }
@@ -418,9 +432,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "usernameCreator",
-                title: "Creador",
-                placeholder: "Ingrese el usuario creador",
+                key: "usernameCreator"
             });
         }
     }
@@ -437,9 +449,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "usernameUpdater",
-                title: "Actualizador",
-                placeholder: "Ingrese el usuario que actualizo",
+                key: "usernameUpdater"
             });
         }
     }
@@ -457,9 +467,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     list:true
                 },
                 date:"datetime",
-                key: "dateCreated",
-                title: "Fecha de creación",
-                placeholder: "Ingrese la fecha de creación",
+                key: "dateCreated"
             });
         }
     }
@@ -477,9 +485,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     list:true
                 },
                 date:"datetime",
-                key: "dateUpdated",
-                title: "Fecha de actualización",
-                placeholder: "Ingrese la fecha de actualización",
+                key: "dateUpdated"
             });
         }
     }
