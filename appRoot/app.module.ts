@@ -3,7 +3,8 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HttpModule, Http} from '@angular/http';
 import { AngularFireModule } from 'angularfire2';
-import {TranslateLoader,TranslateStaticLoader,TranslateModule} from 'ng2-translate';
+import {TranslateModule, TranslateLoader} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import {AppRoutingModule, componentsApp, componentsDefault, componentsView} from './app-routing.module';
 import {AppComponent} from "./com.zippyttech.init/app/app.component";
 import {LocationStrategy,HashLocationStrategy} from "@angular/common";
@@ -23,6 +24,9 @@ const myFirebaseConfig = {
     messagingSenderId: "409370883490"
 };
 
+export function HttpLoaderFactory(http: Http) {
+    return new TranslateHttpLoader(http, "assets/i18n/", ".json");
+}
 @NgModule({
     imports: [
         BrowserModule,
@@ -35,9 +39,11 @@ const myFirebaseConfig = {
         QRCodeModule,
         AngularFireModule.initializeApp(myFirebaseConfig),
         TranslateModule.forRoot({
-            provide: TranslateLoader,
-            useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
-            deps: [Http]
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [Http]
+            }
         })
     ],
     declarations: [
