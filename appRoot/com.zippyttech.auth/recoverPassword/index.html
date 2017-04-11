@@ -4,7 +4,7 @@
             <div class="header-login text-center">
                 <div class="login-box-body">
                     <div class="row">
-                        <h2>{{db.msg.titleRecoverPassword}}</h2>
+                        <h2>{{'custom.recoverPassword' | translate}}</h2>
                         <div class="col-lg-6 col-md-4 col-lg-offset-3 col-md-offset-3">
                             <img [attr.src]="db.pathElements.logoBlanco" class="img-responsive img-logo">
                         </div>
@@ -22,14 +22,14 @@
                             </div>
                             <button style="float:left;" class="btn btn-success btn-blue pull-left"
                                     (click)="onLogin($event)">
-                                <i class="fa fa-chevron-circle-left"></i>&nbsp;{{db.msg.start}}
+                                <i class="fa fa-chevron-circle-left"></i>&nbsp;{{'custom.start' | translate}}
                             </button>
                             <button type="submit" [disabled]="!form.valid"
                                     class="btn  btn-success pull-right">
-                                &nbsp;{{db.msg.update}}&nbsp;<i class="fa  fa-chevron-circle-right"></i>
+                                &nbsp;{{'custom.update' | translate}}&nbsp;<i class="fa  fa-chevron-circle-right"></i>
                             </button>
                         </fieldset>
-                        <p><a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{db.msg.termConditions}}</a></p>
+                        <p><a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{'custom.termConditions' | translate}}</a></p>
                     </form>
                 </div>
             </div>

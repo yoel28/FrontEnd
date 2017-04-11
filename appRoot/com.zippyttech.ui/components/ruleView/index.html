@@ -30,7 +30,7 @@
             </ng-template>
 
             <ng-template [ngIf]="isCurrentType(['location'])">
-                <button class="btn btn-box-tool" (click)="showModal('location')" [attr.title]="db.msg.viewLocation">
+                <button class="btn btn-box-tool" (click)="showModal('location')" [attr.title]="'custom.viewLocation' | translate">
                     <i class="fa fa-map-marker fa-lg text-red"></i>
                 </button>
             </ng-template>
@@ -60,7 +60,7 @@
                 <img [attr.id]="'img'+data.id+'_'+key"
                      [attr.src]="currentValue || currentRule.default"
                      class="image-editor"
-                     [attr.title]="currentRule.update?db.msg.imageEdit:''"
+                     [attr.title]="currentRule.update?'custom.imageEdit':'' | translate"
                      (click)="showModal('image')"
                 ><!--data-toggle="modal" [attr.data-target]="'#'+data.id+'_'+key"-->
 
@@ -73,7 +73,7 @@
                                     aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">
                                 <i class="fa fa-image"></i>&nbsp;
-                                <strong>{{db.msg.imageEditor}}</strong>
+                                <strong>{{'custom.imageEditor'| translate}}</strong>
                             </h4>
                         </div>
                         <div class="modal-content">

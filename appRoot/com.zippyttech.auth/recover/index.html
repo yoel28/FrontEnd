@@ -12,7 +12,7 @@
             </div>
             <div class="form-login" [@animation_0]="'true'">
                 <div class="login-box-body">
-                    <h2>{{db.msg.titleRecoverPassword}}</h2>
+                    <h2>{{'custom.recoverPassword' | translate}}</h2>
                     <form role="form" [formGroup]="form" (submit)="recoverPassword($event)">
                         <fieldset>
                             <div class="form-group input-icon right">
@@ -22,14 +22,14 @@
                             </div>
                             <button style="float:left;" class="btn btn-success btn-blue pull-left"
                                     (click)="onLogin($event)">
-                                <i class="fa fa-chevron-circle-left"></i>&nbsp;{{db.msg.start}}
+                                <i class="fa fa-chevron-circle-left"></i>&nbsp;{{'custom.start' | translate}}
                             </button>
                             <button type="submit" [disabled]="!form.valid"
                                     class="btn  btn-success pull-right">
-                                &nbsp;{{db.msg.recover}}&nbsp;<i class="fa  fa-chevron-circle-right"></i>
+                                &nbsp;{{'custom.recover' | translate}}&nbsp;<i class="fa  fa-chevron-circle-right"></i>
                             </button>
                         </fieldset>
-                        <p><a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{db.msg.termConditions}}</a></p>
+                        <p><a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{'custom.termConditions' | translate}}</a></p>
                     </form>
                 </div>
             </div>

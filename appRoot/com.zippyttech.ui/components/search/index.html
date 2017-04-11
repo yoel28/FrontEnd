@@ -2,7 +2,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header text-center bg-green-club">
-                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" [attr.title]="db.msg.close"><span aria-hidden="true">&times;</span></button>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close" [attr.title]="'custom.close' | translate"><span aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title" id="myModalLabel">{{params.title}}</h3>
             </div>
             <div class="modal-body row">
@@ -11,7 +11,7 @@
                         <div class="input-group input-group-sm">
                             <input #search type="text" class="form-control" placeholder="{{params.placeholder}}">
                             <span class="input-group-btn">
-                                <button (click)="getSearch(search.value)" type="button" class="btn btn-green-club" [attr.title]="db.msg.find">
+                                <button (click)="getSearch(search.value)" type="button" class="btn btn-green-club" [attr.title]="'custom.find' | translate">
                                     <i class="fa fa-search"></i>
                                 </button>
                             </span>
@@ -20,12 +20,12 @@
                 </form>
                 <div *ngIf="findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">
                     <i class="fa fa-spinner fa-spin"></i>
-                    {{db.msg.findData}}
+                    {{'custom.findData' | translate}}
                 </div>
                 <div *ngIf="dataList.count" class="{{db.classCol(10,10)}}{{db.classOffset(1,1)}} table-responsive" >
                     <table class="table table-hover">
                         <tbody>
-                        <tr *ngFor="let data of dataList.list" [attr.title]="db.msg.select" class="cursor-pointer">
+                        <tr *ngFor="let data of dataList.list" [attr.title]="'custom.select' | translate" class="cursor-pointer">
                             <td>
                                 <img [src]="data.image || params.imageGuest" style="display: inline-block" class="img-responsive img-search">
                                 <i *ngIf="data.icon" class="i-search {{data.icon}}" ></i>
@@ -45,10 +45,10 @@
                 </div>
                 <div *ngIf="!dataList.count && !findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">
                     <span *ngIf="dataList.count==0">
-                        <i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg.notFound}}
+                        <i class="fa fa-exclamation-circle"></i>&nbsp;{{'custom.notFound' | translate}}
                     </span>
                     <span *ngIf="dataList.count==null">
-                        <i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg.introValueFind}}
+                        <i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{'custom.introValueFind' | translate}}
                     </span>
                 </div>
             </div>

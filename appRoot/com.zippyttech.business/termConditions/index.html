@@ -3,6 +3,6 @@
         {{db.myglobal.publicData.termConditions}}
     </ng-template>
     <ng-template [ngIf]="!(db && db.myglobal && db.myglobal.publicData && db.myglobal.publicData.termConditions)">
-        <i class="fa fa-spinner fa-spin"></i>&nbsp;{{db.msg.pleaseWait}}
+        <i class="fa fa-spinner fa-spin"></i>&nbsp;{{'custom.pleaseWait' | translate}}
     </ng-template>
 </div>

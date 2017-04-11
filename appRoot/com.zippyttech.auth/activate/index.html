@@ -7,18 +7,18 @@
 
             <div class="header-login text-center ">
                 <div class="login-box-body">
-                    <h4>{{db.msg.activeUser}}</h4>
+                    <h4>{{'custom.activeUser' | translate}}</h4>
                 </div>
                 <h1 *ngIf="!activate.response" class="cargar">
                     <i class="fa fa-spinner fa-spin"></i>
-                    &nbsp;{{db.msg.pleaseWait}}
+                    &nbsp;{{'custom.pleaseWait' | translate}}
                 </h1>
                 <h2 *ngIf="activate.response">
-                    {{ activate.status?db.msg.activate:db.msg.errorActivate}}
+                    {{ (activate.status?'custom.activate':'custom.errorActivate') | translate}}
                 </h2>
                 <div class="login-box-body">
                     <button class="btn btn-success btn-blue" (click)="onLogin($event)">
-                        <i class="fa fa-chevron-circle-left"></i>&nbsp;{{db.msg.start}}
+                        <i class="fa fa-chevron-circle-left"></i>&nbsp;{{'custom.start' | translate}}
                     </button>
                 </div>
             </div>

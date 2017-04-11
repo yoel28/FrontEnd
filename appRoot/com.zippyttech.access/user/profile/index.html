@@ -1,6 +1,6 @@
 <div [@animation_0]="'true'">
     <section class="content">
-        <h1>{{db.msg.profile}}</h1>
+        <h1>{{'custom.profile' | translate}}</h1>
         <div class="row" *ngIf="model.completed">
             <div class="{{db.classCol(3,4,12,12)}}">
                 <div class="box box-primary">
@@ -26,8 +26,8 @@
             <div class="{{db.classCol(7,6,12,12)}}">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">{{db.msg.basicData}}</a></li>
-                        <li class=""><a href="#imagen" data-toggle="tab" aria-expanded="false">{{db.msg.imageProfile}}</a></li>
+                        <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">{{'custom.basicData' | translate}}</a></li>
+                        <li class=""><a href="#imagen" data-toggle="tab" aria-expanded="false">{{'custom.imageProfile' | translate}}</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="settings">
