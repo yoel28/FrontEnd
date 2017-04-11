@@ -1,14 +1,14 @@
-import {Http} from '@angular/http';
 import {contentHeaders} from './headers';
-import {ToastyConfig, ToastyService, ToastData, ToastOptions} from "ng2-toasty";
+import {ToastData, ToastOptions} from "ng2-toasty";
 import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
-import {IData, typeToast} from "./restController";
+import {typeToast} from "./restController";
+import {FormControl} from "@angular/forms";
 
 export class HttpUtils {
 
 
 
-    constructor(public http:Http,public toastyService?:ToastyService,public toastyConfig?:ToastyConfig) {}
+    constructor(public db:DependenciesBase) {}
 
     private valideVersion(){
         if(localStorage.getItem('VERSION_CACHE') && localStorage.getItem('VERSION_CACHE_HEADER')!='null')
@@ -25,9 +25,9 @@ export class HttpUtils {
         }
 
     }
-    private addToast(title:string,message:string,type:typeToast='info',time:number=10000) {
+    public addToast(title:string,message:string,type:typeToast='info',time:number=10000) {
 
-        if(this.toastyService) {
+        if(this.db.toastyService) {
             var toastOptions:ToastOptions = {
                 title: title,
                 msg: message,
@@ -44,21 +44,21 @@ export class HttpUtils {
 
             switch (type){
                 case 'info':
-                    this.toastyConfig.position='top-right';
-                    this.toastyService.info(toastOptions);
+                    this.db.toastyConfig.position='top-right';
+                    this.db.toastyService.info(toastOptions);
                     break;
                 case 'success':
-                    this.toastyService.success(toastOptions);
+                    this.db.toastyService.success(toastOptions);
                     break;
                 case 'wait':
-                    this.toastyService.wait(toastOptions);
+                    this.db.toastyService.wait(toastOptions);
                     break;
                 case 'error':
-                    this.toastyConfig.position='bottom-center';
-                    this.toastyService.error(toastOptions);
+                    this.db.toastyConfig.position='bottom-center';
+                    this.db.toastyService.error(toastOptions);
                     break;
                 case 'warning':
-                    this.toastyService.warning(toastOptions);
+                    this.db.toastyService.warning(toastOptions);
                     break;
             }
         }
@@ -94,7 +94,7 @@ export class HttpUtils {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
-            this.http.get(endpoint, {headers: contentHeaders})
+            this.db.http.get(endpoint, {headers: contentHeaders})
                 .subscribe(
                     response => {
                         that.responseAPI(response,successCallback);
@@ -112,7 +112,7 @@ export class HttpUtils {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
-            this.http.delete(endpoint, {headers: contentHeaders})
+            this.db.http.delete(endpoint, {headers: contentHeaders})
                 .subscribe(
                     response => {
                         that.responseAPI(response,successCallback);
@@ -130,7 +130,7 @@ export class HttpUtils {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
-            this.http.post(endpoint,body, {headers: contentHeaders})
+            this.db.http.post(endpoint,body, {headers: contentHeaders})
                 .subscribe(
                     response => {
                         that.responseAPI(response,successCallback);
@@ -148,7 +148,7 @@ export class HttpUtils {
         let that = this;
         endpoint=this.createEndpoint(endpoint,isEndpointAbsolute);
         return new Promise<any>((resolve, reject) => {
-            this.http.put(endpoint,body, {headers: contentHeaders})
+            this.db.http.put(endpoint,body, {headers: contentHeaders})
                 .subscribe(
                     response => {
                         that.responseAPI(response,successCallback);
@@ -169,15 +169,15 @@ export class HttpUtils {
         let successCallback = (response => {
             if(list != null)
                 list.unshift(response);
-            if (this.toastyService)
+            if (this.db.toastyService)
                 this.addToast('Notificacion','Guardado con éxito');
         }).bind(this);
         return this.doPost(endpoint,body,successCallback,errorCallback,isEndpointAbsolute)
     }
 
-    public onLoadList(endpoint:string, list:IData, errorCallback = null,isEndpointAbsolute = false) {
+    public onLoadList(endpoint:string, list:FormControl, errorCallback = null,isEndpointAbsolute = false) {
         let successCallback= response => {
-            Object.assign(list, response);
+            list.setValue(response)
         };
         return this.doGet(endpoint,successCallback,errorCallback,isEndpointAbsolute);
     }
@@ -189,7 +189,7 @@ export class HttpUtils {
                 if(index!=-1)
                     list.splice(index,1);
             }
-            if (this.toastyService)
+            if (this.db.toastyService)
                 this.addToast('Notificacion','Borrado con éxito');
         }).bind(this);
         return this.doDelete(endpoint,successCallback,errorCallback,isEndpointAbsolute);
@@ -198,7 +198,7 @@ export class HttpUtils {
     public onUpdate(endpoint:string,body:string,data:Object, errorCallback = null,isEndpointAbsolute = false){
         let successCallback = (response => {
             Object.assign(data, response);
-            if (this.toastyService)
+            if (this.db.toastyService)
                 this.addToast('Notificacion','Actualizado con éxito');
         }).bind(this);
         return this.doPut(endpoint,body,successCallback,errorCallback,isEndpointAbsolute)
