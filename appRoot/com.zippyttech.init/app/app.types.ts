@@ -50,6 +50,10 @@ export class Actions<ParamsType>{
         });
         return array;
     }
+
+    public get getAll(){
+        return this.refs;
+    }
 }
 
 export interface IEnablesMenu{
