@@ -1,3 +1,292 @@
 {
+  "account": {
+    "list": "Cuentas",
+    "save": "Agregar un nueva cuenta",
+    "filter": "Buscar una cuenta",
+    "search": {
+      "title": "Cuenta:",
+      "detail": "RUC:"
+    }
+  },
+  "channel": {
+    "list": "Canal",
+    "save": "Agregar un nuevo canal",
+    "filter": "Buscar un canal",
+    "search": {
+      "title": "",
+      "detail": ""
+    }
+  },
+  "event": {
+    "list": "Eventos",
+    "save": "Agregar un nuevo evento",
+    "filter": "Buscar un evento",
+    "search": {
+      "title": "",
+      "detail": ""
+    }
+  },
+  "info": {
+    "list": "Información (Ayudas)",
+    "save": "Agregar una nueva ayuda",
+    "filter": "Buscar una ayuda",
+    "search": {
+      "title": "Código:",
+      "detail": ""
+    }
+  },
+  "notification": {
+    "list": "Notificaciones",
+    "save": "Agregar una nueva notificación",
+    "filter": "Buscar una notificación",
+    "search": {
+      "title": "",
+      "detail": ""
+    }
+  },
+  "permission": {
+    "list": "Permisos",
+    "save": "Agregar un nuevo permiso",
+    "filter": "Buscar un permiso",
+    "search": {
+      "title": "Código:",
+      "detail": "Detalle:"
+    }
+  },
+  "param": {
+    "list": "Parámetros",
+    "save": "Agregar un nuevo parámetro",
+    "filter": "Buscar un parámetro",
+    "search": {
+      "title": "Código:",
+      "detail": "Detalle:"
+    }
+  },
+  "rule": {
+    "list": "Reglas",
+    "save": "Agregar una nueva regla",
+    "filter": "Buscar una regla",
+    "search": {
+      "title": "Código:",
+      "detail": "Detalle:"
+    }
+  },
+  "role": {
+    "list": "Roles",
+    "save": "Agregar un nuevo rol",
+    "filter": "Buscar un rol",
+    "search": {
+      "title": "Título",
+      "detail": "Detalle"
+    }
+  },
+  "user": {
+    "list": "Usuarios",
+    "save": "Agregar un nuevo usuario",
+    "filter": "Buscar un usuario",
+    "search": {
+      "title": "Alias:",
+      "detail": ""
+    }
+  },
 
+
+  "field": {
+
+    "account": {
+      "title": "Cuenta",
+      "placeholder": "Ingrese una cuenta"
+    },
+    "accountLocked": {
+      "title": "Verificada",
+      "placeholder": "¿Cuenta verificada?"
+    },
+    "address": {
+      "title": "Dirección",
+      "placeholder": "Ingrese una dirección"
+    },
+    "authority": {
+      "title": "Perfil",
+      "placeholder": "Nombre del perfil"
+    },
+    "actionType": {
+      "title": "Tipo de acción",
+      "placeholder": "Seleccione un tipo de accción"
+    },
+    "accion": {
+      "title": "Acción",
+      "placeholder": "Ingrese una acción"
+    },
+
+    "code": {
+      "title": "Código",
+      "placeholder": "Ingrese un código"
+    },
+    "color": {
+      "title": "Color",
+      "placeholder": "Ingrese un color"
+    },
+    "controlador": {
+      "title": "Controlador",
+      "placeholder": "Ingrese un controlador"
+    },
+    "component": {
+      "title": "Componente",
+      "placeholder": "Seleccione un componente"
+    },
+    "callback": {
+      "title": "callback",
+      "placeholder": "Ingrese un callback"
+    },
+
+    "detail": {
+      "title": "Detalle",
+      "placeholder": "Ingrese un detalle"
+    },
+    "dateCreated": {
+      "title": "Creado",
+      "placeholder": "Fecha de creación"
+    },
+    "dateUpdated": {
+      "title": "Actualización",
+      "placeholder": "Fecha de actualización"
+    },
+
+    "event": {
+      "title": "Evento",
+      "placeholder": "Seleccione un evento"
+    },
+    "email": {
+      "title": "Correo electrónico",
+      "placeholder": "Ingrese un correo electrónico"
+    },
+
+    "id": {
+      "title": "ID",
+      "placeholder": "Identificador"
+    },
+    "idCard": {
+      "title": "Cédula",
+      "placeholder": "Ingrese una cédula"
+    },
+    "ip": {
+      "title": "IP",
+      "placeholder": "Dirección IP"
+    },
+    "image": {
+      "title": "Imagen",
+      "placeholder": "Seleccione una imagen"
+    },
+    "icon": {
+      "title": "Icono",
+      "placeholder": "Ingrese el icono"
+    },
+
+    "module": {
+      "title": "Módulo",
+      "placeholder": "Ingrese un módulo"
+    },
+    "model": {
+      "title": "Modelo",
+      "placeholder": "Seleccione un modelo"
+    },
+    "message": {
+      "title": "Mensaje",
+      "placeholder": "Ingrese el mensaje"
+    },
+
+    "name": {
+      "title": "Nombre",
+      "placeholder": "Ingrese un nombre"
+    },
+
+    "over": {
+      "title": "Dominio",
+      "placeholder": "Seleccione un dominio"
+    },
+
+    "phone": {
+      "title": "Teléfono",
+      "placeholder": "Ingrese un teléfono"
+    },
+    "position": {
+      "title": "Posición",
+      "placeholder": "Seleccione una posición"
+    },
+    "password": {
+      "title": "Contraseña",
+      "placeholder": "Ingrese una contraseña"
+    },
+
+    "rule": {
+      "title": "Regla",
+      "placeholder": "Ingrese una regla"
+    },
+
+    "size": {
+      "title": "Tamaño",
+      "placeholder": "Seleccione un tamaño"
+    },
+
+    "title": {
+      "title": "Título",
+      "placeholder": "Ingrese un título"
+    },
+    "target": {
+      "title": "Destino",
+      "placeholder": "Ingrese el destino"
+    },
+    "trigger": {
+      "title": "Trigger",
+      "placeholder": "Ingrese el tigger / disparador"
+    },
+    "type": {
+      "title": "Tipo",
+      "placeholder": "Seleccione un Tipo"
+    },
+
+    "userAgent": {
+      "title": "userAgent",
+      "placeholder": "Ingrese el userAgent"
+    },
+    "usernameCreator": {
+      "title": "Creador",
+      "placeholder": "Usuario creador"
+    },
+    "usernameUpdater": {
+      "title": "Actualizador",
+      "placeholder": "Ultimo Usuario actualizador"
+    },
+    "username": {
+      "title": "Usuario",
+      "placeholder": "Ingrese un usuario"
+    },
+    "url": {
+      "title": "URL",
+      "placeholder": "Ingrese una url"
+    },
+
+    "value": {
+      "title": "Valor",
+      "placeholder": "Ingrese un valor"
+    },
+
+    "way": {
+      "title": "Canal",
+      "placeholder": "Seleccione un canal"
+    }
+
+  },
+  "custom": {
+    "orderRow": "Ordenar por la columna {{row}}",
+    "pleaseWait": "Por favor espere.",
+    "infoPageCount": "Pagina {{page}}, cerca de {{count}} resultados",
+    "hidden":"Oculto",
+    "view":"Ver",
+    "up":"Subir",
+    "down":"Bajar",
+    "savePreferences":"Guardar preferencias",
+    "deletedPreferences":"Borrar preferencias",
+    "save":"Guardar"
+  }
 }
