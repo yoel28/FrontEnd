@@ -12,12 +12,13 @@ export class AccountModel extends ModelRoot{
     }
 
     initView(params:IView){
-        params.title = "Cuenta";
         params.display = this.nameClass+"Name";
-        params.eval = this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB')
+        params.eval = this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB');
     }
 
-    modelExternal() {}
+    modelExternal(){}
+    initPermissions(){}
+    initModelActions(){}
 
     initRules(){
 
@@ -33,9 +34,7 @@ export class AccountModel extends ModelRoot{
             },
             exclude:true,
             key: 'logo',
-            title: 'Logo',
-            default:this.db.pathElements.company,
-            placeholder: 'Logo',
+            default:this.db.pathElements.company
         });
 
         this.rules['name']= new TextRule({
@@ -45,9 +44,7 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'name',
-            title: 'Nombre',
-            placeholder: 'Nombre',
+            key: 'name'
         });
 
         this.rules['ruc']= new TextRule({
@@ -57,9 +54,7 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'ruc',
-            title: 'RUC',
-            placeholder: 'RUC',
+            key: 'ruc'
         });
 
         this.rules['contact']= new TextRule({
@@ -69,9 +64,7 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'contact',
-            title: 'Contacto',
-            placeholder: 'Contacto',
+            key: 'contact'
         });
 
         this.rules['address']= new TextRule({
@@ -82,9 +75,7 @@ export class AccountModel extends ModelRoot{
                 visible:this.permissions.visible,
             },
             key: 'address',
-            icon: 'fa fa-list',
-            title: 'Dirección',
-            placeholder: 'Dirección',
+            icon: 'fa fa-list'
         });
 
         this.rules['url']= new TextRule({
@@ -93,9 +84,7 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'url',
-            title: 'URL',
-            placeholder: 'URL',
+            key: 'url'
         });
 
         this.rules['email']=new TextRule({
@@ -106,9 +95,7 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'email',
-            title: 'Correo',
-            placeholder: 'Correo',
+            key: 'email'
         });
 
         this.rules['maxUserCount']= new NumberRule({
@@ -120,9 +107,7 @@ export class AccountModel extends ModelRoot{
             },
             exclude:true,
             step:'0.1',
-            key: 'maxUserCount',
-            title: 'Usuarios',
-            placeholder: 'Usuarios',
+            key: 'maxUserCount'
         });
 
         this.rules['phone']= new TextRule({
@@ -132,9 +117,7 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'phone',
-            title: 'Teléfono',
-            placeholder: 'Teléfono',
+            key: 'phone'
         });
 
         this.rules['miniLogo']=new ImageRule({
@@ -150,28 +133,15 @@ export class AccountModel extends ModelRoot{
             },
             exclude:true,
             key: 'miniLogo',
-            title: 'Mini logo',
-            default:this.db.pathElements.company,
-            placeholder: 'Mini Logo',
+            default:this.db.pathElements.company
         });
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
 
     }
-    initPermissions() {}
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar cuenta";
-        this.paramsSearch.placeholder="Ingrese la cuenta";
-        this.paramsSearch.label.title="Cuenta: ";
-        this.paramsSearch.label.detail="RUC: "
-    }
-    initParamsSave() {
-        this.paramsSave.title="Agregar cuenta"
-    }
+
     initDataActions(){
         this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la cuenta: ';
     }
-
-    initModelActions(){}
 }
 
