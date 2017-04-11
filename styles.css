@@ -114,8 +114,8 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
 }
 
 .btn.btn-green-club:hover , .btn.btn-green-club:focus {
-    color: #eaeaea;
-    background-color: green;
+    color: green;
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .btn-red-club, .bg-red-club{
@@ -124,8 +124,8 @@ body.no-menu .content-wrapper, body.no-menu .main-footer {
 }
 
 .btn.btn-red-club:hover , .btn.btn-red-club:focus {
-    color: #eaeaea;
-    background-color: red;
+    color: red;
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
 .input-icon i {
