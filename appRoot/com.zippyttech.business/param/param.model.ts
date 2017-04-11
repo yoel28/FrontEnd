@@ -11,13 +11,15 @@ export class ParamModel extends ModelBase{
         super(db,'/params/');
         this.initModel();
     }
-    modelExternal() {}
 
-    initView(params:IView){
-        params.title = "Parámetro";
-    }
+    modelExternal() {}
+    initView(params:IView){}
+    initModelActions(){}
+    initPermissions() {}
+
 
     initRules(){
+
         this.rules['code']= new TextRule({
             required:true,
             permissions: {
@@ -25,9 +27,7 @@ export class ParamModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'code',
-            title: 'Código',
-            placeholder: 'Código',
+            key: 'code'
         });
 
         this.rules['value']= new TextareaRule({
@@ -38,10 +38,9 @@ export class ParamModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'value',
-            title: 'Valor',
-            placeholder: 'Valor',
+            key: 'value'
         });
+
         this.rules['type']=new SelectRule({
             required:true,
             permissions: {
@@ -58,25 +57,15 @@ export class ParamModel extends ModelBase{
                 {value: 'boolean',  text: 'Boolean'},
 
             ],
-            key: 'type',
-            title: 'Tipo',
-            placeholder: 'Seleccione un Tipo',
+            key: 'type'
         });
 
         this.globalOptional();
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
-    }
-    initPermissions() {}
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar parámetro";
-        this.paramsSearch.placeholder="Ingrese el parámetro";
-        this.paramsSearch.label.title="Codigo: ";
-        this.paramsSearch.label.detail="Detalle: "
     }
 
     initDataActions(){
         this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el parametro: ';
     }
 
-    initModelActions(){}
 }

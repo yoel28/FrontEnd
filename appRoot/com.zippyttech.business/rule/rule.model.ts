@@ -11,12 +11,13 @@ export class RuleModel extends ModelBase{
         this.initModel();
     }
 
-    initView(params:IView){
-        params.title = "Regla";
-    }
-
+    initView(params:IView){}
+    initPermissions() {}
+    initModelActions(){}
     modelExternal() {}
+
     initRules(){
+
         this.rules['code']= new TextRule({
             required:true,
             permissions: {
@@ -26,9 +27,8 @@ export class RuleModel extends ModelBase{
             },
             key:'code',
             icon: 'fa fa-key',
-            title:'Código',
-            placeholder:'Código',
         });
+
         this.rules['rule']= new TextareaRule({
             required:true,
             permissions: {
@@ -38,9 +38,8 @@ export class RuleModel extends ModelBase{
             },
             key:'rule',
             icon: 'fa fa-key',
-            title:'Regla',
-            placeholder:'Regla',
         });
+
         this.rules['title']= new TextRule({
             required:true,
             permissions: {
@@ -50,23 +49,14 @@ export class RuleModel extends ModelBase{
             },
             key:'title',
             icon: 'fa fa-list',
-            title:'Título',
-            placeholder:'Título',
         });
+
         this.globalOptional();
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
-    initPermissions() {}
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar regla";
-        this.paramsSearch.placeholder="Ingrese código de la regla";
-    }
-    initParamsSave() {
-        this.paramsSave.title="Agregar regla"
-    }
+
 
     initDataActions(){
         this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar la regla: ';
     }
-    initModelActions(){}
 }

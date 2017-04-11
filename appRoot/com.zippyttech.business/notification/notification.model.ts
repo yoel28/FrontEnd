@@ -11,13 +11,15 @@ export class NotificationModel extends ModelRoot{
         this.initModel();
     }
     modelExternal() {}
+    initModelActions(){}
+    initPermissions() {}
 
     initView(params:IView){
-        params.title = "Notificación";
         params.display = this.nameClass+"Title";
     }
 
     initRules(){
+
         this.rules['image']= new ImageRule({
             permissions: {
                 update: this.permissions.update,
@@ -29,19 +31,17 @@ export class NotificationModel extends ModelRoot{
                 list:true
             },
             key: 'image',
-            title: 'Imagen',
-            placeholder: 'Imagen',
         });
+
         this.rules['title']=new TextRule({
            permissions: {
                update: this.permissions.update,
                visible: this.permissions.visible,
                search: this.permissions.filter,
            },
-            key: 'title',
-            title: 'Título',
-            placeholder: 'Título',
+            key: 'title'
         });
+
         this.rules['icon']= new SelectRule({
             permissions: {
                 update: this.permissions.update,
@@ -51,24 +51,14 @@ export class NotificationModel extends ModelRoot{
                 {value: 'fa fa-question-circle',    text: 'Icono 1'},
                 {value: 'fa fa-question',           text: 'Icono 2'},
             ],
-            key: 'icon',
-            title: 'Icono',
-            placeholder: 'Seleccione un icono',
+            key: 'icon'
         });
+
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
-    }
-    initPermissions() {}
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar notificación";
-        this.paramsSearch.placeholder="Ingrese notificación";
-    }
-    initParamsSave() {
-        this.paramsSave.title="Agregar notificación"
     }
 
     initDataActions(){
         this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la notificación: ';
     }
-    initModelActions(){}
 
 }

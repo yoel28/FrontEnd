@@ -11,13 +11,14 @@ export class InfoModel extends ModelBase{
         super(db,'/infos/');
         this.initModel();
     }
-    modelExternal() {}
 
-    initView(params:IView){
-        params.title = "Información (Ayudas)";
-    }
+    modelExternal() {}
+    initView(params:IView){}
+    initPermissions() {}
+    initModelActions(){}
 
     initRules(){
+
         this.rules['code']= new TextRule({
             protected:true,
             readOnly:true, //TODO : change in save
@@ -29,9 +30,8 @@ export class InfoModel extends ModelBase{
             },
             key: 'code',
             icon: 'fa fa-key',
-            title: 'Código',
-            placeholder: 'Ingrese el código',
         });
+
         this.rules['title']=new TextRule( {
             required:true,
             permissions: {
@@ -40,10 +40,9 @@ export class InfoModel extends ModelBase{
                 'visible': this.permissions.visible,
             },
             key: 'title',
-            icon: 'fa fa-key',
-            title: 'Título',
-            placeholder: 'Ingrese el título',
+            icon: 'fa fa-key'
         });
+
         this.rules['color']= new ColorRule({
             required:true,
             permissions: {
@@ -51,10 +50,9 @@ export class InfoModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'color',
-            value:'00ff00',
-            title: 'Color',
-            placeholder: '#000',
-        })
+            value:'00ff00'
+        });
+
         this.rules['position']= new SelectRule({
             required:true,
             permissions: {
@@ -68,10 +66,9 @@ export class InfoModel extends ModelBase{
                 {value: 'left',     text: 'Izquierda'},
                 {value: 'right',    text: 'Derecha'},
             ],
-            key: 'position',
-            title: 'Posición',
-            placeholder: 'Seleccione una posición',
+            key: 'position'
         }),
+
         this.rules['size']= new SelectRule({
             required:true,
             permissions: {
@@ -88,10 +85,9 @@ export class InfoModel extends ModelBase{
                 {value: 'fa-5x', text:'5x'},
 
             ],
-            key: 'size',
-            title: 'Tamaño',
-            placeholder: 'Seleccione un tamaño',
+            key: 'size'
         });
+
         this.rules['icon']= new SelectRule({
             exclude:true,
             required:true,
@@ -104,28 +100,16 @@ export class InfoModel extends ModelBase{
                 {value: 'fa fa-question-circle',    text: 'Interrogante 1'},
                 {value: 'fa fa-question',           text: 'Interrogante 2'},
             ],
-            key: 'icon',
-            title: 'Icono',
-            placeholder: 'Seleccione un icono',
+            key: 'icon'
         });
 
         this.globalOptional();
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
-    initPermissions() {}
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar ayuda";
-        this.paramsSearch.placeholder="Ingrese codigo de la ayuda";
-    }
-    initParamsSave() {
-        this.paramsSave.title="Agregar ayuda"
-    }
 
     initDataActions(){
         this.dataActions.get('delete').params.message='¿Esta seguro de eliminar la ayuda : ';
     }
-
-    initModelActions(){}
 
 }

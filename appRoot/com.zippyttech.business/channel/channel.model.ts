@@ -14,11 +14,10 @@ export class ChannelModel extends ModelBase{
         this.loadDataModel();
     }
 
-    initView(params:IView){
-        params.title = "Canal";
-    }
-
+    initView(params:IView){}
     modelExternal() {}
+    initPermissions() {}
+    initModelActions(){}
 
     initRules(){
 
@@ -30,9 +29,7 @@ export class ChannelModel extends ModelBase{
                 visible:this.permissions.visible,
             },
             key: 'code',
-            icon: 'fa fa-key',
-            title: 'Código',
-            placeholder: 'Ingrese el código',
+            icon: 'fa fa-key'
         });
 
         this.rules['url']= new TextRule({
@@ -42,14 +39,12 @@ export class ChannelModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'url',
-            icon: 'fa fa-key',
-            title: 'URL',
-            placeholder: 'URL',
+            icon: 'fa fa-key'
         });
 
         this.rules['component']= new SelectRule({
             components:{
-                form:{
+                save:{
                     hidden:'this.form.controls["model"].value && this.form.controls["model"].value!="-1"',
                 }
             },
@@ -61,13 +56,11 @@ export class ChannelModel extends ModelBase{
             },
             key: 'component',
             source:[{value: 'AppComponent', text: 'AppComponent'}],
-            title: 'Componente',
-            placeholder: 'Seleccione un componente',
         });
 
         this.rules['model']=new SelectRule({
             components:{
-                form:{
+                save:{
                     hidden:'this.form.controls["component"].value && this.form.controls["component"].value!="-1"',
                 }
             },
@@ -78,9 +71,7 @@ export class ChannelModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'model',
-            source:[],
-            title: 'Modelo',
-            placeholder: 'Seleccione un modelo',
+            source:[]
         });
 
         this.rules['event']= new SelectRule({
@@ -92,8 +83,6 @@ export class ChannelModel extends ModelBase{
             },
             key: 'event',
             source:[],
-            title: 'Evento',
-            placeholder: 'Seleccione un evento',
         });
 
         this.rules['target']= new TextRule({
@@ -104,9 +93,7 @@ export class ChannelModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'target',
-            icon: 'fa fa-key',
-            title: 'Canal',
-            placeholder: 'Canal',
+            icon: 'fa fa-key'
         });
 
         this.rules['callback']= new TextareaRule({
@@ -115,26 +102,13 @@ export class ChannelModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'callback',
-            icon: 'fa fa-key',
-            title: 'callback',
-            placeholder: 'callback',
+            icon: 'fa fa-key'
         });
         this.globalOptional();
 
         this.setRuleDetail(true,true);
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
-    }
-
-    initPermissions() {}
-
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar canal";
-        this.paramsSearch.placeholder="Ingrese codigo del canal";
-    }
-
-    initParamsSave() {
-        this.paramsSave.title="Agregar canal"
     }
 
     loadDataModel(){
@@ -180,5 +154,4 @@ export class ChannelModel extends ModelBase{
         this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el canal : ';
     }
 
-    initModelActions(){}
 }

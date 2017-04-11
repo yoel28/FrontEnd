@@ -9,10 +9,9 @@ export class PermissionModel extends ModelRoot{
         this.initModel();
     }
 
-    initView(params:IView){
-        params.title = "Permiso";
-    }
-
+    initView(params:IView){}
+    initPermissions() {}
+    initModelActions(){}
     modelExternal() {}
 
     initRules(){
@@ -20,8 +19,6 @@ export class PermissionModel extends ModelRoot{
         this.rules['code'] = new TextRule({
             required:true,
             key: 'code',
-            title: 'Código',
-            placeholder: 'Código',
             permissions:{
                 update:this.permissions.update,
                 search:this.permissions.filter,
@@ -36,9 +33,7 @@ export class PermissionModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'title',
-            title: 'Título',
-            placeholder: 'Título',
+            key: 'title'
         });
 
         this.rules['module']=new TextRule({
@@ -48,9 +43,7 @@ export class PermissionModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'module',
-            title: 'Módulo',
-            placeholder: 'Módulo',
+            key: 'module'
         });
 
         this.rules['controlador']= new TextRule({
@@ -59,9 +52,7 @@ export class PermissionModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'controlador',
-            title: 'Controlador',
-            placeholder: 'Controlador',
+            key: 'controlador'
         });
 
         this.rules['accion']=new TextRule({
@@ -70,30 +61,18 @@ export class PermissionModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'accion',
-            title: 'Acción',
-            placeholder: 'Acción',
+            key: 'accion'
         });
 
         this.setRuleDetail(true,true);
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
     }
-    initPermissions() {}
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar permiso";
-        this.paramsSearch.placeholder="Ingrese permiso";
-        this.paramsSearch.label.title="Código: ";
-        this.paramsSearch.label.detail="Detalle: "
-    }
-    initParamsSave() {
-        this.paramsSave.title="Agregar permiso"
-    }
 
     initDataActions(){
         this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el permiso : ';
     }
 
-    initModelActions(){}
+
 
 }

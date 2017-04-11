@@ -21,12 +21,12 @@ export class UserModel extends ModelBase{
     }
 
     initView(params:IView){
-        params.title = "Usuario";
         params.display = this.nameClass+"Username";
         params.eval = this.db.myglobal.getRule('USER_DISPLAY_WEB');
     }
 
     initRules(){
+
         this.rules['email']= new TextRule({
             permissions:{
                 update:this.permissions.update,
@@ -36,9 +36,7 @@ export class UserModel extends ModelBase{
             email:true,
             required:true,
             // 'setEqual':'username', //TODO: ubicar clave en components form
-            key: 'email',
-            title: 'Correo electrónico',
-            placeholder: 'Correo electrónico',
+            key: 'email'
         });
 
         this.rules['idCard']= new TextRule({
@@ -48,8 +46,6 @@ export class UserModel extends ModelBase{
                 visible:this.permissions.visible,
             },
             key: 'idCard',
-            title: 'Cédula',
-            placeholder: 'Cédula',
         });
 
         this.rules['username']= new TextRule({
@@ -63,9 +59,7 @@ export class UserModel extends ModelBase{
                 list:true,
                 filter:true
             },
-            key: 'username',
-            title: 'Usuario',
-            placeholder: 'Usuario',
+            key: 'username'
         });
 
         this.rules['name']= new TextRule({
@@ -76,8 +70,6 @@ export class UserModel extends ModelBase{
             },
             required:true,
             key: 'name',
-            title: 'Nombre',
-            placeholder: 'Nombre',
         });
 
         this.rules['phone']=new TextRule({
@@ -87,13 +79,11 @@ export class UserModel extends ModelBase{
                 visible:this.permissions.visible,
             },
             components:{
-                form:{
+                save:{
                     force:true //TODO: Agregar regla en el form
                 }
             },
-            key: 'phone',
-            title: 'Teléfono',
-            placeholder: 'Teléfono',
+            key: 'phone'
         });
 
         this.rules['image']= new ImageRule({
@@ -107,9 +97,7 @@ export class UserModel extends ModelBase{
                 filter:false
             },
             exclude:true,
-            key: 'image',
-            title: 'Imagen',
-            placeholder: 'Imagen',
+            key: 'image'
         });
 
         this.rules["accountLocked"] = new BooleanRule({
@@ -140,8 +128,6 @@ export class UserModel extends ModelBase{
                 }
             ],
             key: "accountLocked",
-            title: "Verificada",
-            placeholder: "¿Cuenta verificada?",
         });
 
         this.rules['roles']=new ObjectRule({
@@ -161,13 +147,12 @@ export class UserModel extends ModelBase{
             minLength:6,
             key: 'password',
             showbuttons:true,
-            title: 'Contraseña',
-            placeholder: 'Contraseña',
         });
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
         delete this.rules['detail'];
     }
+
     public updateProfile(){
         this.setEndpoint('/auto/update');
         this.rules['email'].update=true;
@@ -182,15 +167,6 @@ export class UserModel extends ModelBase{
 
     initPermissions() {
         this.permissions['roleSave']=this.db.myglobal.existsPermission(['USER_ROLE_SAVE'])
-    }
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar usuario";
-        this.paramsSearch.placeholder="Ingrese el usuario";
-        this.paramsSearch.label.title="Alias: ";
-        this.paramsSearch.label.detail=""
-    }
-    initParamsSave() {
-        this.paramsSave.title="Agregar usuario"
     }
 
     loadDataExternal() {
@@ -208,6 +184,7 @@ export class UserModel extends ModelBase{
             }).bind(this));
         }
     }
+
     loadRoles(){
         this.db.myglobal.publicData['roles'].forEach((obj=> {
             if(this.rules['roles']){

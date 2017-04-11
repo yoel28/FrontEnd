@@ -15,11 +15,10 @@ export class EventModel extends ModelBase{
         this.loadDataPublic();
     }
 
-    initView(params:IView){
-        params.title = "Evento";
-    }
-
+    initView(params:IView){}
     modelExternal() {}
+    initPermissions() {}
+    initModelActions(){}
 
     initRules(){
 
@@ -31,9 +30,7 @@ export class EventModel extends ModelBase{
                 visible:this.permissions.visible,
             },
             key: 'code',
-            icon: 'fa fa-key',
-            title: 'Código',
-            placeholder: 'Código',
+            icon: 'fa fa-key'
         });
 
         this.rules['actionType']= new SelectRule({
@@ -43,9 +40,7 @@ export class EventModel extends ModelBase{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,},
             source: [],
-            key: 'actionType',
-            title: 'Tipo de acción',
-            placeholder: 'Seleccione un tipo de accción',
+            key: 'actionType'
         });
 
         this.rules['way']= new SelectRule({
@@ -56,9 +51,7 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             source: [],
-            key: 'way',
-            title: 'Canal',
-            placeholder: 'Seleccione un canal',
+            key: 'way'
         });
 
         this.rules['over']= new SelectRule({
@@ -70,8 +63,6 @@ export class EventModel extends ModelBase{
             },
             source:[],
             key: 'over',
-            title: 'Dominio',
-            placeholder: 'Seleccione un dominio',
         });
 
         this.rules['message']= new TextareaRule({
@@ -83,9 +74,7 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'message',
-            icon: 'fa fa-key',
-            title: 'Mensaje',
-            placeholder: 'Ingrese el mensaje',
+            icon: 'fa fa-key'
         });
 
         this.rules['rule'] = new ObjectRule({
@@ -102,9 +91,7 @@ export class EventModel extends ModelBase{
                 visible:this.permissions.visible,
             },
             key: 'target',
-            icon: 'fa fa-key',
-            title: 'Target',
-            placeholder: 'Destino donde se enviara el mensaje',
+            icon: 'fa fa-key'
         });
 
         this.rules['trigger']= new TextRule({
@@ -114,9 +101,7 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'trigger',
-            icon: 'fa fa-key',
-            title: 'Trigger',
-            placeholder: 'Trigger',
+            icon: 'fa fa-key'
         });
 
         this.rules['title']= new TextRule({
@@ -126,9 +111,7 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'title',
-            icon: 'fa fa-key',
-            title: 'Asunto',
-            placeholder: 'Asunto',
+            icon: 'fa fa-key'
         });
 
         this.rules['icon']= new TextRule({
@@ -139,9 +122,7 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             key: 'icon',
-            icon: 'fa fa-key',
-            title: 'Icono',
-            placeholder: 'Ingrese el icono',
+            icon: 'fa fa-key'
         })
 
         this.globalOptional();
@@ -149,16 +130,7 @@ export class EventModel extends ModelBase{
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
 
     }
-    initPermissions() {}
 
-    initParamsSearch() {
-        this.paramsSearch.title="Buscar eventos";
-        this.paramsSearch.placeholder="Ingrese codigo del evento";
-    }
-
-    initParamsSave() {
-        this.paramsSave.title="Agregar evento"
-    }
 
     loadDataPublic() {
 
@@ -179,6 +151,5 @@ export class EventModel extends ModelBase{
         this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el evento: ';
     }
 
-    initModelActions(){}
 
 }
