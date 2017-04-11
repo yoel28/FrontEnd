@@ -10,6 +10,7 @@ import {ModalService} from "../com.zippyttech.services/modal/modal.service";
 import {ModelService} from "../com.zippyttech.services/model/model.service";
 import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
 import {TranslateService} from "@ngx-translate/core";
+import {Subscription} from "rxjs";
 
 export interface IElementsApp{
     app?:HTMLElement;
@@ -77,6 +78,12 @@ export class DependenciesBase {
             console.log('END-------------------------------------------------------------------------------------------');
         }
     }
+    public getTranslate(value:string,object:Object):Subscription{
+        return this.translate.get(value,object).subscribe((res: string) => {
+            return res;
+        });
+    }
+
 
     public getParams(code:string,defaultValue?:any):any{
         return this.myglobal.getParams(code,defaultValue)
