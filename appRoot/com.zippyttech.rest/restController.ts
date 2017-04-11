@@ -2,7 +2,6 @@ import {HttpUtils} from "./http-utils";
 import {EventEmitter} from "@angular/core";
 import {FormGroup, FormControl} from "@angular/forms";
 import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
-import {ToastOptions, ToastData} from "ng2-toasty";
 
 export interface IData{
     list?:Array<Object>;
@@ -58,14 +57,14 @@ export class RestController {
     };
     restSearch:IRest= {
         where: [],
-        max: 15,
+        max: 5,
         offset: 0,
         findData:false,
         data:new FormControl({})
     };
 
-    constructor(public db:DependenciesBase | any) {
-        this.httputils = new HttpUtils(db.http,db.toastyService,db.toastyConfig);
+    constructor(public db:DependenciesBase) {
+        this.httputils = new HttpUtils(this.db);
     }
 
     get dataList():IData{
@@ -75,6 +74,11 @@ export class RestController {
         this.rest.data.setValue(data);
     }
 
+    private data(search=false):FormControl{
+        return this.getRest(search).data;
+    }
+
+
     get dataSearch():IData{
         return this.restSearch.data.value;
     }
@@ -82,7 +86,7 @@ export class RestController {
         this.restSearch.data.setValue(data);
     }
 
-    protected getRestParams(search = false):string{
+    public getRestParams(search = false):string{
         let rest = this.getRest(search);
         return  rest.id?rest.id:'' +
                 "?max=" + rest.max +
@@ -92,42 +96,6 @@ export class RestController {
                 (rest.order?'&order=' + rest.order : '') +
                 (rest.deleted?'&deleted=' + rest.deleted : '');
 
-    }
-    public addToast(title:string,message:string,type:typeToast='info',time:number=10000) {
-
-        var toastOptions:ToastOptions = {
-            title: title,
-            msg: message,
-            showClose: true,
-            timeout: time,
-            theme: 'bootstrap',
-            onAdd: (toast:ToastData) => {
-                console.log('Toast ' + toast.id + ' has been added!');
-            },
-            onRemove: function(toast:ToastData) {
-                console.log('Toast ' + toast.id + ' has been removed!');
-            }
-        };
-
-        switch (type){
-            case 'info':
-                this.db.toastyConfig.position='top-right';
-                this.db.toastyService.info(toastOptions);
-                break;
-            case 'success':
-                this.db.toastyService.success(toastOptions);
-                break;
-            case 'wait':
-                this.db.toastyService.wait(toastOptions);
-                break;
-            case 'error':
-                this.db.toastyConfig.position='bottom-center';
-                this.db.toastyService.error(toastOptions);
-                break;
-            case 'warning':
-                this.db.toastyService.warning(toastOptions);
-                break;
-        }
     }
 
     protected setEndpoint(endpoint:string) {
@@ -237,6 +205,7 @@ export class RestController {
             audio['default'].play();
 
     }
+
     private getOffset(list:IData,rest:IRest,offset?:number|string) {
         let _count = list.count || 0;
         let _max = rest.max;
@@ -256,6 +225,7 @@ export class RestController {
                 rest.offset = 0;
         }
     }
+
     private loadPager(search=false) {
         let rest = this.getRest(search);
         let list  = this.getData(search);
@@ -275,13 +245,16 @@ export class RestController {
             if (maxPage > 1)
                 list.page.push('#');
         }
+        this.data(search).setValue(list);
     }
+
     public assignData(data:Object) {
         this.getData().list.unshift(data);
         this.getData().count++;
         if (this.getData().page.length > 1)
             this.getData().list.pop();
     }
+
     public error = err => {
         //this.sound(err.status);
         this.getRest().findData = false;
@@ -290,38 +263,38 @@ export class RestController {
         if (this.db.toastyService) {
             try {
                 if(err.status==0){
-                    this.addToast('error', 'Por favor verifique su conexion a Internet', 'error');
+                    this.httputils.addToast('error', 'Por favor verifique su conexion a Internet', 'error');
                 }
                 else if (err.json()) {
                     if (err.json().message && err.json().message.error)
-                        this.addToast('error', err.json().message.error, 'error');
+                        this.httputils.addToast('error', err.json().message.error, 'error');
                     else if (err.json()._embedded && err.json()._embedded.errors) {
                         err.json()._embedded.errors.forEach(obj => {
-                            this.addToast('error', obj.message, 'error');
+                            this.httputils.addToast('error', obj.message, 'error');
                         })
                     }
                     else if (err.json().message) {
-                        this.addToast('error', err.json().message, 'error');
+                        this.httputils.addToast('error', err.json().message, 'error');
                     }
                     else if (err.json().errors) {
                         err.json().errors.forEach(obj => {
-                            this.addToast('error', obj.message, 'error');
+                            this.httputils.addToast('error', obj.message, 'error');
                         })
                     }
                     else {
-                        this.addToast('error', err.json(), 'error');
+                        this.httputils.addToast('error', err.json(), 'error');
                     }
                 }
                 else {
-                    this.addToast('error',err,'error');
+                    this.httputils.addToast('error',err,'error');
                 }
             }catch (e){
                 if(err.statusText)
-                    this.addToast('error', err.statusText, 'error');
+                    this.httputils.addToast('error', err.statusText, 'error');
                 else if(err.status)
-                    this.addToast('error', err.status, 'error');
+                    this.httputils.addToast('error', err.status, 'error');
                 else
-                    this.addToast('error', e, 'error');
+                    this.httputils.addToast('error', e, 'error');
             }
 
         }
@@ -339,11 +312,11 @@ export class RestController {
         if (offset && offset == '#'){
             rest.offset = 0;
             rest.max = 1000;
-            return this.getLoadDataAll([], this.getEndpoint(search), this.getData(search), this.getRest(search));
+            return this.getLoadDataAll([], this.getEndpoint(search), this.data(search), this.getRest(search));
         }
         else {
             this.getOffset(this.getData(search),this.getRest(search),offset);
-            return this.httputils.onLoadList(this.getEndpoint(search)+this.getRestParams(search), this.getData(search), this.error).then(
+            return this.httputils.onLoadList(this.getEndpoint(search)+this.getRestParams(search), this.data(search), this.error).then(
                 (response=> {
                     this.loadPager(search);
                     rest.findData=false;
@@ -355,27 +328,30 @@ export class RestController {
         this.getRest(search).id = id;
         this.loadData(null,search);
     }
-    private getLoadDataAll(data:Array<Object>, endpoint:String, list:IData, rest:IRest, successCallback?) {
-        list.page = [];
+    private getLoadDataAll(data:Array<Object>, endpoint:String, control:FormControl, rest:IRest, successCallback?) {
+        let list:Object = control.value;//TODO:YR-falta
+        list['page'] = [];
+        control.setValue(list);
         rest.findData = true;
-        return this.httputils.onLoadList(endpoint + "?max=" + rest.max + "&offset=" + rest.offset + this.setWhere(rest.where), list, this.error).then(
+        return this.httputils.onLoadList(endpoint + "?max=" + rest.max + "&offset=" + rest.offset + this.setWhere(rest.where), control, this.error).then(
             (response=> {
-                if (list.count > 0) {
-                    data = data.concat(list.list);
-                    if (list.count == list.list.length || list.count == data.length) {
+                if (list['count'] > 0) {
+                    data = data.concat(list['list']);
+                    if (list['count'] == list['list'].length || list['count'] == data.length) {
                         rest.findData=false;
-                        Object.assign(list.list, data);
+                        control.setValue(data);
                         if (successCallback)
                             successCallback();
                     }
-                    else if (rest.max > list.list.length) {
-                        rest.max = list.list.length;
+                    else if (rest.max > list['list'].length) {
+                        rest.max = list['list'].length;
                         rest.offset+= rest.max;
-                        this.getLoadDataAll(data, endpoint, list, rest, successCallback);
+                        control.setValue(list);
+                        this.getLoadDataAll(data, endpoint, control, rest, successCallback);
                     }
                     else {
                         rest.offset+= rest.max;
-                        this.getLoadDataAll(data, endpoint, list, rest, successCallback);
+                        this.getLoadDataAll(data, endpoint, control, rest, successCallback);
                     }
                 }
 
@@ -505,7 +481,7 @@ export class RestController {
 
         let successCallback = response => {
             Object.assign(data,response.json());
-            that.addToast('Notificacion','Guardado con éxito');
+            that.httputils.addToast('Notificación','Guardado con éxito');
         };
         if(endpoint == '/auto/update')
             return (this.httputils.doPut(endpoint,body,successCallback,this.error));
@@ -519,7 +495,7 @@ export class RestController {
         json[field] = value;
         let body = JSON.stringify(json);
         let successCallback = response => {
-            that.addToast('Notificacion','Guardado con éxito');
+            that.httputils.addToast('Notificación','Guardado con éxito');
         };
         return (this.httputils.doPost(endpoint, body, successCallback, this.error));
     }
