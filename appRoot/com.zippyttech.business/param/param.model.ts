@@ -16,7 +16,7 @@ export class ParamModel extends ModelBase{
     initView(params:IView){}
     initModelActions(){}
     initPermissions() {}
-
+    initDataActions(){}
 
     initRules(){
 
@@ -64,8 +64,6 @@ export class ParamModel extends ModelBase{
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
 
-    initDataActions(){
-        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el parametro: ';
-    }
+
 
 }

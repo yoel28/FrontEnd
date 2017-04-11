@@ -15,6 +15,7 @@ export class RuleModel extends ModelBase{
     initPermissions() {}
     initModelActions(){}
     modelExternal() {}
+    initDataActions(){}
 
     initRules(){
 
@@ -55,8 +56,4 @@ export class RuleModel extends ModelBase{
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
 
-
-    initDataActions(){
-        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar la regla: ';
-    }
 }

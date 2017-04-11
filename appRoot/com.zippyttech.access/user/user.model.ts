@@ -16,10 +16,13 @@ export class UserModel extends ModelBase{
         this.initModel(false);
         this.loadDataExternal();
     }
+
+    initDataActions(){}
+    initModelActions(){}
+
     modelExternal() {
         this.role= new RoleModel(this.db);
     }
-
     initView(params:IView){
         params.display = this.nameClass+"Username";
         params.eval = this.db.myglobal.getRule('USER_DISPLAY_WEB');
@@ -193,11 +196,5 @@ export class UserModel extends ModelBase{
         }).bind(this));
         this.completed = true;
     }
-
-    initDataActions(){
-        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar el usuario: ';
-    }
-
-    initModelActions(){}
 
 }

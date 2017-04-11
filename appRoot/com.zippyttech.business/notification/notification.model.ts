@@ -13,6 +13,7 @@ export class NotificationModel extends ModelRoot{
     modelExternal() {}
     initModelActions(){}
     initPermissions() {}
+    initDataActions(){}
 
     initView(params:IView){
         params.display = this.nameClass+"Title";
@@ -57,8 +58,6 @@ export class NotificationModel extends ModelRoot{
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
     }
 
-    initDataActions(){
-        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la notificación: ';
-    }
+
 
 }

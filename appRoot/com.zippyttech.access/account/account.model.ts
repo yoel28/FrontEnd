@@ -19,6 +19,7 @@ export class AccountModel extends ModelRoot{
     modelExternal(){}
     initPermissions(){}
     initModelActions(){}
+    initDataActions(){}
 
     initRules(){
 
@@ -140,8 +141,6 @@ export class AccountModel extends ModelRoot{
 
     }
 
-    initDataActions(){
-        this.dataActions.get('delete').params.message='¿ Esta seguro de eliminar la cuenta: ';
-    }
+
 }
 

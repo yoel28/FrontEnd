@@ -19,6 +19,7 @@ export class EventModel extends ModelBase{
     modelExternal() {}
     initPermissions() {}
     initModelActions(){}
+    initDataActions(){}
 
     initRules(){
 
@@ -147,9 +148,7 @@ export class EventModel extends ModelBase{
         that.completed = true
 
     }
-    initDataActions(){
-        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el evento: ';
-    }
+
 
 
 }

@@ -12,6 +12,7 @@ export class RoleModel extends ModelRoot{
     initPermissions() {}
     modelExternal() {}
     initModelActions(){}
+    initDataActions(){}
 
     initView(params:IView){
         params.display = this.nameClass+"Authority";
@@ -33,12 +34,5 @@ export class RoleModel extends ModelRoot{
         this.setRuleDetail(true,true,true);
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
     }
-
-
-    initDataActions(){
-        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el rol : ';
-    }
-
-
 
 }

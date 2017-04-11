@@ -16,6 +16,7 @@ export class InfoModel extends ModelBase{
     initView(params:IView){}
     initPermissions() {}
     initModelActions(){}
+    initDataActions(){}
 
     initRules(){
 
@@ -106,10 +107,6 @@ export class InfoModel extends ModelBase{
         this.globalOptional();
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault())
-    }
-
-    initDataActions(){
-        this.dataActions.get('delete').params.message='¿Esta seguro de eliminar la ayuda : ';
     }
 
 }

@@ -18,6 +18,7 @@ export class ChannelModel extends ModelBase{
     modelExternal() {}
     initPermissions() {}
     initModelActions(){}
+    initDataActions(){}
 
     initRules(){
 
@@ -150,8 +151,6 @@ export class ChannelModel extends ModelBase{
         }
     }
 
-    initDataActions(){
-        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el canal : ';
-    }
+
 
 }

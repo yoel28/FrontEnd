@@ -13,6 +13,7 @@ export class PermissionModel extends ModelRoot{
     initPermissions() {}
     initModelActions(){}
     modelExternal() {}
+    initDataActions(){}
 
     initRules(){
 
@@ -69,9 +70,7 @@ export class PermissionModel extends ModelRoot{
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
     }
 
-    initDataActions(){
-        this.dataActions.get('delete').params.message = '¿ Esta seguro de eliminar el permiso : ';
-    }
+
 
 
 
