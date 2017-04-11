@@ -15,7 +15,7 @@ export abstract class ModelBase extends ModelRoot{
             this.rules['account'] = new ObjectRule({
                 model:new AccountModel(this.db),
                 required:true,
-                update:this.permissions.update,
+                update:this.permissions.update
             }) ;
         }
     }
