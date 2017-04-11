@@ -3,6 +3,7 @@
     "list": "Cuentas",
     "save": "Agregar un nueva cuenta",
     "filter": "Buscar una cuenta",
+    "deleted": "¿ Esta seguro de eliminar la cuenta: {{ruc}} ?",
     "search": {
       "title": "Cuenta:",
       "detail": "RUC:"
@@ -13,6 +14,7 @@
     "list": "Canal",
     "save": "Agregar un nuevo canal",
     "filter": "Buscar un canal",
+    "deleted": "¿ Esta seguro de eliminar el canal: {{code}} ?",
     "search": {
       "title": "",
       "detail": ""
@@ -23,6 +25,7 @@
     "list": "Eventos",
     "save": "Agregar un nuevo evento",
     "filter": "Buscar un evento",
+    "deleted": "¿ Esta seguro de eliminar el evento: {{code}} ?",
     "search": {
       "title": "",
       "detail": ""
@@ -33,6 +36,7 @@
     "list": "Información (Ayudas)",
     "save": "Agregar una nueva ayuda",
     "filter": "Buscar una ayuda",
+    "deleted": "¿ Esta seguro de eliminar la ayuda: {{code}} ?",
     "search": {
       "title": "Código:",
       "detail": ""
@@ -43,6 +47,7 @@
     "list": "Notificaciones",
     "save": "Agregar una nueva notificación",
     "filter": "Buscar una notificación",
+    "deleted": "¿ Esta seguro de eliminar la notificación: {{title}} ?",
     "search": {
       "title": "",
       "detail": ""
@@ -53,6 +58,7 @@
     "list": "Permisos",
     "save": "Agregar un nuevo permiso",
     "filter": "Buscar un permiso",
+    "deleted": "¿ Esta seguro de eliminar el permiso: {{code}} ?",
     "search": {
       "title": "Código:",
       "detail": "Detalle:"
@@ -61,6 +67,7 @@
   "param": {
     "list": "Parámetros",
     "save": "Agregar un nuevo parámetro",
+    "deleted": "¿ Esta seguro de eliminar el parámetro: {{code}} ?",
     "filter": "Buscar un parámetro",
     "search": {
       "title": "Código:",
@@ -72,6 +79,7 @@
     "list": "Reglas",
     "save": "Agregar una nueva regla",
     "filter": "Buscar una regla",
+    "deleted": "¿ Esta seguro de eliminar la regla: {{code}} ?",
     "search": {
       "title": "Código:",
       "detail": "Detalle:"
@@ -80,6 +88,7 @@
   "role": {
     "list": "Roles",
     "save": "Agregar un nuevo rol",
+    "deleted": "¿ Esta seguro de eliminar el rol: {{authority}} ?",
     "filter": "Buscar un rol",
     "search": {
       "title": "Título",
@@ -91,6 +100,7 @@
     "list": "Usuarios",
     "save": "Agregar un nuevo usuario",
     "filter": "Buscar un usuario",
+    "deleted": "¿ Esta seguro de eliminar el usuario: {{username}} ?",
     "search": {
       "title": "Alias:",
       "detail": ""
