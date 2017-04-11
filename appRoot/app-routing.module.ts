@@ -39,6 +39,19 @@ import {BasicComponent} from "./com.zippyttech.common/basicComponent";
 import {AccountSelectComponent} from "./com.zippyttech.auth/accountSelect/accountSelect.component";
 import {ModalComponent} from "./com.zippyttech.services/modal/modal.component";
 import {NavMenuComponent} from "./com.zippyttech.init/app/navmenu/navmenu.component";
+import {TextRule} from "./com.zippyttech.common/rules/text.rule";
+import {BooleanRule} from "./com.zippyttech.common/rules/boolean.rule";
+import {ColorRule} from "./com.zippyttech.common/rules/color.rule";
+import {CombodateRule} from "./com.zippyttech.common/rules/combodate.rule";
+import {ImageRule} from "./com.zippyttech.common/rules/image.rule";
+import {NumberRule} from "./com.zippyttech.common/rules/number.rule";
+import {ObjectRule} from "./com.zippyttech.common/rules/object.rule";
+import {PasswordRule} from "./com.zippyttech.common/rules/password.rule";
+import {SelectRule} from "./com.zippyttech.common/rules/select.rule";
+import {TextareaRule} from "./com.zippyttech.common/rules/textarea.rule";
+import {UrlRule} from "./com.zippyttech.common/rules/url.rule";
+import {ListRule} from "./com.zippyttech.common/rules/list.rule";
+import {TranslateModule} from "@ngx-translate/core";
 
 interface MyRoute extends Route{
     menuOptions?:{
@@ -82,7 +95,7 @@ const routesApp: Routes = [];
         RouterModule.forRoot(<Routes>routesDefault.concat(routesApp)),
         ToastyModule.forRoot()
     ],
-    exports: [RouterModule,ToastyModule]
+    exports: [RouterModule,ToastyModule,TranslateModule]
 })
 export class AppRoutingModule {
 }
@@ -126,6 +139,13 @@ export const componentsPublic = [
     'RecoverPasswordComponent',
     'TermConditionsComponent'
 ];
+
+type modelsAppOptions = null;
+type modelsDefaultOptions = AccountModel | PermissionModel | RoleModel | UserModel | ChannelModel | EventModel | InfoModel | NotificationModel | ParamModel | RuleModel;
+
+export type modelsOptions = modelsDefaultOptions | modelsAppOptions;
+export type rulesOptions =  BooleanRule | ColorRule | CombodateRule | ImageRule | NumberRule | ObjectRule | PasswordRule | SelectRule | TextRule | TextareaRule | UrlRule | ListRule;
+
 
 export const modelsDefault=[
     AccountModel,
