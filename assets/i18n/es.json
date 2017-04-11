@@ -8,6 +8,7 @@
       "detail": "RUC:"
     }
   },
+
   "channel": {
     "list": "Canal",
     "save": "Agregar un nuevo canal",
@@ -17,6 +18,7 @@
       "detail": ""
     }
   },
+
   "event": {
     "list": "Eventos",
     "save": "Agregar un nuevo evento",
@@ -26,6 +28,7 @@
       "detail": ""
     }
   },
+
   "info": {
     "list": "Información (Ayudas)",
     "save": "Agregar una nueva ayuda",
@@ -35,6 +38,7 @@
       "detail": ""
     }
   },
+
   "notification": {
     "list": "Notificaciones",
     "save": "Agregar una nueva notificación",
@@ -44,6 +48,7 @@
       "detail": ""
     }
   },
+
   "permission": {
     "list": "Permisos",
     "save": "Agregar un nuevo permiso",
@@ -62,6 +67,7 @@
       "detail": "Detalle:"
     }
   },
+
   "rule": {
     "list": "Reglas",
     "save": "Agregar una nueva regla",
@@ -80,6 +86,7 @@
       "detail": "Detalle"
     }
   },
+
   "user": {
     "list": "Usuarios",
     "save": "Agregar un nuevo usuario",
@@ -277,16 +284,52 @@
     }
 
   },
+
   "custom": {
     "orderRow": "Ordenar por la columna {{row}}",
     "pleaseWait": "Por favor espere.",
     "infoPageCount": "Pagina {{page}}, cerca de {{count}} resultados",
     "hidden":"Oculto",
     "view":"Ver",
+    "find":"Buscar",
+    "zoom":"zoom",
+    "close":"Cerrar",
     "up":"Subir",
     "down":"Bajar",
+    "update":"Actualizar",
+    "exit":"Salir",
+    "profile":"Perfil",
+    "activate":"Cuenta Activada",
+    "errorActivate":"Error al activar la cuenta",
+    "basicData":"Datos basicos",
+    "imageProfile":"Imagen de perfil",
     "savePreferences":"Guardar preferencias",
     "deletedPreferences":"Borrar preferencias",
-    "save":"Guardar"
+    "save":"Guardar",
+    "imageEdit":"Editar imagen",
+    "imageEditor":"Editor de imagenes",
+    "viewLocation":"Ver ubicación",
+    "config":"Configuración",
+    "notFound":"No se encontraron resultados",
+    "introValueFind":"Ingrese valor para buscar",
+    "activeUser":"Activar usuario",
+    "recoverPassword":"Recuperar contraseña",
+    "start":"Inicio",
+    "recover":"Recuperar",
+    "termConditions":"Terminos y condiciones",
+    "warning":"Advertencia",
+    "warningYes":"Sí, estoy seguro",
+    "warningBody":"El cambio de estas configuraciones avanzadas puede ser perjudicial para la estabilidad, la seguridad y el rendimiento de esta aplicación. Sólo se debe continuar si está seguro de lo que hace.",
+    "accessUnauthorized":"Acceso no autorizado, contacte al administrador para activar el permiso {{code}}",
+    "selectOption":"Seleccione una opción",
+    "findData":"Buscando información, por favor espere",
+    "select":"Seleccionar",
+    "tagFree":"Presione Enter para agregar un nuevo item",
+    "fieldRequired":"Todos los campos con (*) son obligatorios."
+
+  },
+
+  "error":{
+    "required":"Este campo es obligatorio."
   }
 }
