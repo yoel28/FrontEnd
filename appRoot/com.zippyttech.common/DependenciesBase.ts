@@ -9,6 +9,7 @@ import {WebSocket} from "../com.zippyttech.utils/websocket";
 import {ModalService} from "../com.zippyttech.services/modal/modal.service";
 import {ModelService} from "../com.zippyttech.services/model/model.service";
 import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
+import {TranslateService} from "@ngx-translate/core";
 
 export interface IElementsApp{
     app?:HTMLElement;
@@ -33,8 +34,13 @@ export class DependenciesBase {
                 public http:Http,
                 public toastyService:ToastyService,
                 public toastyConfig:ToastyConfig,
-                public ms:ModalService
+                public ms:ModalService,
+                public translate: TranslateService
     ){
+        translate.addLangs(["en", "es"]);
+        translate.setDefaultLang('en');
+        let browserLang = translate.getBrowserLang();
+        translate.use(browserLang.match(/en|es/) ? browserLang : 'en');
         this.ngOnInit();
     }
 
