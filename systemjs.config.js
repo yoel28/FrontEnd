@@ -46,7 +46,8 @@
 
             // other libraries
             'rxjs':                      'npmR:rxjs',
-            'ng2-translate':             'npmR:ng2-translate/bundles/ng2-translate.umd.js',
+            '@ngx-translate/core':       'npm:@ngx-translate/core/bundles/core.umd.js',
+            '@ngx-translate/http-loader':'npm:@ngx-translate/http-loader/bundles/http-loader.umd.js',
             'angularfire2':              'npm:angularfire2/bundles/angularfire2.umd.js',
             'angular2-qrcode':           'npmR:angular2-qrcode',
             'qrcode-generator':          'npmR:qrcode-generator/qrcode.js',
@@ -68,7 +69,7 @@
             'knob':             'npmR:jquery-knob/dist/',
             'jqueryui':         'npmR:jqueryui/',
             'tagsinput':        'npmR:bootstrap-tagsinput/dist/',
-            'inputmask':        'npmR:jquery.inputmask/',
+            'inputmask':        'npm:jquery.inputmask/',
             'bootstrap':        'npmR:bootstrap/dist/js/',
             'firebase':         'npmR:firebase/',
             'sockjs-client':    'npmR:sockjs-client/dist/',
