@@ -1,26 +1,30 @@
 import {FormControl} from "@angular/forms";
-interface IComponentForm{
+import {Actions} from "../../com.zippyttech.init/app/app.types";
+interface IComponentSave{
     hidden?:string;
     force?:boolean;
-    notReference?:boolean
+    setEqual?:string;
+    notReference?:boolean;
+    valueChange?:(c:FormControl)=>void;
     validator?:(c:FormControl)=>Object;
 }
+
 interface IPermissions{
     search?:boolean;
     update?:boolean;
     visible?:boolean;
 }
-interface IInclude{
+export interface IIncludeComponents{
     save: boolean,
     filter: boolean,
     list: boolean
 }
+interface IRefreshField{
 
+}
 export interface IRule{
     key?:string;
-    title?:string;
     protected?:boolean;
-    placeholder?:string;
     required?:boolean;
     exclude?:boolean;
     icon?:string,
@@ -31,12 +35,12 @@ export interface IRule{
     readOnly?:boolean,
     minLength?:number;
     maxLength?:number;
-    refreshField?:{}
     permissions?:IPermissions,
-    include?: IInclude,
+    include?: IIncludeComponents,
     components?:{
-        form?:IComponentForm
+        save?:IComponentSave
     }
+    actions?:Actions<IIncludeComponents>
 
 }
 
@@ -55,25 +59,11 @@ export class Rule {
         this.attributes.key = value;
     }
 
-    get title():string{
-        return this.attributes.title || 'title default';
-    }
-    set title(value:string){
-        this.attributes.title = value;
-    }
-
     get protected():boolean{
         return this.attributes.protected || false;
     }
     set protected(value:boolean){
         this.attributes.protected = value;
-    }
-
-    get placeholder():string{
-        return this.attributes.placeholder || 'placeholder default';
-    }
-    set placeholder(value:string){
-        this.attributes.placeholder = value;
     }
 
     get required():boolean{
@@ -160,7 +150,7 @@ export class Rule {
         this.attributes.permissions = value;
     }
 
-    get include():IInclude{
+    get include():IIncludeComponents{
         return this.attributes.include ||
             {
                 save:true,
@@ -168,7 +158,7 @@ export class Rule {
                 list:true
             };
     }
-    set include(value:IInclude){
+    set include(value:IIncludeComponents){
         this.attributes.include = value;
     }
 
@@ -185,15 +175,24 @@ export class Rule {
         this.attributes.components = value
     }
 
+    get actions():Actions<IIncludeComponents>{
+        return this.attributes.actions || null;
+    }
+    set actions(value:Actions<IIncludeComponents>){
+        this.attributes.actions = value;
+    }
+
+
     get type():string{
         return this.constructor.name.replace('Rule','').toLowerCase();
     }
 
-    get componentSave():IComponentForm{
+    get componentSave():IComponentSave{
         if(this.attributes.components && this.attributes.components.save)
             return this.attributes.components.save;
         return {};
     }
+
 
 
 }
