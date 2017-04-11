@@ -12,5 +12,6 @@ export const API = {
     LOCATION_MAP_TYPE_ID:'roadmap',
     REPORT_LIMIT_ROWS_PDF:1000,
     REPORT_LIMIT_ROWS_XLS:1000,
-    MODE_DEBUG:false
+    MODE_DEBUG:false,
+    TEXTAREA_ROWS:4
 };
