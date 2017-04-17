@@ -237,9 +237,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                 });
             }).bind(this),
             stateEval:'0',
-            params:{
-                message:'Seguro desea Eliminar'
-            }
         });
     }
 
@@ -696,6 +693,10 @@ export abstract class ModelRoot extends RestController implements OnInit{
 
     public getParams(code:string,defaultValue?){
         return this.db.myglobal.getParams(code,defaultValue)
+    }
+
+    public  getCurrentPage(search=false):number{
+        return ((this.getRest(search).offset/this.getRest(search).max)+1);
     }
 
 }
