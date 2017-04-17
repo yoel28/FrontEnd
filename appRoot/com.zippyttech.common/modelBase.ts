@@ -21,10 +21,11 @@ export abstract class ModelBase extends ModelRoot{
     }
     public globalOptional(){
         if(this.permissions['global']){
-            if(this.rules['account'])
+            if(this.rules['account']){
                 (<IObject>this.rules['account']).required = false;
-            else
-                this.db.debugLog(['Error','Optional with global',this.rules])
+                return;
+            }
+            this.db.debugLog('Error','Optional with global',this.rules)
         }
     }
 
