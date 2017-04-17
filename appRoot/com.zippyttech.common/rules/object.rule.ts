@@ -27,8 +27,7 @@ export class ObjectRule extends Rule{
                 {icon:'fa fa-refresh fa-spin',title:'Buscando..',colorClass:"text-yellow"}
             ],
             callback:(data:FormComponent, key:string) => {
-                data.loadSearch(key,'search');
-                this.model.loadData(null,true);
+                data.initAction(key,'search');
             },
             stateEval:'data.getRest(true).findData?1:0',
             params:{
