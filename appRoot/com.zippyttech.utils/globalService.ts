@@ -194,7 +194,7 @@ export class globalService extends RestController{
                     return data.value || defaultValue;
             }
         } catch (exception){
-            this.db.debugLog(['Error getParams',exception]);
+            this.db.debugLog('Error getParams',exception);
             return defaultValue;
         }
     }
