@@ -46,7 +46,11 @@ export class ChannelModel extends ModelBase{
         this.rules['component']= new SelectRule({
             components:{
                 save:{
-                    hidden:'this.form.controls["model"].value && this.form.controls["model"].value!="-1"',
+                    hidden: (form)=>{
+                        if(form.getValueForm('model') && form.getValueForm('model')!='-1')
+                            return true;
+                        return false;
+                    },
                 }
             },
             disabled:'data.model!=null',
@@ -62,7 +66,11 @@ export class ChannelModel extends ModelBase{
         this.rules['model']=new SelectRule({
             components:{
                 save:{
-                    hidden:'this.form.controls["component"].value && this.form.controls["component"].value!="-1"',
+                    hidden: (form)=>{
+                        if(form.getValueForm('component') && form.getValueForm('component')!='-1')
+                            return true;
+                        return false;
+                    },
                 }
             },
             disabled:'data.component!=null',
