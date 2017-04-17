@@ -137,7 +137,12 @@ export class UserModel extends ModelBase{
             model: this.role,
             required:false,
             update:this.permissions.update,
-            source:[]
+            source:[],
+            include:{
+                list:true,
+                save:false,
+                filter:false
+            }
         });
 
         this.rules['password']= new PasswordRule({
