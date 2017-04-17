@@ -2,7 +2,16 @@ import {FormControl} from "@angular/forms";
 import {ModelRoot} from "../com.zippyttech.common/modelRoot";
 import {typeToast} from "../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
-
+import {API} from "./catalog/defaultAPI";
+/**
+ * @Params API
+ * Optional
+ *      WS_REFRESH,
+ *      WS_MAX_RECONNECT,
+ *      WS_TIME_RECONNECT,
+ *
+ *
+ */
 
 var SockJS = require('sockjs-client');
 var Stomp = require('stompjs');
@@ -11,7 +20,7 @@ export interface IWebSocket{
     [channel:string]:{
         data:FormControl;//objecto donde se escribe todo lo que llega del ws
         status:FormControl; //status del ws
-        instance?:ModelRoot;
+        model?:ModelRoot;
         reconnect:number; //numero de reconexiones
         client?:any; //Client Stomp
         forceClose?:boolean; //cerrar ws forzado
@@ -29,6 +38,7 @@ export class WebSocket{
      * 3= Desconectado
      * */
 
+    public channelsAll=[];
 
     public webSocket:IWebSocket={};
     public channelsByModel={};
@@ -36,11 +46,11 @@ export class WebSocket{
 
     constructor(public db:DependenciesBase){}
 
-    setWebSocket(channel,instance?:ModelRoot){
+    setWebSocket(channel,model?:ModelRoot){
         if(!this.webSocket[channel]){
             this.webSocket[channel]={
                 'data': new FormControl(),
-                'instance':instance,
+                'model':model,
                 'status':new FormControl('close'),
                 'reconnect':0,
                 'subscribers':{
@@ -51,7 +61,7 @@ export class WebSocket{
         else{
             this.webSocket[channel].reconnect=0;
             this.webSocket[channel].forceClose=false;
-            this.webSocket[channel].instance=instance;
+            this.webSocket[channel].model=model;
         }
     }
 
@@ -64,46 +74,45 @@ export class WebSocket{
         this.webSocket[channel].client.send("/app/message", {priority: 9}, value);
     }
 
-    onConnect(channel,eventChannel?:Object){
+    onConnect(channel:string,eventChannel?:Object){
         try {
             if(this.checkContinue(channel)){
 
-                let that = this;
                 let ws = new SockJS(localStorage.getItem('url') + "/stomp");
 
-                that.webSocket[channel].status.setValue('init');
-                that.webSocket[channel].client = Stomp.Stomp.over(ws);
+                this.webSocket[channel].status.setValue('init');
+                this.webSocket[channel].client = Stomp.Stomp.over(ws);
 
-                that.webSocket[channel].client.connect({},
-                    function () {
-                        that.webSocket[channel].status.setValue('connect');
-                        if(that.checkContinue(channel)){
-                            that.webSocket[channel].subscribers.client = that.webSocket[channel].client.subscribe(channel, function (message) {
-
+                this.webSocket[channel].client.connect({},
+                   () => {
+                        this.webSocket[channel].status.setValue('connect');
+                        if(this.checkContinue(channel)){
+                            this.webSocket[channel].subscribers.client = this.webSocket[channel].client.subscribe(channel, (message) => {
                                 try {
                                     let data  = JSON.parse(message.body);
-                                    that.webSocket[channel].data.setValue(data);
+                                    this.webSocket[channel].data.setValue(data);
                                 }
                                 catch (exception){
-                                    that.webSocket[channel].data.setValue(message.body);
+                                    this.webSocket[channel].data.setValue(message.body);
+                                    this.db.debugLog('Error-01: onConnect','WebSocket',exception);
                                 }
                                 if(eventChannel){
-                                    that.eventChannel(eventChannel);
+                                    this.eventChannel(eventChannel);
                                 }
                             });
                         }
                     },
                     function(error) {
-                        that.webSocket[channel].status.setValue('error');
-                        that.webSocket[channel].reconnect++;
-                        if(that.webSocket[channel].reconnect<=5){
-                            setTimeout(function() {that.onConnect(channel)}, 500);
+                        this.webSocket[channel].status.setValue('error');
+                        this.webSocket[channel].reconnect++;
+                        if(this.webSocket[channel].reconnect<=this.db.getParams('WS_MAX_RECONNECT',API.WS_MAX_RECONNECT)){
+                            setTimeout(() => {this.onConnect(channel)}, this.db.getParams('WS_TIME_RECONNECT',API.WS_TIME_RECONNECT));
                         }
                     }
                 );
             }
         }catch (exception){
-            this.db.debugLog(['Error: onConnect',exception]);
+            this.db.debugLog('Error: onConnect',exception);
         }
 
     }
@@ -132,7 +141,7 @@ export class WebSocket{
     findChannelByModel(model:string){
         let channels=[];
         if(!this.channelsByModel[model]){
-            this.db.myglobal.channels.forEach(obj=>{
+            this.channelsAll.forEach(obj=>{
                 if(obj.model ==  model)
                     channels.push(obj)
             });
@@ -140,13 +149,12 @@ export class WebSocket{
         }
     }
 
-    loadChannelByModel(model:string,instance:ModelRoot){
-        let that = this;
-        this.findChannelByModel(model);
-        this.channelsByModel[model].forEach(obj=>{
-            that.replaceMetaChannel(obj);
-            that.setWebSocket(obj.target,instance);
-            that.onConnect(obj.target,obj);
+    loadChannelByModel(target:string,model:ModelRoot){
+        this.findChannelByModel(target);
+        this.channelsByModel[target].forEach(obj=>{
+            this.replaceMetaChannel(obj);
+            this.setWebSocket(obj.target,model);
+            this.onConnect(obj.target,obj);
         });
     }
 
@@ -158,48 +166,49 @@ export class WebSocket{
                 if(channel.target.includes(meta)){
                     channel.target = channel.target.replace(meta,currentUser.accountName);
                 }
-            }else {
-                this.db.debugLog(['Warning: replaceMetaChannel',channel])
+                return;
             }
+            this.db.debugLog('Warning: replaceMetaChannel',channel);
         }catch (exception){
-            this.db.debugLog(['Error: replaceMetaChannel',channel,exception])
+            this.db.debugLog('Error: replaceMetaChannel',channel,exception);
         }
 
     }
 
     eventChannel(eventChannel:any){
-        let that = this;
-        let body = that.webSocket[eventChannel.target].data.value;
 
-        if(this.webSocket[eventChannel.target].instance){
+        let body = this.webSocket[eventChannel.target].data.value;
+        let target = eventChannel.target;
 
-            switch (eventChannel['event']) {
+        if(this.model(target)){
+
+            switch (eventChannel.event) {
                 case "INSERT" :
 
-                    that.webSocket[eventChannel.target].instance.setLoadData(body);
+                    this.model(target).setLoadData(body);
 
-                    that.webSocket[eventChannel.target].instance.setBlockField(body);
-                    setTimeout(function(){
-                        that.webSocket[eventChannel.target].instance.setBlockField(body);
-                    }, 1000);
+                    this.model(target).setBlockField(body);
+                    setTimeout(()=>{
+                        this.model(target).setBlockField(body);
+                    }, this.db.getParams('REFRESH_WS',API.WS_REFRESH));
                     break;
 
                 case "UPDATE" :
 
-                    that.webSocket[eventChannel.target].instance.setUpdateData(body);
+                    this.model(target).setUpdateData(body);
 
-                    that.webSocket[eventChannel.target].instance.setBlockField(body);
-                    setTimeout(function(){
-                        that.webSocket[eventChannel.target].instance.setBlockField(body);
-                    }, 1000);
+                    this.model(target).setBlockField(body);
+                    setTimeout(()=>{
+                        this.model(target).setBlockField(body);
+                    }, this.db.getParams('REFRESH_WS',API.WS_REFRESH));
                     break;
 
                 case "DELETE" :
 
-                    that.webSocket[eventChannel.target].instance.setBlockField(body);
-                    setTimeout(function(){
-                        that.webSocket[eventChannel.target].instance.setDeleteData(body);
-                    }, 1000);
+                    this.model(target).setBlockField(body);
+                    setTimeout(()=>{
+                        this.model(target).setDeleteData(body);
+                    }, this.db.getParams('REFRESH_WS',API.WS_REFRESH));
                     break;
 
                 default:{
@@ -208,20 +217,26 @@ export class WebSocket{
             }
             if(eventChannel['callback']){
                 try {
-                    eval(eventChannel['callback']);
+                    this.db.evalMe(this,eventChannel['callback']);
                 }catch (exception){
-                    this.db.debugLog(['Error: eventChannel',exception]);
+                    this.db.debugLog('Error: eventChannel',exception);
                 }
             }
+            return;
 
         }
-        else {
-            this.db.debugLog(['Error: eventChannel','Error: not found intance for channel '+eventChannel.target]);
-        }
+        this.db.debugLog('Error: eventChannel','Error: not found intance for channel '+eventChannel.target);
 
     }
     addToast(title:string,message:string,type:typeToast='info',time:number=10000){
-        this.db.myglobal.addToast(title,message,type,time);
+        this.db.myglobal.httputils.addToast(title,message,type,time);
+    }
+
+    private  model(model:string):ModelRoot{
+        if(this.webSocket[model] && this.webSocket[model].model){
+            return this.webSocket[model].model;
+        }
+        return;
     }
 
 
