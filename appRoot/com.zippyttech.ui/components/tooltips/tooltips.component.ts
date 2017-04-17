@@ -1,10 +1,8 @@
-import {Component, OnInit,HostListener} from '@angular/core';
-import {InfoModel} from "../../../com.zippyttech.business/info/info.model";
+import {Component, OnInit, HostListener, ViewChild, ElementRef} from '@angular/core';
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
+import {InfoModel} from "../../../com.zippyttech.business/info/info.model";
 
-
-var moment = require('moment');
-var jQuery = require('jquery');
+declare var jQuery:any;
 
 @Component({
     selector: 'tooltip-view',
@@ -13,57 +11,63 @@ var jQuery = require('jquery');
     inputs: ['code'],
 })
 export class TooltipComponent implements OnInit{
+    @ViewChild('btn') btn:ElementRef;
 
     public permissions:any;
     public code="";
     public data:any={};
-    public info:any;
-    
+    public help:any;
+    public $btn;
+    private view:boolean = false;
 
-    public configId=moment().valueOf();
-
-    constructor(public db:DependenciesBase) {
-        this.info=new InfoModel(db);
-        this.permissions = Object.assign({},this.info.permissions);
+    constructor(public db:DependenciesBase, public elem:ElementRef) {
+        this.help=new InfoModel(db);
+        this.permissions = Object.assign({},this.help.permissions);
     }
     ngOnInit() {
-        this.configId='TOOLTIP_'+this.configId+'_'+this.code;
         if(this.code && this.code.length>0){
-            this.data=this.db.myglobal.getTooltip(this.code);
+            this.data = this.db.myglobal.getTooltip(this.code);
         }
     }
     ngAfterViewInit()
     {
-        let that=this;
-        if(this.data && this.data.id){
-            jQuery('#'+this.configId).popover({
-                trigger: "manual"
-            });
+        if(this.data.id && this.btn) {
+            this.$btn = jQuery(this.btn.nativeElement);
+            this.$btn.popover({trigger: "manual"});
         }
     }
     edit(event,data){
-        event.preventDefault();
+        if(event)
+            event.preventDefault();
         if(this.permissions.update){
-            if(this.db.myglobal.objectInstance[this.info.prefix]){
-                this.db.myglobal.objectInstance[this.info.prefix].setLoadDataModel(data,true);
+            if(this.db.myglobal.objectInstance[this.help.prefix]){//TODO:Cambiar por el modalservice
+                this.db.myglobal.objectInstance[this.help.prefix].setLoadDataModel(data,true);
             }
         }
     }
-    @HostListener('document:click', ['$event.target'])
-    public onClick(event) {
-        let btn = jQuery(event).parents('#'+this.configId);
-        if( (btn && btn.length > 0) || jQuery(event).attr('id') == this.configId ){
-            jQuery('#'+this.configId).popover('show');
-        }
-        else{
-            let exit= jQuery(event).parents('.popover');
-            if(exit && exit.length == 0)
-                jQuery('#'+this.configId).popover('destroy');
+
+    @HostListener('click',['$event']) onClick(event) {
+        if(this.data.id && this.view){
+            event.preventDefault();
+            event.stopImmediatePropagation();
         }
     }
-    @HostListener('window:keydown', ['$event'])
-    keyboardInput(event: any) {
-        if(event.code == "Escape")
-            jQuery("[data-toggle='popover']").popover('destroy');
+
+    clickBtn(event){
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if(this.data.id){
+            if(this.view)
+                this.$btn.popover('destroy');
+            else{
+                this.$btn.popover('show');
+                jQuery(window).one('click',(event)=>{
+                    if(this.view)
+                        this.clickBtn(event);
+                });
+            }
+            this.view = !this.view;
+        }
+
     }
 }

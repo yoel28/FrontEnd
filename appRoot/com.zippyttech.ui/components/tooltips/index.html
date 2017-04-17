@@ -1,13 +1,22 @@
-<button *ngIf="data && data.id" data-html="true"  class="btn btn-box-tool noprint" title="Ver ayuda"
-        [attr.id]="configId"
-        [attr.data-placement]="data.position"
-        [attr.title]="data.title"
-        [attr.data-content]="data.detail"
-        data-toggle="popover"
-
->
-    <i class="{{data.size}} {{data.icon}}" [style.color]="'#'+data.color"></i>
-</button>
-<button *ngIf="permissions.update && data.enabled &&  db.myglobal.objectInstance &&  db.myglobal.objectInstance['INFO']" class="btn btn-box-tool  noprint" title="Editar ayuda">
-    <i class="fa fa-pencil-square-o {{data.size}}" [style.color]="'#'+data.color" (click)="edit($event,data)" data-toggle="modal" [attr.data-target]="'#'+ db.myglobal.objectInstance['INFO'].params.idModal"></i>&nbsp;
-</button>
+<ng-template [ngIf]="data && data.id">
+    <button #btn
+            data-html="true"  class="tooltip-element btn btn-box-tool noprint" title="Ver ayuda"
+            [attr.data-placement]="data.position"
+            [attr.title]="data.title"
+            [attr.data-content]="data.detail"
+            data-toggle="popover"
+            (click)="clickBtn($event)"
+    >
+        <span class="{{data.size}} {{data.icon}} tooltip-element" [style.color]="'#'+data.color"></span>
+    </button>
+    <button *ngIf="permissions.update && data.enabled &&  db.myglobal.objectInstance['INFO']"
+            class="btn btn-box-tool  noprint" title="Editar ayuda"
+            (click)="edit($event,data)"
+            [disabled]="view">
+        <span class="fa fa-pencil-square-o {{data.size}}"
+              [style.color]="'#'+data.color"
+              data-toggle="modal"
+              [attr.data-target]="'#'+ db.myglobal.objectInstance['INFO'].params.idModal">
+        </span>&nbsp;
+    </button>
+</ng-template>
