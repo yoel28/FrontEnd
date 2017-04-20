@@ -8,6 +8,7 @@ import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
 var jQuery = require('jquery');
 var moment = require('moment');
+
 @Component({
     selector: 'base-view',
     templateUrl: './index.html',
@@ -49,6 +50,9 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
         this.loadPreferenceViewModel();
 
     }
+    private get isVisible():boolean{
+        return this.model.getData().list ? true: false;
+    }
 
     getUrlExport(type:string){
         if(this.instanceTable)
@@ -63,7 +67,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
         if(type=='PDF')
             return (this.db.getParams('REPORT_LIMIT_ROWS_PDF',API.REPORT_LIMIT_ROWS_PDF) >= this.model.getData().count);
         if(type=='EXCEL')
-            return ( this.db.getParams('REPORT_LIMIT_ROWS_EXCEL',API.REPORT_LIMIT_ROWS_EXCEL) >= this.model.getData().count);
+            return ( this.db.getParams('REPORT_LIMIT_ROWS_EXCEL',API.REPORT_LIMIT_ROWS_XLS) >= this.model.getData().count);
     }
 
     setVisibleField(event,data:IRule)
@@ -117,6 +121,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             Object.assign(that.model.rules,temp);
         }
     }
+
     loadPreferenceViewModel(){
         let temp={};
         let current;
@@ -128,14 +133,16 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
         this.model.rules={};
         Object.assign(this.model.rules,temp);
     }
+
     savePreference(reset=false){
         let that = this;
         this.db.myglobal.setPreferenceViewModel(this.model.constructor.name,this.model.rules,reset);
         let successCallback = (response)=>{
-            that.model.addToast('Notificación','Preferencias guardadas')
-        }
+            that.model.httputils.addToast('Notificación','Preferencias guardadas')
+        };
         this.model.onPatchProfile('preferences',this.db.myglobal.user,this.db.myglobal.user.preferences);
     }
+
     evalExp(exp){
         return eval(exp);
     }
