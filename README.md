@@ -28,13 +28,23 @@
     * **local:** [variableName]
     * **private:** **_**[variableName]
     * **protected:** **_**[variableName]
+    
+    element DOM prefix **$** example
+    
+    * **public:** **$**[elementName]
+    * **local:** **$**[elementName]
+    * **private:** **_$**[elementName]
+    * **protected:** **_$**[elementName]
+
         
         
 * **method:**
 
     `note` methods get and set using styles variable
     
-    `PREFIX` Functions must start with **[init, load, destroy, set, get, on, f]**
+    `PREFIX` Functions must start with
+     
+     **init, load, add,remove, destroy, set, get, on, do, fn, ev**
     
     * **public:** **prefix**[MethodName]
     * **local:** **prefix**[MethodName]
