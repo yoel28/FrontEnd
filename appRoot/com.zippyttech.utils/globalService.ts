@@ -20,7 +20,6 @@ export class globalService extends RestController{
     help:any=[];
     permissions:any=[];
     rules:any=[];
-    channels:any=[];
 
     public publicData:any={};
 
@@ -28,7 +27,6 @@ export class globalService extends RestController{
 
     public qrPublic:any;
 
-    public channelWebsocket:any={};
 
     public navigationStart:boolean=false;
     public menuItems:FormControl = new FormControl([]);
@@ -75,7 +73,7 @@ export class globalService extends RestController{
         this.help=[];
         this.permissions=[];
         this.rules=[];
-        this.channels=[];
+        this.db.ws.channelsAll=[];
 
         this.menuItems.setValue([]);
         this.dataSesion.setValue({
@@ -91,7 +89,7 @@ export class globalService extends RestController{
     errorGS = (err:any):void => {
         if(localStorage.getItem('bearer')){
             if(this.db.toastyService)
-                this.addToast('Ocurrio un error',err,'error',10000);
+                this.httputils.addToast('Ocurrio un error',err,'error',10000);
 
             this.dataSesionInit();
             localStorage.removeItem('bearer');
@@ -162,7 +160,7 @@ export class globalService extends RestController{
     loadChannels():void{
         let that = this;
         let successCallback= (response:any) => {
-            Object.assign(that.channels,response.json().list);
+            Object.assign(that.db.ws.channelsAll,response.json().list);
             that.dataSesion.value.channels.status=true;
             that.dataSesion.setValue(that.dataSesion.value);
         };
