@@ -1,9 +1,9 @@
 import {Rule, IRule} from "./rule";
 
-type placementOptions = 'top'|'bottom'|'right'|'left';
+type TPlacement = 'top'|'bottom'|'right'|'left';
 
 export interface IEditable extends IRule{
-    placement?:placementOptions;
+    placement?:TPlacement;
     inputclass?:string; //CSS class automatically applied to input
     highlight?:string; //Color used to highlight element after update. Implemented via CSS3 transition, works in modern browsers.
     showbuttons?:boolean;//Where to show buttons: left(true)|bottom|false Form without buttons is auto-submitted.
@@ -16,10 +16,10 @@ export class Editable extends Rule{
         super(rule);
     }
 
-    set placement(value:placementOptions){
+    set placement(value:TPlacement){
         (<IEditable>this.attributes).placement = value;
     }
-    get placement():placementOptions{
+    get placement():TPlacement{
         return this.attributes.placement || 'top';
     }
 
