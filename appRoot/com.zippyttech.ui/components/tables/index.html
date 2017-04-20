@@ -1,147 +1,75 @@
-<div *ngIf="model.dataList && isUnique()">
+<div *ngIf="model.getData() && isUnique()">
     <data-view [model]="model" [dataParams]="{internal:true, nav:true,viewActions:viewActions, ruleViewOptions: paramsData}"></data-view>
 </div>
-<div *ngIf="model.dataList && !isUnique()" class="table-responsive">
-    <table id="footable" class="table table-striped table-hover" ><!--*ngIf="!model.updating"--><!--x-footable -->
+<div *ngIf="model.getData().list && !isUnique()" class="table-responsive">
+    <table class="table table-striped table-hover" >
         <thead>
-        <tr>
-            <th class="data-actions-th"></th><!--[attr.data-breakpoints]="((i<1)?'':(i<2)?'xs':(i<4)?'xs sm': (i<=6)?'xs sm md':'xs sm md lg')" -->
-            <th
-                    data-type = "html" *ngFor="let key of keyVisible; let i=index" [class.check]="model.rules[key].check" (click)="changeOrder(key)" class="cursor-pointer" [attr.title]="'Ordenar por la columna '+model.rules[key].title">
-                <i *ngIf="model.rest.sort==key && model.rest.order == 'asc' && !model.rest.findData" class="fa fa-caret-up text-blue"></i>
-                <i *ngIf="model.rest.sort==key && model.rest.order == 'desc' && !model.rest.findData" class="fa fa-caret-down text-blue"></i>
-                <i *ngIf="model.rest.sort==key && model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
-                &nbsp;{{model.rules[key].title}}
-            </th>
-            <th data-type = "html" *ngIf="params && params.actions">&nbsp;
-                <tooltip-view [code]="model.prefix+'_5'"></tooltip-view>
-            </th>
-        </tr>
+            <tr>
+                <th class="data-actions-th"></th>
+                <th *ngFor="let key of keyVisible" data-type = "html" [class.check]="getRule(key).check" (click)="changeOrder(key)" class="cursor-pointer"
+                        [attr.title]="('custom.orderRow' | translate:{row: ('field.'+key+'.title' | translate)})">
+
+                    <i *ngIf="model.getRest().sort==key && model.getRest().order == 'asc' && !model.getRest().findData" class="fa fa-caret-up text-blue"></i>
+                    <i *ngIf="model.getRest().sort==key && model.getRest().order == 'desc' && !model.getRest().findData" class="fa fa-caret-down text-blue"></i>
+                    <i *ngIf="model.getRest().sort==key && model.getRest().findData" class="fa fa-spinner fa-spin" [attr.title]="'custom.pleaseWait' | translate"></i>
+                    &nbsp;{{'field.'+key+'.title' | translate}}
+                </th>
+                <th data-type = "html" *ngIf="params && params.actions">&nbsp;
+                    <tooltip-view [code]="model.prefix+'_5'"></tooltip-view>
+                </th>
+            </tr>
         </thead>
         <tbody >
-        <tr *ngFor="let data of model.dataList.list; let i=index"  [class.deleted]="data.deleted">
-            <div *ngIf="viewActions && model.dataActions" class="data-actions notHidden">
-                <div *ngIf="model.dataActions.length == 1 && model.dataActions.getFirst(data)">
-                    <a (click)="model.dataActions.getFirst(data).callback(data,i);">
-                        <i class="{{model.dataActions.getFirst(data).view[0].icon}}"></i>
-                        &nbsp;{{model.dataActions.getFirst(data).view[0].title}}
-                    </a>
-                </div>
-                <div *ngIf="model.dataActions.length > 1" class="btn-group dropdown">
-                    <button type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-gears fa-lg"></i>
-                    </button>
-                    <ul role="menu" class="dropdown-menu text-left submenu-config">
-                        <li *ngFor="let action of model.dataActions.toArray(true,data)" (click)="action.callback(data,i);">
-                            <a class="cursor-pointer {{action.currentView(data).colorClass || ''}}">
-                                <i class="{{action.currentView(data).icon || ''}}"></i>
-                                &nbsp;{{action.currentView(data).title || ''}}
+            <tr *ngFor="let data of model.getData().list; let i=index"  [class.deleted]="data.deleted">
+                <td>
+                    <div *ngIf="viewActions && model.dataActions" class="data-actions notHidden">
+                        <div *ngIf="model.dataActions.length == 1 && model.dataActions.getFirst(data)">
+                            <a (click)="model.dataActions.getFirst(data).callback(data,i);">
+                                <i class="{{model.dataActions.getFirst(data).view[0].icon}}"></i>
+                                &nbsp;{{model.dataActions.getFirst(data).view[0].title}}
                             </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            <td *ngFor="let key of keyVisible" [class.check]="model.rules[key].check" [class.parpadea]="data.blockField">
+                        </div>
+                        <div *ngIf="model.dataActions.length > 1" class="btn-group dropdown">
+                            <button type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-gears fa-lg"></i>
+                            </button>
+                            <ul role="menu" class="dropdown-menu text-left submenu-config">
+                                <li *ngFor="let action of model.dataActions.toArray(true,data)" (click)="action.callback(data,i);">
+                                    <a class="cursor-pointer {{action.currentView(data).colorClass || ''}}">
+                                        <i class="{{action.currentView(data).icon || ''}}"></i>
+                                        &nbsp;{{action.currentView(data).title || ''}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            <td *ngFor="let key of keyVisible" [class.check]="getRule(key).check" [class.parpadea]="data.blockField">
                 <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
             </td>
         </tr>
         </tbody>
-        <tfoot *ngIf="model.dataList && model.dataList.page && model.dataList.page.length > 1">
-        <tr>
-            <td [attr.colspan]="keyVisible.length + 1">
-                <div class="btn-group pull-right">
-                    <button (click)="currentPage=val" [class.btn-green]="val == currentPage" *ngFor="let val of model.dataList.page" type="button" class="btn btn-default">
-                        <span *ngIf="val == currentPage">
-                            <span *ngIf="model.rest.findData">
-                                <i class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
+        <tfoot *ngIf="model.getData().page && model.getData().page.length>1">
+            <tr>
+                <td [attr.colspan]="keyVisible.length + 1">
+                    <div class="btn-group pull-right">
+                        <button (click)="currentPage=val" [class.btn-green]="val == currentPage" *ngFor="let val of model.getData().page" type="button" class="btn btn-default">
+                            <span *ngIf="val == currentPage">
+                                <span *ngIf="model.getRest().findData">
+                                    <i class="fa fa-spinner fa-spin" [attr.title]="'custom.pleaseWait' | translate"></i>
+                                </span>
+                                <span *ngIf="!model.getRest().findData">
+                                    {{val}}
+                                </span>
                             </span>
-                            <span *ngIf="!model.rest.findData">
+                            <span *ngIf="val != currentPage">
                                 {{val}}
                             </span>
-                        </span>
-                        <span *ngIf="val != currentPage">
-                            {{val}}
-                        </span>
-
-                    </button>
-                    <tooltip-view [code]="model.prefix+'_9'"></tooltip-view>
-                </div>
-            </td>
-        </tr>
+                        </button>
+                        <tooltip-view [code]="model.prefix+'_9'"></tooltip-view>
+                    </div>
+                </td>
+            </tr>
         </tfoot>
     </table>
 </div>
-
-<!--########################################MODALS########################################-->
-<!--SEARCH!!-->
-<!--<div *ngIf="paramsData && paramsData.searchParams && !paramsData.searchParams.multiple && paramsData.searchParams.idModal">-->
-    <!--<search-view [params]="paramsData.searchParams" (result)="getDataSearch($event)" (getInstance)="setInstanceSearch('unique',$event)"></search-view>-->
-<!--</div>-->
-
-<!--<div *ngIf="paramsData && paramsData.ruleReference && paramsData.ruleReference.paramsSearch">-->
-    <!--<search-view [params]="paramsData.ruleReference.paramsSearch" (result)="setDataFieldReference($event)" (getInstance)="setInstanceSearch('reference',$event)"></search-view>-->
-<!--</div>-->
-
-<!--<div *ngIf="paramsData && paramsData.searchParams && paramsData.searchParams.multiple && paramsData.searchParams.idModal">-->
-    <!--<search-multiple-view [params]="paramsData.searchParams" (result)="getDataSearchMultiple($event)" (getInstance)="setInstanceSearch('multiple',$event)"></search-multiple-view>-->
-<!--</div>-->
-
-<!--<div *ngIf="paramsData.viewListData && paramsData.viewListData.data">-->
-    <!--<div class="modal fade" id="dataMultiple" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
-        <!--<div class="modal-dialog" role="document">-->
-            <!--<div class="modal-content">-->
-                <!--<div class="modal-header text-center">-->
-                    <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span-->
-                            <!--aria-hidden="true">&times;</span></button>-->
-                    <!--<h4 class="modal-title">-->
-                        <!--<strong>{{paramsData.viewListData.title}}</strong>-->
-                    <!--</h4>-->
-                <!--</div>-->
-                <!--<div class="modal-body">-->
-                    <!--<table class="table table-striped table-hover" *ngIf="getObjectKeys(paramsData.viewListData.label).length">-->
-                        <!--<thead>-->
-                        <!--<tr>-->
-                            <!--<th *ngFor="let key of getObjectKeys(paramsData.viewListData.label)">-->
-                                <!--{{paramsData.viewListData.label[key]}}-->
-                            <!--</th>-->
-                        <!--</tr>-->
-                        <!--</thead>-->
-                        <!--<tbody>-->
-                        <!--<tr *ngFor="let data of paramsData.viewListData.data">-->
-                            <!--<td *ngFor="let key of getObjectKeys(paramsData.viewListData.label)">-->
-                                <!--{{data[key]}}-->
-                            <!--</td>-->
-                        <!--</tr>-->
-                        <!--</tbody>-->
-                    <!--</table>-->
-                    <!--<table class="table table-striped table-hover" *ngIf="!getObjectKeys(paramsData.viewListData.label).length">-->
-                        <!--<tbody>-->
-                        <!--<tr *ngFor="let data of paramsData.viewListData.data">-->
-                            <!--<td>{{data}}</td>-->
-                        <!--</tr>-->
-                        <!--</tbody>-->
-                    <!--</table>-->
-                <!--</div>-->
-                <!--<div class="modal-footer">-->
-                    <!--<button type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">&nbsp;{{db.msg.warningButtonExit}}</button>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-
-
-<!--<ng-template [ngIf]="paramsData && paramsData.arrayData">-->
-    <!--<modal-view [params]="modalRule">-->
-        <!--<div header>-->
-            <!--<h2>{{paramsData.select.title}}</h2>-->
-        <!--</div>-->
-        <!--<div body>-->
-            <!--<div *ngFor="let item of paramsData.arrayData">-->
-                <!--<span>{{item}}</span>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</modal-view>-->
-<!--</ng-template>-->
-
-<!--######################################################################################-->
