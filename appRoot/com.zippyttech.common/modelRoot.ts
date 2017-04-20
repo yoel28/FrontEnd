@@ -8,7 +8,6 @@ import {NumberRule} from "./rules/number.rule";
 import {TextRule} from "./rules/text.rule";
 import {CombodateRule} from "./rules/combodate.rule";
 import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
-import {modelsOptions} from "../app-routing.module";
 
 var moment = require('moment');
 
@@ -362,7 +361,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                 filter:true,
                 list:true
             },
-            key: "detail"
         });
     }
 
@@ -378,7 +376,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "id"
             });
         }
     }
@@ -395,7 +392,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                "key": "ip"
             });
         }
     }
@@ -412,7 +408,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "userAgent"
             });
         }
     }
@@ -429,7 +424,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "usernameCreator"
             });
         }
     }
@@ -446,7 +440,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     filter:true,
                     list:true
                 },
-                key: "usernameUpdater"
             });
         }
     }
@@ -464,7 +457,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     list:true
                 },
                 date:"datetime",
-                key: "dateCreated"
             });
         }
     }
@@ -482,7 +474,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
                     list:true
                 },
                 date:"datetime",
-                key: "dateUpdated"
             });
         }
     }
