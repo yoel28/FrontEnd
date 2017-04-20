@@ -236,3 +236,8 @@ register-full .view-data-internal{
     flex:1 0;
     width: 100%;
 }
+.page-info{
+    font-size: 10px;
+    font-style: oblique;
+    color: #4b4b4b;
+}
