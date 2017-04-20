@@ -1,57 +1,157 @@
-import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
+import {ElementRef, Directive, OnInit} from "@angular/core";
 import {FormControl} from "@angular/forms";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {ModelRoot} from "../../com.zippyttech.common/modelRoot";
+import {TRules} from "../../app-routing.module";
 
 var jQuery = require('jquery');
 var tagsinput = require('tagsinput');
 
+type TTemplate = 'free'|'object'|'inlist'
+
+interface IProperties{
+    tagClass?:(item:any)=>string | string;//Classname for the tags, or a function returning a classname
+    itemValue?:(item:any)=>string | string;//When adding objects as tags, itemValue must be set to the name of the property containing the item's value, or a function returning an item's value.
+    itemText?:(item:any)=>string | string;//When adding objects as tags, you can set itemText to the name of the property of item to use for a its tag's text. You may also provide a function which returns an item's value. When this options is not set, the value of itemValue will be used
+    confirmKeys?:number[];//Array of keycodes which will add a tag when typing in the input. (default: [13, 188], which are ENTER and comma)
+    maxTags?:number;//When set, no more than the given number of tags are allowed to add (default: undefined). When maxTags is reached, a class 'bootstrap-tagsinput-max' is placed on the tagsinput element.
+    maxChars?:number;//Defines the maximum length of a single tag. (default: undefined)
+    trimValue?:boolean;//When true, automatically removes all whitespace around tags. (default: false)v
+    allowDuplicates?:boolean;//When true, the same tag can be added multiple times. (default: false)
+    focusClass?:string;//When the input container has focus, the class specified by this config option will be applied to the container
+    freeInput?:boolean;//Allow creating tags which are not returned by typeahead's source (default: true) This is only possible when using string as tags. When itemValue option is set, this option will be ignored.
+    typeahead?:{ //Object containing typeahead specific options
+        source:(value:any)=>(string[]| Promise<any>) | string[];//An array (or function returning a promise or array), which will be used as source for a typeahead.
+    };
+    cancelConfirmKeysOnEmpty?:boolean;//Boolean value controlling whether form submissions get processed when pressing enter in a field converted to a tagsinput (default: false).
+    onTagExists?:(item:any,$tag:any)=>any //Function invoked when trying to add an item which allready exists. By default, the existing tag hides and fades in.
+}
+
+interface IEvents{}
+
+export interface ITagsInput{
+    template?:TTemplate;
+    inputFree?:boolean;
+    instance:TagsInput;
+    properties:IProperties
+    events?:IEvents
+}
+
+
 @Directive({
     selector: "[tags-input]",
-    inputs:['control','prefix'],
-    outputs:['instance']
+    inputs:['model','key','control'],
 })
 export class TagsInput implements OnInit{
-    public instance:any;
-    public prefix:string;
+
+    public model:ModelRoot;
+    public key:string;
     public control:FormControl;
-    public inputFree:boolean;
+
+    private _$tag:any;
 
     constructor(public el: ElementRef,public db: DependenciesBase) {
-        this.instance = new EventEmitter();
         this.control = new FormControl([]);
     }
+
     ngOnInit(){
-        let that=this;
-        jQuery(this.el.nativeElement).tagsinput(
-            {
-                'tagClass': function(item) {
-                    switch (item.id) {
-                        case '1': return 'label label-green cursor-pointer';
-                        case '2': return 'label label-danger label-important cursor-pointer';
-                        case '3': return 'label label-success cursor-pointer';
-                        case '4': return 'label label-default cursor-pointer';
-                        case '5': return 'label label-warning cursor-pointer';
-                        default: return 'label label-blue cursor-pointer';
-                    }
-                },
-                'itemTitle':function(item) {
-                    return item.title;
-                },
-                'itemValue':function(item) {
-                    return item.value;
-                }
+        this._$tag = jQuery(this.el.nativeElement);
+        let list = this._rule.list;
+        switch (list.template){
+            case 'free':{
+
             }
-        );
-        this.eventRemoved();
-        this.instance.emit(this);
+            case 'inlist':{
+
+            }
+            case 'object':{
+
+            }
+            default:{
+
+            }
+        }
+        this._$tag.tagsinput(this._rule.list.properties);
+
+
+        // jQuery(this.el.nativeElement).tagsinput(
+        //     {
+        //         'tagClass': function(item) {
+        //             switch (item.id) {
+        //                 case '1': return 'label label-green cursor-pointer';
+        //                 case '2': return 'label label-danger label-important cursor-pointer';
+        //                 case '3': return 'label label-success cursor-pointer';
+        //                 case '4': return 'label label-default cursor-pointer';
+        //                 case '5': return 'label label-warning cursor-pointer';
+        //                 default: return 'label label-blue cursor-pointer';
+        //             }
+        //         },
+        //         'itemTitle':function(item) {
+        //             return item.title;
+        //         },
+        //         'itemValue':function(item) {
+        //             return item.value;
+        //         }
+        //     }
+        // );
+        this._evItemAdded();
+        this._evItemRemoved();
     }
-    public addValue(data){
-        jQuery(this.el.nativeElement).tagsinput('add', data);
-        this.control.setValue(jQuery(this.el.nativeElement).tagsinput('items'));
+
+
+    //region other
+
+    private get _rule():TRules{
+        return this.model.rules[this.key] || {};
     }
-    public eventRemoved(){
-        jQuery(this.el.nativeElement).on('itemRemoved', function(event) {
-            this.control.setValue(jQuery(this.el.nativeElement).tagsinput('items'));
-        }.bind(this));
+
+    private _fnUpdateValue(){
+        this.control.setValue(this._$tag.tagsinput('items'));
     }
+
+    //endregion
+
+    //region methods tags
+
+    fnAdd(value:any){
+        this._$tag.tagsinput('add', value);
+    }
+
+    fnRemove(value:any){
+        this._$tag.tagsinput('remove', value);
+    }
+
+    fnRemoveAll(value:any){
+        this._$tag.tagsinput('removeAll');
+    }
+
+    fnFocus(){
+        this._$tag.tagsinput('focus');
+    }
+
+    fnRefresh(){
+        this._$tag.tagsinput('refresh');
+    }
+
+    fnDestroy(){
+        this._$tag.tagsinput('destroy');
+    }
+
+    //endregion
+
+    //region events tags
+
+    private _evItemAdded(){
+        this._$tag.on('itemAdded', (event) => {
+            this._fnUpdateValue();
+        });
+    }
+
+    private _evItemRemoved(){
+        this._$tag.on('itemRemoved', (event) => {
+            this._fnUpdateValue();
+        });
+    }
+
+    //endregion
 }
