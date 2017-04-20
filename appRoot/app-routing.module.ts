@@ -52,6 +52,8 @@ import {TextareaRule} from "./com.zippyttech.common/rules/textarea.rule";
 import {UrlRule} from "./com.zippyttech.common/rules/url.rule";
 import {ListRule} from "./com.zippyttech.common/rules/list.rule";
 import {TranslateModule} from "@ngx-translate/core";
+import {Rule} from "./com.zippyttech.common/rules/rule";
+import {Editable} from "./com.zippyttech.common/rules/editable.types";
 
 interface MyRoute extends Route{
     menuOptions?:{
@@ -143,8 +145,8 @@ export const componentsPublic = [
 type modelsAppOptions = null;
 type modelsDefaultOptions = AccountModel | PermissionModel | RoleModel | UserModel | ChannelModel | EventModel | InfoModel | NotificationModel | ParamModel | RuleModel;
 
-export type modelsOptions = modelsDefaultOptions | modelsAppOptions;
-export type rulesOptions =  BooleanRule | ColorRule | CombodateRule | ImageRule | NumberRule | ObjectRule | PasswordRule | SelectRule | TextRule | TextareaRule | UrlRule | ListRule;
+export type TModels = modelsDefaultOptions | modelsAppOptions;
+export type TRules =  BooleanRule | ColorRule | CombodateRule | ImageRule | NumberRule | ObjectRule | PasswordRule | SelectRule | TextRule | TextareaRule | UrlRule | ListRule | Rule | Editable;
 
 
 export const modelsDefault=[
