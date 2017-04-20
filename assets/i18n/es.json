@@ -239,6 +239,10 @@
       "title": "Regla",
       "placeholder": "Ingrese una regla"
     },
+    "roles": {
+      "title": "Roles",
+      "placeholder": "Ingrese un rol"
+    },
 
     "size": {
       "title": "Tamaño",
@@ -335,11 +339,12 @@
     "findData":"Buscando información, por favor espere",
     "select":"Seleccionar",
     "tagFree":"Presione Enter para agregar un nuevo item",
-    "fieldRequired":"Todos los campos con (*) son obligatorios."
-
+    "fieldRequired":"Todos los campos con (*) son obligatorios.",
+    "inputManual":"Entrada manual"
   },
 
   "error":{
-    "required":"Este campo es obligatorio."
+    "required":"Este campo es obligatorio.",
+    "object":"Referencia no encontrada."
   }
 }
