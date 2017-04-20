@@ -12,8 +12,7 @@
             <div [ngSwitch]="db.ms.currentModal">
                 <ng-template [ngSwitchCase]="'delete'">
                     <div>
-                        {{db.ms.params.model.dataActions.get('delete').params.message}}
-                        <strong>'{{db.ms.params.model.currentData[db.ms.params.model.view.display]}}'</strong>
+                        {{ (db.ms.params.model.nameClass+'.deleted' | translate:db.ms.params.model.currentData) }}
                     </div>
                 </ng-template>
 
