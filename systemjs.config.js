@@ -121,7 +121,7 @@
             },
             'moment': {
                 main:'moment',
-                // exports:'moment',
+                format:'global',
                 defaultExtension: 'js',
             },
             'humanize': {
