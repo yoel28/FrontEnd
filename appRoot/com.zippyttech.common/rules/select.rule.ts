@@ -20,4 +20,8 @@ export class SelectRule extends Editable{
     set source(value:Array<ISelectSource>){
         this.attributes.source = value;
     }
+
+    get icon():string{
+        return '';
+    }
 }
