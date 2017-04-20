@@ -173,7 +173,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
             }
             catch (exception){
                 this.paramsData.viewListData['data'] = [];
-                this.db.debugLog(['Error: setViewListData',exception]);
+                this.db.debugLog('Error: setViewListData',exception);
             }
         }
     }
@@ -182,7 +182,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
         try{
             return eval(exp);
         }catch (exception){
-            this.db.debugLog(['Error evalExp: ',exception,data])
+            this.db.debugLog('Error evalExp: ',exception,data);
         }
     }
 
