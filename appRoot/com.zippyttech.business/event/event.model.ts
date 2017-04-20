@@ -30,7 +30,6 @@ export class EventModel extends ModelBase{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'code',
             icon: 'fa fa-key'
         });
 
@@ -41,7 +40,6 @@ export class EventModel extends ModelBase{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,},
             source: [],
-            key: 'actionType'
         });
 
         this.rules['way']= new SelectRule({
@@ -52,7 +50,6 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             source: [],
-            key: 'way'
         });
 
         this.rules['over']= new SelectRule({
@@ -63,7 +60,6 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             source:[],
-            key: 'over',
         });
 
         this.rules['message']= new TextareaRule({
@@ -74,7 +70,6 @@ export class EventModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'message',
             icon: 'fa fa-key'
         });
 
@@ -91,7 +86,6 @@ export class EventModel extends ModelBase{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'target',
             icon: 'fa fa-key'
         });
 
@@ -101,7 +95,6 @@ export class EventModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'trigger',
             icon: 'fa fa-key'
         });
 
@@ -111,7 +104,6 @@ export class EventModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'title',
             icon: 'fa fa-key'
         });
 
@@ -122,7 +114,6 @@ export class EventModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'icon',
             icon: 'fa fa-key'
         })
 
@@ -143,7 +134,7 @@ export class EventModel extends ModelBase{
             (<ISelect>that.rules['actionType']).source.push({value:obj,text:obj});
         });
         that.db.myglobal.publicData.event.wayTypes.forEach(obj=>{
-            (<ISelect>that.rules['way']).source.push({value:obj,text:obj});
+            (<ISelect>that.rules['way']).source.push({'value':obj.name,'text':obj.code});
         })
         that.completed = true
 
