@@ -1,12 +1,16 @@
 import {FormControl} from "@angular/forms";
 import {Actions} from "../../com.zippyttech.init/app/app.types";
+import {FormComponent} from "../../com.zippyttech.ui/components/form/form.component";
+import {ITagsInput} from "../../com.zippyttech.utils/directive/tagsinput";
+
 interface IComponentSave{
-    hidden?:string;
+    hidden?:(form:FormComponent)=>boolean;
     force?:boolean;
     setEqual?:string;
     notReference?:boolean;
-    valueChange?:(c:FormControl)=>void;
-    validator?:(c:FormControl)=>Object;
+    help?:string;//code in domain info
+    valueChange?:(form:FormComponent,value:any)=>void;//Trigger con el contexto del formComponent
+    validator?:(c:FormControl)=>Object; //Validador para el campo.
 }
 
 interface IPermissions{
@@ -14,33 +18,36 @@ interface IPermissions{
     update?:boolean;
     visible?:boolean;
 }
+
 export interface IIncludeComponents{
     save: boolean,
     filter: boolean,
     list: boolean
 }
+
 interface IRefreshField{
 
 }
 export interface IRule{
-    key?:string;
+    // key?:string;
     protected?:boolean;
     required?:boolean;
     exclude?:boolean;
-    icon?:string,
-    prefix?:string,
-    disabled?:string,
-    value?:string,
-    check?:boolean,
-    readOnly?:boolean,
+    icon?:string;
+    prefix?:string;
+    disabled?:string;
+    value?:string;
+    check?:boolean;
+    readOnly?:boolean;
     minLength?:number;
     maxLength?:number;
-    permissions?:IPermissions,
-    include?: IIncludeComponents,
+    permissions?:IPermissions;
+    include?: IIncludeComponents;
     components?:{
-        save?:IComponentSave
+        save?:IComponentSave;
     }
-    actions?:Actions<IIncludeComponents>
+    actions?:Actions<IIncludeComponents>;
+    list?:ITagsInput;
 
 }
 
@@ -52,12 +59,6 @@ export class Rule {
         Object.assign(this.attributes,data);
     }
 
-    get key():string{
-        return this.attributes.key || 'keyDefault';
-    }
-    set key(value:string){
-        this.attributes.key = value;
-    }
 
     get protected():boolean{
         return this.attributes.protected || false;
@@ -191,6 +192,14 @@ export class Rule {
         if(this.attributes.components && this.attributes.components.save)
             return this.attributes.components.save;
         return {};
+    }
+
+
+    get list():ITagsInput{
+        return this.attributes.list;
+    }
+    set list(value:ITagsInput){
+        this.attributes.list = value;
     }
 
 
