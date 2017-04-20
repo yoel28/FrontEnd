@@ -67,10 +67,10 @@ export class RestController {
         this.httputils = new HttpUtils(this.db);
     }
 
-    get dataList():IData{
+    get dataList():IData | any{
         return this.rest.data.value;
     }
-    set dataList(data:IData){
+    set dataList(data:IData | any){
         this.rest.data.setValue(data);
     }
 
@@ -79,10 +79,10 @@ export class RestController {
     }
 
 
-    get dataSearch():IData{
+    get dataSearch():IData |any{
         return this.restSearch.data.value;
     }
-    set dataSearch(data:IData){
+    set dataSearch(data:IData | any){
         this.restSearch.data.setValue(data);
     }
 
@@ -101,10 +101,9 @@ export class RestController {
     protected setEndpoint(endpoint:string) {
         if(endpoint.substr(0, 1) == "/" && endpoint.substr(-1) == "/"){
             this.endpoint = endpoint;
+            return;
         }
-        else{
-            (<DependenciesBase>this.db).debugLog(['Error setEndpoint','Debe iniciar y terminar con el caracter /'])
-        }
+        this.db.debugLog('Error setEndpoint','Debe iniciar y terminar con el caracter /')
 
     }
     protected getEndpoint(search=false):string{
@@ -113,10 +112,10 @@ export class RestController {
         return this.endpoint;
     }
 
-    public getData(search = false):IData{
+    public getData(search = false):IData | any{
         return search?this.dataSearch:this.dataList;
     }
-    public setData(data:IData,search = false){
+    public setData(data:IData | any,search = false){
         if(search)
             this.restSearch.data.setValue(data);
         else
@@ -500,5 +499,16 @@ export class RestController {
         return (this.httputils.doPost(endpoint, body, successCallback, this.error));
     }
 
+    //region get
+
+    public loadDataExternal(endpoint:string,data:Object,isEndpointAbsolute:boolean=false,successCallback) {
+        if(!successCallback)
+            successCallback= response => {
+                Object.assign(data,response);
+            };
+        return this.httputils.doGet(endpoint,successCallback,this.error,isEndpointAbsolute);
+    };
+
+    //endregion
 
 }
