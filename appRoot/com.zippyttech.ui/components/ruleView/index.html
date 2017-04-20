@@ -8,9 +8,12 @@
             <ng-template [ngIf]="isCurrentType(['text','textarea','number','checklist','select','password','combodate'])">
 
                 <ng-template [ngIf]="getEnabled">
-                    <a x-editable [disabled]="false" [endpoint]="model.endpoint"
-                       [class.notHidden]="isCurrentType(['checklist'])"
-                       [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">
+                    <a x-editable
+                       [disabled]="false"
+                       [key]="key"
+                       [data]="data"
+                       [model]="model"
+                       [class.notHidden]="isCurrentType(['checklist'])">
                         {{currentValue}}
                     </a>
 
@@ -23,8 +26,13 @@
 
                 </ng-template>
                 <ng-template [ngIf]="!getEnabled">
-                    <a x-editable [disabled]="true" [class.notHidden]="isCurrentType(['checklist'])"
-                       [data]="data" [rules]="model.rules" [field]="key">{{currentValue }}
+                    <a x-editable
+                       [disabled]="true"
+                       [key]="key"
+                       [data]="data"
+                       [model]="model"
+                       [class.notHidden]="isCurrentType(['checklist'])">
+                        {{currentValue}}
                     </a>
                 </ng-template>
             </ng-template>
@@ -168,8 +176,11 @@
 
                     <ng-template [ngIf]="currentRule.url == 'image'">
                         <img class="img-responsive" [attr.src]="currentValue" />
-                        <a x-editable [disabled]="false" [endpoint]="model.endpoint"
-                           [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">
+                        <a x-editable
+                           [disabled]="false"
+                           [key]="key"
+                           [data]="data"
+                           [model]="model">
                         </a>
                     </ng-template>
 
@@ -213,17 +224,20 @@
                 <ng-template [ngIf]="getEnabled">
                     <a x-editable class="notHidden"
                        [disabled]="!currentRule.permissions.list || !model.permissions.roleSave"
-                       [endpoint]="'/users/'+data.id+'/roles'"
-                       [function]="model.onEditableRole" [data]="data" [rules]="model.rules"
-                       field="roles">
+                       [key]="key"
+                       [data]="data"
+                       [model]="model"
+                       [endpoint]="'/users/'+data.id+'/roles'">
                     </a>
                 </ng-template>
                 <ng-template [ngIf]="!getEnabled">
-                    <a x-editable class="notHidden"
+                    <a x-editable
+                       class="notHidden"
                        [disabled]="true"
-                       [endpoint]="'/users/'+data.id+'/roles'"
-                       [function]="model.onEditableRole" [data]="data" [rules]="model.rules"
-                       field="roles">
+                       [key]="key"
+                       [data]="data"
+                       [model]="model"
+                       [endpoint]="'/users/'+data.id+'/roles'">
                     </a>
                 </ng-template>
             </ng-template>
@@ -233,14 +247,22 @@
                 <ng-template [ngIf]="isCurrentType(['checklist'])">
 
                     <ng-template [ngIf]="getEnabled">
-                        <a x-editable [disabled]="false" [endpoint]="model.endpoint" class="notHidden"
-                           [function]="model.onEditable" [data]="data" [rules]="model.rules" [field]="key">
+                        <a x-editable
+                           class="notHidden"
+                           [disabled]="false"
+                           [key]="key"
+                           [data]="data"
+                           [model]="model">
                             {{currentValue || 'N/A'}}
                         </a>
                     </ng-template>
 
                     <ng-template [ngIf]="!getEnabled">
-                        <a x-editable [disabled]="true" [data]="data" [rules]="model.rules" [field]="key">
+                        <a x-editable
+                           [disabled]="true"
+                           [key]="key"
+                           [data]="data"
+                           [model]="model">
                             {{currentValue || 'N/A'}}</a>
                     </ng-template>
 
