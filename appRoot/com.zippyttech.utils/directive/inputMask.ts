@@ -53,13 +53,10 @@ export class InputMask implements OnInit {
         if (value) {
             this.control.setValue(value);
             this.control.markAsTouched();
+            return;
         }
-        else {
-            this.db.debugLog('----------------------------------------------------------------------');
-            this.db.debugLog('Error: oncomplete null');
-            this.db.debugLog(this.rule);
-            this.db.debugLog('----------------------------------------------------------------------');
-        }
+        this.db.debugLog('Error: oncomplete null',this.rule);
+
     }
 
     onincomplete() {
@@ -124,10 +121,7 @@ export class InputMask implements OnInit {
     }
 
     private loadTypeDefault() {
-        this.db.debugLog('----------------------------------------------------------------------');
-        this.db.debugLog('Error: type not found');
-        this.db.debugLog(this.rule);
-        this.db.debugLog('----------------------------------------------------------------------');
+        this.db.debugLog('Error: type not found',this.rule);
     }
 
 
