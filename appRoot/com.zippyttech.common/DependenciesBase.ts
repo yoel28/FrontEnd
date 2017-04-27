@@ -59,22 +59,18 @@ export class DependenciesBase {
         try{
             return eval(exp);
         }catch (exception){
-            this.debugLog(['Error evalMe',data,exp,exception])
+            this.debugLog('Error evalMe',data,exp,exception);
         }
     }
 
-    public debugLog(logs:string|Array<any>){
+    public debugLog(...logs:any[]){
         let modeDebug = this.getParams('MODE_DEBUG',API.MODE_DEBUG);
         if(modeDebug)
         {
             console.log('BEGIN-------------------------------------------------------------------------------------------');
-            if(typeof logs === 'string')
-                console.log(logs);
-            if(typeof logs === 'object' && logs.length){
-                logs.forEach(log=>{
-                    console.log(log)
-                })
-            }
+            logs.forEach(log=>{
+                console.log(log)
+            });
             console.log('END-------------------------------------------------------------------------------------------');
         }
     }
