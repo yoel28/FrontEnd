@@ -79,7 +79,7 @@ export class FilterComponent extends RestController implements OnInit{
     public findControl:string="";//variable en el value del search
     //formulario generado
     form:FormGroup;
-    data:any = {};
+    control:any = {};
     keys:any = {};
 
     constructor(public db:DependenciesBase) {
@@ -102,7 +102,7 @@ export class FilterComponent extends RestController implements OnInit{
 
                 if(rule[key].type == 'object')
                 {
-                    that.data[key].
+                    that.control[key].
                         valueChanges.
                         debounceTime(that.db.getParams('WAIT_TIME_SEARCH',API.WAIT_TIME_SEARCH)).
                         subscribe((value: string) => {
@@ -139,8 +139,8 @@ export class FilterComponent extends RestController implements OnInit{
                 }
             }
         });
-        this.form = new FormGroup(this.data);
-        this.keys = Object.keys(this.data);
+        this.form = new FormGroup(this.control);
+        this.keys = Object.keys(this.control);
     }
 
     private get currentRule(){
@@ -154,12 +154,12 @@ export class FilterComponent extends RestController implements OnInit{
 
     private newDataControl(key){
 
-        this.data[key] = [];
-        this.data[key] = new FormControl("");
+        this.control[key] = [];
+        this.control[key] = new FormControl("");
 
         let cond = this.getCondition(this.currentRule[key]);
-        this.data[key+'Cond'] = [];
-        this.data[key+'Cond'] = new FormControl(cond[0].op);
+        this.control[key+'Cond'] = [];
+        this.control[key+'Cond'] = new FormControl(cond[0].op);
 
     }
 
@@ -211,7 +211,7 @@ export class FilterComponent extends RestController implements OnInit{
     }
     //Cargar data
     assignDate(data,key){
-        this.data[key].setValue(data);
+        this.control[key].setValue(data);
     }
 
     submitForm(event) {
@@ -357,7 +357,7 @@ export class FilterComponent extends RestController implements OnInit{
                     try {
                         where.value = parseFloat(where.value);
                     } catch (e) {
-                        this.db.debugLog(['Error: parseWhere ', e])
+                        this.db.debugLog('Error: parseWhere ', e);
                     }
                 }
             }
@@ -490,9 +490,9 @@ export class FilterComponent extends RestController implements OnInit{
         return Object.keys(this.searchId);
     }
     setValueSelect(data,key){
-        this.data[key].setValue(data);
+        this.control[key].setValue(data);
         if(data=='-1')
-            this.data[key].setValue(null);
+            this.control[key].setValue(null);
 
     }
 
