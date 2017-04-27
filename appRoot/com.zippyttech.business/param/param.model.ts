@@ -12,11 +12,12 @@ export class ParamModel extends ModelBase{
         this.initModel();
     }
 
-    modelExternal() {}
     initView(params:IView){}
+    initModelExternal() {}
     initModelActions(){}
     initPermissions() {}
     initDataActions(){}
+    initDataExternal(){};
 
     initRules(){
 
@@ -26,8 +27,7 @@ export class ParamModel extends ModelBase{
                 update: this.permissions.update,
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
-            },
-            key: 'code'
+            }
         });
 
         this.rules['value']= new TextareaRule({
@@ -37,8 +37,7 @@ export class ParamModel extends ModelBase{
                 update: this.permissions.update,
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
-            },
-            key: 'value'
+            }
         });
 
         this.rules['type']=new SelectRule({
@@ -56,14 +55,13 @@ export class ParamModel extends ModelBase{
                 {value: 'date',     text: 'Date'},
                 {value: 'boolean',  text: 'Boolean'},
 
-            ],
-            key: 'type'
+            ]
         });
 
         this.globalOptional();
-        this.rules = Object.assign({},this.rules,this.getRulesDefault())
+
+        this.rules = Object.assign({},this.rules,this.getRulesDefault());
+
     }
-
-
 
 }
