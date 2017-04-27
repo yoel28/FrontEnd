@@ -12,11 +12,12 @@ export class InfoModel extends ModelBase{
         this.initModel();
     }
 
-    modelExternal() {}
     initView(params:IView){}
-    initPermissions() {}
+    initModelExternal(){}
+    initPermissions(){}
     initModelActions(){}
     initDataActions(){}
+    initDataExternal(){}
 
     initRules(){
 
@@ -29,7 +30,6 @@ export class InfoModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'code',
             icon: 'fa fa-key',
         });
 
@@ -40,7 +40,6 @@ export class InfoModel extends ModelBase{
                 'search': this.permissions.filter,
                 'visible': this.permissions.visible,
             },
-            key: 'title',
             icon: 'fa fa-key'
         });
 
@@ -50,7 +49,6 @@ export class InfoModel extends ModelBase{
                 update: this.permissions.update,
                 visible: this.permissions.visible,
             },
-            key: 'color',
             value:'00ff00'
         });
 
@@ -67,7 +65,6 @@ export class InfoModel extends ModelBase{
                 {value: 'left',     text: 'Izquierda'},
                 {value: 'right',    text: 'Derecha'},
             ],
-            key: 'position'
         }),
 
         this.rules['size']= new SelectRule({
@@ -86,7 +83,6 @@ export class InfoModel extends ModelBase{
                 {value: 'fa-5x', text:'5x'},
 
             ],
-            key: 'size'
         });
 
         this.rules['icon']= new SelectRule({
@@ -101,12 +97,12 @@ export class InfoModel extends ModelBase{
                 {value: 'fa fa-question-circle',    text: 'Interrogante 1'},
                 {value: 'fa fa-question',           text: 'Interrogante 2'},
             ],
-            key: 'icon'
         });
 
         this.globalOptional();
 
-        this.rules = Object.assign({},this.rules,this.getRulesDefault())
+        this.rules = Object.assign({},this.rules,this.getRulesDefault());
+
     }
 
 }
