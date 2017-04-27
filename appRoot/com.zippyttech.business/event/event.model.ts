@@ -12,14 +12,13 @@ export class EventModel extends ModelBase{
     constructor(public db:DependenciesBase){
         super(db,'/events/');
         this.initModel(false);
-        this.loadDataPublic();
     }
 
     initView(params:IView){}
-    modelExternal() {}
+    initModelExternal() {}
+    initDataActions(){}
     initPermissions() {}
     initModelActions(){}
-    initDataActions(){}
 
     initRules(){
 
@@ -115,7 +114,7 @@ export class EventModel extends ModelBase{
                 visible: this.permissions.visible,
             },
             icon: 'fa fa-key'
-        })
+        });
 
         this.globalOptional();
 
@@ -123,23 +122,19 @@ export class EventModel extends ModelBase{
 
     }
 
+    initDataExternal(){
 
-    loadDataPublic() {
-
-        let that = this;
-        that.db.myglobal.publicData.domains.forEach(obj=>{
-            (<ISelect>that.rules['over']).source.push({value:obj.name,text:obj.logicalPropertyName});
+        this.db.myglobal.publicData.domains.forEach(obj=>{
+            (<ISelect>this.rules['over']).source.push({value:obj.name,text:obj.logicalPropertyName});
         });
-        that.db.myglobal.publicData.event.actionTypes.forEach(obj=>{
-            (<ISelect>that.rules['actionType']).source.push({value:obj,text:obj});
+        this.db.myglobal.publicData.event.actionTypes.forEach(obj=>{
+            (<ISelect>this.rules['actionType']).source.push({value:obj,text:obj});
         });
-        that.db.myglobal.publicData.event.wayTypes.forEach(obj=>{
-            (<ISelect>that.rules['way']).source.push({'value':obj.name,'text':obj.code});
-        })
-        that.completed = true
+        this.db.myglobal.publicData.event.wayTypes.forEach(obj=>{
+            (<ISelect>this.rules['way']).source.push({'value':obj.name,'text':obj.code});
+        });
+        this.completed = true;
 
     }
-
-
 
 }
