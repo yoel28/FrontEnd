@@ -1,245 +1,309 @@
 <div class="row">
-    <div class="{{db.classCol(12,12,12,12)}}">
-        <form role="form" [formGroup]="form" class="{{ (search.object && searchView)?db.classCol(4,3,2,0):''}}"
-              *ngIf="keys && keys.length > 0">
-            <div *ngFor="let key of keys">
-                <div *ngIf="rules[key]">
-                    <div *ngIf="!isCurrentType(['object'],rules[key]) || (isCurrentType(['object'],rules[key]) && rules[key].model.permissions.search)">
-                        <div class="form-group input-icon right">
-                            <div [hidden]="hiddenFormControl(rules[key].components.form.hidden)">
-                                <div class="row" *ngIf="!isCurrentType(['image'],rules[key])">
-                                    <div class="{{( isCurrentType(['object'],rules[key]) || rules[key].refresh)?db.classCol(10,10,10,10):db.classCol(12,12,12,12)}}">
-                                        <div class="input-group input-icon right">
-                                            <i class="{{rules[key].icon}} z-index"></i>
-                                            <span class="input-group-addon" [attr.id]="key">
-                                                {{rules[key].title}}
-                                                <label *ngIf="rules[key].required" class="text-red">&nbsp;*</label>
-                                            </span>
+    <div class="{{db.classCol()}}">
+        <form role="form" [formGroup]="_form" [hidden]="_search">
+            <div *ngFor="let key of _keysForm">
+                <div *ngIf="!_fnContainsType(key,'object') || (_fnContainsType(key,'object') && _getRule(key).model.permissions.search); else
+                                                                                                                                            accessUnauthorized" >
+                    <div class="form-group input-icon right">
+                        <div [hidden]="_fnHiddenFormControl(_getRule(key))">
+                            <div class="row" *ngIf="!_fnContainsType(key,'image')">
 
+                                <div class="{{ _getActionsRule(_getRule(key)).length?db.classCol(10,10,10,10):db.classCol()}}">
+                                    <div class="input-group input-icon right">
 
-                                            <ng-template [ngIf]="isCurrentType(['text','number','email','password'],rules[key])">
-                                                <input formControlName="{{key}}" class="form-control"
-                                                       formControlName="{{key}}"
-                                                       placeholder="{{rules[key].placeholder}}"
-                                                       type="{{currentType(rules[key])}}"
-                                                       [attr.aria-describedby]="key"
-                                                       [readonly]="rules[key].readOnly"
-                                                       [attr.accesskey]="key"
+                                        <i class="{{_getRule(key).icon}} z-index"></i>
+
+                                        <span class="input-group-addon">
+                                            {{'field.'+key+'.title' | translate}}
+                                            <label *ngIf="_getRule(key).required" class="text-red">&nbsp;*</label>
+                                        </span>
+
+                                        <div *ngIf="!_getList(key); else
+                                                                                noList">
+
+                                            <ng-template [ngIf]="_fnContainsType(key,'text','number','email','password')">
+                                                <input  class="form-control"
+                                                        formControlName="{{key}}"
+                                                        placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                        type="{{_getRule(key).type}}"
+                                                        [readonly]="_getRule(key).readOnly"
                                                 >
                                             </ng-template>
 
-
-                                            <div *ngIf="rules[key].type == 'list'">
-                                                <input tags-input data-role="tagsinput"
-                                                       placeholder="{{rules[key].placeholder}}"
-                                                       type="text"
-                                                       [prefix]="rules[key].prefix || 'GLOBAL_'"
-                                                       [attr.aria-describedby]="key"
-                                                       [readonly]="rules[key].readOnly"
-                                                       [control]="form.controls[key]"
-                                                       (instance)="rules[key].refreshField ?(rules[key].refreshField.instance=$event||null):null"
-                                                >
-                                                <form (submit)="addTagManual($event,key)" *ngIf="rules[key].refreshField.tagFree">
-                                                    <input placeholder="Presione Enter para agregar un {{rules[key].placeholder}} manual"
-                                                           type="text"
-                                                           [attr.aria-describedby]="key"
-                                                           class="form-control"
+                                            <ng-template [ngIf]="_fnContainsType(key,'object')">
+                                                <ng-template [ngIf]="_getRule(key).mode == 'reference'">
+                                                    <input  class="form-control"
+                                                            formControlName="{{key}}"
+                                                            placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                            type="text"
+                                                            [readonly]="_getRule(key).readOnly"
                                                     >
-                                                </form>
-                                            </div>
+                                                </ng-template>
+                                            </ng-template>
 
-                                            <input *ngIf="rules[key].type == 'color'" color-picker
-                                                   class="form-control" [hexControl]="data[key]"
-                                                   readonly>
+                                            <!--<ng-template [ngIf]="_fnContainsType(key,'list')">-->
+                                                <!--<input tags-input-->
+                                                       <!--type="text"-->
+                                                       <!--[prefix]="_getRule(key).model?_getRule(key).model.prefix:'GLOBAL_'"-->
+                                                       <!--formControlName="{{key}}"-->
+                                                       <!--(instance)="_getRule(key).instance?(_getRule(key).instance=$event||null):null"-->
+                                                <!--&gt;-->
+                                                <!--<ng-template [ngIf]="_getRule(key).inputFree">-->
+                                                    <!--<form (submit)="addTagManual($event,key)">-->
+                                                        <!--<input [attr.placeholder]="'custom.tagFree' | translate"-->
+                                                               <!--type="text"-->
+                                                               <!--[attr.aria-describedby]="key"-->
+                                                               <!--class="form-control">-->
+                                                    <!--</form>-->
+                                                <!--</ng-template>-->
+                                            <!--</ng-template>-->
 
+                                            <ng-template [ngIf]="_fnContainsType(key,'color')">
+                                                <input color-picker class="form-control"
+                                                       [hexControl]="_getControl(key)" readonly>
+                                            </ng-template>
 
-                                            <ng-template [ngIf]="isCurrentType(['textarea'],rules[key])">
-                                                <textarea
-                                                        formControlName="{{key}}" class="form-control"
-                                                        rows="5"
-                                                        formControlName="{{key}}"
-                                                        placeholder="{{rules[key].placeholder}}"
-                                                        [readonly]="rules[key].readOnly">
+                                            <ng-template [ngIf]="_fnContainsType(key,'textarea')">
+                                                <textarea   class="form-control"
+                                                            formControlName="{{key}}"
+                                                            rows="{{db.getParams('TEXTAREA_ROWS',_getRule(key).rows)}}"
+                                                            formControlName="{{key}}"
+                                                            placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                            [readonly]="_getRule(key).readOnly">
 
                                                 </textarea>
                                             </ng-template>
 
+                                            <ng-template [ngIf]="_fnContainsType(key,'combodate')">
+                                                <input class="form-control"
+                                                       formControlName="{{key}}"
+                                                       placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                       [readonly]="_getRule(key).readOnly"
+                                                       [rule]="_getRule(key)"
+                                                       input-mask
+                                                >
+                                            </ng-template>
+
+                                            <ng-template [ngIf]="_fnContainsType(key,'url')">
+                                                <input class="form-control"
+                                                       formControlName="{{key}}"
+                                                       placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                       [readonly]="_getRule(key).readOnly"
+                                                       [rule]="_getRule(key)"
+                                                       input-mask>
+                                            </ng-template>
+
+                                            <ng-template [ngIf]="_fnContainsType(key,'select','boolean')">
+                                                <select sm-dropdown formControlName="{{key}}" class="ui fluid search selection dropdown">
+                                                    <option value="-1">
+                                                        {{( ('field.'+key+'.placeholder' || 'custom.selectOption') | translate) }}
+                                                    </option>
+                                                    <option *ngFor="let n of _getRule(key).source"
+                                                            [attr.value]="n.value"
+                                                            [selected]="getFormValue(key)==n.value">
+                                                        <i *ngIf="_getRule(key).icon" class="{{n.value}}">&nbsp;</i>
+                                                        {{n.text}}
+                                                    </option>
+                                                </select>
+                                            </ng-template>
+                                        </div>
+
+                                        <ng-template #noList >
+                                            <input tags-input type="text"
+                                                   [model]="model" [key]="key"
+                                                   [control]="_getControl(key)">
+
+                                            <ng-template [ngIf]="_getRule(key).list.inputFree">
+                                                <form (submit)="_fnAddTagManual($event,key)">
+                                                    <input [attr.placeholder]="'custom.tagFree' | translate"
+                                                           type="text" class="form-control">
+                                                </form>
+                                            </ng-template>
+                                        </ng-template>
 
 
-                                            <input *ngIf="rules[key].type == 'date'"
-                                                   formControlName="{{key}}" class="form-control"
-                                                   formControlName="{{key}}"
-                                                   placeholder="{{rules[key].placeholder}}"
-                                                   [attr.aria-describedby]="key"
-                                                   [readonly]="rules[key].readOnly"
-                                                   [attr.accesskey]="key"
-                                                   input-mask
-                                                   [rule]="rules[key]"
-                                                   [control]="form.controls[key]"
-                                            >
-
-                                            <input *ngIf="rules[key].type == 'url'"
-                                                   formControlName="{{key}}" class="form-control"
-                                                   formControlName="{{key}}"
-                                                   placeholder="{{rules[key].placeholder}}"
-                                                   [attr.aria-describedby]="key"
-                                                   [readonly]="rules[key].readOnly"
-                                                   [attr.accesskey]="key"
-                                                   input-mask
-                                                   [rule]="rules[key]"
-                                                   [control]="form.controls[key]"
-                                            >
-
-                                            <input *ngIf="rules[key].type == 'combodate'"
-                                                   formControlName="{{key}}" class="form-control"
-                                                   formControlName="{{key}}"
-                                                   placeholder="{{rules[key].placeholder}}"
-                                                   [attr.aria-describedby]="key"
-                                                   [readonly]="rules[key].readOnly"
-                                                   [attr.accesskey]="key"
-                                                   input-mask
-                                                   [rule]="rules[key]"
-                                                   [control]="form.controls[key]"
-                                            >
-
-                                            <select sm-dropdown
-                                                    *ngIf="rules[key].type == 'select' || rules[key].type == 'boolean'"
-                                                    formControlName="{{key}}"
-                                                    class="ui fluid search selection dropdown">
-                                                <option value="-1">{{rules[key].placeholder || db.msg.selectOption}}</option>
-                                                <option *ngFor="let n of rules[key].source"
-                                                        [attr.value]="n.id || n.value"
-                                                        [selected]="data[key].value==n.id || data[key].value==n.value">
-                                                    <i *ngIf="rules[key].icon"
-                                                       class="{{n.id || n.value}}">&nbsp;</i>
-                                                    {{n.text}}
-                                                </option>
-                                            </select>
-
-                                            <div [hidden]="data[key].valid || !data[key].touched" class="alert alert-danger">
-                                                <div *ngFor="let error of getKeys(data[key].errors || {})">
-                                                    {{db.msg[error] || db.msg.error}}
-                                                </div>
+                                        <div [hidden]="_getControl(key).valid || !_getControl(key).touched" class="alert alert-danger">
+                                            <div *ngFor="let error of _getKeys(_getControl(key).errors || {})">
+                                                {{ ('error.'+error) | translate}}
                                             </div>
                                         </div>
-                                    </div>
-                                    <div *ngIf="rules[key].object || rules[key].refreshField"
-                                         class="{{db.classCol(2,2,2,2)}} padding-top-4">
-                                        <button *ngIf="rules[key].object" tabindex="-1" type="button"
-                                                class="btn btn-box-tool fa fa-search text-blue" [attr.title]="db.msg.find"
-                                                (click)="getLoadSearch($event,rules[key])">
-                                                <span *ngIf="search && search.key ==  key && !findData" class="label label-green label-radius" [attr.title]="search.paramsSearch.count+' Coincidencia(s)'">
-                                                    {{search.paramsSearch.count}}
-                                                </span>
-                                            <span *ngIf="search && search.key ==  key && findData" [attr.title]="db.msg.findData" class="fa fa-spinner fa-spin"></span>
-                                        </button>
 
-
-                                        <button *ngIf="rules[key].refreshField "
-                                                tabindex="-1" type="button"
-                                                class="btn btn-box-tool fa {{rules[key].refreshField.icon}} text-blue"
-                                                (click)="refreshField($event,rules[key])">
-                                            <span *ngIf="refreshFieldKey && refreshFieldKey ==  key && findData" [attr.title]="db.msg.findData" class="fa fa-spinner fa-spin"></span>
-                                        </button>
-                                    </div>
-                                    <div class="{{db.classCol(12,12,12,12)}} table-responsive"
-                                         *ngIf="rules[key].type=='list' && dataListMultiple && dataListMultiple[key] && dataListMultiple[key].view">
-                                        <table class="table table-striped table-hover">
-                                            <tbody>
-                                            <tr *ngFor="let data of dataListMultiple[key].data">
-                                                <td>{{data}}</td>
-                                                <td>
-                                                    <button (click)="deleteListMultiple($event,key,data)"
-                                                            class="btn btn-box-tool fa fa-trash text-red"
-                                                            [attr.title]="db.msg.delete"></button>
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
 
-                                <div class="row padding-bottom-4" *ngIf="isCurrentType(['image'],rules[key])">
-                                    <div class="col-lg-10 col-lg-offset-1">
-                                        <image-edit-view [default]="rules[key].default"
-                                                         (out)="saveImage($event,key)"
-                                        >
-                                        </image-edit-view>
+                                <ng-template [ngIf]="_getActionsRule(_getRule(key)).length">
+                                    <div  class="{{db.classCol(2,2,2,2)}}">
+                                        <div class="data-actions notHidden">
+                                            <div class="btn-group dropdown">
+                                                <button tabindex="-1" type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                                    <i class="fa fa-gears fa-lg"></i>
+                                                </button>
+                                                <ul role="menu" class="dropdown-menu text-left submenu-config">
+                                                    <li *ngFor="let action of _getActionsRule(_getRule(key))" (click)="action.callback(this,key);">
+                                                        <a class="cursor-pointer {{action.currentView(this).colorClass || ''}}">
+                                                            <i class="{{action.currentView(this).icon || ''}}"></i>
+                                                            &nbsp;{{action.currentView(this).title || ''}}
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
+                                </ng-template>
+
+                                <!--<div class="{{db.classCol(12,12,12,12)}} table-responsive"-->
+                                     <!--*ngIf="_getRule(key).type=='list' && dataListMultiple && dataListMultiple[key] && dataListMultiple[key].view">-->
+                                    <!--<table class="table table-striped table-hover">-->
+                                        <!--<tbody>-->
+                                        <!--<tr *ngFor="let data of dataListMultiple[key].data">-->
+                                            <!--<td>{{data}}</td>-->
+                                            <!--<td>-->
+                                                <!--<button (click)="deleteListMultiple($event,key,data)"-->
+                                                        <!--class="btn btn-box-tool fa fa-trash text-red"-->
+                                                        <!--[attr.title]="db.msg*.delete"></button>-->
+                                            <!--</td>-->
+                                        <!--</tr>-->
+                                        <!--</tbody>-->
+                                    <!--</table>-->
+                                <!--</div>-->
+                            </div>
+
+                            <div class="row padding-bottom-4" *ngIf="_fnContainsType(key,'image')">
+                                <div class="col-lg-10 col-lg-offset-1">
+                                    <image-edit-view [default]="_getRule(key).default"
+                                                     (out)="saveImage($event,key)"
+                                    >
+                                    </image-edit-view>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div *ngIf="rules && rules[key] && rules[key].object && !rules[key].permissions.search" class="{{db.classCol(12,12,12,12)}}">
-                        <i class="fa fa-warning text-red"></i>&nbsp;{{db.msg.notAuthorized}},&nbsp;activar el permiso <b>{{rules[key].prefix}}_SEARCH</b>
-                    </div>
                 </div>
+                <ng-template #accessUnauthorized>
+                    <i class="fa fa-warning text-red"></i>&nbsp;
+                    {{ ('custom.accessUnauthorized' | translate:{code:model.prefix+'_SEARCH'}) }}
+                </ng-template>
             </div>
         </form>
-        <div class="{{(search.object && searchView)?db.classCol(8,9,10,12):''}}" *ngIf="(search.object && searchView)">
-            <form role="form" (submit)="getSearch($event,find.value)">
-                <div class="col-lg-12 form-margin">
-                    <strong>{{search.title}}&nbsp;</strong> <label class="label label-green pull-right">{{search.paramsSearch.count+' Coincidencia(s)'}}</label><br/>
-                    <div class="input-group input-group-sm">
-                        <input #find type="text" class="form-control" tabindex="-1"
-                               placeholder="{{ search.placeholder}}" value="{{findControl}}">
-                        <span class="input-group-btn">
-                                                    <button (click)="getSearch($event,find.value)" type="button"
-                                                            class="btn btn-green-club" [attr.title]="db.msg.find">
-                                                        <i class="fa fa-search"></i>
-                                                    </button>
-                                                    <button (click)="searchQuit($event)" type="button"
-                                                            class="btn btn-red-club" [attr.title]="db.msg.close">
-                                                        <i class="fa fa-close"></i>
-                                                    </button>
-                                                </span>
+        <ng-template [ngIf]="searchActive">
+            <form role="form" [formGroup]="form">
+                <div class="row">
+                    <div class="{{db.classCol()}}">
+
+                        <i *ngIf="(currentRestSearh && currentRestSearh.findData); else
+                            noFindData" class="fa fa-spinner fa-pulse fa-fw" [attr.title]="'custom.findData' | translate">
+
+                        </i>
+                        <ng-template #noFindData >
+                            <i class="{{_getRule(searchActive).icon}}"></i>
+                        </ng-template>
+
+                        <strong>&nbsp;{{searchActive+'.filter' | translate}}&nbsp;</strong>
+                        <span class="page-info"  *ngIf="currentDataSearh.count">
+                            {{('custom.infoPageCount'| translate:{page:model.getCurrentPage(true),count:currentDataSearh.count})}}
+                        </span>
                     </div>
+                    <div class="{{db.classCol()}}">
+                        <div class="{{db.classCol(11,11,10,10)}}">
+                            <div class="form-group input-icon right">
+                                <i class="{{_getRule(searchActive).icon}} z-index"></i>
+                                <input  class="form-control"
+                                        formControlName="{{searchActive}}"
+                                        placeholder="{{'field.'+searchActive+'.placeholder' | translate}}"
+                                        type="text"
+                                >
+                            </div>
+                        </div>
+                        <div class="{{db.classCol(1,1,2,2)}}">
+                            <span class="input-group-btn">
+                                <button (click)="onLoadDataSearch($event)" type="button"
+                                        class="btn btn-green-club btn-box-tool" [attr.title]="'custom.find' | translate">
+                                    <i class="fa fa-search"></i>
+                                </button>
+                                <button (click)="destroyAction($event)" type="button"
+                                        class="btn btn-red-club btn-box-tool" [attr.title]="'custom.close' | translate">
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <ng-template [ngIf]="currentDataSearh.count">
+                        <div class="{{db.classCol()}} table-responsive">
+                            <table class="table table-hover">
+                                <tbody>
+                                    <tr *ngFor="let data of currentDataSearh.list" (click)="setDataAction = data"
+                                                [attr.title]="'custom.select' | translate" class="cursor-pointer">
+                                        <td class="td-img">
+                                            <img [src]=" data.image || static.pathElements.robot"
+                                                 style="display: inline-block" class="img-responsive img-search">
+                                        </td>
+                                        <td>
+                                            <strong>{{searchActive+'.search.title' | translate}}</strong>
+                                            &nbsp;{{data.title}}<br>
+                                            <strong>{{searchActive+'.search.detail' | translate}}</strong>
+                                            &nbsp;{{data.detail}}
+                                        </td>
+                                        <td style="vertical-align: middle;">
+                                            <i class="btn btn-box-tool text-green fa fa-check"></i>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="3">
+                                            <div class="btn-group pull-right">
+                                                <button (click)="currentPageSearch=val" [class.btn-green]="val == currentPageSearch"
+                                                        *ngFor="let val of model.getData().page" type="button" class="btn btn-default">
+                                                    <span *ngIf="val == currentPage">
+                                                        <span *ngIf="model.getRest().findData">
+                                                            <i class="fa fa-spinner fa-spin" [attr.title]="'custom.pleaseWait' | translate"></i>
+                                                        </span>
+                                                        <span *ngIf="!model.getRest().findData">
+                                                            {{val}}
+                                                        </span>
+                                                    </span>
+                                                    <span *ngIf="val != currentPage">
+                                                        {{val}}
+                                                    </span>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </ng-template>
                 </div>
             </form>
-            <div *ngIf="findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">
-                <i class="fa fa-spinner fa-spin"></i>
-                {{db.msg.findData}}
-            </div>
-            <div *ngIf="dataList.count" class="col-lg-12 table-responsive">
-                <table class="table table-hover">
-                    <tbody>
-                    <tr *ngFor="let data of dataList.list" (click)="getDataSearch(data)"
-                        [attr.title]="db.msg.select" class="cursor-pointer">
-                        <td>
-                            <img [src]=" data.image || search.paramsSearch.imageGuest " style="display: inline-block" class="img-responsive img-search">
-                        </td>
-                        <td>
-                            <strong>{{search.paramsSearch.label.title}} {{data.title}}</strong><br>
-                            {{search.paramsSearch.label.detail}} {{data.detail}}
-                        </td>
-                        <td style="vertical-align: middle;">
-                            <i class="btn btn-box-tool text-green fa fa-check"></i>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div *ngIf="!dataList.count && !findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">
-                    <span *ngIf="dataList.count==0">
-                        <i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg.notFound}}
-                    </span>
-                <span *ngIf="dataList.count==null">
-                        <i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg.introValueFind}}
-                    </span>
-            </div>
-            <div class="{{db.classCol(12,12,12,12)}}">
-                <div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"
-                     class="btn-group pull-right">
-                    <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"
-                            *ngFor="let val of dataList.page"
-                            type="button" class="btn btn-default">
-                        {{val}}
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="{{db.classCol(12,12,12,12)}}" *ngIf="!params.hiddenFooter">
-            {{db.msg.fieldRequired}}
+        </ng-template>
+        <!--<div class="{{(search.object && searchView)?db.classCol(8,9,10,12):''}}" *ngIf="(search.object && searchView)">-->
+
+            <!--<div *ngIf="findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
+                <!--<i class="fa fa-spinner fa-spin"></i>-->
+                <!--{{db.msg*.findData}}-->
+            <!--</div>-->
+
+            <!--<div *ngIf="!dataList.count && !findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
+                    <!--<span *ngIf="dataList.count==0">-->
+                        <!--<i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg*.notFound}}-->
+                    <!--</span>-->
+                <!--<span *ngIf="dataList.count==null">-->
+                        <!--<i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg*.introValueFind}}-->
+                    <!--</span>-->
+            <!--</div>-->
+            <!--<div class="{{db.classCol(12,12,12,12)}}">-->
+                <!--<div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"-->
+                     <!--class="btn-group pull-right">-->
+                    <!--<button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"-->
+                            <!--*ngFor="let val of dataList.page"-->
+                            <!--type="button" class="btn btn-default">-->
+                        <!--{{val}}-->
+                    <!--</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="{{db.classCol(12,12,12,12)}}" *ngIf="!searchActive">
+            {{'custom.fieldRequired' | translate}}
         </div>
     </div>
 </div>
