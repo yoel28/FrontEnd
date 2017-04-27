@@ -11,11 +11,10 @@ export class ChannelModel extends ModelBase{
     constructor(public db:DependenciesBase){
         super(db,'/channels/');
         this.initModel(false);
-        this.loadDataModel();
     }
 
     initView(params:IView){}
-    modelExternal() {}
+    initModelExternal() {}
     initPermissions() {}
     initModelActions(){}
     initDataActions(){}
@@ -29,7 +28,6 @@ export class ChannelModel extends ModelBase{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'code',
             icon: 'fa fa-key'
         });
 
@@ -39,7 +37,6 @@ export class ChannelModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'url',
             icon: 'fa fa-key'
         });
 
@@ -47,7 +44,7 @@ export class ChannelModel extends ModelBase{
             components:{
                 save:{
                     hidden: (form)=>{
-                        if(form.getValueForm('model') && form.getValueForm('model')!='-1')
+                        if(form.getFormValue('model') && form.getFormValue('model')!='-1')
                             return true;
                         return false;
                     },
@@ -59,7 +56,6 @@ export class ChannelModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'component',
             source:[{value: 'AppComponent', text: 'AppComponent'}],
         });
 
@@ -67,7 +63,7 @@ export class ChannelModel extends ModelBase{
             components:{
                 save:{
                     hidden: (form)=>{
-                        if(form.getValueForm('component') && form.getValueForm('component')!='-1')
+                        if(form.getFormValue('component') && form.getFormValue('component')!='-1')
                             return true;
                         return false;
                     },
@@ -79,7 +75,6 @@ export class ChannelModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'model',
             source:[]
         });
 
@@ -90,7 +85,6 @@ export class ChannelModel extends ModelBase{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'event',
             source:[],
         });
 
@@ -101,7 +95,6 @@ export class ChannelModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key: 'target',
             icon: 'fa fa-key'
         });
 
@@ -110,17 +103,18 @@ export class ChannelModel extends ModelBase{
                 update: this.permissions.update,
                 visible: this.permissions.visible,
             },
-            key: 'callback',
             icon: 'fa fa-key'
         });
+
         this.globalOptional();
 
         this.setRuleDetail(true,true);
 
-        this.rules = Object.assign({},this.rules,this.getRulesDefault())
+        this.rules = Object.assign({},this.rules,this.getRulesDefault());
+
     }
 
-    loadDataModel(){
+    initDataExternal(){
         this.loadComponents();
         this.loadModels();
         this.loadEventsApi();
@@ -128,35 +122,39 @@ export class ChannelModel extends ModelBase{
     }
 
     loadComponents(){
-        let that=this;
+
         componentsApp.forEach(comp =>{
-            (<ISelect>that.rules['component']).source.push({value: comp.name, text: comp.name})
+            (<ISelect>this.rules['component']).source.push({value: comp.name, text: comp.name})
         });
         componentsDefault.forEach(comp =>{
-            (<ISelect>that.rules['component']).source.push({value: comp.name, text: comp.name})
+            (<ISelect>this.rules['component']).source.push({value: comp.name, text: comp.name})
         });
         componentsView.forEach(comp =>{
-            (<ISelect>that.rules['component']).source.push({value: comp.name, text: comp.name})
+            (<ISelect>this.rules['component']).source.push({value: comp.name, text: comp.name})
         });
+
     }
 
     loadModels(){
-        let that = this;
+
         modelsDefault.forEach(model=>{
-            (<ISelect>that.rules['model']).source.push({value: model.name, text: model.name})
+            (<ISelect>this.rules['model']).source.push({value: model.name, text: model.name})
         });
         modelsApp.forEach(model=>{
-            (<ISelect>that.rules['model']).source.push({value: model.name, text: model.name})
+            (<ISelect>this.rules['model']).source.push({value: model.name, text: model.name})
         });
+
     }
 
     loadEventsApi(){
+
         if(this.db.myglobal.publicData && this.db.myglobal.publicData.channel && this.db.myglobal.publicData.channel.eventTypes)
         {
-            this.db.myglobal.publicData.channel.eventTypes.forEach((ev =>{
+            this.db.myglobal.publicData.channel.eventTypes.forEach(ev =>{
                 (<ISelect>this.rules['event']).source.push({value:ev, text: ev})
-            }).bind(this));
+            });
         }
+
     }
 
 
