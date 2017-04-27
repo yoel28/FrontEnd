@@ -16,9 +16,10 @@ interface IDataActionParams{
     message?: string;
 }
 
-interface IModelActionParams{
-}
+interface IModelActionParams{}
+
 export type modeOptions = 'reference'|'checklist';
+
 export interface IModelFilter{
     [key:string]:{
         view:[{
@@ -49,7 +50,7 @@ export interface IComponents{
     }
 }
 
-export abstract class ModelRoot extends RestController implements OnInit{
+export abstract class ModelRoot extends RestController{
     public prefix = ((this.constructor.name).toUpperCase()).replace('MODEL','');
     public endpoint = "DEFAULT_ENDPOINT";
     public useGlobal:boolean=true;
@@ -69,14 +70,13 @@ export abstract class ModelRoot extends RestController implements OnInit{
     public get currentData(){return this._currentData;};
     public set currentData(value){this._currentData = value;};
 
-    public onEventDelete:(args:Object)=>void;
-    public onEventSave:(args:Object)=>void;
-    public configId = moment().valueOf();
     private rulesDefault:any = {};
     public rules:Object={};
     private _navIndex:number=null;
     private transactional:boolean;
     private pendings:number;
+
+    public evAfterDelete:(args:Object)=>void;
 
 
     constructor(public db:DependenciesBase,endpoint:string,useGlobal:boolean=true,prefix?:string){
@@ -86,10 +86,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.setEndpoint(endpoint);
         this.useGlobal = useGlobal;
         this._initModel();
-    }
-
-    ngOnInit(){
-        this.events.subscribe((event)=>this.onEvent(event));
+        this.events.subscribe((event)=>this._onEvents(event));
     }
 
     public set navIndex(value: number|string){
@@ -127,7 +124,7 @@ export abstract class ModelRoot extends RestController implements OnInit{
     public initModel(completed=true){
         this.initView(this.view);
         this.initPermissions();
-        this.modelExternal();
+        this.initModelExternal();
         this.initRules();
 
         this.db.ws.loadChannelByModel(this.constructor.name,this);
@@ -136,6 +133,9 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.initModelActions();
 
         this.completed=completed;
+
+        this.initDataExternal();
+
     }
 
     abstract initView(params:IView);
@@ -334,8 +334,9 @@ export abstract class ModelRoot extends RestController implements OnInit{
     }
 
 
-    abstract modelExternal();
+    abstract initModelExternal();
     abstract initRules();
+    abstract initDataExternal();
 
     private _initRules() {
         this.setRuleDetail();
@@ -483,7 +484,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
         this.paramsSearch = {
             'title': 'Title Default',
             'permission': (this.permissions.search && this.permissions.list),
-            'idModal': this.prefix + '_' + this.configId + '_search',
             'endpoint': "/search" + this.endpoint,
             'placeholder': "Placeholder default",
             'label': {'title': "título: ", 'detail': "detalle: "},
@@ -504,7 +504,6 @@ export abstract class ModelRoot extends RestController implements OnInit{
             'title': 'Title Default',
             'updateField':false,
             'permission': this.permissions.add,
-            'idModal': this.prefix + '_' + this.configId + '_add',
             'endpoint': this.endpoint,
             'customValidator':null,
             'onlyRequired':false,
@@ -658,23 +657,25 @@ export abstract class ModelRoot extends RestController implements OnInit{
         return (this.constructor.name).replace('Model','').toLowerCase();
     }
 
-    private onEvent(eventArgs:IRestEvent){
+    //TODO: completed events... define
+    private _onEvents(eventArgs:IRestEvent){
         switch (eventArgs.type){
-            case 'onDelete':
-                if(this.onEventDelete)
-                    this.onEventDelete(eventArgs.args);
+            case 'afterDelete':
+                if(this.evAfterDelete)
+                    this.evAfterDelete(eventArgs.args);
                 break;
 
-            case 'onSave':
-                if(this.onEventSave)
-                    this.onEventSave(eventArgs.args);
+            case 'afterSave':
+                this.evAfterSave(eventArgs.args);
                 break;
         }
     }
 
-    public afterSave(field,data,id?){
-        this.onPatch(field,data,id);
+
+    protected evAfterSave(args){
+        console.log('SAVE EVENT');
     }
+
 
     public getEnabledReport(type:'PDF'|'XLS'='PDF'){
         if(type=='PDF')
