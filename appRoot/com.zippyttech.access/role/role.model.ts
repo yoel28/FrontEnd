@@ -9,8 +9,9 @@ export class RoleModel extends ModelRoot{
         this.initModel();
     }
 
-    initPermissions() {}
-    modelExternal() {}
+    initPermissions(){}
+    initModelExternal(){}
+    initDataExternal(){}
     initModelActions(){}
     initDataActions(){}
 
@@ -21,6 +22,7 @@ export class RoleModel extends ModelRoot{
     }
 
     initRules(){
+
         this.rules['authority']= new TextRule({
             required:true,
             permissions:{
@@ -28,11 +30,12 @@ export class RoleModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'authority',
-            prefix:'ROLE_',
+            prefix:'ROLE_',//TODO: only in Save
         });
+
         this.setRuleDetail(true,true,true);
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
+
     }
 
 }
