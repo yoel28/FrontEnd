@@ -37,9 +37,9 @@ export interface IRest{
     id?:string;
     data:FormControl;
 }
-
+type TRestEvent = 'afterSave' | 'afterPatch' | 'afterDelete' | 'afterDelete' | 'afterLock'
 export interface IRestEvent{
-    type:string;
+    type:TRestEvent;
     args:Object;
 }
 
@@ -64,6 +64,7 @@ export class RestController {
     };
 
     constructor(public db:DependenciesBase) {
+        this.events = new EventEmitter();
         this.httputils = new HttpUtils(this.db);
     }
 
@@ -375,7 +376,7 @@ export class RestController {
         return this.httputils.onDelete(this.getEndpoint() + id, id, this.getData().list, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onDelete',args:response});
+                this.events.emit({type:'afterDelete',args:response});
             }).bind(this)
         );
     }
@@ -389,7 +390,7 @@ export class RestController {
         return this.httputils.onSave(this.getEndpoint(), body, this.getData().list, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onSave',args:response});
+                this.events.emit({type:'afterSave',args:response});
             })
         );
     }
@@ -398,7 +399,7 @@ export class RestController {
         return (this.httputils.onUpdate(this.getEndpoint()+ data['id'],JSON.stringify(body), data, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onPatch',args:response});
+                this.events.emit({type:'afterPatch',args:response});
             })
         ));
     }
@@ -409,7 +410,7 @@ export class RestController {
         return (this.httputils.onUpdate(this.getEndpoint() + data['id'], body, data, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onPatch',args:response});
+                this.events.emit({type:'afterPatch',args:response});
             })
         ));
     }
@@ -419,7 +420,7 @@ export class RestController {
         return (this.httputils.onUpdate(this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onPatch',args:response});
+                this.events.emit({type:'afterPatch',args:response});
             })
         ));
     }
@@ -429,7 +430,7 @@ export class RestController {
         return (this.httputils.onUpdate(this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onPatch',args:response});
+                this.events.emit({type:'afterPatch',args:response});
             })
         ));
     }
@@ -439,7 +440,7 @@ export class RestController {
         return (this.httputils.onUpdate(this.getEndpoint() + dataRef['id'], JSON.stringify(json), data, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onPatch',args:response});
+                this.events.emit({type:'afterPatch',args:response});
             })
         ));
     }
@@ -451,7 +452,7 @@ export class RestController {
         return (this.httputils.onUpdate('/auto/update', JSON.stringify(json), data, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onPatch',args:response});
+                this.events.emit({type:'afterPatch',args:response});
             })
         ));
     }
@@ -465,7 +466,7 @@ export class RestController {
         return (this.httputils.onUpdate("/lock" + this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response=>{
                 if(successCallback)
                     successCallback(response);
-                this.events.emit({type:'onLock',args:response});
+                this.events.emit({type:'afterLock',args:response});
             })
         ));
     }
@@ -501,7 +502,7 @@ export class RestController {
 
     //region get
 
-    public loadDataExternal(endpoint:string,data:Object,isEndpointAbsolute:boolean=false,successCallback) {
+    public loadData2(endpoint:string,data:Object,isEndpointAbsolute:boolean=false,successCallback) {
         if(!successCallback)
             successCallback= response => {
                 Object.assign(data,response);
