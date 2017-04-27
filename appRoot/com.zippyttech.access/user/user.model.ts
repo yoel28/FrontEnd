@@ -14,15 +14,15 @@ export class UserModel extends ModelBase{
     constructor(public db:DependenciesBase){
         super(db,'/users/');
         this.initModel(false);
-        this.loadDataExternal();
     }
 
     initDataActions(){}
     initModelActions(){}
 
-    modelExternal() {
+    initModelExternal() {
         this.role= new RoleModel(this.db);
     }
+
     initView(params:IView){
         params.display = this.nameClass+"Username";
         params.eval = this.db.myglobal.getRule('USER_DISPLAY_WEB');
@@ -39,7 +39,6 @@ export class UserModel extends ModelBase{
             email:true,
             required:true,
             // 'setEqual':'username', //TODO: ubicar clave en components form
-            key: 'email'
         });
 
         this.rules['idCard']= new TextRule({
@@ -48,7 +47,6 @@ export class UserModel extends ModelBase{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'idCard',
         });
 
         this.rules['username']= new TextRule({
@@ -62,7 +60,6 @@ export class UserModel extends ModelBase{
                 list:true,
                 filter:true
             },
-            key: 'username'
         });
 
         this.rules['name']= new TextRule({
@@ -72,7 +69,6 @@ export class UserModel extends ModelBase{
                 visible:this.permissions.visible,
             },
             required:true,
-            key: 'name',
         });
 
         this.rules['phone']=new TextRule({
@@ -86,7 +82,6 @@ export class UserModel extends ModelBase{
                     force:true //TODO: Agregar regla en el form
                 }
             },
-            key: 'phone'
         });
 
         this.rules['image']= new ImageRule({
@@ -100,7 +95,6 @@ export class UserModel extends ModelBase{
                 filter:false
             },
             exclude:true,
-            key: 'image'
         });
 
         this.rules["accountLocked"] = new BooleanRule({
@@ -130,7 +124,6 @@ export class UserModel extends ModelBase{
                     icon: 'fa fa-check-circle'
                 }
             ],
-            key: "accountLocked",
         });
 
         this.rules['roles']=new ObjectRule({
@@ -153,11 +146,11 @@ export class UserModel extends ModelBase{
             required:true,
             exclude:true,
             minLength:6,
-            key: 'password',
             showbuttons:true,
         });
 
         this.rules = Object.assign({},this.rules,this.getRulesDefault());
+
         delete this.rules['detail'];
     }
 
@@ -177,28 +170,28 @@ export class UserModel extends ModelBase{
         this.permissions['roleSave']=this.db.myglobal.existsPermission(['USER_ROLE_SAVE'])
     }
 
-    loadDataExternal() {
+    initDataExternal() {
         if(this.db.myglobal.publicData && this.db.myglobal.publicData['roles'])
         {
             this.loadRoles();
         }
         else {
-            this.role.loadData().then((response => {
+            this.role.loadData().then(response => {
                 if(this.role.dataList && this.role.dataList.list)
                 {
                     this.db.myglobal.publicData['roles']=this.role.dataList.list;
                     this.loadRoles();
                 }
-            }).bind(this));
+            });
         }
     }
 
     loadRoles(){
-        this.db.myglobal.publicData['roles'].forEach((obj=> {
+        this.db.myglobal.publicData['roles'].forEach(obj=> {
             if(this.rules['roles']){
                 this.rules['roles'].source.push({value: obj.id, text: obj.authority});
             }
-        }).bind(this));
+        });
         this.completed = true;
     }
 
