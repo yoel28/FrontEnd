@@ -1,7 +1,9 @@
 import {Component, EventEmitter, OnInit} from "@angular/core";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {IRuleView} from "../ruleView/ruleView.component";
-import {IRule, Rule} from "../../../com.zippyttech.common/rules/rule";
+import {Rule} from "../../../com.zippyttech.common/rules/rule";
+import {TRules} from "../../../app-routing.module";
+import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 
 var moment = require('moment');
 
@@ -14,7 +16,8 @@ var moment = require('moment');
 })
 export class TablesComponent implements OnInit {
 
-    public model:any;
+    public model:ModelRoot;
+    private viewActions:boolean = true;
 
     public paramsData:IRuleView={
         select:{},
@@ -40,6 +43,9 @@ export class TablesComponent implements OnInit {
     ngAfterViewInit() {
         this.getInstance.emit(this);
     }
+    private getRule(key:string):TRules{
+        return this.model.rules[key] || {};
+    }
 
     public get currentPage(){
         if(this._currentPage = -1)
@@ -56,12 +62,12 @@ export class TablesComponent implements OnInit {
         this.paramsData.searchInstances[type] =  instance;
     }
 
-    private get keyVisible() {
+    private get keyVisible():string[]{
         let data=[];
-        Object.keys(this.model.rules).forEach(((key)=>{
-            if((<IRule>this.model.rules[key]).permissions.visible && (<IRule>this.model.rules[key]).include.list)
+        Object.keys(this.model.rules).forEach(key=>{
+            if((<Rule>this.model.rules[key]).permissions.visible && (<Rule>this.model.rules[key]).include.list)
                 data.push(key)
-        }).bind(this));
+        });
         return data;
     }
 
@@ -97,22 +103,22 @@ export class TablesComponent implements OnInit {
     }
 
     setDataFieldReference(data,setNull=false) {
-        let value=null;
-        let that = this;
-
-        if(!setNull)//no colocar valor nulo
-        {
-            value=this.paramsData.select['id'];
-            if(that.paramsData.select[that.paramsData.ruleReference.code]!=null && that.paramsData.ruleReference.unique)
-                that.paramsData.ruleReference.model.setDataField(that.paramsData.select[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.paramsData.select).then(
-                    response=>{
-                        that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
-                    });
-            else
-                that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
-        }
-        else
-            that.paramsData.ruleReference.model.setDataField(data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,data);
+        // let value=null;
+        // let that = this;
+        //
+        // if(!setNull)//no colocar valor nulo
+        // {
+        //     value=this.paramsData.select['id'];
+        //     if(that.paramsData.select[that.paramsData.ruleReference.code]!=null && that.paramsData.ruleReference.unique)
+        //         that.paramsData.ruleReference.model.setDataField(that.paramsData.select[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,that.paramsData.select).then(
+        //             response=>{
+        //                 that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+        //             });
+        //     else
+        //         that.paramsData.ruleReference.model.setDataField(data.id,that.model.ruleObject.key,value,that.paramsData.ruleReference.callback,that.paramsData.select);
+        // }
+        // else
+        //     that.paramsData.ruleReference.model.setDataField(data[that.paramsData.ruleReference.code],that.model.ruleObject.key,null,that.paramsData.ruleReference.callback,data);
 
     }
 
@@ -129,7 +135,7 @@ export class TablesComponent implements OnInit {
     // }
 
     isUnique():boolean{
-        if(this.model.dataList.id || this.model.dataList.count==1 || this.model.navIndex != null)
+        if(this.model.getData().id || this.model.getData().count==1 || this.model.navIndex != null)
         {
             if(this.model.navIndex == null)
                 this.model.navIndex = "0";
