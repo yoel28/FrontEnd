@@ -11,15 +11,16 @@ export class AccountModel extends ModelRoot{
         this.initModel();
     }
 
+    initModelExternal(){}
+    initDataExternal(){}
+    initPermissions(){}
+    initModelActions(){}
+    initDataActions(){}
+
     initView(params:IView){
         params.display = this.nameClass+"Name";
         params.eval = this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB');
     }
-
-    modelExternal(){}
-    initPermissions(){}
-    initModelActions(){}
-    initDataActions(){}
 
     initRules(){
 
@@ -34,7 +35,6 @@ export class AccountModel extends ModelRoot{
                 list:true,
             },
             exclude:true,
-            key: 'logo',
             default:this.db.pathElements.company
         });
 
@@ -45,7 +45,6 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'name'
         });
 
         this.rules['ruc']= new TextRule({
@@ -55,7 +54,6 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'ruc'
         });
 
         this.rules['contact']= new TextRule({
@@ -65,7 +63,6 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'contact'
         });
 
         this.rules['address']= new TextRule({
@@ -75,7 +72,6 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'address',
             icon: 'fa fa-list'
         });
 
@@ -85,7 +81,6 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'url'
         });
 
         this.rules['email']=new TextRule({
@@ -96,7 +91,6 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'email'
         });
 
         this.rules['maxUserCount']= new NumberRule({
@@ -108,7 +102,6 @@ export class AccountModel extends ModelRoot{
             },
             exclude:true,
             step:'0.1',
-            key: 'maxUserCount'
         });
 
         this.rules['phone']= new TextRule({
@@ -118,7 +111,6 @@ export class AccountModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            key: 'phone'
         });
 
         this.rules['miniLogo']=new ImageRule({
@@ -133,7 +125,6 @@ export class AccountModel extends ModelRoot{
                 list:true,
             },
             exclude:true,
-            key: 'miniLogo',
             default:this.db.pathElements.company
         });
 
