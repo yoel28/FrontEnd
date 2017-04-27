@@ -55,12 +55,12 @@
                                     </button>
                                 </div>
                                 <div class="box-body action-body">
-                                    <form-view class="action-form"
-                                               (getInstance)="setForm($event)"
-                                               [params]="getModelAction(action).paramsSave"
-                                               [rules]="filterRules(action)">
-                                        >
-                                    </form-view>
+                                    <!--&lt;!&ndash;<form-view class="action-form"&ndash;&gt; TODO:Form view-->
+                                               <!--(getInstance)="setForm($event)"-->
+                                               <!--[params]="getModelAction(action).paramsSave"-->
+                                               <!--[rules]="filterRules(action)">-->
+                                        <!--&gt;-->
+                                    <!--</form-view>-->
                                 </div>
                                 <div class="box-footer action-footer">
                                     <button class="btn btn-green pull-right"
@@ -76,8 +76,7 @@
         </ul>
         <span class="error-info" *ngIf="!permissionValid('list')">
             <h3>
-            {{ (db.msg.notAuthorized || 'Acceso no autorizado') | translate}},&nbsp;
-            {{db.msg.contactAdminPermission | translate}} {{data.model.prefix}}_LIST
+                {{ ('custom.accessUnauthorized' | translate:{code:model.prefix+'_LIST'}) }}
             </h3>
         </span>
     </div>
