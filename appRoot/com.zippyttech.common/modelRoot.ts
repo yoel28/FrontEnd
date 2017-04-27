@@ -172,7 +172,7 @@ export abstract class ModelRoot extends RestController{
     private _initDataActions(){
         this.dataActions = new Actions<IDataActionParams>();
         this.dataActions.add("view", {
-            permission: this.permissions.list,
+            permission: this.permissions.list && false, //TODO: check view
             views:[{ title: 'ver', icon: "fa fa-vcard" }],
             callback:function(data?,index?){
                 this.currentData = data;
