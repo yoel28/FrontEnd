@@ -14,8 +14,9 @@ export class RuleModel extends ModelBase{
     initView(params:IView){}
     initPermissions() {}
     initModelActions(){}
-    modelExternal() {}
+    initModelExternal() {}
     initDataActions(){}
+    initDataExternal(){}
 
     initRules(){
 
@@ -26,7 +27,6 @@ export class RuleModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key:'code',
             icon: 'fa fa-key',
         });
 
@@ -37,7 +37,6 @@ export class RuleModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key:'rule',
             icon: 'fa fa-key',
         });
 
@@ -48,12 +47,13 @@ export class RuleModel extends ModelBase{
                 search: this.permissions.filter,
                 visible: this.permissions.visible,
             },
-            key:'title',
             icon: 'fa fa-list',
         });
 
         this.globalOptional();
-        this.rules = Object.assign({},this.rules,this.getRulesDefault())
+
+        this.rules = Object.assign({},this.rules,this.getRulesDefault());
+
     }
 
 }
