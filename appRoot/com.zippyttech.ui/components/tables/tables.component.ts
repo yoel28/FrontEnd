@@ -135,12 +135,13 @@ export class TablesComponent implements OnInit {
     // }
 
     isUnique():boolean{
-        if(this.model.getData().id || this.model.getData().count==1 || this.model.navIndex != null)
-        {
-            if(this.model.navIndex == null)
-                this.model.navIndex = "0";
-            return true;
-        }
+        //TODO: check view
+        // if(this.model.getData().id || this.model.getData().count==1 || this.model.navIndex != null)
+        // {
+        //     if(this.model.navIndex == null)
+        //         this.model.navIndex = "0";
+        //     return true;
+        // }
         return false;
     }
 
