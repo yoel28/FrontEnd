@@ -1,15 +1,15 @@
-<div *ngIf="model.permissions.warning || !modalIn" >
+<div *ngIf="model.permissions.warning || !modalIn">
     <div class="main-view-container">
-        <div [@animation_0]='(model.dataList &&  (model.dataList.list || model.dataList.id))?"true":"false"'>
+        <div [@animation_0]='(model.getData().list || model.getData().id)?"true":"false"'>
             <section class="content">
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">
-                            <i class="{{model.icon||'fa fa-list-alt'}}"></i>{{'   '+(model.view.title | translate)}}
+                            <i class="{{model.icon||'fa fa-list-alt'}}"></i>&nbsp;{{(model.nameClass+'.list' | translate)}}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
-                            &nbsp;<i *ngIf="model.rest.findData" class="fa fa-spinner fa-spin" [attr.title]="db.msg.pleaseWait"></i>
-                            <span *ngIf="model && model.dataList && model.dataList.count" class="page-info">
-                                &nbsp;{{db.msg.page}}{{getCurrentPage}},&nbsp;cerca de {{model.dataList.count}} {{db.msg.results}}
+                            &nbsp;<i *ngIf="model.getRest().findData" class="fa fa-spinner fa-spin" [attr.title]="'custom.pleaseWait' | translate"></i>
+                            <span *ngIf="model.getData().count" class="page-info">
+                                {{('custom.infoPageCount'| translate:{page:getCurrentPage,count:model.getData().count})}}
                             </span>
                         </h4>
                         <div class="box-tools pull-right header-tools">
@@ -33,17 +33,10 @@
                                         <i class="{{action.currentView(model).icon}}"></i>
                                     </button>
                                 </ng-template>
-                                <!--<button *ngFor="let buttom of getViewOptionsButtons('showDeleted')"-->
-                                        <!--class="btn btn-box-tool {{buttom.class}}" type="button"-->
-                                        <!--[class.deleted-all]="model.rest.deleted=='all'"-->
-                                        <!--[class.deleted-only]="model.rest.deleted=='only'"-->
-                                        <!--[attr.title]="buttom.title | translate"-->
-                                        <!--(click)="model.changeDeleted($event)"-->
-                                <!--&gt;-->
                             </ng-template>
 
                             <div class="btn-group">
-                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false" [attr.title]="db.msg.config">
+                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false" [attr.title]="'custom.config'| translate">
                                     <i class="fa fa-wrench"></i>
                                 </button>
                                 <ul class="dropdown-menu submenu-config" role="menu">
@@ -55,18 +48,18 @@
                                                 [class.fa-eye]="model.rules[key].permissions.visible"
                                                 [class.text-green]="model.rules[key].permissions.visible"
                                                 (click)="setVisibleField($event,model.rules[key])"
-                                                title="{{model.rules[key].permissions.visible?'Ocultar':'Ver'}}"
-                                        >
+                                                title="{{ (model.rules[key].permissions.visible?'custom.view':'custom.hidden') | translate}}">
                                         </button>
-                                        <button (click)="changePosition($event,key,'up')" class="btn btn-box-tool fa fa-angle-up" title="Subir"></button>&nbsp;
-                                        <button (click)="changePosition($event,key,'down')" class="btn btn-box-tool fa fa-angle-down" title="Bajar"></button>&nbsp;
-                                        <span class="btn" (click)="setCheckField($event,model.rules[key])">{{model.rules[key].title}}</span>
+                                        <button (click)="changePosition($event,key,'up')" class="btn btn-box-tool fa fa-angle-up" [attr.title]="'up' | translate"></button>&nbsp;
+                                        <button (click)="changePosition($event,key,'down')" class="btn btn-box-tool fa fa-angle-down" [attr.title]="'down' | translate"></button>&nbsp;
+                                        <span class="btn" (click)="setCheckField($event,model.rules[key])">{{'field.'+key+'.title' | translate}}</span>
+
                                     </li>
                                     <li>
-                                        <button (click)="savePreference()" class="btn btn-box-tool" title="Guardar">
-                                            <i class="fa fa-save"></i>&nbsp;{{db.msg.savePreferences}}
+                                        <button (click)="savePreference()" class="btn btn-box-tool" [attr.title]="'save'| translate">
+                                            <i class="fa fa-save"></i>&nbsp;{{'custom.savePreferences' | translate}}
                                         </button>
-                                        <button (click)="savePreference(true)"  class="btn btn-box-tool" title="Borrar preferencias">
+                                        <button (click)="savePreference(true)"  class="btn btn-box-tool" [attr.title]="'custom.deletedPreferences' | translate">
                                             &nbsp;<i class="fa fa-trash"></i>
                                         </button>
                                     </li>
@@ -75,27 +68,27 @@
                             <tooltip-view [code]="model.prefix+'_2'"></tooltip-view>
                         </div>
                     </div>
-                    <div *ngIf="model.permissions.list && model.dataList" class="box-body">
-                        <div *ngIf="model.dataList.count > 0 || model.dataList.id">
-                            <tables-view  [model]="model" (getInstance)="setInstance($event)" [viewActions]="viewOptions.viewActions"></tables-view>
+                    <div *ngIf="model.permissions.list" class="box-body">
+                        <div *ngIf="model.getData().count || model.getData().id">
+                            <tables-view  [model]="model" (getInstance)="setInstance($event)"></tables-view>
                         </div>
-                        <div *ngIf="model.dataList.count == 0 || (!model.dataList.id && !model.dataList.list )">
+                        <div *ngIf="model.getData().count == 0 || (!model.getData().id && !model.getData().list )">
                             <div class="alert alert-warning alert-dismissable">
                                 <button type="button" data-dismiss="alert" aria-hidden="true" class="close">×</button>
-                                <strong><i class="fa fa-warning"></i></strong>&nbsp;{{db.msg.notFound | translate}}
+                                <strong><i class="fa fa-warning"></i></strong>&nbsp;{{'custom.notFound' | translate}}
                             </div>
                         </div>
                     </div>
                     <div *ngIf="!model.permissions.list">
                         <div class="btn-red padding-error">
-                            <h5><i class="fa fa-warning"></i>&nbsp;<strong>{{db.msg.warningTitle | translate}} <tooltip-view [code]="model.prefix+'_3'"></tooltip-view></strong></h5>
-                            {{ (db.msg.notAuthorized || 'Acceso no autorizado') | translate}},&nbsp;{{db.msg.contactAdminPermission | translate}} {{model.prefix}}_LIST
+                            <h5><i class="fa fa-warning"></i>&nbsp;<strong>{{'custom.warning' | translate}} <tooltip-view [code]="model.prefix+'_3'"></tooltip-view></strong></h5>
+                            {{ ('custom.accessUnauthorized' | translate:{code:model.prefix+'_LIST'}) }}
                         </div>
                     </div>
                 </div>
             </section>
         </div>
-        <div class="preload" *ngIf='!(model.dataList && model.dataList.list)'>
+        <div class="preload" *ngIf='!(model.getData().list || model.getData().id)'>
             <div id="screen">
                 <div id="course">
                     <div id="hole"></div>
@@ -117,18 +110,22 @@
         <div class="modal-content">
             <div class="modal-header bg-red text-center">
                 <h3 class="modal-title">
-                    <i class="fa fa-warning"></i>&nbsp;<strong>{{db.msg.warningTitle | translate | uppercase}}<tooltip-view [code]="model.prefix+'_4'"></tooltip-view></strong></h3>
+                    <i class="fa fa-warning"></i>&nbsp;
+                    <strong>{{'custom.warning' | translate | uppercase}}
+                        <tooltip-view [code]="model.prefix+'_4'"></tooltip-view>
+                    </strong>
+                </h3>
             </div>
             <div class="modal-body">
-                {{db.msg.warningBody | translate}}
+                {{'custom.warningBody' | translate}}
             </div>
             <div class="modal-footer">
                 <button (click)="onDashboard($event)" type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">
-                    &nbsp;{{db.msg.warningButtonExit | translate}}
+                    &nbsp;{{'custom.exit' | translate}}
                 </button>
 
                 <button (click)="loadPage($event,true)"  data-dismiss="modal" type="button" class="btn btn-red fa fa-check">
-                    &nbsp;{{db.msg.warningButtonYes | translate}}
+                    &nbsp;{{'custom.warningYes' | translate}}
                 </button>
             </div>
         </div>
