@@ -10,10 +10,12 @@ export class NotificationModel extends ModelRoot{
         super(db,'/notifications/');
         this.initModel();
     }
-    modelExternal() {}
+
+    initModelExternal() {}
     initModelActions(){}
     initPermissions() {}
     initDataActions(){}
+    initDataExternal(){}
 
     initView(params:IView){
         params.display = this.nameClass+"Title";
@@ -31,7 +33,6 @@ export class NotificationModel extends ModelRoot{
                 filter:false,
                 list:true
             },
-            key: 'image',
         });
 
         this.rules['title']=new TextRule({
@@ -40,7 +41,6 @@ export class NotificationModel extends ModelRoot{
                visible: this.permissions.visible,
                search: this.permissions.filter,
            },
-            key: 'title'
         });
 
         this.rules['icon']= new SelectRule({
@@ -52,10 +52,10 @@ export class NotificationModel extends ModelRoot{
                 {value: 'fa fa-question-circle',    text: 'Icono 1'},
                 {value: 'fa fa-question',           text: 'Icono 2'},
             ],
-            key: 'icon'
         });
 
-        this.rules = Object.assign({},this.rules,this.getRulesDefault())
+        this.rules = Object.assign({},this.rules,this.getRulesDefault());
+
     }
 
 
