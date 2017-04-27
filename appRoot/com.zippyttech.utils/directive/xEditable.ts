@@ -1,7 +1,9 @@
-import {ElementRef, EventEmitter, OnInit, Directive} from "@angular/core";
-import {HttpUtils} from "../../com.zippyttech.rest/http-utils";
+import {ElementRef, OnInit, Directive} from "@angular/core";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
-import {RestController} from "../../com.zippyttech.rest/restController";
+import {ModelRoot} from "../../com.zippyttech.common/modelRoot";
+import {TRules} from "../../app-routing.module";
+import {API} from "../catalog/defaultAPI";
+import {Editable} from "../../com.zippyttech.common/rules/editable.types";
 
 var jQuery = require('jquery');
 var bootstrap = require('bootstrap');
@@ -19,24 +21,18 @@ var editable = require('editable');
 
 @Directive({
     selector: "[x-editable]",
-    inputs: ['data', 'rules', 'field', 'function', 'endpoint','disabled'],
-    outputs: ['success']
+    inputs: ['model','key', 'data','disabled','endpoint'],
 })
-export class XEditable extends RestController implements OnInit {
-    public success:any;
-    public data:any = {};
-    public rules:any = {};
-    public field:string;
-    public endpoint:string;
-    public function:any;
-    public httputils:HttpUtils;
-    public disabled:boolean;
+export class XEditable implements OnInit {
 
-    constructor(public el:ElementRef, public db:DependenciesBase) {
-        super(db);
-        this.success = new EventEmitter();
-        this.httputils = new HttpUtils(db.http,db.toastyService,db.toastyConfig);
-    }
+    public disabled:boolean;
+    public model:ModelRoot;
+    public key:string;
+    public data:Object;
+
+
+
+    constructor(public el:ElementRef, public db:DependenciesBase) {}
 
     ngOnInit() {
 
@@ -45,48 +41,46 @@ export class XEditable extends RestController implements OnInit {
 
         jQuery(this.el.nativeElement).editable({
 
-            type: this.getType(currentRule),
-            value: this.getValue(currentRule),
-            defaultValue: this.getDefaultValue(currentRule),
-            disabled: this.getDisabled(currentRule),
-            display: this.getDisplay(currentRule),
-            showbuttons: this.getShowbuttons(currentRule),
-            mode: this.getMode(currentRule),
-            source:this.getSource(currentRule),
-            format:this.getFormat(currentRule),
-            viewformat:this.getViewFormat(currentRule),
-            template:this.getTemplate(currentRule),
-            step:this.getStep(currentRule),
-            combodate: this.getCombodate(currentRule),
-            placement:this.getPlacement(currentRule),
+            type: this._getType(currentRule),
+            value: this._getValue(currentRule),
+            defaultValue: this._getDefaultValue(currentRule),
+            disabled: this._getDisabled(currentRule),
+            display: this._getDisplay(currentRule),
+            showbuttons: this._getShowbuttons(currentRule),
+            mode: this._getMode(currentRule),
+            source:this._getSource(currentRule),
+            format:this._getFormat(currentRule),
+            viewformat:this._getViewFormat(currentRule),
+            template:this._getTemplate(currentRule),
+            step:this._getStep(currentRule),
+            combodate: this._getCombodate(currentRule),
+            placement:this._getPlacement(currentRule),
 
-            validate: function (newValue) {
-                let msg = this.isValid(currentRule,newValue);
+            validate: (newValue) =>{
+                let msg = this._getIsValid(currentRule,newValue);
                 if(msg)
                     return msg;
 
-                newValue = this.parseValueValidate(currentRule,newValue);
+                newValue = this._fnParseValueValidate(currentRule,newValue);
 
-                if(this.function)
-                {
-                    this.function(this.field, this.data, newValue, this.endpoint).then(
-                        function (value) {
-                            this.eventSetValue(currentRule,value[this.field]);
-                        }.bind(this), function (reason) {
-                            this.eventSetValue(currentRule);
-                        }.bind(this)
-                    );
-                }
-                this.success.emit(newValue);
-            }.bind(this)
+                this.model.onPatch(this.key,this.data,newValue).then(
+                    (value)=> {
+                        this._evSetValue(currentRule,value[this.key]);
+                    },
+                    (reason) => {
+                        this._evSetValue(currentRule);
+                    }
+                );
+            }
         });
     }
-    private get getRule(){
-        return this.rules[this.field];
+
+    private get getRule():TRules{
+        return this.model.rules[this.key];
     }
 
-    private getType(rule){
-        let type = rule.constructor.name.replace('Rule','').toLowerCase();
+    private _getType(rule):string{
+        let type = rule.type;
         switch (type) {
             case "url" :
                 return 'url';
@@ -94,28 +88,26 @@ export class XEditable extends RestController implements OnInit {
                 return rule.mode;
             default :
                 return type || 'text'
-
-
         }
     }
 
-    private getValue(rule){
-        switch (this.getType(rule)) {
+    private _getValue(rule){
+        switch (this._getType(rule)) {
             case "combodate" :
-                if(this.data[this.field])
-                    return moment(this.data[this.field]);
-                return this.data[this.field];
+                if(this.data[this.key])
+                    return moment(this.data[this.key]);
+                return this.data[this.key];
             case "password" :
                 return '';
             case "url" :
                 return 'link';
             default :
-                return (rule.subKey?( this.data[this.field][rule.subKey] || 'N/A' ):( this.data[this.field] || "N/A"));
+                return (rule.subKey?( this.data[this.key][rule.subKey] || 'N/A' ):( this.data[this.key] || "N/A"));
         }
     }
 
-    private getDefaultValue(rule){
-        switch (this.getType(rule)) {
+    private _getDefaultValue(rule){
+        switch (this._getType(rule)) {
             case "combodate" :
                 return null;
             case "password" :
@@ -127,19 +119,19 @@ export class XEditable extends RestController implements OnInit {
         }
     }
 
-    private getDisabled(rule){
+    private _getDisabled(rule){
         return this.disabled;
     }
 
-    private getDisplay(rule){
+    private _getDisplay(rule){
         return rule.display || null
     }
 
-    private getShowbuttons(rule){
-        if(this.getMode(this.getRule) == 'popup')
+    private _getShowbuttons(rule){
+        if(this._getMode(this.getRule) == 'popup')
             return true;
 
-        switch (this.getType(rule)) {
+        switch (this._getType(rule)) {
             case "combodate" :
                 return true;
             case "textarea" :
@@ -155,8 +147,8 @@ export class XEditable extends RestController implements OnInit {
         }
     }
 
-    private getMode(rule){
-        switch (this.getType(rule)) {
+    private _getMode(rule){
+        switch (this._getType(rule)) {
             case "combodate" :
                 return rule.mode || 'popup';
             case "textarea" :
@@ -166,15 +158,15 @@ export class XEditable extends RestController implements OnInit {
         }
     }
 
-    private getSource(rule){
+    private _getSource(rule){
         return rule.source || null
     }
 
-    private getFormat(rule){
-        switch (this.getType(rule)) {
+    private _getFormat(rule){
+        switch (this._getType(rule)) {
             case "combodate" :
                 if(rule.date == 'date'){
-                    return rule.format || 'DD-MM-YYYY'
+                    return rule.format || 'YYYY-MM-DD'
                 }
                 if(rule.date == 'datetime'){
                     return rule.format || 'YYYY-MM-DD HH:mm'
@@ -184,8 +176,8 @@ export class XEditable extends RestController implements OnInit {
         }
     }
 
-    private getViewFormat(rule){
-        switch (this.getType(rule)) {
+    private _getViewFormat(rule){
+        switch (this._getType(rule)) {
             case "combodate" :
                 if(rule.date == 'date'){
                     return rule.viewformat || 'MMM D, YYYY';
@@ -198,9 +190,9 @@ export class XEditable extends RestController implements OnInit {
         }
     }
 
-    private getTemplate(rule){
+    private _getTemplate(rule){
 
-        switch (this.getType(rule)) {
+        switch (this._getType(rule)) {
             case "combodate" :
                 if(rule.date == 'date'){
                     return rule.template || 'D MMM YYYY';
@@ -214,28 +206,28 @@ export class XEditable extends RestController implements OnInit {
 
     }
 
-    private getStep(rule){
+    private _getStep(rule){
         return rule.step || "0.001"
     }
 
-    private getCombodate(rule){
-        switch (this.getType(rule)) {
+    private _getCombodate(rule){
+        switch (this._getType(rule)) {
             case "combodate" :
                 return {
-                        minYear: parseFloat(this.db.myglobal.getParams('MIN_DATE') || '2000'),
-                        maxYear: parseFloat(this.db.myglobal.getParams('MAX_DATE') || '2020'),
+                        minYear: this.db.myglobal.getParams('MIN_DATE',API.MIN_DATE),
+                        maxYear: this.db.myglobal.getParams('MAX_DATE',API.MAX_DATE),
                     };
             default :
                 return null;
         }
 
     }
-    private getPlacement(rule){
-        return this.getRule.placement || 'top';
+    private _getPlacement(rule){
+        return (<Editable>this.getRule).placement || 'top';
     }
 
-    private eventSetValue(rule,data=null){
-        switch (this.getType(rule)) {
+    private _evSetValue(rule,data=null){
+        switch (this._getType(rule)) {
             case "url" :
                 jQuery(this.el.nativeElement).editable('setValue','link', true);
             case "combodate" :
@@ -243,11 +235,11 @@ export class XEditable extends RestController implements OnInit {
                     return moment(data);
                 return data;
             default :
-                jQuery(this.el.nativeElement).editable('setValue',( data || this.data[this.field]), true);
+                jQuery(this.el.nativeElement).editable('setValue',( data || this.data[this.key]), true);
         }
     }
 
-    private isValid(rule,newValue){
+    private _getIsValid(rule,newValue){
         if(rule.required && !newValue)
             return this.db.msg.required;
 
@@ -257,18 +249,16 @@ export class XEditable extends RestController implements OnInit {
         if(rule.minLength && newValue && newValue.length < rule.minLength )
             return this.db.msgParams('errorMinlength',[rule.minLength]);
 
-
-
     }
 
-    private parseValueValidate(rule,newValue){
-        switch (this.getType(rule)) {
+    private _fnParseValueValidate(rule,newValue){
+        switch (this._getType(rule)) {
             case "combodate" :
                 if(rule.date == 'date'){
-                    return newValue.format('DD-MM-YYYY');
+                    return newValue.format('YYYY-MM-DD');
                 }
                 if(rule.date == 'datetime'){
-                    return newValue.format('YYYY-DD-MM HH:mm');
+                    return newValue.format('YYYY-MM-DD HH:mmZZ');
                 }
             default :
                 return newValue;
