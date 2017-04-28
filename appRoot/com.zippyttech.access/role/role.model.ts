@@ -30,7 +30,11 @@ export class RoleModel extends ModelRoot{
                 search:this.permissions.filter,
                 visible:this.permissions.visible,
             },
-            prefix:'ROLE_',//TODO: only in Save
+            components:{
+                save:{
+                    prefix:'ROLE_'
+                }
+            }
         });
 
         this.setRuleDetail(true,true,true);
