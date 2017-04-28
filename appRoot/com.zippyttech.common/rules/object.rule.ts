@@ -29,7 +29,9 @@ export class ObjectRule extends Rule{
             callback:(data:FormComponent, key:string) => {
                 data.initAction(key,'search');
             },
-            stateEval:'data.getRest(true).findData?1:0',
+            stateEval:(data):number=>{
+                return this.model.getRest(true).findData?1:0;
+            },
             params:{
                 save:true
             }
