@@ -74,10 +74,12 @@ export class DependenciesBase {
             console.log('END-------------------------------------------------------------------------------------------');
         }
     }
-    public getTranslate(value:string,object:Object):Subscription{
-        return this.translate.get(value,object).subscribe((res: string) => {
-            return res;
+    public getTranslate(code:string,params:Object):string{
+        let msg='';
+        this.translate.get(code,params).subscribe((res: string) => {
+            msg = res;
         });
+        return msg;
     }
 
 
@@ -91,4 +93,5 @@ export class DependenciesBase {
             event.preventDefault();
         this.router.navigate([url,params]);
     }
+
 }
