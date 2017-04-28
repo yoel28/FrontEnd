@@ -8,7 +8,7 @@ export interface IAction<ParamsType>{
     permission: boolean;
     disabled?:string;
     views:IActionView[],
-    stateEval:string;
+    stateEval:(data:any)=>number | string;
     callback: (data?: any, index?: number) => any;
     params?: ParamsType;
     currentView?:(data?)=>IActionView;
@@ -26,7 +26,12 @@ export class Actions<ParamsType>{
     }
 
     public add(key:string,value:IAction<ParamsType>){
-        value.currentView = (data?)=>{ return value.views[eval(value.stateEval || '0')] };
+        value.currentView = (data?)=>{
+            if(typeof value.stateEval == 'string')
+                return value.views[eval(value.stateEval || '0')];
+            else
+                return value.views[value.stateEval(data)];
+        };
 
         this.refs[key] = value;
         this.length++;
