@@ -344,7 +344,9 @@
   },
 
   "error":{
-    "required":"Este campo es obligatorio.",
-    "object":"Referencia no encontrada."
+    "required":"Este campo es obligatorio",
+    "object":"Referencia no encontrada.",
+    "minlength":"El campo debe ser mayor a {{value}} caracteres",
+    "maxlength":"El campo debe ser menor a {{value}} caracteres"
   }
 }
