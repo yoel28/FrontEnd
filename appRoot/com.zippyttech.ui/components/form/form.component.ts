@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, AfterViewInit, HostListener} from "@angular/core";
+import {Component, EventEmitter, OnInit, AfterViewInit} from "@angular/core";
 import  {FormControl, Validators, FormGroup} from '@angular/forms';
 import {IData, IRest} from "../../../com.zippyttech.rest/restController";
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
@@ -9,8 +9,8 @@ import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {IIncludeComponents} from "../../../com.zippyttech.common/rules/rule";
 import {ObjectRule} from "../../../com.zippyttech.common/rules/object.rule";
 import {Actions} from "../../../com.zippyttech.init/app/app.types";
-
 import {ITagsInput} from "../../../com.zippyttech.utils/directive/tagsinput";
+import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 
 type TTypeAction = 'search' | 'internal';
 type TTypeForm = 'save' | 'filter';
@@ -82,6 +82,7 @@ export class FormComponent implements OnInit,AfterViewInit {
 
     private _addAction(key: string, data: any) {
         this._getAction(key).value = data;
+        this._getAction(key).id = data.id;
         this._getAction(key).valid = true;
         this._getAction(key).view = false;
         this._getAction(key).touch = false;
@@ -124,7 +125,10 @@ export class FormComponent implements OnInit,AfterViewInit {
         this.db.debugLog('FormComponent', 'initSearch', 'not object', this._getRule(key));
     }
 
-    private _destroySearch() {
+    private _destroySearch(event?:Event) {
+        if(event)
+            event.preventDefault();
+
         if (!this._getAction(this._search).valid)
             this._fnDisabledAction(this._search);
         this._search = null;
@@ -143,12 +147,30 @@ export class FormComponent implements OnInit,AfterViewInit {
         }
     }
 
-    private get _searhData(): IData {
+    private _fnSearchQuit(event: Event) {
+        if (event)
+            event.preventDefault();
+        this._destroySearch();
+    }
+
+    private _fnSaveSearch(key:string,data:any){
+        this._addAction(key,data);
+        this._setFormValue(key,data.title || data.detail);
+        this._search = null;
+    }
+
+    private get _searchData(): IData {
         let rest = this._searchRest;
         if (rest && rest.data && rest.data.value) {
             return rest.data.value
         }
         return {};
+    }
+
+    private get _searchModel(): ModelRoot {
+        if(this._getRule(this._search) instanceof ObjectRule)
+            return (<ObjectRule>this._getRule(this._search)).model;
+        return null;
     }
 
     private get _searchRest(): IRest {
@@ -167,11 +189,7 @@ export class FormComponent implements OnInit,AfterViewInit {
         return -1;
     }
 
-    private _fnSearchQuit(event: Event) {
-        if (event)
-            event.preventDefault();
-        this._destroySearch();
-    }
+
 
     //endregion
 
@@ -193,6 +211,7 @@ export class FormComponent implements OnInit,AfterViewInit {
             include = rule.include[this._type];
 
             if (include && ((onlyRequired && ( rule.required || rule.componentSave.force)) || !onlyRequired)) {
+
                 validators = [];
 
                 if (rule.required)
@@ -208,8 +227,10 @@ export class FormComponent implements OnInit,AfterViewInit {
                     validators.push(
                         (c: FormControl) => {
                             if (c.value && c.value.length > 0) {
-                                if (this._getAction(key).valid)
+                                if (this._getAction(key).valid && !this._getAction(key).touch) {
+                                    this._getAction(key).touch = true;
                                     return null;
+                                }
                                 return rule.componentSave.notReference ? null : {object: {valid: false}};
                             }
                             return null;
@@ -265,19 +286,19 @@ export class FormComponent implements OnInit,AfterViewInit {
                         .subscribe((value: string) => {
                             if (value != null) {
                                 if (this._getAction(key).valid && !this._getAction(key).touch) {
-                                    this._getAction(key).touch = true;
                                     return;
                                 }
                                 this._fnDisabledAction(key);
+                                this._loadDataSearch();
                             }
                         });
                 }
 
-                if (rule.components.valueChange) {
+                if (rule.componentSave.valueChange) {
                     field.valueChanges
                         .debounceTime(this.db.getParams('WAIT_TIME_SAVE', API.WAIT_TIME_SEARCH))
                         .subscribe((value: any) => {
-                            this._getRule(key).components.valueChange(this, value);
+                            this._getRule(key).componentSave.valueChange(this, value);
                         });
                 }
 
@@ -337,15 +358,15 @@ export class FormComponent implements OnInit,AfterViewInit {
                     body[key] = body[key] == 'true' ? true : false;
                 }
 
-                if (rule.prefix && rule.type == 'text') {
-                    body[key] = rule.prefix + body[key];
+                if (rule.componentSave.prefix && rule.type == 'text') {
+                    body[key] = rule.componentSave.prefix + body[key];
                 }
 
                 if (rule.componentSave.setEqual) {
                     body[rule.componentSave.setEqual] = body[key];
                 }
 
-                if (rule.type == 'list') {
+                if (rule.list) {
                     let data = [];
                     body[key].forEach(obj => {
                         data.push(obj.value || obj);
@@ -439,6 +460,10 @@ export class FormComponent implements OnInit,AfterViewInit {
 
     private _getKeys(data:Object = {}){
         return Object.keys(data || {});
+    }
+
+    private get _static(){
+        return StaticValues;
     }
 
     private _getList(key:string):ITagsInput{
