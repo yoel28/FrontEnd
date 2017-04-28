@@ -6,6 +6,7 @@ import {ITagsInput} from "../../com.zippyttech.utils/directive/tagsinput";
 interface IComponentSave{
     hidden?:(form:FormComponent)=>boolean;
     force?:boolean;
+    prefix?:string;
     setEqual?:string;
     notReference?:boolean;
     help?:string;//code in domain info
@@ -34,7 +35,6 @@ export interface IRule{
     required?:boolean;
     exclude?:boolean;
     icon?:string;
-    prefix?:string;
     disabled?:string;
     value?:string;
     check?:boolean;
@@ -86,13 +86,6 @@ export class Rule {
     }
     set icon(value:string){
         this.attributes.icon = value;
-    }
-
-    get prefix():string{
-        return this.attributes.prefix || null;
-    }
-    set prefix(value:string){
-        this.attributes.prefix = value;
     }
 
     get disabled():string{
