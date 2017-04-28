@@ -38,7 +38,11 @@ export class UserModel extends ModelBase{
             },
             email:true,
             required:true,
-            // 'setEqual':'username', //TODO: ubicar clave en components form
+            components:{
+                save:{
+                    setEqual:'username'
+                }
+            }
         });
 
         this.rules['idCard']= new TextRule({
