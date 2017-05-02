@@ -89,10 +89,10 @@ export class RestController {
 
     public getRestParams(search = false):string{
         let rest = this.getRest(search);
-        return  rest.id?rest.id:'' +
-                "?max=" + rest.max +
-                "&offset=" + rest.offset +
-                this.setWhere(rest.where) +
+        return  (rest.id?rest.id:'') +
+                ("?max=" + rest.max) +
+                ("&offset=" + rest.offset) +
+                (this.setWhere(rest.where)) +
                 (rest.sort ?'&sort=' + rest.sort : '') +
                 (rest.order?'&order=' + rest.order : '') +
                 (rest.deleted?'&deleted=' + rest.deleted : '');
@@ -206,21 +206,21 @@ export class RestController {
 
     }
 
-    private getOffset(list:IData,rest:IRest,offset?:number|string) {
-        let _count = list.count || 0;
-        let _max = rest.max;
+    private _setOffset(list:IData,rest:IRest,offset?:number|string) {
+        let count = list.count || 0;
+        let max = rest.max;
 
         if (typeof offset === 'number')
-            rest.offset = _max * (offset - 1);
+            rest.offset = max * (offset - 1);
         else {
             if (offset == '<')
-                rest.offset = rest.offset - _max;
+                rest.offset = rest.offset - max;
             else if (offset == '<<')
                 rest.offset = 0;
             else if (offset == '>')
-                rest.offset = rest.offset + _max;
+                rest.offset = rest.offset + max;
             else if (offset == '>>')
-                rest.offset = (Math.ceil(_count / _max) - 1) * _max;
+                rest.offset = (Math.ceil(count / max) - 1) * max;
             else
                 rest.offset = 0;
         }
@@ -315,7 +315,7 @@ export class RestController {
             return this.getLoadDataAll([], this.getEndpoint(search), this.data(search), this.getRest(search));
         }
         else {
-            this.getOffset(this.getData(search),this.getRest(search),offset);
+            this._setOffset(this.getData(search),this.getRest(search),offset);
             return this.httputils.onLoadList(this.getEndpoint(search)+this.getRestParams(search), this.data(search), this.error).then(
                 (response=> {
                     this.loadPager(search);
