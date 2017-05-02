@@ -4,6 +4,8 @@ import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 import {IModalParams, ModalName} from "../../../com.zippyttech.services/modal/modal.types";
 import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
+import {Actions} from "../../../com.zippyttech.init/app/app.types";
+import {IIncludeComponents} from "../../../com.zippyttech.common/rules/rule";
 
 /**
  * @Params API
@@ -49,7 +51,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
     ngOnInit() {}
 
-    private get currentRule(){
+    private get _rule(){
         return this.model.rules[this.key];
     }
 
@@ -59,11 +61,11 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
 
 
     public isCurrentType(list:Array<string>):boolean{
-        return list.indexOf(this.currentRule.type) >= 0 ? true:false;
+        return list.indexOf(this._rule.type) >= 0 ? true:false;
     }
 
     public isCurrentMode(list:Array<string>):boolean{
-        return list.indexOf(this.currentRule.mode) >= 0 ? true:false;
+        return list.indexOf(this._rule.mode) >= 0 ? true:false;
     }
 
 
@@ -73,9 +75,21 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
 
+    private _getActionsRule(): Actions<IIncludeComponents>[] {
+        let keys = [];
+        if (this._rule.actions) {
+            Object.keys(this._rule.actions.getAll).forEach(key => {
+                if (this._rule.actions.get(key).params['list'] && this._rule.actions.get(key).permission)
+                    keys.push(this._rule.actions.get(key));
+            })
+        }
+        return keys;
+    }
+
+
     get getBooleandData(){
 
-        let rule = this.currentRule;
+        let rule = this._rule;
         let value = this.currentValue;
 
         let field = {'class':'btn btn-orange','text':'n/a','disabled':true};
@@ -146,12 +160,12 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
     getDisabledField(data){
-        return this.evalExp(data,(this.currentRule.disabled || 'false'));
+        return this.evalExp(data,(this._rule.disabled || 'false'));
     }
 
     setViewListData(event){
         let that=this;
-        let rule = this.currentRule;
+        let rule = this._rule;
         let value = this.currentValue;
 
         if(event)
@@ -193,7 +207,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
     loadSearchTable(event) {
-        let rule = this.currentRule;
+        let rule = this._rule;
         let value = this.currentValue;
 
         if(event)
@@ -212,7 +226,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
     loadDataFieldReference(setNull=false){
-        let rule = this.currentRule;
+        let rule = this._rule;
         let value = this.currentValue;
 
         this.checkAllSearch();
@@ -252,12 +266,12 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     }
 
     get getTypeEval(){
-        let rule = this.currentRule;
-        return this.evalExp(this.data,this.currentRule.eval);
+        let rule = this._rule;
+        return this.evalExp(this.data,this._rule.eval);
     }
 
     get getEnabled(){
-        let rule= this.currentRule;
+        let rule= this._rule;
         let permitUpdate = (this.data.enabled && !this.data.deleted  && !this.data.blockField && this.data.editable);
         return permitUpdate && rule.permissions.update && !this.disabled;
     }
@@ -265,7 +279,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
     //     if (event)
     //         event.preventDefault();
     //
-    //     let rule = this.currentRule;
+    //     let rule = this._rule;
     //
     //     this.paramsData.select = this.data;
     //
