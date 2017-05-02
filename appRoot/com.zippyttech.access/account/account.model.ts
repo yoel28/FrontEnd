@@ -40,6 +40,7 @@ export class AccountModel extends ModelRoot{
 
         this.rules['name']= new TextRule({
             required:true,
+            icon:'fa fa-font',
             permissions:{
                 update:this.permissions.update,
                 search:this.permissions.filter,
