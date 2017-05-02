@@ -172,69 +172,84 @@ export abstract class ModelRoot extends RestController{
     private _initDataActions(){
         this.dataActions = new Actions<IDataActionParams>();
         this.dataActions.add("view", {
-            permission: this.permissions.list && false, //TODO: check view
+            disabled:(data)=>{
+                return true;
+            },
+            permission: this.permissions.list, //TODO: check view
             views:[{ title: 'ver', icon: "fa fa-vcard" }],
-            callback:function(data?,index?){
+            callback:(data?,index?) =>{
                 this.currentData = data;
                 this.navIndex = index;
-            }.bind(this),
-            stateEval:'0',
+            },
+            stateEval:'0'
         });
 
         this.dataActions.add("enabled",{
             permission: this.permissions.lock && this.permissions.update,
-            disabled:'data.deleted',
+            disabled:(data:any):boolean=>{
+                return data.deleted;
+            },
             views: [
                 {icon: "fa fa-lock", title: "Deshabilitado", colorClass:"text-red"},
                 {icon: "fa fa-unlock", title: "Habilitado", colorClass:"text-green"}
             ],
-            callback: function (data?, index?) {
+            callback: (data?, index?) => {
                 this.currentData = data;
                 this.onLock('enabled', data);
-            }.bind(this),
-            stateEval:"data.enabled?1:0"
+            },
+            stateEval:(data:any):number=>{
+                return data.enabled?1:0;
+            }
         });
 
         this.dataActions.add("editable",{
             permission: this.permissions.lock && this.permissions.update,
-            disabled:'!data.enabled || data.deleted',
+            disabled:(data:any):boolean=>{
+                return !data.enabled || data.deleted;
+            },
             views: [
                 {icon: "fa fa-edit", title: "No Editable", colorClass:"text-red"},
                 {icon: "fa fa-pencil", title: "Editable", colorClass:"text-green"},
             ],
-            callback: function (data?, index?) {
+            callback: (data?:any, index?) => {
                 this.currentData = data;
                 this.onLock('editable',data);
-            }.bind(this),
-            stateEval:'data.editable?1:0',
+            },
+            stateEval:(data:any):number=>{
+                return data.editable?1:0;
+            },
         });
 
         this.dataActions.add("visible",{
             permission: this.permissions.update && this.permissions.visible,
-            disabled:'!data.enabled || data.deleted',
+            disabled:(data:any):boolean=>{
+                return !data.enabled || data.deleted
+            },
             views: [
                 {icon: "fa fa-eye-slash", title: "Oculto", colorClass:"text-red"},
                 {icon: "fa fa-eye", title: "Visible", colorClass:"text-green"}
             ],
-            callback: function (data?, index?) {
+            callback: (data?, index?) => {
                 this.currentData = data;
                 this.onPatch('visible',data);
             },
-            stateEval:'data.visible?1:0',
+            stateEval:(data)=>{
+                return data.visible?1:0;
+            },
         });
 
         this.dataActions.add("delete",{
             permission: this.permissions.delete,
-            disabled:'!data.enabled || !data.editable || data.deleted',
+            disabled:(data:any):boolean=>{
+                return !data.enabled || !data.editable || data.deleted
+            },
             views:[
                 { icon: "fa fa-trash", title: 'Eliminar'}
             ],
-            callback:((data?,index?)=>{
+            callback:(data?,index?)=>{
                 this.currentData = data;
-                this.db.ms.show("delete",{
-                    model:this
-                });
-            }).bind(this),
+                this.db.ms.show("delete",{model:this});
+            },
             stateEval:'0',
         });
     }
@@ -245,36 +260,53 @@ export abstract class ModelRoot extends RestController{
         this.modelActions.add( "add",{
             permission: this.permissions.add,
             views:[{ title: 'agregar', icon: "fa fa-plus", colorClass:'text-green'}],
-            callback:((data?,index?)=>{ this.db.ms.show('save',{ model: this }); }).bind(this),
+            callback:(data?,index?)=>{
+                this.db.ms.show('save',{ model: this });
+            },
             stateEval:'0',
             params:{}
         });
 
         this.modelActions.add("filter",{
             permission: this.permissions.filter,
-            views: [ {icon: "fa fa-filter", title: "sin filtro", colorClass:"text-blue"},
-                    {icon: "fa fa-filter", title: "filtrando" , colorClass:"text-green"}],
-            callback:((data?,index?)=>{ this.db.ms.show('filter',{model: this}); }).bind(this),
+            views: [
+                {icon: "fa fa-filter", title: "sin filtro", colorClass:"text-blue"},
+                {icon: "fa fa-filter", title: "filtrando" , colorClass:"text-green"}
+            ],
+            callback:(data?,index?)=>{
+                this.db.ms.show('filter',{model: this});
+            },
             stateEval:'0',
             params:{}
         });
 
         this.modelActions.add("showDelete", {
             permission: this.permissions.showDelete,
-            views: [ {icon: "fa fa-trash", title: "Eliminados ocultos", colorClass:""},
-                    {icon: "fa fa-trash", title: "Solo eliminados"   , colorClass:"text-red"},
-                    {icon: "fa fa-trash", title: "Todo"   , colorClass:"text-yellow"}, ],
-            callback: function (data?, index?){ this.changeDeleted();}.bind(this),
-            stateEval:"(data.rest.deleted=='all')?2:(data.rest.deleted=='only')?1:0",
+            views: [
+                {icon: "fa fa-trash", title: "Eliminados ocultos", colorClass:""},
+                {icon: "fa fa-trash", title: "Solo eliminados"   , colorClass:"text-red"},
+                {icon: "fa fa-trash", title: "Todo"   , colorClass:"text-yellow"}, ],
+            callback: (data?, index?)=>{
+                this.changeDeleted();
+            },
+            stateEval:(data:any):number=>{
+                return (this.getRest().deleted=='all')?2:(this.getRest().deleted=='only')?1:0;
+            },
             params: {}
         });
 
         this.modelActions.add("refresh", {
             permission: this.permissions.update && this.permissions.visible,
-            views: [ {icon: "fa fa-refresh", title: "Actualizar", colorClass:"text-blue"},
-                    {icon: "fa fa-refresh fa-spin", title: "Actualizando", colorClass:"text-yellow"} ],
-            callback: function (data?, index?) { this.loadData(); }.bind(this),
-            stateEval:'data.rest.findData?1:0',
+            views: [
+                {icon: "fa fa-refresh", title: "Actualizar", colorClass:"text-blue"},
+                {icon: "fa fa-refresh fa-spin", title: "Actualizando", colorClass:"text-yellow"}
+            ],
+            callback: (data?, index?) => {
+                this.loadData();
+            },
+            stateEval:(data):number=>{
+                return this.rest.findData?1:0;
+            },
             params: {}
 
         });
