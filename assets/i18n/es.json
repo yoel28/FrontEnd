@@ -151,6 +151,10 @@
       "title": "Componente",
       "placeholder": "Seleccione un componente"
     },
+    "contact": {
+      "title": "Contrato",
+      "placeholder": "Seleccione un contracto"
+    },
     "callback": {
       "title": "callback",
       "placeholder": "Ingrese un callback"
@@ -199,6 +203,21 @@
       "placeholder": "Ingrese el icono"
     },
 
+
+    "logo": {
+      "title": "Logo",
+      "placeholder": "Logo"
+    },
+    "miniLogo": {
+      "title": "Mini logo",
+      "placeholder": "Mini logo"
+    },
+
+
+    "maxUserCount": {
+      "title": "Número de usuarios",
+      "placeholder": "Ingrese un número de usuarios"
+    },
     "module": {
       "title": "Módulo",
       "placeholder": "Ingrese un módulo"
@@ -238,6 +257,10 @@
     "rule": {
       "title": "Regla",
       "placeholder": "Ingrese una regla"
+    },
+    "ruc": {
+      "title": "RUC",
+      "placeholder": "Ingrese un RUC"
     },
     "roles": {
       "title": "Roles",
