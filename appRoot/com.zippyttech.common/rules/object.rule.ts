@@ -2,6 +2,7 @@ import {IRule, Rule, IIncludeComponents} from "./rule";
 import {ModelRoot, modeOptions, IComponents} from "../modelRoot";
 import {Actions} from "../../com.zippyttech.init/app/app.types";
 import {FormComponent} from "../../com.zippyttech.ui/components/form/form.component";
+import {RuleViewComponent} from "../../com.zippyttech.ui/components/ruleView/ruleView.component";
 
 interface IObjectSource {
     value:number;
@@ -36,7 +37,66 @@ export class ObjectRule extends Rule{
                 save:true
             }
         });
+
+        this.attributes.actions.add('save',{
+            permission:this.permissions['add'],
+            views:[{icon:'fa fa-plus',title:'save',colorClass:"text-green"}],
+            callback:(rule:RuleViewComponent, key:string) => {
+                rule.model.currentData = rule.data;
+                this.model.db.ms.show('save',{ model: rule.model , extraParams:{childKey:rule.key} });
+            },
+            stateEval:(data):number=>{
+                return 0;
+            },
+            params:{
+                list:true
+            }
+        });
+
+        this.attributes.actions.add('search',{
+            permission:this.permissions['search'],
+            views:[
+                {icon:'fa fa-search',title:'search',colorClass:"text-blue"},
+                {icon:'',title:'search',colorClass:"text-blue"}
+            ],
+            callback:(rule:RuleViewComponent, key:string) => {
+                rule.model.currentData = rule.data;
+                this.model.db.ms.show('search',{ model: rule.model , extraParams:{childKey:rule.key} });
+            },
+            stateEval:(data:any,key:string):number=>{
+                return 0;
+            },
+            params:{
+                list:true
+            }
+        });
+
+        this._initActionRequired();
+
+
     }
+
+    private _initActionRequired(){
+        this.attributes.actions.add('no-required',{
+            permission:!this.required,
+            disabled:(data:any,key:string):boolean=>{
+                return data[key];
+            },
+            views:[{icon:'fa fa-minus',title:'notRequired',colorClass:"text-red"}],
+            callback:(rule:RuleViewComponent, key:string) => {
+                rule.model.currentData = rule.data;
+                this.model.onPatchNull(rule.model.currentData,key);
+            },
+            stateEval:(data):number=>{
+                return 0;
+            },
+            params:{
+                list:true
+            }
+        });
+    }
+
+
 
     //region Overwrite methods to access object attributes
     get key():string{
@@ -44,6 +104,12 @@ export class ObjectRule extends Rule{
     }
     set key(value:string){
         (<IObject>this.attributes).model.view.key = value;
+    }
+
+
+    set required(value:boolean){
+        this.attributes.required = value;
+        this._initActionRequired();
     }
 
     get icon():string{
