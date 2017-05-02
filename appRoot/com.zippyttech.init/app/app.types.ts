@@ -6,9 +6,9 @@ interface IActionView{
 
 export interface IAction<ParamsType>{
     permission: boolean;
-    disabled?:string;
+    disabled?:(data:any,key?:string)=>boolean;
     views:IActionView[],
-    stateEval:(data:any)=>number | string;
+    stateEval:((data:any,key?:string)=>number) | string;
     callback: (data?: any, index?: number) => any;
     params?: ParamsType;
     currentView?:(data?)=>IActionView;
@@ -36,21 +36,23 @@ export class Actions<ParamsType>{
         this.refs[key] = value;
         this.length++;
 
+        if(!value.disabled) value.disabled = ():boolean=>{return false};
         if(this.length==0) this._first = this.refs[key];
+
     }
 
     public get(key:string){
         return this.refs[key] || null;
     }
 
-    public getFirst(data?):IAction<ParamsType>{
-        return (this._first && eval(this._first.disabled) && this._first.permission)?this._first:null;
+    public getFirst(data?:any,key?:string):IAction<ParamsType>{
+        return (this._first && this._first.disabled(data,key) && this._first.permission)?this._first:null;
     }
 
-    public toArray(evaluate?:boolean, data?):IAction<ParamsType>[]{
+    public toArray(evaluate?:boolean, data?:any,key?:string):IAction<ParamsType>[]{
         let array:IAction<ParamsType>[]=[];
         Object.keys(this.refs).forEach((k)=>{
-            if(!evaluate || (!eval(this.refs[k].disabled) && this.refs[k].permission))
+            if(!evaluate || !this.refs[k].disabled(data,key) && this.refs[k].permission)
                 array.push(this.refs[k]);
         });
         return array;
