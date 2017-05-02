@@ -39,7 +39,7 @@ export class SaveComponent implements OnInit,AfterViewInit{
 
     //endregion
 
-    //region admin form
+    //region  form
 
     private _setForm(form:FormComponent){
         this._form=form;
@@ -51,9 +51,9 @@ export class SaveComponent implements OnInit,AfterViewInit{
 
         let successCallback = (response) => {
             this.save.emit(response.json());
-            if(this.params.childKey)//TODO:Arreglar
+            if(this.params.childKey)
             {
-                // this.params.model.afterSave(this.params.childKey,this.params.model.currentData,response.json().id);
+                this._parentModel.onPatch(this.params.childKey,this._parentModel.currentData,response.json().id)
             }
 
         };
@@ -87,7 +87,6 @@ export class SaveComponent implements OnInit,AfterViewInit{
 
     //endregion
 
-
     //region models
 
     private _initModelChild(){
@@ -110,6 +109,10 @@ export class SaveComponent implements OnInit,AfterViewInit{
 
     private get _currentModel():TModels{
         return this._childModel || this.params.model;
+    }
+
+    private get _parentModel():ModelRoot{
+        return this.params.model;
     }
 
     //endregion
