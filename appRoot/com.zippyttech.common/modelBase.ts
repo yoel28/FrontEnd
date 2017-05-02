@@ -22,7 +22,7 @@ export abstract class ModelBase extends ModelRoot{
     public globalOptional(){
         if(this.permissions['global']){
             if(this.rules['account']){
-                (<IObject>this.rules['account']).required = false;
+                (<ObjectRule>this.rules['account']).required = false;
                 return;
             }
             this.db.debugLog('Error','Optional with global',this.rules)
