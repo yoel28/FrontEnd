@@ -74,7 +74,7 @@ export class SearchComponent implements OnInit{
     }
 
     private _destroySearch(event?: Event){
-
+        this.db.ms.hideCurrentModal();
     }
 
     private get _searchPage(){
@@ -85,7 +85,8 @@ export class SearchComponent implements OnInit{
     }
 
     private _fnSearch(data:Object){
-        console.log(data);
+        this.output.emit(data);
+        this.db.ms.hideCurrentModal();
     }
 
     // endregion
