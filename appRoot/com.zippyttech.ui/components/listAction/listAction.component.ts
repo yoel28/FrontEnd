@@ -5,8 +5,8 @@ import {AnimationsManager} from "../../animations/AnimationsManager";
 import {FormComponent} from "../form/form.component";
 import {FormControl} from "@angular/forms";
 
-var moment = require('moment');
-var jQuery = require('jquery');
+let moment = require('moment');
+let jQuery = require('jquery');
 
 
 export interface IListActionData {

@@ -6,8 +6,8 @@ import {TablesComponent} from "../../components/tables/tables.component";
 import {IRule} from "../../../com.zippyttech.common/rules/rule";
 import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
-var jQuery = require('jquery');
-var moment = require('moment');
+let jQuery = require('jquery');
+let moment = require('moment');
 
 @Component({
     selector: 'base-view',

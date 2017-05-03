@@ -5,9 +5,9 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 export interface IParamsInputMask {
 
 }
-var jQuery = require('jquery');
-var mask = require('inputmask');
-var bootstrap = require('bootstrap');
+let jQuery = require('jquery');
+let mask = require('inputmask');
+let bootstrap = require('bootstrap');
 
 @Directive({
     selector: "[input-mask]",

@@ -2,7 +2,7 @@ import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import {AppModule} from "./app.module";
 import {enableProdMode} from "@angular/core";
 
-var adminLTE = require('adminLTE');
+let adminLTE = require('adminLTE');
 enableProdMode();
 
 platformBrowserDynamic().bootstrapModule(AppModule)

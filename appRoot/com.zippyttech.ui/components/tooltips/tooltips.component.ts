@@ -2,7 +2,7 @@ import {Component, OnInit, HostListener, ViewChild, ElementRef} from '@angular/c
 import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
 import {InfoModel} from "../../../com.zippyttech.business/info/info.model";
 
-declare var jQuery:any;
+let jQuery = require('jquery');
 
 @Component({
     selector: 'tooltip-view',

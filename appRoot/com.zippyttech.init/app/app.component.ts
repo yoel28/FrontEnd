@@ -18,8 +18,7 @@ import {IEnablesMenu} from "./app.types";
  *
  *
  */
-
-var jQuery = require('jquery');
+let jQuery = require('jquery');
 @Component({
     selector: 'app',
     templateUrl: './index.html',

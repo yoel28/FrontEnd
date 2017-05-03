@@ -1,8 +1,8 @@
 import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
 
-var jQuery = require('jquery');
-var moment = require('moment');
-var daterangepicker = require('daterangepicker');
+let jQuery = require('jquery');
+let moment = require('moment');
+let daterangepicker = require('daterangepicker');
 
 @Directive({
     selector: "[date-range-picker]",

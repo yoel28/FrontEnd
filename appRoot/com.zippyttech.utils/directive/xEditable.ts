@@ -10,10 +10,10 @@ import {SelectRule} from "../../com.zippyttech.common/rules/select.rule";
 import {CombodateRule} from "../../com.zippyttech.common/rules/combodate.rule";
 import {NumberRule} from "../../com.zippyttech.common/rules/number.rule";
 
-var jQuery = require('jquery');
-var bootstrap = require('bootstrap');
-var moment = require('moment');
-var editable = require('editable');
+let jQuery = require('jquery');
+let bootstrap = require('bootstrap');
+let moment = require('moment');
+let editable = require('editable');
 
 /**
  * @Params API
@@ -143,7 +143,7 @@ export class XEditable implements OnInit {
             case "object":{
                 if((<ObjectRule>rule).mode == 'checklist')
                     return true;
-            }
+            }break;
             case "checklist":
                 return true;
             default:

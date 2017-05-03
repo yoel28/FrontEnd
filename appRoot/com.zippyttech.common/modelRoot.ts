@@ -9,7 +9,7 @@ import {TextRule} from "./rules/text.rule";
 import {CombodateRule} from "./rules/combodate.rule";
 import {API} from "../com.zippyttech.utils/catalog/defaultAPI";
 
-var moment = require('moment');
+let moment = require('moment');
 
 interface IDataActionParams{
     id?:string;

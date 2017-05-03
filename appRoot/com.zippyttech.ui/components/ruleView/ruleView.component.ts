@@ -25,7 +25,7 @@ export interface IRuleView{
     arrayData:any[];
 }
 
-var moment = require('moment');
+let moment = require('moment');
 @Component({
     selector: 'rule-view',
     templateUrl: './index.html',
@@ -114,7 +114,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
             if (id && this.formatDateId[id])
                 force = this.formatDateId[id].value;
             if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN) && !force) {
-                var diff = moment().valueOf() - moment(date).valueOf();
+                let diff = moment().valueOf() - moment(date).valueOf();
                 if (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN)) {
                     if (diff < 1800000)//menor a 30min
                         return 'Hace ' + this.dateHmanizer(diff, {units: ['m', 's']});
@@ -130,7 +130,7 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
 
     viewChangeDate(date) {
         //<i *ngIf="viewChangeDate(data.rechargeReferenceDate)" class="fa fa-exchange" (click)="changeFormatDate(data.id)"></i>
-        var diff = moment().valueOf() - moment(date).valueOf();
+        let diff = moment().valueOf() - moment(date).valueOf();
         return (
                     (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN)) &&
                     this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN)

@@ -1,6 +1,6 @@
 import {ElementRef, Directive} from "@angular/core";
 
-var jQuery = require('jquery');
+let jQuery = require('jquery');
 
 @Directive({
     selector: "[drap-resize]"

@@ -13,8 +13,8 @@ import {API} from "./catalog/defaultAPI";
  *
  */
 
-var SockJS = require('sockjs-client');
-var Stomp = require('stompjs');
+let SockJS = require('sockjs-client');
+let Stomp = require('stompjs');
 
 export interface IWebSocket{
     [channel:string]:{

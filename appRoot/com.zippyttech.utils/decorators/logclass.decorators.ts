@@ -1,11 +1,11 @@
 function logClass(target: any) {
 
     // save a reference to the original constructor
-    var original = target;
+    let original = target;
 
     // a utility function to generate instances of a class
     function construct(constructor, args) {
-        var c : any = function () {
+        let c : any = function () {
             return constructor.apply(this, args);
         };
 
@@ -14,7 +14,7 @@ function logClass(target: any) {
     }
 
     // the new constructor behaviour
-    var f : any = function (...args) {
+    let f : any = function (...args) {
         console.log("New: " + original.name);
         return construct(original, args);
     };

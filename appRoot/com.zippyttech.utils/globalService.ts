@@ -12,7 +12,7 @@ import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
  *
  */
 
-var moment = require("moment");
+let moment = require("moment");
 
 export class globalService extends RestController{
     user:any={};

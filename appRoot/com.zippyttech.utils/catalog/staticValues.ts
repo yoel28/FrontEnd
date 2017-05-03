@@ -1,7 +1,7 @@
-var jQuery = require('jquery');
-var moment = require('moment');
-var humanizeDuration = require('humanize');
-var Table2Excel = require('table2excel');
+let jQuery = require('jquery');
+let moment = require('moment');
+let humanizeDuration = require('humanize');
+let Table2Excel = require('table2excel');
 
 export class StaticValues {
 

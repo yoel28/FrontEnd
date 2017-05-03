@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-var jQuery = require('jquery');
+let jQuery = require('jquery');
 @Component({
     selector: 'term-conditions',
     templateUrl: './index.html',

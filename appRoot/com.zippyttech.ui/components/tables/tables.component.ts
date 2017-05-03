@@ -5,7 +5,7 @@ import {Rule} from "../../../com.zippyttech.common/rules/rule";
 import {TRules} from "../../../app-routing.module";
 import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 
-var moment = require('moment');
+let moment = require('moment');
 
 @Component({
     selector: 'tables-view',
