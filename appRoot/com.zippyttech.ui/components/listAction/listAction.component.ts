@@ -151,8 +151,8 @@ export class ListActionComponent extends ControllerBase
     }
 
     private formValid():boolean{
-        if(this.instanceForm && this.instanceForm.form){
-            return this.instanceForm.isValidForm();
+        if(this.instanceForm){
+            return this.instanceForm.valid;
         }
         return false;
     }
