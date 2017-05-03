@@ -1,8 +1,8 @@
 import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
 import {FormControl} from "@angular/forms";
 
-var jQuery = require('jquery');
-var colorpicker = require('colorpicker');
+let jQuery = require('jquery');
+let colorpicker = require('colorpicker');
 
 @Directive({
     selector: "[color-picker]",
@@ -44,7 +44,7 @@ export class ColorPicker implements OnInit{
                 jQuery(that.element.nativeElement).css('backgroundColor', '#' + (that.hexControl.value || this.hexString));
                 jQuery(that.element.nativeElement).val('#'+(that.hexControl.value || this.hexString));
             }
-        })
+        });
         jQuery(that.element.nativeElement).css('backgroundColor', '#' + _color);
         jQuery(that.element.nativeElement).val('#'+_color);
     }

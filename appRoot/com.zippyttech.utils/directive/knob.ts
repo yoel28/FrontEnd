@@ -16,8 +16,8 @@ export interface IParamsKnob{
 }
 
 
-var jQuery = require('jquery');
-var knob = require('knob');
+let jQuery = require('jquery');
+let knob = require('knob');
 
 @Directive({
     selector: "[knob]",

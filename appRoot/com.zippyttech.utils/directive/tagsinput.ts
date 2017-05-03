@@ -4,8 +4,8 @@ import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {ModelRoot} from "../../com.zippyttech.common/modelRoot";
 import {TRules} from "../../app-routing.module";
 
-var jQuery = require('jquery');
-var tagsinput = require('tagsinput');
+let jQuery = require('jquery');
+let tagsinput = require('tagsinput');
 
 type TTemplate = 'free'|'object'|'inlist'
 
@@ -60,10 +60,10 @@ export class TagsInput implements OnInit{
         switch (list.template){
             case 'free':{
 
-            }
+            }break;
             case 'inlist':{
 
-            }
+            }break;
             case 'object':{
 
             }

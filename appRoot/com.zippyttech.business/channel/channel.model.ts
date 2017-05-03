@@ -44,9 +44,7 @@ export class ChannelModel extends ModelBase{
             components:{
                 save:{
                     hidden: (form)=>{
-                        if(form.getFormValue('model') && form.getFormValue('model')!='-1')
-                            return true;
-                        return false;
+                        return (form.getFormValue('model') && form.getFormValue('model') != '-1');
                     },
                 }
             },
@@ -63,9 +61,7 @@ export class ChannelModel extends ModelBase{
             components:{
                 save:{
                     hidden: (form)=>{
-                        if(form.getFormValue('component') && form.getFormValue('component')!='-1')
-                            return true;
-                        return false;
+                        return (form.getFormValue('component') && form.getFormValue('component') != '-1');
                     },
                 }
             },

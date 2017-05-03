@@ -30,7 +30,7 @@ export class NavMenuComponent{
             permission: this.db.myglobal.existsPermission(['MEN_USER', 'MEN_ACL', 'MEN_PERMISSION', 'MEN_ROLE', 'MEN_ACCOUNT']),
             icon: 'fa fa-gears'
         });
-        this.loadItemsAcceso()
+        this.loadItemsAcceso();
         this.menu.addNav({
             title:'Configuración',
             permission: this.db.myglobal.existsPermission(['MEN_EVENT', 'MEN_INFO', 'MEN_PARAM', 'MEN_RULE', 'MEN_NOTIFICATION','MEN_CHANNEL']),

@@ -2,7 +2,7 @@ import {Component, OnInit, ElementRef} from '@angular/core';
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 import {IModalConfig} from "./modal.types";
 
-var jQuery = require('jquery');
+let jQuery = require('jquery');
 
 @Component({
     selector: 'modal',

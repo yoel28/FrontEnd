@@ -39,7 +39,7 @@ export class RecoverPasswordComponent extends RestController implements OnInit  
         let successCallback= response => {
             let link = ['/auth/login', {}];
             that.db.router.navigate(link);
-        }
+        };
         this.httputils.doPut(this.endpoint,body,successCallback,this.error)
     }
 

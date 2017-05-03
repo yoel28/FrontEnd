@@ -3,7 +3,7 @@ import {RestController} from "../../com.zippyttech.rest/restController";
 import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
 import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
 
-var jQuery = require('jquery');
+let jQuery = require('jquery');
 
 @Component({
     selector: 'account-select',

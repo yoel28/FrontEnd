@@ -93,9 +93,7 @@ export class AclComponent extends RestController implements OnInit{
     
     public existsPermission(id){
         let index = this.role.permissions.findIndex(obj => obj.id == id);
-        if(index > -1)
-            return true;
-        return false;
+        return index > -1;
     }
     
     getObjectKeys(data={}){
@@ -161,8 +159,8 @@ export class AclComponent extends RestController implements OnInit{
             let successCallback= response => {
                 let index = this.dataRoles.list.findIndex(obj => obj.id == this.role.id);
                 this.dataRoles.list[index].permissions = this.role.permissions;
-                that.addToast('Notificación','Guardado con exito');
-            }
+                that.httputils.addToast('Notificación','Guardado con exito');
+            };
             this.httputils.doPost('/role/'+this.role.id+'/permissions/',body,successCallback,this.error)
         }
     }

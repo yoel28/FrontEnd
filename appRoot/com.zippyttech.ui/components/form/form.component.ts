@@ -355,7 +355,7 @@ export class FormComponent implements OnInit,AfterViewInit {
                 }
 
                 if (rule.type == 'boolean') {
-                    body[key] = body[key] == 'true' ? true : false;
+                    body[key] = body[key] == 'true';
                 }
 
                 if (rule.componentSave.prefix && rule.type == 'text') {
@@ -397,7 +397,7 @@ export class FormComponent implements OnInit,AfterViewInit {
             this._getControl(key).setErrors(null);
             if (this._getRule(key).readOnly)
                 this._getRule(key).readOnly = false;
-        })
+        });
         this._form.reset();
     }
 
@@ -455,7 +455,7 @@ export class FormComponent implements OnInit,AfterViewInit {
     //region others
 
     private _fnContainsType(key: string, ...list: string[]): boolean {
-        return list.indexOf(this._getRule(key).type) >= 0 ? true : false;
+        return list.indexOf(this._getRule(key).type) >= 0;
     }
 
     private _getKeys(data:Object = {}){
@@ -477,7 +477,7 @@ export class FormComponent implements OnInit,AfterViewInit {
     private _fnMakeTextRandon():string {
         let text = "";
         let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for( var i=0; i < 20; i++ )
+        for( let i=0; i < 20; i++ )
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         return text;
     }

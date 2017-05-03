@@ -4,9 +4,9 @@ import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase"
 import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
 
 
-var moment = require('moment');
-var jQuery = require('jquery');
-const Highcharts = require('highcharts');
+let moment = require('moment');
+let jQuery = require('jquery');
+let Highcharts = require('highcharts');
 //const Highcharts3d = require('highcharts/highcharts-3d.src');
 //Highcharts.setOptions({ colors: ['#058DC7', '#50B432', '#ED561B'] });
 

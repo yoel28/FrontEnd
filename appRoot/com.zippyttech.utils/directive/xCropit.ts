@@ -1,7 +1,7 @@
 import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
 
-var jQuery = require('jquery');
-var cropit = require('cropit');
+let jQuery = require('jquery');
+let cropit = require('cropit');
 
 @Directive({
     selector: "[x-cropit]",

@@ -28,7 +28,7 @@ export class HttpUtils {
     public addToast(title:string,message:string,type:typeToast='info',time:number=10000) {
 
         if(this.db.toastyService) {
-            var toastOptions:ToastOptions = {
+            let toastOptions:ToastOptions = {
                 title: title,
                 msg: message,
                 showClose: true,

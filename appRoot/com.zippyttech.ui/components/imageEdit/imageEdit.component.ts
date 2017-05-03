@@ -1,7 +1,7 @@
 import {Component, EventEmitter} from '@angular/core';
 import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
 
-var moment = require('moment');
+let moment = require('moment');
 
 @Component({
     selector: 'image-edit-view',

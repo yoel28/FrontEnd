@@ -12,10 +12,10 @@ import {ModelRoot} from "./modelRoot";
  *
  */
 
-var jQuery = require('jquery');
-var humanizeDuration = require('humanize');
-var moment = require('moment');
-var Table2Excel = require('table2excel');
+let jQuery = require('jquery');
+let humanizeDuration = require('humanize');
+let moment = require('moment');
+let Table2Excel = require('table2excel');
 
 
 export abstract class ControllerBase implements OnInit {
@@ -37,7 +37,7 @@ export abstract class ControllerBase implements OnInit {
     }
 
     public initLang() {
-        var userLang = navigator.language.split('-')[0];
+        let userLang = navigator.language.split('-')[0];
         userLang = /(es|en)/gi.test(userLang) ? userLang : 'es';
         // this.translate.setDefaultLang('en');
         // this.translate.use(userLang);
@@ -50,7 +50,7 @@ export abstract class ControllerBase implements OnInit {
         this.viewOptions['buttons'].forEach(obj=> {
             if (obj.visible && obj.type == type)
                 visible.push(obj);
-        })
+        });
         return visible;
     }
 
@@ -59,7 +59,7 @@ export abstract class ControllerBase implements OnInit {
         Object.keys(this.viewOptions.actions).forEach(obj=> {
             if (this.viewOptions.actions[obj].visible)
                 visible.push(obj);
-        })
+        });
         return visible;
     }
 
@@ -72,7 +72,7 @@ export abstract class ControllerBase implements OnInit {
             if (id && this.formatDateId[id])
                 force = this.formatDateId[id].value;
             if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN) && !force) {
-                var diff = moment().valueOf() - moment(date).valueOf();
+                let diff = moment().valueOf() - moment(date).valueOf();
                 if (diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN))) {
                     if (diff < 1800000)//menor a 30min
                         return 'Hace ' + this.dateHmanizer(diff, {units: ['m', 's']});
@@ -94,7 +94,7 @@ export abstract class ControllerBase implements OnInit {
     
     public viewChangeDate(date) {
         //<i *ngIf="viewChangeDate(data.rechargeReferenceDate)" class="fa fa-exchange" (click)="changeFormatDate(data.id)"></i>
-        var diff = moment().valueOf() - moment(date).valueOf();
+        let diff = moment().valueOf() - moment(date).valueOf();
         return (
                     (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN',API.DATE_MAX_HUMAN)) &&
                     this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN',API.DATE_FORMAT_HUMAN)
@@ -138,8 +138,8 @@ export abstract class ControllerBase implements OnInit {
     }
 
     exportPrint(){
-        var printContents = document.getElementById("reporte").innerHTML;
-        var popupWin = window.open('', '_blank');
+        let printContents = document.getElementById("reporte").innerHTML;
+        let popupWin = window.open('', '_blank');
         popupWin.document.open();
         popupWin.document.write('<body onload="window.print()">' + printContents + '</body>');
         popupWin.document.head.innerHTML = (document.head.innerHTML);

@@ -5,8 +5,8 @@ import {AnimationsManager} from "../../animations/AnimationsManager";
 import {FormComponent} from "../form/form.component";
 import {FormControl} from "@angular/forms";
 
-var moment = require('moment');
-var jQuery = require('jquery');
+let moment = require('moment');
+let jQuery = require('jquery');
 
 
 export interface IListActionData {
@@ -100,7 +100,7 @@ export class ListActionComponent extends ControllerBase
         Object.keys(actions).forEach(k=>{
             if(actions[k].permission)
                 keys.push(k);
-        })
+        });
         return keys;
     }
 
@@ -118,7 +118,7 @@ export class ListActionComponent extends ControllerBase
             else{
                 console.log("not found rule: "+k);
             }
-        })
+        });
         return newRules;
     }
 
@@ -151,8 +151,8 @@ export class ListActionComponent extends ControllerBase
     }
 
     private formValid():boolean{
-        if(this.instanceForm && this.instanceForm.form){
-            return this.instanceForm.isValidForm();
+        if(this.instanceForm){
+            return this.instanceForm.valid;
         }
         return false;
     }

@@ -57,15 +57,12 @@ export class ObjectRule extends Rule{
             permission:this.permissions['search'],
             views:[
                 {icon:'fa fa-search',title:'search',colorClass:"text-blue"},
-                {icon:'',title:'search',colorClass:"text-blue"}
             ],
             callback:(rule:RuleViewComponent, key:string) => {
                 rule.model.currentData = rule.data;
-                this.model.db.ms.show('search',{ model: rule.model , extraParams:{childKey:rule.key} });
+                this.model.db.ms.show('search',{ model: this.model });
             },
-            stateEval:(data:any,key:string):number=>{
-                return 0;
-            },
+            stateEval:'0',
             params:{
                 list:true
             }

@@ -6,8 +6,8 @@ import {TablesComponent} from "../../components/tables/tables.component";
 import {IRule} from "../../../com.zippyttech.common/rules/rule";
 import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
-var jQuery = require('jquery');
-var moment = require('moment');
+let jQuery = require('jquery');
+let moment = require('moment');
 
 @Component({
     selector: 'base-view',
@@ -51,7 +51,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
 
     }
     private get isVisible():boolean{
-        return this.model.getData().list ? true: false;
+        return !!this.model.getData().list;
     }
 
     getUrlExport(type:string){
@@ -116,7 +116,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             keys.forEach(obj=>{
                 temp[obj]=[];
                 temp[obj] = that.model.rules[obj];
-            })
+            });
             that.model.rules={};
             Object.assign(that.model.rules,temp);
         }

@@ -4,13 +4,13 @@ import {ControllerBase} from "../../../com.zippyttech.common/ControllerBase";
 import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
 
 
-var jQuery = require('jquery');
-//var google = require('google');
-var jqueryui = require('jqueryui');
-var addresspicker = require('addresspicker');
+let jQuery = require('jquery');
+//let google = require('google');
+let jqueryui = require('jqueryui');
+let addresspicker = require('addresspicker');
 
 
-declare var google:any;
+declare let google:any;
 
 export interface ILocation{
     regionBias?:string,

@@ -188,7 +188,7 @@ export class RestController {
     }
 
     private sound(id:string) {
-        var audio = {};
+        let audio = {};
         audio['500'] = new Audio();
         audio['404'] = new Audio();
         audio['422'] = new Audio();

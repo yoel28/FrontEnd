@@ -1,8 +1,8 @@
 import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
 
-var jQuery = require('jquery');
-var moment = require('moment');
-var bootstrap = require('bootstrap');
+let jQuery = require('jquery');
+let moment = require('moment');
+let bootstrap = require('bootstrap');
 
 @Directive({
     selector: "[date-picker]",
@@ -48,7 +48,7 @@ export class DatePicker implements OnInit {
                 that.fecha.emit({'date':moment.utc(ev.date).format(that.format.return),'key':ev.target.accessKey});
             else
                 that.fecha.emit({'date':ev.date,'key':ev.target.accessKey});
-        })
+        });
         jQuery('#formato').click(function (ev) {
             jQuery(that.el.nativeElement).datepicker({
                 format: "yyyy",

@@ -12,7 +12,7 @@ import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
  *
  */
 
-var moment = require("moment");
+let moment = require("moment");
 
 export class globalService extends RestController{
     user:any={};
@@ -96,7 +96,7 @@ export class globalService extends RestController{
             contentHeaders.delete('Authorization');
             window.location.href = "#/auth/login";
         }
-    }
+    };
 
     loadValidToken():void{
         let that=this;
@@ -169,9 +169,8 @@ export class globalService extends RestController{
 
     existsPermission(keys:any):boolean{
         let index = this.permissions.findIndex((obj:any) => (keys.indexOf(obj.id) >= 0 || keys.indexOf(obj.code)>=0));
-        if(index > -1)
-            return true;
-        return false;
+        return index > -1;
+
     }
 
     getParams(code:string,defaultValue?:any):any{
@@ -181,7 +180,7 @@ export class globalService extends RestController{
                 case 'number':
                     return parseFloat(data.value);
                 case 'boolean':
-                    return data.value=='true'?true:false;
+                    return data.value == 'true';
                 case 'object':
                     return JSON.parse(data.value);
                 case 'date':
@@ -256,8 +255,8 @@ export class globalService extends RestController{
             (
                 {   'key':key,
                     'visible':(<IRule>rules[key]).permissions.visible,
-                    'exclude':(<IRule>rules[key]).exclude?true:false,
-                    'display':(<IRule>rules[key]).key,//TODO: checkear en instancias ModelRoot
+                    'exclude':(<IRule>rules[key]).exclude,
+                    'display':key,//TODO: checkear en instancias ModelRoot
                 }
             )
         });
