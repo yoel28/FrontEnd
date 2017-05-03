@@ -40,7 +40,7 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
             that.db.router.navigate(link);
         };
         if(this.context.company)
-            return this.httputils.doPost(localStorage.getItem('url')+'/tokens/'+this.context.company+'/firebaseToken',JSON.stringify(json),successCallback,this.error,true)
+            return this.httputils.doPost(localStorage.getItem('url')+'/tokens/'+this.context.company+'/firebaseToken',JSON.stringify(json),successCallback,this.error,true);
         else
             return this.httputils.doPost(localStorage.getItem('url')+'/tokens/firebaseToken',JSON.stringify(json),successCallback,this.error,true)
 
@@ -84,7 +84,7 @@ export class LoginComponent extends RestController implements OnInit,OnDestroy{
         let errorLogin = (error:any)=> {
             that.submitForm = false;
             that.error(error);
-        }
+        };
         let successCallback = (response:any) => {
             that.submitForm = false;
             localStorage.setItem('bearer', response.json().access_token);

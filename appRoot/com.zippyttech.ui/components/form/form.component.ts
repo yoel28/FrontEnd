@@ -397,7 +397,7 @@ export class FormComponent implements OnInit,AfterViewInit {
             this._getControl(key).setErrors(null);
             if (this._getRule(key).readOnly)
                 this._getRule(key).readOnly = false;
-        })
+        });
         this._form.reset();
     }
 

@@ -63,7 +63,7 @@ export class FilterComponent extends RestController implements OnInit{
                 data.push({op:key,data:this.filters[key],check:true});
             else
                 data.push({op:key,data:this.filters[key]});
-        })
+        });
         return data;
     }
 
@@ -470,7 +470,7 @@ export class FilterComponent extends RestController implements OnInit{
                 (<FormControl>this.form.controls[key]).setValue(null);
                 (<FormControl>this.form.controls[key]).setErrors(null);
             }
-        })
+        });
         let where=[];
         if(this.currentParams.where && this.currentParams.where.length > 0 ){
              where=this.currentParams.where;

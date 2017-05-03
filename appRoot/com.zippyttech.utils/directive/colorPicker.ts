@@ -44,7 +44,7 @@ export class ColorPicker implements OnInit{
                 jQuery(that.element.nativeElement).css('backgroundColor', '#' + (that.hexControl.value || this.hexString));
                 jQuery(that.element.nativeElement).val('#'+(that.hexControl.value || this.hexString));
             }
-        })
+        });
         jQuery(that.element.nativeElement).css('backgroundColor', '#' + _color);
         jQuery(that.element.nativeElement).val('#'+_color);
     }

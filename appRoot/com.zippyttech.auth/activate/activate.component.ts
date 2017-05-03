@@ -25,13 +25,15 @@ export class ActivateComponent extends RestController implements OnInit{
     }
     validate() {
         let that=this;
+        //noinspection UnterminatedStatementJS
         let successCallback = response => {
             that.activate.response=true;
             that.activate.status = true;
-        }
+        };
+        //noinspection UnterminatedStatementJS
         let errorCallback = err => {
             that.activate.response=true;
-        }
+        };
         this.httputils.doGet(this.endpoint, successCallback, errorCallback)
     }
     onLogin(event){

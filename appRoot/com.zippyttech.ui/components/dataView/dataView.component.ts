@@ -39,7 +39,7 @@ export class DataViewComponent implements OnInit{
 
     ngOnInit(){
         if(!this.model) console.error("Model is required in DataViewComponent!");
-        if(!this.dataParams.cols) this.dataParams.cols = {lg:4,md:3,sm:2,xs:1}
+        if(!this.dataParams.cols) this.dataParams.cols = {lg:4,md:3,sm:2,xs:1};
         this.data = this.model.dataList;
     }
 

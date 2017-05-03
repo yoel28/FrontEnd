@@ -116,7 +116,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
             keys.forEach(obj=>{
                 temp[obj]=[];
                 temp[obj] = that.model.rules[obj];
-            })
+            });
             that.model.rules={};
             Object.assign(that.model.rules,temp);
         }

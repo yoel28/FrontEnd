@@ -121,7 +121,7 @@ export class XEditable implements OnInit {
             case "url" :
                 return 'link';
             case "object":
-                return (<ObjectRule>rule)
+                return (<ObjectRule>rule);
             default :
                 return (<Editable>rule).emptyText || 'N/A';
         }

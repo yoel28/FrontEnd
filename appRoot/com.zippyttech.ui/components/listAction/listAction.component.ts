@@ -100,7 +100,7 @@ export class ListActionComponent extends ControllerBase
         Object.keys(actions).forEach(k=>{
             if(actions[k].permission)
                 keys.push(k);
-        })
+        });
         return keys;
     }
 
@@ -118,7 +118,7 @@ export class ListActionComponent extends ControllerBase
             else{
                 console.log("not found rule: "+k);
             }
-        })
+        });
         return newRules;
     }
 

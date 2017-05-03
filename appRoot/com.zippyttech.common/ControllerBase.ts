@@ -50,7 +50,7 @@ export abstract class ControllerBase implements OnInit {
         this.viewOptions['buttons'].forEach(obj=> {
             if (obj.visible && obj.type == type)
                 visible.push(obj);
-        })
+        });
         return visible;
     }
 
@@ -59,7 +59,7 @@ export abstract class ControllerBase implements OnInit {
         Object.keys(this.viewOptions.actions).forEach(obj=> {
             if (this.viewOptions.actions[obj].visible)
                 visible.push(obj);
-        })
+        });
         return visible;
     }
 

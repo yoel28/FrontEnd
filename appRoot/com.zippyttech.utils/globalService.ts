@@ -96,7 +96,7 @@ export class globalService extends RestController{
             contentHeaders.delete('Authorization');
             window.location.href = "#/auth/login";
         }
-    }
+    };
 
     loadValidToken():void{
         let that=this;

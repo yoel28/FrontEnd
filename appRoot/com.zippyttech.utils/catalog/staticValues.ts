@@ -178,7 +178,7 @@ export class StaticValues {
         let currentMsg = this.msg[id];
         params.forEach((value,index)=>{
             currentMsg.replace('$'+index,value)
-        })
+        });
         return currentMsg;
     }
 

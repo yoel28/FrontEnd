@@ -48,7 +48,7 @@ export class DatePicker implements OnInit {
                 that.fecha.emit({'date':moment.utc(ev.date).format(that.format.return),'key':ev.target.accessKey});
             else
                 that.fecha.emit({'date':ev.date,'key':ev.target.accessKey});
-        })
+        });
         jQuery('#formato').click(function (ev) {
             jQuery(that.el.nativeElement).datepicker({
                 format: "yyyy",
