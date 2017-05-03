@@ -291,65 +291,65 @@
 
                         <ng-template [ngIf]="getEnabled">
 
-                            <ng-template [ngIf]="!_rule.reference">
+                            <!--<ng-template [ngIf]="!_rule.reference">-->
 
-                                <button *ngIf="_rule.paramsSave && _rule.permissions.add"
-                                        type="button" class="btn btn-box-tool"
-                                        (click)="showModal('save',_rule.model)" title="Asignar nuevo">
-                                    <i class="fa fa-plus text-green"></i>
-                                </button>
+                                <!--<button *ngIf="_rule.paramsSave && _rule.permissions.add"-->
+                                        <!--type="button" class="btn btn-box-tool"-->
+                                        <!--(click)="showModal('save',_rule.model)" title="Asignar nuevo">-->
+                                    <!--<i class="fa fa-plus text-green"></i>-->
+                                <!--</button>-->
 
-                                <button *ngIf="_rule.paramsSearch && _rule.permissions.search"
-                                        type="button" class="btn btn-box-tool"
-                                        (click)="showModal('searh')" title="Buscar">
-                                    <i class="fa fa-search text-blue"></i>
-                                </button>
+                                <!--<button *ngIf="_rule.paramsSearch && _rule.permissions.search"-->
+                                        <!--type="button" class="btn btn-box-tool"-->
+                                        <!--(click)="showModal('searh')" title="Buscar">-->
+                                    <!--<i class="fa fa-search text-blue"></i>-->
+                                <!--</button>-->
 
-                                <button *ngIf="data[_rule.code] && !_rule.required"
-                                        (click)="model.setNull(data,key)"
-                                        type="button" class="btn btn-box-tool"
-                                        title="Liberar">
-                                    <i class="fa fa-minus text-red"></i>
-                                </button>
+                                <!--<button *ngIf="data[_rule.code] && !_rule.required"-->
+                                        <!--(click)="model.setNull(data,key)"-->
+                                        <!--type="button" class="btn btn-box-tool"-->
+                                        <!--title="Liberar">-->
+                                    <!--<i class="fa fa-minus text-red"></i>-->
+                                <!--</button>-->
 
-                            </ng-template>
+                            <!--</ng-template>-->
 
-                            <ng-template [ngIf]="_rule.reference">
+                            <!--<ng-template [ngIf]="_rule.reference">-->
 
-                                <button (click)="loadDataFieldReference()"
-                                        *ngIf="model.permissions.update && _rule.permissions.add"
-                                        data-toggle="modal"
-                                        [attr.data-target]="'#'+_rule.paramsSave.idModal"
-                                        type="button" class="btn btn-box-tool"
-                                        title="Asignar nuevo">
-                                    <i class="fa fa-plus text-green"></i>
-                                </button>
+                                <!--<button (click)="loadDataFieldReference()"-->
+                                        <!--*ngIf="model.permissions.update && _rule.permissions.add"-->
+                                        <!--data-toggle="modal"-->
+                                        <!--[attr.data-target]="'#'+_rule.paramsSave.idModal"-->
+                                        <!--type="button" class="btn btn-box-tool"-->
+                                        <!--title="Asignar nuevo">-->
+                                    <!--<i class="fa fa-plus text-green"></i>-->
+                                <!--</button>-->
 
-                                <button (click)="loadDataFieldReference()"
-                                        *ngIf="model.permissions.update && _rule.permissions.search && !_rule.pathLocal"
-                                        data-toggle="modal"
-                                        [attr.data-target]="'#'+_rule.paramsSearch.idModal"
-                                        type="button" class="btn btn-box-tool"
-                                        title="Asignar">
-                                    <i class="fa fa-search text-blue"></i>
-                                </button>
+                                <!--<button (click)="loadDataFieldReference()"-->
+                                        <!--*ngIf="model.permissions.update && _rule.permissions.search && !_rule.pathLocal"-->
+                                        <!--data-toggle="modal"-->
+                                        <!--[attr.data-target]="'#'+_rule.paramsSearch.idModal"-->
+                                        <!--type="button" class="btn btn-box-tool"-->
+                                        <!--title="Asignar">-->
+                                    <!--<i class="fa fa-search text-blue"></i>-->
+                                <!--</button>-->
 
-                                <button *ngIf="_rule.paramsSearch && _rule.permissions.search && _rule.pathLocal"
-                                        type="button" class="btn btn-box-tool"
-                                        (click)="loadSearchTable($event)" title="Buscar"
-                                        data-toggle="modal"
-                                        [attr.data-target]="'#'+_rule.paramsSearch.idModal">
-                                    <i class="fa fa-search text-blue"></i>
-                                </button>
+                                <!--<button *ngIf="_rule.paramsSearch && _rule.permissions.search && _rule.pathLocal"-->
+                                        <!--type="button" class="btn btn-box-tool"-->
+                                        <!--(click)="loadSearchTable($event)" title="Buscar"-->
+                                        <!--data-toggle="modal"-->
+                                        <!--[attr.data-target]="'#'+_rule.paramsSearch.idModal">-->
+                                    <!--<i class="fa fa-search text-blue"></i>-->
+                                <!--</button>-->
 
-                                <button *ngIf="model.permissions.update && !_rule.required && data[_rule.code]"
-                                        (click)="loadDataFieldReference(true)"
-                                        type="button" class="btn btn-box-tool"
-                                        title="Liberar">
-                                    <i class="fa fa-minus text-red"></i>
-                                </button>
+                                <!--<button *ngIf="model.permissions.update && !_rule.required && data[_rule.code]"-->
+                                        <!--(click)="loadDataFieldReference(true)"-->
+                                        <!--type="button" class="btn btn-box-tool"-->
+                                        <!--title="Liberar">-->
+                                    <!--<i class="fa fa-minus text-red"></i>-->
+                                <!--</button>-->
 
-                            </ng-template>
+                            <!--</ng-template>-->
 
                         </ng-template>
 
