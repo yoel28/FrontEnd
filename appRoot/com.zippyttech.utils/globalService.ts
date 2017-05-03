@@ -169,9 +169,8 @@ export class globalService extends RestController{
 
     existsPermission(keys:any):boolean{
         let index = this.permissions.findIndex((obj:any) => (keys.indexOf(obj.id) >= 0 || keys.indexOf(obj.code)>=0));
-        if(index > -1)
-            return true;
-        return false;
+        return index > -1;
+
     }
 
     getParams(code:string,defaultValue?:any):any{

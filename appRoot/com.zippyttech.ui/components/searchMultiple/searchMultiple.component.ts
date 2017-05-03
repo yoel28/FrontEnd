@@ -56,9 +56,7 @@ export class SearchMultipleComponent extends RestController implements OnInit,Do
     }
     existValue(id){
         let index = this.params.valuesData.findIndex((obj:any) =>obj.id == id );
-        if(index > -1)
-            return true;
-        return false;
+        return index > -1;
     }
 }
 

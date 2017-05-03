@@ -93,9 +93,7 @@ export class AclComponent extends RestController implements OnInit{
     
     public existsPermission(id){
         let index = this.role.permissions.findIndex(obj => obj.id == id);
-        if(index > -1)
-            return true;
-        return false;
+        return index > -1;
     }
     
     getObjectKeys(data={}){
