@@ -32,7 +32,7 @@
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'search'">
-                    search -.-
+                    <search-view  [params]  = "{model: db.ms.params.model}"></search-view>
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'location'">
