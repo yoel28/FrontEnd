@@ -355,7 +355,7 @@ export class FormComponent implements OnInit,AfterViewInit {
                 }
 
                 if (rule.type == 'boolean') {
-                    body[key] = body[key] == 'true' ? true : false;
+                    body[key] = body[key] == 'true';
                 }
 
                 if (rule.componentSave.prefix && rule.type == 'text') {
@@ -455,7 +455,7 @@ export class FormComponent implements OnInit,AfterViewInit {
     //region others
 
     private _fnContainsType(key: string, ...list: string[]): boolean {
-        return list.indexOf(this._getRule(key).type) >= 0 ? true : false;
+        return list.indexOf(this._getRule(key).type) >= 0;
     }
 
     private _getKeys(data:Object = {}){

@@ -180,7 +180,7 @@ export class globalService extends RestController{
                 case 'number':
                     return parseFloat(data.value);
                 case 'boolean':
-                    return data.value=='true'?true:false;
+                    return data.value == 'true';
                 case 'object':
                     return JSON.parse(data.value);
                 case 'date':
@@ -255,8 +255,8 @@ export class globalService extends RestController{
             (
                 {   'key':key,
                     'visible':(<IRule>rules[key]).permissions.visible,
-                    'exclude':(<IRule>rules[key]).exclude?true:false,
-                    'display':(<IRule>rules[key]).key,//TODO: checkear en instancias ModelRoot
+                    'exclude':(<IRule>rules[key]).exclude,
+                    'display':key,//TODO: checkear en instancias ModelRoot
                 }
             )
         });

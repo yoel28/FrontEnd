@@ -51,7 +51,7 @@ export class BaseViewComponent extends ControllerBase implements OnInit,AfterVie
 
     }
     private get isVisible():boolean{
-        return this.model.getData().list ? true: false;
+        return !!this.model.getData().list;
     }
 
     getUrlExport(type:string){

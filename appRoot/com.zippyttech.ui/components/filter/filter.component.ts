@@ -343,7 +343,7 @@ export class FilterComponent extends RestController implements OnInit{
         }
 
         if(rule.type == 'boolean') {
-            where.value = where.value=='true'?true:false;
+            where.value = where.value == 'true';
         }
 
         if (rule.object) {

@@ -61,11 +61,11 @@ export class RuleViewComponent implements OnInit,AfterViewInit {
 
 
     public isCurrentType(list:Array<string>):boolean{
-        return list.indexOf(this._rule.type) >= 0 ? true:false;
+        return list.indexOf(this._rule.type) >= 0;
     }
 
     public isCurrentMode(list:Array<string>):boolean{
-        return list.indexOf(this._rule.mode) >= 0 ? true:false;
+        return list.indexOf(this._rule.mode) >= 0;
     }
 
 

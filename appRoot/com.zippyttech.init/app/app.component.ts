@@ -129,11 +129,11 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
     }
 
     public isPublic(component: string) {
-        return componentsPublic.indexOf(component) > -1 ? true : false;
+        return componentsPublic.indexOf(component) > -1;
     }
 
     public validToken(): boolean {
-        return localStorage.getItem('bearer') ? true : false;
+        return !!localStorage.getItem('bearer');
     }
 
     logout(event:Event) {
@@ -213,7 +213,7 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
         return iModalTerm;
     }
     @HostListener('window:offline') offline() {
-        this.addToast('Offline','Se a detectado un problema con el Internet, Por favor conectarse a la red','error');
+        this.httputils.addToast('Offline','Se a detectado un problema con el Internet, Por favor conectarse a la red','error');
     }
 
     toggleTreeMenu(){

@@ -20,7 +20,7 @@ export class TermConditionsComponent implements OnInit{
     }
 
     existToken():boolean{
-        return localStorage.getItem('bearer')?true:false;
+        return !!localStorage.getItem('bearer');
     }
 }
 
