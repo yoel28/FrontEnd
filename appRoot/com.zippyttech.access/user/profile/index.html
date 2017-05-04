@@ -40,8 +40,7 @@
                                             <p class="psalto"
                                                *ngIf="model.rules[key].type != 'boolean' && model.rules[key].type != 'image'">
                                                 <strong>{{model.rules[key].title}}:</strong>&nbsp;&nbsp;
-                                                <rule-view [key]="key" [model]="model"
-                                                           [data]="db.myglobal.user"></rule-view>
+                                                <rule-view [params]="_getParamsRuleView(key,db.myglobal.user)" ></rule-view>
                                             </p>
                                         </div>
                                     </div>
