@@ -362,7 +362,7 @@
     "findData":"Buscando información, por favor espere",
     "select":"Seleccionar",
     "tagFree":"Presione Enter para agregar un nuevo item",
-    "fieldRequired":"Todos los campos con (*) son obligatorios.",
+    "fieldRequired":"Todos los campos con (<strong class='text-red'>*</strong>) son obligatorios.",
     "inputManual":"Entrada manual"
   },
 
