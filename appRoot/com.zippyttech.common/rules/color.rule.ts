@@ -1,14 +1,14 @@
-import {IRule, Rule} from "./rule";
+import {IRule, Rule} from './rule';
 
-export interface IColor  extends IRule{
+export interface IColor extends IRule {
 }
-export class ColorRule extends Rule{
+export class ColorRule extends Rule {
 
-    constructor(private rule:IColor){
+    constructor(private rule: IColor) {
         super(rule);
     }
 
-    get value():string{
+    get value(): string {
         return this.attributes.value || '#FFFFFF'
     }
 

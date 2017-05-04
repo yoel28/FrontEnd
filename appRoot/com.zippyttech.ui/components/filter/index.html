@@ -1,15 +1,17 @@
 <div *ngIf="false" class="modal fade" id="modalfilter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" [class.modal-lg]="search.object" >
+    <div class="modal-dialog" [class.modal-lg]="search.object">
         <div class="modal-content">
             <div class="modal-header bg-green-club text-center">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close" [attr.title]="'custom.close' | translate"><span
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"
+                        [attr.title]="'custom.close' | translate"><span
                         aria-hidden="true">&times;</span></button>
                 <h3 class="modal-title" id="myModalLabel">{{currentParams.title}}</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
                     <div class="{{db.classCol()}} margin-bottom">
-                        <form role="form" [formGroup]="form" class="{{search.object?db.classCol(5,5,5,5):db.classCol()}}">
+                        <form role="form" [formGroup]="form"
+                              class="{{search.object?db.classCol(5,5,5,5):db.classCol()}}">
                             <div *ngFor="let key of keys">
                                 <div *ngIf="currentRule[key].search">
                                     <div class="{{db.classCol()}}">
@@ -18,30 +20,42 @@
                                                 <div class="row">
                                                     <div class="{{db.classCol(10,10,10,10)}}">
 
-                                                        <div *ngIf="getCurrentType(key)=='text' || getCurrentType(key)=='number' || getCurrentType(key)=='time' || getCurrentType(key)=='textarea' " class="row">
+                                                        <div *ngIf="getCurrentType(key)=='text' || getCurrentType(key)=='number' || getCurrentType(key)=='time' || getCurrentType(key)=='textarea' "
+                                                             class="row">
                                                             <i class="{{currentRule[key].icon || 'fa fa-list'}}"></i>
-                                                            <input  *ngIf="getCurrentType(key)!='time'"
-                                                                    formControlName="{{key}}" class="form-control"
-                                                                    placeholder="{{currentRule[key].placeholder}}"
-                                                                    type="{{getCurrentType(key)}}">
-                                                            <input  *ngIf="getCurrentType(key)=='time'"
-                                                                    formControlName="{{key}}" class="form-control"
-                                                                    placeholder="{{currentRule[key].placeholder}}"
-                                                                    type="number">
+                                                            <input *ngIf="getCurrentType(key)!='time'"
+                                                                   formControlName="{{key}}" class="form-control"
+                                                                   placeholder="{{currentRule[key].placeholder}}"
+                                                                   type="{{getCurrentType(key)}}">
+                                                            <input *ngIf="getCurrentType(key)=='time'"
+                                                                   formControlName="{{key}}" class="form-control"
+                                                                   placeholder="{{currentRule[key].placeholder}}"
+                                                                   type="number">
                                                         </div>
 
-                                                        <div *ngIf="getCurrentType(key)=='date' || getCurrentType(key)=='combodate'" class="row">
-                                                            <div date-range-picker [params]="paramsDate" class="pull-right" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%" (fecha)="assignDate($event,key)">
+                                                        <div *ngIf="getCurrentType(key)=='date' || getCurrentType(key)=='combodate'"
+                                                             class="row">
+                                                            <div date-range-picker [params]="paramsDate"
+                                                                 class="pull-right"
+                                                                 style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%"
+                                                                 (fecha)="assignDate($event,key)">
                                                                 <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>&nbsp;
                                                                 <span *ngIf="data[key].value && data[key].value.start && data[key].value.end">{{(data[key].value.start || 'Inicio') +' - '+ (data[key].value.end || 'Fin') }}</span>
-                                                                <span *ngIf="!data[key].value">{{currentRule[key].title}}</span> <b class="caret"></b>
+                                                                <span *ngIf="!data[key].value">{{currentRule[key].title}}</span>
+                                                                <b class="caret"></b>
                                                             </div>
                                                         </div>
 
-                                                        <div *ngIf="getCurrentType(key)=='select' || getCurrentType(key)=='boolean' || getCurrentType(key)=='filter'" class="row">
-                                                            <select formControlName="{{key}}" sm-dropdown class="ui fluid search selection dropdown">
-                                                                <option value="-1">{{currentRule[key].placeholder || 'Seleccione una opción'}}</option>
-                                                                <option *ngFor="let n of currentRule[key].source"  [attr.value]="n.id || n.value" >{{n.text}}</option>
+                                                        <div *ngIf="getCurrentType(key)=='select' || getCurrentType(key)=='boolean' || getCurrentType(key)=='filter'"
+                                                             class="row">
+                                                            <select formControlName="{{key}}" sm-dropdown
+                                                                    class="ui fluid search selection dropdown">
+                                                                <option value="-1">{{currentRule[key].placeholder ||
+                                                                    'Seleccione una opción'}}
+                                                                </option>
+                                                                <option *ngFor="let n of currentRule[key].source"
+                                                                        [attr.value]="n.id || n.value">{{n.text}}
+                                                                </option>
                                                             </select>
                                                         </div>
 
@@ -49,15 +63,19 @@
 
                                                     <div class="{{db.classCol(2,2,2,2)}} padding-top-4">
                                                         <button *ngIf="currentRule[key].object" type="button"
-                                                                class="btn btn-box-tool fa fa-search text-blue" [attr.title]="'custom.find' | translate"
+                                                                class="btn btn-box-tool fa fa-search text-blue"
+                                                                [attr.title]="'custom.find' | translate"
                                                                 (click)="getLoadSearch($event,currentRule[key])">
                                                         </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="{{db.classCol(4,4,4,4)}}" *ngIf="getCondition(currentRule[key])">
-                                                <select formControlName="{{key+'Cond'}}" sm-dropdown class="ui fluid search selection dropdown">
-                                                    <option *ngFor="let n of getCondition(currentRule[key])" [attr.value]="n.id">{{n.text}}
+                                            <div class="{{db.classCol(4,4,4,4)}}"
+                                                 *ngIf="getCondition(currentRule[key])">
+                                                <select formControlName="{{key+'Cond'}}" sm-dropdown
+                                                        class="ui fluid search selection dropdown">
+                                                    <option *ngFor="let n of getCondition(currentRule[key])"
+                                                            [attr.value]="n.id">{{n.text}}
                                                     </option>
                                                 </select>
                                             </div>
@@ -74,13 +92,15 @@
                                     <div class="input-group input-group-sm">
                                         <input #find type="text" class="form-control"
                                                placeholder="{{ search.placeholder}}" value="{{findControl}}">
-                                            <span class="input-group-btn">
+                                        <span class="input-group-btn">
                                                 <button (click)="getSearch($event,find.value)" type="button"
-                                                        class="btn btn-green-club" [attr.title]="'custom.find' | translate">
+                                                        class="btn btn-green-club"
+                                                        [attr.title]="'custom.find' | translate">
                                                     <i class="fa fa-search"></i>
                                                 </button>
                                                 <button (click)="searchQuit($event)" type="button"
-                                                        class="btn btn-red-club" [attr.title]="'custom.close' | translate">
+                                                        class="btn btn-red-club"
+                                                        [attr.title]="'custom.close' | translate">
                                                     <i class="fa fa-close"></i>
                                                 </button>
                                             </span>
@@ -95,9 +115,11 @@
                             <div *ngIf="dataList.count" class="{{db.classCol()}}">
                                 <table class="table table-hover">
                                     <tbody>
-                                    <tr *ngFor="let data of dataList.list" (click)="getDataSearch(data)" [attr.title]="'custom.select' | translate" class="cursor-pointer">
+                                    <tr *ngFor="let data of dataList.list" (click)="getDataSearch(data)"
+                                        [attr.title]="'custom.select' | translate" class="cursor-pointer">
                                         <td>
-                                            <img [src]=" data.image || search.paramsSearch.imageGuest " style="display: inline-block" class="img-responsive img-search">
+                                            <img [src]=" data.image || search.paramsSearch.imageGuest "
+                                                 style="display: inline-block" class="img-responsive img-search">
                                         </td>
                                         <td>
                                             <strong>{{search.paramsSearch.label.title}} {{data.title}}</strong><br>
@@ -114,14 +136,15 @@
                                 <span *ngIf="dataList.count==0">
                                     <i class="fa fa-exclamation-circle"></i>&nbsp;{{'custom.notFound' | translate}}
                                 </span>
-                                            <span *ngIf="dataList.count==null">
+                                <span *ngIf="dataList.count==null">
                                     <i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{'custom.introValueFind' | translate}}
                                 </span>
                             </div>
                             <div class="col-lg-12">
                                 <div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"
                                      class="btn-group pull-right">
-                                    <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)" *ngFor="let val of dataList.page"
+                                    <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"
+                                            *ngFor="let val of dataList.page"
                                             type="button" class="btn btn-default">
                                         {{val}}
                                     </button>
@@ -132,7 +155,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button (click)="onReset($event)"type="reset" data-dismiss="modal" class="btn btn-primary">
+                <button (click)="onReset($event)" type="reset" data-dismiss="modal" class="btn btn-primary">
                     <i class="fa fa-filter"></i>
                     Sin filtro
                 </button>

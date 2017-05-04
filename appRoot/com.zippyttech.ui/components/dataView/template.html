@@ -1,10 +1,11 @@
 <div class="view {{(dataParams.internal)?'':'box'}}" *ngIf="model">
     <div class="view-header box-header" *ngIf="!dataParams.internal">
-        <i class="fa fa-building"></i> <h2>{{model.ruleObject.title}}</h2>
+        <i class="fa fa-building"></i>
+        <h2>{{model.ruleObject.title}}</h2>
     </div>
     <div class="view-aside {{(dataParams.viewActions)?'':'aside-hidden'}}">
         <div class="view-tools-group" *ngIf="!model.rest.findData && dataParams.viewActions">
-            <button title="Volver" (click)="model.navIndex = null"  class="back"
+            <button title="Volver" (click)="model.navIndex = null" class="back"
                     *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.back)) && (model.dataList.count && model.dataList.count > 1)">
                 <i class="fa fa-reply"></i>
             </button>
@@ -20,10 +21,10 @@
     <div class="view-body {{(dataParams.internal)?'':'box-body'}}" *ngIf="model.completed">
         <button *ngIf="((dataParams.nav == true) || (dataParams.nav && dataParams.nav.dir))"
                 [disabled]="model.rest.findData || (model.navIndex==0 && model.rest.offset==0) || (model.dataList.count && model.dataList.count==1)"
-                class="nav-btn nav-left"  (click)="model.navIndex = -1">
+                class="nav-btn nav-left" (click)="model.navIndex = -1">
             <i class="fa fa-caret-up"></i>
         </button>
-        <div class="view-data {{((dataParams.internal)?'view-data-internal':'')}}" >
+        <div class="view-data {{((dataParams.internal)?'view-data-internal':'')}}">
             <ng-template [ngIf]="!model.rest.findData">
                 <div *ngFor="let key of getDataKeys()"
                      class="view-item {{db.classCol(12/dataParams.cols.lg,12/dataParams.cols.md,12/dataParams.cols.sm,12/dataParams.cols.xs)}}">
@@ -33,7 +34,8 @@
                     <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
                         <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
                         <div class="view-item-detail-content">
-                            <rule-view [model]="model" [data]="data"  [key]="key" [paramsData]="dataParams.ruleViewOptions"> </rule-view>
+                            <rule-view [model]="model" [data]="data" [key]="key"
+                                       [paramsData]="dataParams.ruleViewOptions"></rule-view>
                         </div>
                     </div>
                 </div>

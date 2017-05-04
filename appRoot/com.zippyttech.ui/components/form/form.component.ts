@@ -1,42 +1,42 @@
-import {Component, EventEmitter, OnInit, AfterViewInit} from "@angular/core";
-import  {FormControl, Validators, FormGroup} from '@angular/forms';
-import {IData, IRest} from "../../../com.zippyttech.rest/restController";
-import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
-import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
-import {UrlRule} from "../../../com.zippyttech.common/rules/url.rule";
-import {TRules} from "../../../app-routing.module";
-import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
-import {IIncludeComponents} from "../../../com.zippyttech.common/rules/rule";
-import {ObjectRule} from "../../../com.zippyttech.common/rules/object.rule";
-import {Actions} from "../../../com.zippyttech.init/app/app.types";
-import {ITagsInput} from "../../../com.zippyttech.utils/directive/tagsinput";
-import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
+import {AfterViewInit, Component, EventEmitter, OnInit} from '@angular/core';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {IData, IRest} from '../../../com.zippyttech.rest/restController';
+import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase';
+import {API} from '../../../com.zippyttech.utils/catalog/defaultAPI';
+import {UrlRule} from '../../../com.zippyttech.common/rules/url.rule';
+import {TRules} from '../../../app-routing.module';
+import {ModelRoot} from '../../../com.zippyttech.common/modelRoot';
+import {IIncludeComponents} from '../../../com.zippyttech.common/rules/rule';
+import {ObjectRule} from '../../../com.zippyttech.common/rules/object.rule';
+import {Actions} from '../../../com.zippyttech.init/app/app.types';
+import {ITagsInput} from '../../../com.zippyttech.utils/directive/tagsinput';
+import {StaticValues} from '../../../com.zippyttech.utils/catalog/staticValues';
 
 type TTypeAction = 'search' | 'internal';
 type TTypeForm = 'save' | 'filter';
 
-interface IFieldActions{
-    [key:string]:IDataAction
+interface IFieldActions {
+    [key: string]: IDataAction
 }
 
-interface IDataAction{
-    view?:boolean;
-    type?:TTypeAction,
-    valid?:boolean;
-    touch?:boolean;
-    id?:number;
-    value?:string;
+interface IDataAction {
+    view?: boolean;
+    type?: TTypeAction,
+    valid?: boolean;
+    touch?: boolean;
+    id?: number;
+    value?: string;
 }
 
 @Component({
     selector: 'form-view',
     templateUrl: './index.html',
-    styleUrls: [ './style.css'],
-    inputs:['model','type'],
-    outputs:['getInstance'],
+    styleUrls: ['./style.css'],
+    inputs: ['model', 'type'],
+    outputs: ['getInstance'],
 })
 
-export class FormComponent implements OnInit,AfterViewInit {
+export class FormComponent implements OnInit, AfterViewInit {
 
     private _type: TTypeForm = 'save';
     private _search: string;
@@ -50,7 +50,7 @@ export class FormComponent implements OnInit,AfterViewInit {
         this.getInstance = new EventEmitter<FormComponent>();
     }
 
-    //region hooks ng
+    // region hooks ng
 
     ngOnInit() {
         this.initForm();
@@ -60,9 +60,9 @@ export class FormComponent implements OnInit,AfterViewInit {
         this.getInstance.emit(this);
     }
 
-    //endregion
+    // endregion
 
-    //region actions
+    // region actions
 
     initAction(key: string, type: TTypeAction) {
         this._actions[key] = {
@@ -108,13 +108,13 @@ export class FormComponent implements OnInit,AfterViewInit {
         return keys;
     }
 
-    private _includeInForm(key:string[]){
+    private _includeInForm(key: string[]) {
 
     }
 
-    //endregion
+    // endregion
 
-    //region search
+    // region search
 
     private _initSearch(key: string) {
         if (this._getRule(key).type == 'object') {
@@ -125,8 +125,8 @@ export class FormComponent implements OnInit,AfterViewInit {
         this.db.debugLog('FormComponent', 'initSearch', 'not object', this._getRule(key));
     }
 
-    private _destroySearch(event?:Event) {
-        if(event)
+    private _destroySearch(event?: Event) {
+        if (event)
             event.preventDefault();
 
         if (!this._getAction(this._search).valid)
@@ -153,9 +153,9 @@ export class FormComponent implements OnInit,AfterViewInit {
         this._destroySearch();
     }
 
-    private _fnSaveSearch(key:string,data:any){
-        this._addAction(key,data);
-        this._setFormValue(key,data.title || data.detail);
+    private _fnSaveSearch(key: string, data: any) {
+        this._addAction(key, data);
+        this._setFormValue(key, data.title || data.detail);
         this._search = null;
     }
 
@@ -168,7 +168,7 @@ export class FormComponent implements OnInit,AfterViewInit {
     }
 
     private get _searchModel(): ModelRoot {
-        if(this._getRule(this._search) instanceof ObjectRule)
+        if (this._getRule(this._search) instanceof ObjectRule)
             return (<ObjectRule>this._getRule(this._search)).model;
         return null;
     }
@@ -190,10 +190,9 @@ export class FormComponent implements OnInit,AfterViewInit {
     }
 
 
+    // endregion
 
-    //endregion
-
-    //region form
+    // region form
 
     initForm() {
         let rule: TRules;
@@ -350,7 +349,7 @@ export class FormComponent implements OnInit,AfterViewInit {
                     body[key] = parseFloat(body[key]);
                 }
 
-                if ((rule.type == 'select' || rule.type == 'boolean') && body[key] == "-1") {
+                if ((rule.type == 'select' || rule.type == 'boolean') && body[key] == '-1') {
                     body[key] = null;
                 }
 
@@ -384,10 +383,10 @@ export class FormComponent implements OnInit,AfterViewInit {
         return body;
     }
 
-    loadForm(data:Object,_delete=false){
+    loadForm(data: Object, _delete = false) {
         this.fnResetForm();
-        Object.keys(data).forEach(key=>{
-            this._setFormValue(key,data[key])
+        Object.keys(data).forEach(key => {
+            this._setFormValue(key, data[key])
         });
     }
 
@@ -401,8 +400,8 @@ export class FormComponent implements OnInit,AfterViewInit {
         this._form.reset();
     }
 
-    get valid():boolean{
-        return this._form?this._form.valid:false;
+    get valid(): boolean {
+        return this._form ? this._form.valid : false;
     }
 
     private get _keysForm(): string[] {
@@ -446,49 +445,48 @@ export class FormComponent implements OnInit,AfterViewInit {
 
     }
 
-    private _getControl(key){
+    private _getControl(key) {
         return this._form.controls[key];
     }
 
-    //endregion
+    // endregion
 
-    //region others
+    // region others
 
     private _fnContainsType(key: string, ...list: string[]): boolean {
         return list.indexOf(this._getRule(key).type) >= 0;
     }
 
-    private _getKeys(data:Object = {}){
+    private _getKeys(data: Object = {}) {
         return Object.keys(data || {});
     }
 
-    private get _static(){
+    private get _static() {
         return StaticValues;
     }
 
-    private _getList(key:string):ITagsInput{
+    private _getList(key: string): ITagsInput {
         return this._getRule(key).list || null
     }
 
-    private _getRule(key:string):TRules{
+    private _getRule(key: string): TRules {
         return this.model.rules[key] || {};
     }
 
-    private _fnMakeTextRandon():string {
-        let text = "";
-        let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        for( let i=0; i < 20; i++ )
+    private _fnMakeTextRandon(): string {
+        let text = '';
+        let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for (let i = 0; i < 20; i++)
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         return text;
     }
 
-    private _fnAddTagManual(event,key){
-        if(event)
+    private _fnAddTagManual(event, key) {
+        if (event)
             event.preventDefault();
-        let value=event.target[0].value;
-        if(value && value.length)
-        {
-            event.target[0].value='';
+        let value = event.target[0].value;
+        if (value && value.length) {
+            event.target[0].value = '';
             this._getRule(key).list.instance.fnAdd(
                 {
                     'id': -1,
@@ -499,7 +497,7 @@ export class FormComponent implements OnInit,AfterViewInit {
         }
     }
 
-    //endregion
+    // endregion
 
 
     // @HostListener('keydown', ['$event'])
@@ -511,10 +509,6 @@ export class FormComponent implements OnInit,AfterViewInit {
     //         }
     //     }
     // }
-
-
-
-
 
 
 }

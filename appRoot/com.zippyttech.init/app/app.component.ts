@@ -1,15 +1,15 @@
-import {Component, OnInit, ChangeDetectorRef,HostListener, DoCheck, ElementRef} from '@angular/core';
-import {RestController} from "../../com.zippyttech.rest/restController";
-import {RoutesRecognized, NavigationStart} from "@angular/router";
-import {contentHeaders} from "../../com.zippyttech.rest/headers";
-import {componentsPublic} from "../../app-routing.module";
-import {AnimationsManager} from "../../com.zippyttech.ui/animations/AnimationsManager";
-import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
-import {AngularFire} from "angularfire2";
-import {IModalConfig} from "../../com.zippyttech.services/modal/modal.types";
-import {API} from "../../com.zippyttech.utils/catalog/defaultAPI";
-import {NavStatus} from "./navmenu/navmenu.types";
-import {IEnablesMenu} from "./app.types";
+import {ChangeDetectorRef, Component, DoCheck, ElementRef, HostListener, OnInit} from '@angular/core';
+import {RestController} from '../../com.zippyttech.rest/restController';
+import {NavigationStart, RoutesRecognized} from '@angular/router';
+import {contentHeaders} from '../../com.zippyttech.rest/headers';
+import {componentsPublic} from '../../app-routing.module';
+import {AnimationsManager} from '../../com.zippyttech.ui/animations/AnimationsManager';
+import {DependenciesBase} from '../../com.zippyttech.common/DependenciesBase';
+import {AngularFire} from 'angularfire2';
+import {IModalConfig} from '../../com.zippyttech.services/modal/modal.types';
+import {API} from '../../com.zippyttech.utils/catalog/defaultAPI';
+import {NavStatus} from './navmenu/navmenu.types';
+import {IEnablesMenu} from './app.types';
 
 /**
  * @Params API
@@ -23,18 +23,18 @@ let jQuery = require('jquery');
     selector: 'app',
     templateUrl: './index.html',
     styleUrls: ['./style.css'],
-    animations: AnimationsManager.getTriggers("d-fade|expand_down", 150)
+    animations: AnimationsManager.getTriggers('d-fade|expand_down', 150)
 })
-export class AppComponent extends RestController implements OnInit,DoCheck {
+export class AppComponent extends RestController implements OnInit, DoCheck {
 
-    private navMenuState:NavStatus;
-    private enablesNavMenus:IEnablesMenu;
-    private userDrop:boolean = false;
+    private navMenuState: NavStatus;
+    private enablesNavMenus: IEnablesMenu;
+    private userDrop: boolean = false;
 
-    constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef,public af: AngularFire, private el:ElementRef) {
+    constructor(public db: DependenciesBase, private cdRef: ChangeDetectorRef, public af: AngularFire, private el: ElementRef) {
         super(db);
         this.routerEvents();
-        let url="https://cdg.zippyttech.com:8080";
+        let url = 'https://cdg.zippyttech.com:8080';
         localStorage.setItem('urlAPI', url + '/api');
         localStorage.setItem('url', url);
         this.navMenuState = NavStatus.compact;
@@ -45,7 +45,7 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
         this.loadPublicData();
     }
 
-    routerEvents(){
+    routerEvents() {
         let that = this;
         this.db.router.events.subscribe((event: any) => {
             if (event instanceof NavigationStart) {
@@ -58,20 +58,20 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
 
                 if (isPublic && localStorage.getItem('bearer')) {
                     let link = ['/init/dashboard', {}];
-                    if(componentName == 'TermConditionsComponent'){
+                    if (componentName == 'TermConditionsComponent') {
                         //jQuery('#termConditions').modal('show'); TODO:MODAL TERMINOS
                     }
                     that.db.router.navigate(link);
                 }
-                else if (localStorage.getItem('userTemp')){
-                    if(componentName!='AccountSelectComponent'){
-                        if(componentName!='LoadComponent')
+                else if (localStorage.getItem('userTemp')) {
+                    if (componentName != 'AccountSelectComponent') {
+                        if (componentName != 'LoadComponent')
                             that.db.myglobal.saveUrl = event.url;
                         let link = ['/auth/accountSelect', {}];
                         that.db.router.navigate(link);
                     }
                 }
-                else if (!isPublic && !that.db.myglobal.dataSesion.valid ) {
+                else if (!isPublic && !that.db.myglobal.dataSesion.valid) {
                     let link: any;
                     if (localStorage.getItem('bearer')) {
                         if (componentName != 'LoadComponent') {
@@ -92,10 +92,9 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
                     that.db.router.navigate(link);
                 }
 
-                if (that.db.myglobal.dataSesion.valid  && that.db.myglobal.getParams('VERSION_CACHE',API.VERSION_CACHE) != localStorage.getItem('VERSION_CACHE')) {
-                    if(!localStorage.getItem('userTemp'))
-                    {
-                        localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE',API.VERSION_CACHE));
+                if (that.db.myglobal.dataSesion.valid && that.db.myglobal.getParams('VERSION_CACHE', API.VERSION_CACHE) != localStorage.getItem('VERSION_CACHE')) {
+                    if (!localStorage.getItem('userTemp')) {
+                        localStorage.setItem('VERSION_CACHE', that.db.myglobal.getParams('VERSION_CACHE', API.VERSION_CACHE));
                         location.reload(true);
                     }
                 }
@@ -113,8 +112,8 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
         this.cdRef.detectChanges();
     }
 
-    public get sessionValid(){
-        if(this.db.myglobal.dataSesion.valid && !localStorage.getItem('userTemp')){
+    public get sessionValid() {
+        if (this.db.myglobal.dataSesion.valid && !localStorage.getItem('userTemp')) {
             this.loadPage();
             return true;
         }
@@ -135,8 +134,8 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
         return !!localStorage.getItem('bearer');
     }
 
-    logout(event:Event) {
-        if(event)
+    logout(event: Event) {
+        if (event)
             event.preventDefault();
 
         let successCallback = ((response: any) => {
@@ -154,11 +153,11 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
 
     }
 
-    public changeAccount(event){
-        if(event)
+    public changeAccount(event) {
+        if (event)
             event.preventDefault();
 
-        localStorage.setItem('userTemp','true');
+        localStorage.setItem('userTemp', 'true');
         let link = ['/auth/accountSelect', {}];
         this.db.router.navigate(link);
     }
@@ -182,46 +181,49 @@ export class AppComponent extends RestController implements OnInit,DoCheck {
         };
     }
 
-    getLocalStorage(item:string){
+    getLocalStorage(item: string) {
         return localStorage.getItem(item);
     }
 
-    loadPublicData(){
+    loadPublicData() {
         let that = this;
-        let callback=(response)=>{
-            Object.assign(that.db.myglobal.publicData,response.json());
+        let callback = (response) => {
+            Object.assign(that.db.myglobal.publicData, response.json());
         };
-        this.httputils.doGet(localStorage.getItem('url'),callback,this.error,true)
+        this.httputils.doGet(localStorage.getItem('url'), callback, this.error, true)
     }
 
-    goPage(event:Event=null, url:string) {
+    goPage(event: Event = null, url: string) {
         if (event)
             event.preventDefault();
         let link = [url, {}];
         this.db.router.navigate(link);
     }
 
-    getIModalTerm(){
-        let iModalTerm:IModalConfig = {
-            id:'termConditions',
-            size:'lg',
-            header:{
-                title:'Terminos y condiciones'
+    getIModalTerm() {
+        let iModalTerm: IModalConfig = {
+            id: 'termConditions',
+            size: 'lg',
+            header: {
+                title: 'Terminos y condiciones'
             }
         };
         return iModalTerm;
     }
+
     @HostListener('window:offline') offline() {
-        this.httputils.addToast('Offline','Se a detectado un problema con el Internet, Por favor conectarse a la red','error');
+        this.httputils.addToast('Offline', 'Se a detectado un problema con el Internet, Por favor conectarse a la red', 'error');
     }
 
-    toggleTreeMenu(){
-        this.navMenuState = (this.navMenuState == NavStatus.compact)?NavStatus.expand:NavStatus.compact;
+    toggleTreeMenu() {
+        this.navMenuState = (this.navMenuState == NavStatus.compact) ? NavStatus.expand : NavStatus.compact;
     }
-    toggleModalMenu(){}
+
+    toggleModalMenu() {
+    }
 
 
-    getNavState(){
+    getNavState() {
         return NavStatus[this.navMenuState];
     }
 }

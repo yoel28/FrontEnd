@@ -18,7 +18,8 @@
 
 <ng-template #tree let-menu="menu">
     <ng-template [ngIf]="menu">
-        <li class="item" *ngFor="let sub of menu.items; let i=index" [class.selected]="menu.selectedItem==i && state!=1">
+        <li class="item" *ngFor="let sub of menu.items; let i=index"
+            [class.selected]="menu.selectedItem==i && state!=1">
             <div class="item-info" (click)="menu.click(i);">
                 <i class="item-icon {{sub.icon || 'fa fa-list'}}"></i>
                 <span class="item-title">&nbsp;&nbsp;{{sub.title || 'Sin titulo'}}</span>

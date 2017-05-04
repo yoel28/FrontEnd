@@ -6,14 +6,16 @@
                     <h4>Lista de control de accesso</h4>
                 </div>
                 <div *ngIf="dataRoles.count" class="col-lg-4">
-                    <select [(ngModel)]="roleSelect"  (ngModelChange)="setRole($event)"  sm-dropdown class="ui fluid search selection dropdown">
+                    <select [(ngModel)]="roleSelect" (ngModelChange)="setRole($event)" sm-dropdown
+                            class="ui fluid search selection dropdown">
                         <option data-hidden="true"></option>
-                        <option *ngFor="let n of items"  [attr.value]="n.id" >{{n.text}}</option>
+                        <option *ngFor="let n of items" [attr.value]="n.id">{{n.text}}</option>
                     </select>
                 </div>
                 <div class="col-lg-4 margin-bottom">
                     <div class="pull-left">
-                        <button *ngIf="roleModel.permissions.list" type="button" class="btn btn-success fa fa-refresh" (click)="loadRoles()"></button>
+                        <button *ngIf="roleModel.permissions.list" type="button" class="btn btn-success fa fa-refresh"
+                                (click)="loadRoles()"></button>
                     </div>
                 </div>
                 <div *ngIf="!roleModel.permissions.list" class="col-lg-12">
@@ -30,44 +32,46 @@
             <div class="box-body with-border">
                 <div *ngIf="role.id" class="row col-lg-12">
                     <div *ngFor="let module of getObjectKeys(dataPermissionsAll)" class="block-module table-responsive">
-                        <table class="table table-striped table-hover" >
+                        <table class="table table-striped table-hover">
                             <thead class="border-head">
-                                <tr (click)="assignPermissionModule(module,!existAllPermissionsModule(module))"
-                                    title="{{existAllPermissionsModule(module)?'Presione click para quitar todos los permiso del modulo':'Presione click para asignar todos los permiso del modulo'}}"
-                                >
-                                    <th>
-                                        <label>
-                                            <div class="material-switch">
-                                                <input  (click)="assignPermissionModule(module,!existAllPermissionsModule(module))"
-                                                        [attr.value]="module" [attr.id]="module" type="checkbox" [checked]="existAllPermissionsModule(module)"/>
-                                                <label [attr.for]="module" class="label-success"></label>
-                                            </div>
-                                        </label>
-                                    </th>
-                                    <th><strong>Modulo: {{module}}</strong></th>
-                                    <th><strong>Código</strong></th>
-                                    <th><strong>Descripción</strong></th>
-                                </tr>
+                            <tr (click)="assignPermissionModule(module,!existAllPermissionsModule(module))"
+                                title="{{existAllPermissionsModule(module)?'Presione click para quitar todos los permiso del modulo':'Presione click para asignar todos los permiso del modulo'}}"
+                            >
+                                <th>
+                                    <label>
+                                        <div class="material-switch">
+                                            <input (click)="assignPermissionModule(module,!existAllPermissionsModule(module))"
+                                                   [attr.value]="module" [attr.id]="module" type="checkbox"
+                                                   [checked]="existAllPermissionsModule(module)"/>
+                                            <label [attr.for]="module" class="label-success"></label>
+                                        </div>
+                                    </label>
+                                </th>
+                                <th><strong>Modulo: {{module}}</strong></th>
+                                <th><strong>Código</strong></th>
+                                <th><strong>Descripción</strong></th>
+                            </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let data of dataPermissionsAll[module]"
-                                    (click)="assignPermission(data.id)"
-                                    [class.bold]="existsPermission([data.id])"
-                                    title="{{existsPermission([data.id])?'Presione click para quitar el permiso':'Presione click para activar el permiso'}}"
-                                >
-                                    <td>
-                                        <label>
-                                            <div class="material-switch">
-                                                <input (click)="assignPermission(data.id)"
-                                                       value="{{data.id}}" [attr.id]="data.id" type="checkbox" [checked]="existsPermission([data.id])"/>
-                                                <label [attr.for]="data.id" class="label-success"></label>
-                                            </div>
-                                        </label>
-                                    </td>
-                                    <td>{{data.title}}</td>
-                                    <td>{{data.code}}</td>
-                                    <td>{{data.detail}}</td>
-                                </tr>
+                            <tr *ngFor="let data of dataPermissionsAll[module]"
+                                (click)="assignPermission(data.id)"
+                                [class.bold]="existsPermission([data.id])"
+                                title="{{existsPermission([data.id])?'Presione click para quitar el permiso':'Presione click para activar el permiso'}}"
+                            >
+                                <td>
+                                    <label>
+                                        <div class="material-switch">
+                                            <input (click)="assignPermission(data.id)"
+                                                   value="{{data.id}}" [attr.id]="data.id" type="checkbox"
+                                                   [checked]="existsPermission([data.id])"/>
+                                            <label [attr.for]="data.id" class="label-success"></label>
+                                        </div>
+                                    </label>
+                                </td>
+                                <td>{{data.title}}</td>
+                                <td>{{data.code}}</td>
+                                <td>{{data.detail}}</td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
@@ -75,15 +79,18 @@
             </div>
             <div *ngIf="role.id && permissions.save" class="block-float">
 
-                <button class="redondo btn btn-green btn-outlined" title="Seleccionar todos" type="button" (click)="selectPermission(true)">
+                <button class="redondo btn btn-green btn-outlined" title="Seleccionar todos" type="button"
+                        (click)="selectPermission(true)">
                     <i class="fa fa-plus fa-lg"></i>
                 </button>&nbsp;
 
-                <button class="redondo btn btn-red btn-outlined" title="Eliminar todos" type="button" (click)="selectPermission(false)">
+                <button class="redondo btn btn-red btn-outlined" title="Eliminar todos" type="button"
+                        (click)="selectPermission(false)">
                     <i class="fa fa-minus fa-lg"></i>
                 </button>&nbsp;
 
-                <button class="redondo btn btn-blue btn-outlined" title="Guardar" type="button" (click)="savePermissions()">
+                <button class="redondo btn btn-blue btn-outlined" title="Guardar" type="button"
+                        (click)="savePermissions()">
                     <i class="fa fa-save fa-lg"></i>
                 </button>&nbsp;
 
@@ -109,14 +116,16 @@
                         class="fa fa-warning"></i>&nbsp;<strong>ADVERTENCIA</strong></h4>
             </div>
             <div class="modal-body">
-                El cambio de estas configuraciones avanzadas puede ser perjudicial para la estabilidad, la seguridad y el rendimiento de esta aplicación. Sólo se debe continuar si está seguro de lo que hace.
+                El cambio de estas configuraciones avanzadas puede ser perjudicial para la estabilidad, la seguridad y
+                el rendimiento de esta aplicación. Sólo se debe continuar si está seguro de lo que hace.
             </div>
             <div class="modal-footer">
-                <button (click)="onDashboard($event)" type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">
+                <button (click)="onDashboard($event)" type="button" class="btn btn-outlined btn-red fa fa-close"
+                        data-dismiss="modal">
                     &nbsp;Salir
                 </button>
 
-                <button (click)="loadPage($event)"  data-dismiss="modal" type="button" class="btn btn-red fa fa-check">
+                <button (click)="loadPage($event)" data-dismiss="modal" type="button" class="btn btn-red fa fa-check">
                     &nbsp;S&iacute;, estoy seguro
                 </button>
             </div>

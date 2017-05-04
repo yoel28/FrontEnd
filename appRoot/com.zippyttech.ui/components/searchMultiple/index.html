@@ -24,8 +24,9 @@
                         <tbody>
                         <tr *ngFor="let data of dataList.list">
                             <td>
-                                <img *ngIf="data.image" [src]="data.image" style="display: inline-block" class="img-responsive img-search">
-                                <i *ngIf="data.icon" class="i-search {{data.icon}}" ></i>
+                                <img *ngIf="data.image" [src]="data.image" style="display: inline-block"
+                                     class="img-responsive img-search">
+                                <i *ngIf="data.icon" class="i-search {{data.icon}}"></i>
                             </td>
                             <td>
                                 <strong>{{params.label.title}} {{data.title}}</strong><br>
@@ -33,26 +34,30 @@
                             </td>
                             <td style="vertical-align: middle;">
 
-                                <button *ngIf="!existValue(data.id)" (click)="addValue($event,data)" type="button" class="btn btn-success btn-outlined" title="Agregar">
+                                <button *ngIf="!existValue(data.id)" (click)="addValue($event,data)" type="button"
+                                        class="btn btn-success btn-outlined" title="Agregar">
                                     <i class="fa fa-check"></i>
                                 </button>
 
-                                <button *ngIf="existValue(data.id)" (click)="deleteValue($event,data.id)" type="button" class="btn btn-success " title="Remover">
+                                <button *ngIf="existValue(data.id)" (click)="deleteValue($event,data.id)" type="button"
+                                        class="btn btn-success " title="Remover">
                                     <i class="fa fa-check"></i>
                                 </button>
                             </td>
                         </tr>
                         </tbody>
                         <tfoot>
-                            <tr>
-                                <td colspan="3">
-                                    <div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0" class="btn-group pull-right">
-                                        <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)" *ngFor="let val of dataList.page" type="button" class="btn btn-default">
-                                            {{val}}
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"
+                                     class="btn-group pull-right">
+                                    <button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"
+                                            *ngFor="let val of dataList.page" type="button" class="btn btn-default">
+                                        {{val}}
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                         </tfoot>
                     </table>
                 </div>
@@ -64,7 +69,8 @@
                 <button type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">
                     &nbsp;{{'custom.exit' | translate}}
                 </button>
-                <button (click)="getData($event)"  data-dismiss="modal" type="button" class="btn btn-success fa fa-check">
+                <button (click)="getData($event)" data-dismiss="modal" type="button"
+                        class="btn btn-success fa fa-check">
                     &nbsp;&nbsp;{{ 'custom.save' | translate}}
                 </button>
             </div>

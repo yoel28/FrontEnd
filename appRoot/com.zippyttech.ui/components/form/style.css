@@ -1,28 +1,34 @@
-.padding-error{
+.padding-error {
     padding: 5pt;
 }
-.padding-top-4{
+
+.padding-top-4 {
     padding-top: 4pt;
 }
-.img-search{
+
+.img-search {
     width: 30px !important;
 }
-.form-margin{
+
+.form-margin {
     margin-bottom: 10pt;
 }
-.z-index{
-    z-index:1;
+
+.z-index {
+    z-index: 1;
 }
-.alert{
+
+.alert {
     margin-bottom: 0px !important;
 }
 
-@media(max-width: 425px){
-    .input-group-addon{
+@media (max-width: 425px) {
+    .input-group-addon {
         display: block;
         border: none;
     }
 }
-.td-img{
+
+.td-img {
     width: 40pt;
 }

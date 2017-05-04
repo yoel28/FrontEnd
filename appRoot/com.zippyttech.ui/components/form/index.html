@@ -3,7 +3,7 @@
         <form role="form" [formGroup]="_form" [hidden]="_search">
             <div *ngFor="let key of _keysForm">
                 <div *ngIf="!_fnContainsType(key,'object') || (_fnContainsType(key,'object') && _getRule(key).model.permissions.search); else
-                                                                                                                                            accessUnauthorized" >
+                                                                                                                                            accessUnauthorized">
                     <div class="form-group input-icon right">
                         <div [hidden]="_fnHiddenFormControl(_getRule(key))">
                             <div class="row" *ngIf="!_fnContainsType(key,'image')">
@@ -21,41 +21,42 @@
                                         <div *ngIf="!_getList(key); else
                                                                                 noList">
 
-                                            <ng-template [ngIf]="_fnContainsType(key,'text','number','email','password')">
-                                                <input  class="form-control"
-                                                        formControlName="{{key}}"
-                                                        placeholder="{{'field.'+key+'.placeholder' | translate}}"
-                                                        type="{{_getRule(key).type}}"
-                                                        [readonly]="_getRule(key).readOnly"
+                                            <ng-template
+                                                    [ngIf]="_fnContainsType(key,'text','number','email','password')">
+                                                <input class="form-control"
+                                                       formControlName="{{key}}"
+                                                       placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                       type="{{_getRule(key).type}}"
+                                                       [readonly]="_getRule(key).readOnly"
                                                 >
                                             </ng-template>
 
                                             <ng-template [ngIf]="_fnContainsType(key,'object')">
                                                 <ng-template [ngIf]="_getRule(key).mode == 'reference'">
-                                                    <input  class="form-control"
-                                                            formControlName="{{key}}"
-                                                            placeholder="{{'field.'+key+'.placeholder' | translate}}"
-                                                            type="text"
-                                                            [readonly]="_getRule(key).readOnly"
+                                                    <input class="form-control"
+                                                           formControlName="{{key}}"
+                                                           placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                           type="text"
+                                                           [readonly]="_getRule(key).readOnly"
                                                     >
                                                 </ng-template>
                                             </ng-template>
 
                                             <!--<ng-template [ngIf]="_fnContainsType(key,'list')">-->
-                                                <!--<input tags-input-->
-                                                       <!--type="text"-->
-                                                       <!--[prefix]="_getRule(key).model?_getRule(key).model.prefix:'GLOBAL_'"-->
-                                                       <!--formControlName="{{key}}"-->
-                                                       <!--(instance)="_getRule(key).instance?(_getRule(key).instance=$event||null):null"-->
-                                                <!--&gt;-->
-                                                <!--<ng-template [ngIf]="_getRule(key).inputFree">-->
-                                                    <!--<form (submit)="addTagManual($event,key)">-->
-                                                        <!--<input [attr.placeholder]="'custom.tagFree' | translate"-->
-                                                               <!--type="text"-->
-                                                               <!--[attr.aria-describedby]="key"-->
-                                                               <!--class="form-control">-->
-                                                    <!--</form>-->
-                                                <!--</ng-template>-->
+                                            <!--<input tags-input-->
+                                            <!--type="text"-->
+                                            <!--[prefix]="_getRule(key).model?_getRule(key).model.prefix:'GLOBAL_'"-->
+                                            <!--formControlName="{{key}}"-->
+                                            <!--(instance)="_getRule(key).instance?(_getRule(key).instance=$event||null):null"-->
+                                            <!--&gt;-->
+                                            <!--<ng-template [ngIf]="_getRule(key).inputFree">-->
+                                            <!--<form (submit)="addTagManual($event,key)">-->
+                                            <!--<input [attr.placeholder]="'custom.tagFree' | translate"-->
+                                            <!--type="text"-->
+                                            <!--[attr.aria-describedby]="key"-->
+                                            <!--class="form-control">-->
+                                            <!--</form>-->
+                                            <!--</ng-template>-->
                                             <!--</ng-template>-->
 
                                             <ng-template [ngIf]="_fnContainsType(key,'color')">
@@ -64,12 +65,12 @@
                                             </ng-template>
 
                                             <ng-template [ngIf]="_fnContainsType(key,'textarea')">
-                                                <textarea   class="form-control"
-                                                            formControlName="{{key}}"
-                                                            rows="{{db.getParams('TEXTAREA_ROWS',_getRule(key).rows)}}"
-                                                            formControlName="{{key}}"
-                                                            placeholder="{{'field.'+key+'.placeholder' | translate}}"
-                                                            [readonly]="_getRule(key).readOnly">
+                                                <textarea class="form-control"
+                                                          formControlName="{{key}}"
+                                                          rows="{{db.getParams('TEXTAREA_ROWS',_getRule(key).rows)}}"
+                                                          formControlName="{{key}}"
+                                                          placeholder="{{'field.'+key+'.placeholder' | translate}}"
+                                                          [readonly]="_getRule(key).readOnly">
 
                                                 </textarea>
                                             </ng-template>
@@ -94,9 +95,11 @@
                                             </ng-template>
 
                                             <ng-template [ngIf]="_fnContainsType(key,'select','boolean')">
-                                                <select sm-dropdown formControlName="{{key}}" class="ui fluid search selection dropdown">
+                                                <select sm-dropdown formControlName="{{key}}"
+                                                        class="ui fluid search selection dropdown">
                                                     <option value="-1">
-                                                        {{( ('field.'+key+'.placeholder' || 'custom.selectOption') | translate) }}
+                                                        {{( ('field.'+key+'.placeholder' || 'custom.selectOption') |
+                                                        translate) }}
                                                     </option>
                                                     <option *ngFor="let n of _getRule(key).source"
                                                             [attr.value]="n.value"
@@ -108,7 +111,7 @@
                                             </ng-template>
                                         </div>
 
-                                        <ng-template #noList >
+                                        <ng-template #noList>
                                             <input tags-input type="text"
                                                    [model]="model" [key]="key"
                                                    [control]="_getControl(key)">
@@ -122,9 +125,11 @@
                                         </ng-template>
 
 
-                                        <div [hidden]="_getControl(key).valid || !_getControl(key).touched" class="alert alert-danger">
+                                        <div [hidden]="_getControl(key).valid || !_getControl(key).touched"
+                                             class="alert alert-danger">
                                             <div *ngFor="let error of _getKeys(_getControl(key).errors || {})">
-                                                {{ (('error.'+error) | translate:{params:_getControl(key).errors[error]}) }}
+                                                {{ (('error.'+error) |
+                                                translate:{params:_getControl(key).errors[error]}) }}
                                             </div>
                                         </div>
 
@@ -132,14 +137,17 @@
                                 </div>
 
                                 <ng-template [ngIf]="_getActionsRule(_getRule(key)).length">
-                                    <div  class="{{db.classCol(2,2,2,2)}}">
+                                    <div class="{{db.classCol(2,2,2,2)}}">
                                         <div class="data-actions notHidden">
                                             <div class="btn-group dropdown">
-                                                <button tabindex="-1" type="button" data-toggle="dropdown" class="btn btn-box-tool dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                                                <button tabindex="-1" type="button" data-toggle="dropdown"
+                                                        class="btn btn-box-tool dropdown-toggle" aria-haspopup="true"
+                                                        aria-expanded="false">
                                                     <i class="fa fa-gears fa-lg"></i>
                                                 </button>
                                                 <ul role="menu" class="dropdown-menu text-left submenu-config">
-                                                    <li *ngFor="let action of _getActionsRule(_getRule(key))" (click)="action.callback(this,key);">
+                                                    <li *ngFor="let action of _getActionsRule(_getRule(key))"
+                                                        (click)="action.callback(this,key);">
                                                         <a class="cursor-pointer {{action.currentView(this).colorClass || ''}}">
                                                             <i class="{{action.currentView(this).icon || ''}}"></i>
                                                             &nbsp;{{action.currentView(this).title || ''}}
@@ -152,19 +160,19 @@
                                 </ng-template>
 
                                 <!--<div class="{{db.classCol(12,12,12,12)}} table-responsive"-->
-                                     <!--*ngIf="_getRule(key).type=='list' && dataListMultiple && dataListMultiple[key] && dataListMultiple[key].view">-->
-                                    <!--<table class="table table-striped table-hover">-->
-                                        <!--<tbody>-->
-                                        <!--<tr *ngFor="let data of dataListMultiple[key].data">-->
-                                            <!--<td>{{data}}</td>-->
-                                            <!--<td>-->
-                                                <!--<button (click)="deleteListMultiple($event,key,data)"-->
-                                                        <!--class="btn btn-box-tool fa fa-trash text-red"-->
-                                                        <!--[attr.title]="db.msg*.delete"></button>-->
-                                            <!--</td>-->
-                                        <!--</tr>-->
-                                        <!--</tbody>-->
-                                    <!--</table>-->
+                                <!--*ngIf="_getRule(key).type=='list' && dataListMultiple && dataListMultiple[key] && dataListMultiple[key].view">-->
+                                <!--<table class="table table-striped table-hover">-->
+                                <!--<tbody>-->
+                                <!--<tr *ngFor="let data of dataListMultiple[key].data">-->
+                                <!--<td>{{data}}</td>-->
+                                <!--<td>-->
+                                <!--<button (click)="deleteListMultiple($event,key,data)"-->
+                                <!--class="btn btn-box-tool fa fa-trash text-red"-->
+                                <!--[attr.title]="db.msg*.delete"></button>-->
+                                <!--</td>-->
+                                <!--</tr>-->
+                                <!--</tbody>-->
+                                <!--</table>-->
                                 <!--</div>-->
                             </div>
 
@@ -191,15 +199,16 @@
                     <div class="{{db.classCol()}}">
 
                         <i *ngIf="(_searchRest && _searchRest.findData); else
-                            noFindData" class="fa fa-spinner fa-pulse fa-fw" [attr.title]="'custom.findData' | translate">
+                            noFindData" class="fa fa-spinner fa-pulse fa-fw"
+                           [attr.title]="'custom.findData' | translate">
 
                         </i>
-                        <ng-template #noFindData >
+                        <ng-template #noFindData>
                             <i class="{{_getRule(_search).icon}}"></i>
                         </ng-template>
 
                         <strong>&nbsp;{{_search+'.filter' | translate}}&nbsp;</strong>
-                        <span class="page-info"  *ngIf="_searchData.count">
+                        <span class="page-info" *ngIf="_searchData.count">
                             {{('custom.infoPageCount'| translate:{page:_searchModel.getCurrentPage(true),count:_searchData.count})}}
                         </span>
                     </div>
@@ -207,16 +216,17 @@
                         <div class="{{db.classCol(11,11,10,10)}}">
                             <div class="form-group input-icon right">
                                 <i class="{{_getRule(_search).icon}} z-index"></i>
-                                <input  class="form-control"
-                                        formControlName="{{_search}}"
-                                        placeholder="{{'field.'+_search+'.placeholder' | translate}}"
-                                        type="text">
+                                <input class="form-control"
+                                       formControlName="{{_search}}"
+                                       placeholder="{{'field.'+_search+'.placeholder' | translate}}"
+                                       type="text">
                             </div>
                         </div>
                         <div class="{{db.classCol(1,1,2,2)}}">
                             <span class="input-group-btn">
                                 <button (click)="_loadDataSearch($event)" type="button"
-                                        class="btn btn-green-club btn-box-tool" [attr.title]="'custom.find' | translate">
+                                        class="btn btn-green-club btn-box-tool"
+                                        [attr.title]="'custom.find' | translate">
                                     <i class="fa fa-search"></i>
                                 </button>
                                 <button (click)="_destroySearch($event)" type="button"
@@ -230,44 +240,48 @@
                         <div class="{{db.classCol()}} table-responsive">
                             <table class="table table-hover">
                                 <tbody *ngIf="_searchData && _searchData.list">
-                                    <tr *ngFor="let data of _searchData.list" (click)="_fnSaveSearch(_search,data)"
-                                                [attr.title]="'custom.select' | translate" class="cursor-pointer">
-                                        <td class="td-img">
-                                            <img [src]="data.image || _static.pathElements.robot" style="display: inline-block" class="img-responsive img-search">
-                                        </td>
-                                        <td>
-                                            <strong>{{_search+'.search.title' | translate}}</strong>
-                                            &nbsp;{{data.title}}<br>
-                                            <strong>{{_search+'.search.detail' | translate}}</strong>
-                                            &nbsp;{{data.detail}}
-                                        </td>
-                                        <td style="vertical-align: middle">
-                                            <i class="btn btn-box-tool text-green fa fa-check"></i>
-                                        </td>
-                                    </tr>
+                                <tr *ngFor="let data of _searchData.list" (click)="_fnSaveSearch(_search,data)"
+                                    [attr.title]="'custom.select' | translate" class="cursor-pointer">
+                                    <td class="td-img">
+                                        <img [src]="data.image || _static.pathElements.robot"
+                                             style="display: inline-block" class="img-responsive img-search">
+                                    </td>
+                                    <td>
+                                        <strong>{{_search+'.search.title' | translate}}</strong>
+                                        &nbsp;{{data.title}}<br>
+                                        <strong>{{_search+'.search.detail' | translate}}</strong>
+                                        &nbsp;{{data.detail}}
+                                    </td>
+                                    <td style="vertical-align: middle">
+                                        <i class="btn btn-box-tool text-green fa fa-check"></i>
+                                    </td>
+                                </tr>
                                 </tbody>
 
                                 <tfoot *ngIf="_searchData && _searchData.page && _searchData.page.length > 1 ">
-                                    <tr>
-                                        <td colspan="3">
-                                            <div class="btn-group pull-right">
-                                                <button (click)="_loadDataSearch($event,val)" [class.btn-green]="val == _searchPage"
-                                                        *ngFor="let val of _searchData.page" type="button" class="btn btn-default">
+                                <tr>
+                                    <td colspan="3">
+                                        <div class="btn-group pull-right">
+                                            <button (click)="_loadDataSearch($event,val)"
+                                                    [class.btn-green]="val == _searchPage"
+                                                    *ngFor="let val of _searchData.page" type="button"
+                                                    class="btn btn-default">
                                                         <span *ngIf="val == _searchPage">
                                                             <span *ngIf="_searchRest.findData">
-                                                                <i class="fa fa-spinner fa-spin" [attr.title]="'custom.pleaseWait' | translate"></i>
+                                                                <i class="fa fa-spinner fa-spin"
+                                                                   [attr.title]="'custom.pleaseWait' | translate"></i>
                                                             </span>
                                                             <span *ngIf="!_searchRest.findData">
                                                                 {{val}}
                                                             </span>
                                                         </span>
-                                                    <span *ngIf="val != _searchPage">
+                                                <span *ngIf="val != _searchPage">
                                                             {{val}}
                                                         </span>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tfoot>
 
                             </table>
@@ -278,29 +292,29 @@
         </ng-template>
         <!--<div class="{{(search.object && searchView)?db.classCol(8,9,10,12):''}}" *ngIf="(search.object && searchView)">-->
 
-            <!--<div *ngIf="findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
-                <!--<i class="fa fa-spinner fa-spin"></i>-->
-                <!--{{db.msg*.findData}}-->
-            <!--</div>-->
+        <!--<div *ngIf="findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
+        <!--<i class="fa fa-spinner fa-spin"></i>-->
+        <!--{{db.msg*.findData}}-->
+        <!--</div>-->
 
-            <!--<div *ngIf="!dataList.count && !findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
-                    <!--<span *ngIf="dataList.count==0">-->
-                        <!--<i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg*.notFound}}-->
-                    <!--</span>-->
-                <!--<span *ngIf="dataList.count==null">-->
-                        <!--<i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg*.introValueFind}}-->
-                    <!--</span>-->
-            <!--</div>-->
-            <!--<div class="{{db.classCol(12,12,12,12)}}">-->
-                <!--<div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"-->
-                     <!--class="btn-group pull-right">-->
-                    <!--<button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"-->
-                            <!--*ngFor="let val of dataList.page"-->
-                            <!--type="button" class="btn btn-default">-->
-                        <!--{{val}}-->
-                    <!--</button>-->
-                <!--</div>-->
-            <!--</div>-->
+        <!--<div *ngIf="!dataList.count && !findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
+        <!--<span *ngIf="dataList.count==0">-->
+        <!--<i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg*.notFound}}-->
+        <!--</span>-->
+        <!--<span *ngIf="dataList.count==null">-->
+        <!--<i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg*.introValueFind}}-->
+        <!--</span>-->
+        <!--</div>-->
+        <!--<div class="{{db.classCol(12,12,12,12)}}">-->
+        <!--<div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"-->
+        <!--class="btn-group pull-right">-->
+        <!--<button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"-->
+        <!--*ngFor="let val of dataList.page"-->
+        <!--type="button" class="btn btn-default">-->
+        <!--{{val}}-->
+        <!--</button>-->
+        <!--</div>-->
+        <!--</div>-->
         <!--</div>-->
         <div class="{{db.classCol()}}" *ngIf="!_search">
             {{'custom.fieldRequired' | translate}}

@@ -6,15 +6,16 @@
                 <div class="input-group input-icon right">
                     <i class="fa fa-map-marker z-index"></i>
                     <span class="input-group-addon">{{'custom.address' | translate}}</span>
-                    <input [attr.id]="configId+'addresspicker_map'" class="form-control" />
+                    <input [attr.id]="configId+'addresspicker_map'" class="form-control"/>
                 </div>
                 <br/>
             </div>
-            <ng-template [ngIf]="params && params.zoom && params.zoom.visible" >
-                <label>{{ 'custom.zoom' | translate}}:&nbsp;</label> <input [attr.id]="configId+'zoom'" disabled=disabled> <br/>
+            <ng-template [ngIf]="params && params.zoom && params.zoom.visible">
+                <label>{{ 'custom.zoom' | translate}}:&nbsp;</label> <input [attr.id]="configId+'zoom'"
+                                                                            disabled=disabled> <br/>
             </ng-template>
 
-            <ng-template [ngIf]="params && params.elements" >
+            <ng-template [ngIf]="params && params.elements">
                 <span *ngFor="let key of params.elements">
                      <label>{{key}}:&nbsp;</label>
                      <input [attr.id]="configId+key" disabled=disabled> <br/>
@@ -22,8 +23,9 @@
             </ng-template>
         </div>
         <div>
-            <ng-template [ngIf]="params && params.reverse" >
-                <label [attr.id]="configId+'geo_label'" [attr.for]="configId+'reverseGeocode'">Reverse Geocode after Marker Drag?</label>
+            <ng-template [ngIf]="params && params.reverse">
+                <label [attr.id]="configId+'geo_label'" [attr.for]="configId+'reverseGeocode'">Reverse Geocode after
+                    Marker Drag?</label>
                 <select [attr.id]="configId+'reverseGeocode'">
                     <option value="false" selected>No</option>
                     <option value="true">Yes</option>
@@ -32,7 +34,7 @@
             <div [attr.id]="configId+'map'" class="map"></div>
         </div>
     </div>
-    <ng-template [ngIf]="params && params.debug" >
+    <ng-template [ngIf]="params && params.debug">
         <div class='input-positioned'>
             <textarea [attr.id]="configId+'callback_result'" rows="15"></textarea>
         </div>

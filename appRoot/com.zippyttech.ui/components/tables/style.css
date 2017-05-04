@@ -1,23 +1,29 @@
-.modal-header{
+.modal-header {
     border-radius: 0px !important;
 }
-th.check{
+
+th.check {
     background: rgba(13, 86, 40, 0.77) !important;
     color: white !important;
 }
-td.check{
+
+td.check {
     background: rgba(0, 187, 0, 0.18);
 }
+
 table {
     overflow: visible;
 }
-.deleted:nth-of-type(odd){
+
+.deleted:nth-of-type(odd) {
     background: rgba(255, 0, 0, 0.17);
 }
-.deleted:nth-of-type(even){
+
+.deleted:nth-of-type(even) {
     background: rgba(255, 0, 0, 0.37);
 }
-.footable-detail-row{
+
+.footable-detail-row {
     transition-duration: 1s;
 }
 
@@ -26,6 +32,6 @@ table {
     transition: .2s !important;
 }
 
-.submenu-config *{
+.submenu-config * {
     transition: .2s !important;
 }

@@ -1,200 +1,215 @@
-import {FormControl} from "@angular/forms";
-import {Actions} from "../../com.zippyttech.init/app/app.types";
-import {FormComponent} from "../../com.zippyttech.ui/components/form/form.component";
-import {ITagsInput} from "../../com.zippyttech.utils/directive/tagsinput";
+import {FormControl} from '@angular/forms';
+import {Actions} from '../../com.zippyttech.init/app/app.types';
+import {FormComponent} from '../../com.zippyttech.ui/components/form/form.component';
+import {ITagsInput} from '../../com.zippyttech.utils/directive/tagsinput';
 
-interface IComponentSave{
-    hidden?:(form:FormComponent)=>boolean;
-    force?:boolean;
-    prefix?:string;
-    setEqual?:string;
-    notReference?:boolean;
-    help?:string;//code in domain info
-    valueChange?:(form:FormComponent,value:any)=>void;//Trigger con el contexto del formComponent
-    validator?:(c:FormControl)=>Object; //Validador para el campo.
+interface IComponentSave {
+    hidden?: (form: FormComponent) => boolean;
+    force?: boolean;
+    prefix?: string;
+    setEqual?: string;
+    notReference?: boolean;
+    help?: string;//code in domain info
+    valueChange?: (form: FormComponent, value: any) => void;//Trigger con el contexto del formComponent
+    validator?: (c: FormControl) => Object; //Validador para el campo.
 }
 
-interface IPermissions{
-    search?:boolean;
-    update?:boolean;
-    visible?:boolean;
+interface IPermissions {
+    search?: boolean;
+    update?: boolean;
+    visible?: boolean;
 }
 
-export interface IIncludeComponents{
+export interface IIncludeComponents {
     save: boolean,
     filter: boolean,
     list: boolean
 }
 
-interface IRefreshField{
+interface IRefreshField {
 
 }
-export interface IRule{
+export interface IRule {
     // key?:string;
-    protected?:boolean;
-    required?:boolean;
-    exclude?:boolean;
-    icon?:string;
-    disabled?:string;
-    value?:string;
-    check?:boolean;
-    readOnly?:boolean;
-    minLength?:number;
-    maxLength?:number;
-    permissions?:IPermissions;
+    protected?: boolean;
+    required?: boolean;
+    exclude?: boolean;
+    icon?: string;
+    disabled?: string;
+    value?: string;
+    check?: boolean;
+    readOnly?: boolean;
+    minLength?: number;
+    maxLength?: number;
+    permissions?: IPermissions;
     include?: IIncludeComponents;
-    components?:{
-        save?:IComponentSave;
+    components?: {
+        save?: IComponentSave;
     }
-    actions?:Actions<IIncludeComponents>;
-    list?:ITagsInput;
+    actions?: Actions<IIncludeComponents>;
+    list?: ITagsInput;
 
 }
 
 export class Rule {
 
-    public attributes:any={};
+    public attributes: any = {};
 
-    constructor(data:Object){
-        Object.assign(this.attributes,data);
+    constructor(data: Object) {
+        Object.assign(this.attributes, data);
     }
 
 
-    get protected():boolean{
+    get protected(): boolean {
         return this.attributes.protected || false;
     }
-    set protected(value:boolean){
+
+    set protected(value: boolean) {
         this.attributes.protected = value;
     }
 
-    get required():boolean{
+    get required(): boolean {
         return this.attributes.required || false;
     }
-    set required(value:boolean){
+
+    set required(value: boolean) {
         this.attributes.required = value;
     }
 
-    get exclude():boolean{
+    get exclude(): boolean {
         return this.attributes.exclude || false;
     }
-    set exclude(value:boolean){
+
+    set exclude(value: boolean) {
         this.attributes.exclude = value;
     }
 
-    get icon():string{
+    get icon(): string {
         return this.attributes.icon || 'fa fa-list';
     }
-    set icon(value:string){
+
+    set icon(value: string) {
         this.attributes.icon = value;
     }
 
-    get disabled():string{
+    get disabled(): string {
         return this.attributes.disabled || 'false';
     }
-    set disabled(value:string){
+
+    set disabled(value: string) {
         this.attributes.disabled = value;
     }
 
-    get value():string{
+    get value(): string {
         return this.attributes.value;
     }
-    set value(value:string){
+
+    set value(value: string) {
         this.attributes.value = value;
     }
 
-    get check():boolean{
+    get check(): boolean {
         return this.attributes.check || false;
     }
-    set check(value:boolean){
+
+    set check(value: boolean) {
         this.attributes.check = value;
     }
 
-    get readOnly():boolean{
+    get readOnly(): boolean {
         return this.attributes.readOnly || false;
     }
-    set readOnly(value:boolean){
+
+    set readOnly(value: boolean) {
         this.attributes.readOnly = value;
     }
 
-    get minLength():number{
+    get minLength(): number {
         return this.attributes.minLength || null;
     }
-    set minLength(value:number){
+
+    set minLength(value: number) {
         this.attributes.minLength = value;
     }
 
-    get maxLength():number{
+    get maxLength(): number {
         return this.attributes.maxLength || null;
     }
-    set maxLength(value:number){
+
+    set maxLength(value: number) {
         this.attributes.maxLength = value;
     }
 
-    get refreshField():Object{
+    get refreshField(): Object {
         return this.attributes.refreshField || null;
     }
-    set refreshField(value:Object){
+
+    set refreshField(value: Object) {
         this.attributes.refreshField = value;
     }
 
-    get permissions():IPermissions{
+    get permissions(): IPermissions {
         return this.attributes.permissions || {};
     }
-    set permissions(value:IPermissions){
+
+    set permissions(value: IPermissions) {
         this.attributes.permissions = value;
     }
 
-    get include():IIncludeComponents{
+    get include(): IIncludeComponents {
         return this.attributes.include ||
             {
-                save:true,
-                filter:true,
-                list:true
+                save: true,
+                filter: true,
+                list: true
             };
     }
-    set include(value:IIncludeComponents){
+
+    set include(value: IIncludeComponents) {
         this.attributes.include = value;
     }
 
-    get components():any{
+    get components(): any {
         return this.attributes.components ||
             {
-                form:{
-                    hidden:'false',
-                    force:false
+                form: {
+                    hidden: 'false',
+                    force: false
                 }
             };
     }
-    set components(value:any){
+
+    set components(value: any) {
         this.attributes.components = value
     }
 
-    get actions():Actions<IIncludeComponents>{
+    get actions(): Actions<IIncludeComponents> {
         return this.attributes.actions || null;
     }
-    set actions(value:Actions<IIncludeComponents>){
+
+    set actions(value: Actions<IIncludeComponents>) {
         this.attributes.actions = value;
     }
 
 
-    get type():string{
-        return this.constructor.name.replace('Rule','').toLowerCase();
+    get type(): string {
+        return this.constructor.name.replace('Rule', '').toLowerCase();
     }
 
-    get componentSave():IComponentSave{
-        if(this.attributes.components && this.attributes.components.save)
+    get componentSave(): IComponentSave {
+        if (this.attributes.components && this.attributes.components.save)
             return this.attributes.components.save;
         return {};
     }
 
 
-    get list():ITagsInput{
+    get list(): ITagsInput {
         return this.attributes.list;
     }
-    set list(value:ITagsInput){
+
+    set list(value: ITagsInput) {
         this.attributes.list = value;
     }
-
 
 
 }

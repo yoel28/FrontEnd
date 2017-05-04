@@ -1,19 +1,21 @@
-import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
+import {Directive, ElementRef, EventEmitter, OnInit} from '@angular/core';
 
 let jQuery = require('jquery');
 let cropit = require('cropit');
 
 @Directive({
-    selector: "[x-cropit]",
+    selector: '[x-cropit]',
     inputs: ['imageSrc'],
-    outputs:   ['saveImagen'],
+    outputs: ['saveImagen'],
 })
-export class XCropit implements OnInit{
-    public saveImagen:any;
-    public imageSrc:string;
-    constructor(public el:ElementRef) {
+export class XCropit implements OnInit {
+    public saveImagen: any;
+    public imageSrc: string;
+
+    constructor(public el: ElementRef) {
         this.saveImagen = new EventEmitter();
     }
+
     ngOnInit() {
         let that = jQuery(this.el.nativeElement);
         let _this = this;
@@ -28,34 +30,34 @@ export class XCropit implements OnInit{
         });
         that.find('.cropit-preview-image-container').css({'cursor': 'move'});
         that.find('.image-size-label').css({'margin-top': '10px'});
-        that.find('input, .export').css({'display':'block'});
-        that.find('button').css({'margin-top':'10px'});
+        that.find('input, .export').css({'display': 'block'});
+        that.find('button').css({'margin-top': '10px'});
 
         that.cropit({
-            onImageLoaded:function () {
+            onImageLoaded: function () {
                 let imageData = that.cropit('export');
-                if(imageData)
+                if (imageData)
                     _this.saveImagen.emit(imageData);
             },
-            onOffsetChange:function () {
+            onOffsetChange: function () {
                 let imageData = that.cropit('export');
-                if(imageData)
+                if (imageData)
                     _this.saveImagen.emit(imageData);
             },
-            imageState: { src: _this.imageSrc || "" }
+            imageState: {src: _this.imageSrc || ''}
         });
-        that.find('.rotate-cw').click(function(event) {
+        that.find('.rotate-cw').click(function (event) {
             event.preventDefault();
             that.cropit('rotateCW');
             let imageData = that.cropit('export');
-            if(imageData)
+            if (imageData)
                 _this.saveImagen.emit(imageData);
         });
-        that.find('.rotate-ccw').click(function(event) {
+        that.find('.rotate-ccw').click(function (event) {
             event.preventDefault();
             that.cropit('rotateCCW');
             let imageData = that.cropit('export');
-            if(imageData)
+            if (imageData)
                 _this.saveImagen.emit(imageData);
         });
     }

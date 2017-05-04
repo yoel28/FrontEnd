@@ -1,149 +1,157 @@
-import {HttpUtils} from "./http-utils";
-import {EventEmitter} from "@angular/core";
-import {FormGroup, FormControl} from "@angular/forms";
-import {DependenciesBase} from "../com.zippyttech.common/DependenciesBase";
+import {HttpUtils} from './http-utils';
+import {EventEmitter} from '@angular/core';
+import {FormControl, FormGroup} from '@angular/forms';
+import {DependenciesBase} from '../com.zippyttech.common/DependenciesBase';
 
-export interface IData{
-    list?:Array<Object>;
-    count?:number;
-    page?:Array<number | string>;
+export interface IData {
+    list?: Array<Object>;
+    count?: number;
+    page?: Array<number | string>;
 }
 
 export interface IWhere {
-    [index:number]: WhereOp |{ and:IWhere;code?:string } |{ or:IWhere;code?:string }  | { join:string; where:IWhere;code?:string };
+    [index: number]: WhereOp
+        | { and: IWhere; code?: string }
+        | { or: IWhere; code?: string }
+        | { join: string; where: IWhere; code?: string };
 }
 
 interface WhereOp {
-    op:string;
-    field:string;
-    value?:string | boolean | number;
-    type?:string;
-    code?:string
+    op: string;
+    field: string;
+    value?: string | boolean | number;
+    type?: string;
+    code?: string
 }
 
-type orderOptions = 'desc'|'asc';
-type deletedOptions = 'all'|'only';
-export type typeToast = 'info'|'success' | 'wait' | 'error' | 'warning';
+type orderOptions = 'desc' | 'asc';
+type deletedOptions = 'all' | 'only';
+export type typeToast = 'info' | 'success' | 'wait' | 'error' | 'warning';
 
-export interface IRest{
-    where:IWhere;
-    max:number;
-    offset:number;
-    whereDefault?:IWhere;
-    findData?:boolean;
-    sort?:string;
-    order?:orderOptions;
-    deleted?:deletedOptions;
-    id?:string;
-    data:FormControl;
+export interface IRest {
+    where: IWhere;
+    max: number;
+    offset: number;
+    whereDefault?: IWhere;
+    findData?: boolean;
+    sort?: string;
+    order?: orderOptions;
+    deleted?: deletedOptions;
+    id?: string;
+    data: FormControl;
 }
 type TRestEvent = 'afterSave' | 'afterPatch' | 'afterDelete' | 'afterDelete' | 'afterLock'
-export interface IRestEvent{
-    type:TRestEvent;
-    args:Object;
+export interface IRestEvent {
+    type: TRestEvent;
+    args: Object;
 }
 
 export class RestController {
-    public events:EventEmitter<IRestEvent>;
+    public events: EventEmitter<IRestEvent>;
 
-    httputils:HttpUtils;
-    endpoint:string;
-    rest:IRest= {
+    httputils: HttpUtils;
+    endpoint: string;
+    rest: IRest = {
         where: [],
         max: 15,
         offset: 0,
-        findData:false,
-        data:new FormControl({})
+        findData: false,
+        data: new FormControl({})
     };
-    restSearch:IRest= {
+    restSearch: IRest = {
         where: [],
         max: 5,
         offset: 0,
-        findData:false,
-        data:new FormControl({})
+        findData: false,
+        data: new FormControl({})
     };
 
-    constructor(public db:DependenciesBase) {
+    constructor(public db: DependenciesBase) {
         this.events = new EventEmitter();
         this.httputils = new HttpUtils(this.db);
     }
 
-    get dataList():IData | any{
+    get dataList(): IData | any {
         return this.rest.data.value;
     }
-    set dataList(data:IData | any){
+
+    set dataList(data: IData | any) {
         this.rest.data.setValue(data);
     }
 
-    private data(search=false):FormControl{
+    private data(search = false): FormControl {
         return this.getRest(search).data;
     }
 
 
-    get dataSearch():IData |any{
+    get dataSearch(): IData | any {
         return this.restSearch.data.value;
     }
-    set dataSearch(data:IData | any){
+
+    set dataSearch(data: IData | any) {
         this.restSearch.data.setValue(data);
     }
 
-    public getRestParams(search = false):string{
+    public getRestParams(search = false): string {
         let rest = this.getRest(search);
-        return  (rest.id?rest.id:'') +
-                ("?max=" + rest.max) +
-                ("&offset=" + rest.offset) +
-                (this.setWhere(rest.where)) +
-                (rest.sort ?'&sort=' + rest.sort : '') +
-                (rest.order?'&order=' + rest.order : '') +
-                (rest.deleted?'&deleted=' + rest.deleted : '');
+        return (rest.id ? rest.id : '') +
+            ('?max=' + rest.max) +
+            ('&offset=' + rest.offset) +
+            (this.setWhere(rest.where)) +
+            (rest.sort ? '&sort=' + rest.sort : '') +
+            (rest.order ? '&order=' + rest.order : '') +
+            (rest.deleted ? '&deleted=' + rest.deleted : '');
 
     }
 
-    protected setEndpoint(endpoint:string) {
-        if(endpoint.substr(0, 1) == "/" && endpoint.substr(-1) == "/"){
+    protected setEndpoint(endpoint: string) {
+        if (endpoint.substr(0, 1) == '/' && endpoint.substr(-1) == '/') {
             this.endpoint = endpoint;
             return;
         }
-        this.db.debugLog('Error setEndpoint','Debe iniciar y terminar con el caracter /')
+        this.db.debugLog('Error setEndpoint', 'Debe iniciar y terminar con el caracter /')
 
     }
-    protected getEndpoint(search=false):string{
-        if(search)
-            return '/search'+this.endpoint;
+
+    protected getEndpoint(search = false): string {
+        if (search)
+            return '/search' + this.endpoint;
         return this.endpoint;
     }
 
-    public getData(search = false):IData | any{
-        return search?this.dataSearch:this.dataList;
+    public getData(search = false): IData | any {
+        return search ? this.dataSearch : this.dataList;
     }
-    public setData(data:IData | any,search = false){
-        if(search)
+
+    public setData(data: IData | any, search = false) {
+        if (search)
             this.restSearch.data.setValue(data);
         else
             this.rest.data.setValue(data);
     }
 
 
-    public getRest(search = false):IRest{
-        return search?this.restSearch:this.rest;
+    public getRest(search = false): IRest {
+        return search ? this.restSearch : this.rest;
     }
 
-    private setWhere(where:IRest | Object,prefix='&where='):string{
-        if(where){
-            return prefix+encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
+    private setWhere(where: IRest | Object, prefix = '&where='): string {
+        if (where) {
+            return prefix + encodeURI(JSON.stringify(where).split('{').join('[').split('}').join(']'));
         }
-        return prefix+encodeURI('[]');
+        return prefix + encodeURI('[]');
     }
-    public  loadWhere(where:IWhere,event?,code?:string,search:boolean = false) {
-        if(event)
+
+    public  loadWhere(where: IWhere, event?, code?: string, search: boolean = false) {
+        if (event)
             event.preventDefault();
-        if(code)
+        if (code)
             this.removedCodeFilter(code);
 
-        if(typeof where === 'object'){
+        if (typeof where === 'object') {
 
-            if((<any>where).length){
-                let whereTemp:IWhere;
+            if ((<any>where).length) {
+                let whereTemp: IWhere;
                 whereTemp = (<any>this.getRest(search).where).concat(where);
                 this.getRest(search).where = whereTemp;
             }
@@ -152,52 +160,53 @@ export class RestController {
             console.log('no es un objecto.. verificar');
         this.loadData();
     }
-    public  removedCodeFilter(code:string,search=false){
-        let indexs=[];
+
+    public  removedCodeFilter(code: string, search = false) {
+        let indexs = [];
         let rest = this.getRest(search);
 
-        if(rest.where){
-            (<any>rest.where).forEach((where,index)=>{
-                if(where.code && where.code ==  code)
+        if (rest.where) {
+            (<any>rest.where).forEach((where, index) => {
+                if (where.code && where.code == code)
                     indexs.unshift(index);
             });
         }
-        indexs.forEach(i=>{
-            (<any>rest.where).splice(i,1);
+        indexs.forEach(i => {
+            (<any>rest.where).splice(i, 1);
         })
     }
 
-    public changeOrder(sort:string,search=false){
-        if(sort ==  this.getRest(search).sort){
-            this.getRest(search).order = this.getRest(search).order=='desc'?'asc':null;
-            if(!this.getRest(search).order)
-                this.getRest(search).sort=null;
+    public changeOrder(sort: string, search = false) {
+        if (sort == this.getRest(search).sort) {
+            this.getRest(search).order = this.getRest(search).order == 'desc' ? 'asc' : null;
+            if (!this.getRest(search).order)
+                this.getRest(search).sort = null;
         }
-        else
-        {
-            this.getRest(search).sort =  sort;
+        else {
+            this.getRest(search).sort = sort;
             this.getRest(search).order = 'desc'
         }
-        this.loadData(1,search);
-    }
-    public changeDeleted(event?,search=false){
-        if(event)
-            event.preventDefault();
-        this.getRest(search).deleted = (!this.getRest(search).deleted)?'all':(this.getRest(search).deleted=='all')?'only':null;
-        this.loadData(1,search);
+        this.loadData(1, search);
     }
 
-    private sound(id:string) {
+    public changeDeleted(event?, search = false) {
+        if (event)
+            event.preventDefault();
+        this.getRest(search).deleted = (!this.getRest(search).deleted) ? 'all' : (this.getRest(search).deleted == 'all') ? 'only' : null;
+        this.loadData(1, search);
+    }
+
+    private sound(id: string) {
         let audio = {};
         audio['500'] = new Audio();
         audio['404'] = new Audio();
         audio['422'] = new Audio();
         audio['default'] = new Audio();
 
-        audio['500'].src = "assets/audio/500.mp3";
-        audio['404'].src = "assets/audio/404.mp3";
-        audio['422'].src = "assets/audio/422.mp3";
-        audio['default'].src = "assets/audio/default.mp3";
+        audio['500'].src = 'assets/audio/500.mp3';
+        audio['404'].src = 'assets/audio/404.mp3';
+        audio['422'].src = 'assets/audio/422.mp3';
+        audio['default'].src = 'assets/audio/default.mp3';
 
         if (audio[id])
             audio[id].play();
@@ -206,7 +215,7 @@ export class RestController {
 
     }
 
-    private _setOffset(list:IData,rest:IRest,offset?:number|string) {
+    private _setOffset(list: IData, rest: IRest, offset?: number | string) {
         let count = list.count || 0;
         let max = rest.max;
 
@@ -226,9 +235,9 @@ export class RestController {
         }
     }
 
-    private loadPager(search=false) {
+    private loadPager(search = false) {
         let rest = this.getRest(search);
-        let list  = this.getData(search);
+        let list = this.getData(search);
         list.page = [];
         if (list.count && list.count > 0) {
             let initPage = Math.trunc((rest.offset + rest.max) / (rest.max * 5)) * 5;
@@ -248,7 +257,7 @@ export class RestController {
         this.data(search).setValue(list);
     }
 
-    public assignData(data:Object) {
+    public assignData(data: Object) {
         this.getData().list.unshift(data);
         this.getData().count++;
         if (this.getData().page.length > 1)
@@ -262,7 +271,7 @@ export class RestController {
 
         if (this.db.toastyService) {
             try {
-                if(err.status==0){
+                if (err.status == 0) {
                     this.httputils.addToast('error', 'Por favor verifique su conexion a Internet', 'error');
                 }
                 else if (err.json()) {
@@ -286,12 +295,12 @@ export class RestController {
                     }
                 }
                 else {
-                    this.httputils.addToast('error',err,'error');
+                    this.httputils.addToast('error', err, 'error');
                 }
-            }catch (e){
-                if(err.statusText)
+            } catch (e) {
+                if (err.statusText)
                     this.httputils.addToast('error', err.statusText, 'error');
-                else if(err.status)
+                else if (err.status)
                     this.httputils.addToast('error', err.status, 'error');
                 else
                     this.httputils.addToast('error', e, 'error');
@@ -303,54 +312,56 @@ export class RestController {
     };
 
 
-    public loadData(offset?:string|number,search:boolean=false,event?:Event) {
-        if(event)
+    public loadData(offset?: string | number, search: boolean = false, event?: Event) {
+        if (event)
             event.preventDefault();
 
         let rest = this.getRest(search);
         rest.findData = true;
-        if (offset && offset == '#'){
+        if (offset && offset == '#') {
             rest.offset = 0;
             rest.max = 1000;
             return this.getLoadDataAll([], this.getEndpoint(search), this.data(search), this.getRest(search));
         }
         else {
-            this._setOffset(this.getData(search),this.getRest(search),offset);
-            return this.httputils.onLoadList(this.getEndpoint(search)+this.getRestParams(search), this.data(search), this.error).then(
-                (response=> {
+            this._setOffset(this.getData(search), this.getRest(search), offset);
+            return this.httputils.onLoadList(this.getEndpoint(search) + this.getRestParams(search), this.data(search), this.error).then(
+                (response => {
                     this.loadPager(search);
-                    rest.findData=false;
+                    rest.findData = false;
                 }).bind(this)
             );
         }
     };
-    public loadDataId(id:string,search=false){
+
+    public loadDataId(id: string, search = false) {
         this.getRest(search).id = id;
-        this.loadData(null,search);
+        this.loadData(null, search);
     }
-    private getLoadDataAll(data:Array<Object>, endpoint:String, control:FormControl, rest:IRest, successCallback?) {
-        let list:Object = control.value;//TODO:YR-falta
+
+    private getLoadDataAll(data: Array<Object>, endpoint: String, control: FormControl, rest: IRest, successCallback?) {
+        let list: Object = control.value;//TODO:YR-falta
         list['page'] = [];
         control.setValue(list);
         rest.findData = true;
-        return this.httputils.onLoadList(endpoint + "?max=" + rest.max + "&offset=" + rest.offset + this.setWhere(rest.where), control, this.error).then(
-            (response=> {
+        return this.httputils.onLoadList(endpoint + '?max=' + rest.max + '&offset=' + rest.offset + this.setWhere(rest.where), control, this.error).then(
+            (response => {
                 if (list['count'] > 0) {
                     data = data.concat(list['list']);
                     if (list['count'] == list['list'].length || list['count'] == data.length) {
-                        rest.findData=false;
+                        rest.findData = false;
                         control.setValue(data);
                         if (successCallback)
                             successCallback();
                     }
                     else if (rest.max > list['list'].length) {
                         rest.max = list['list'].length;
-                        rest.offset+= rest.max;
+                        rest.offset += rest.max;
                         control.setValue(list);
                         this.getLoadDataAll(data, endpoint, control, rest, successCallback);
                     }
                     else {
-                        rest.offset+= rest.max;
+                        rest.offset += rest.max;
                         this.getLoadDataAll(data, endpoint, control, rest, successCallback);
                     }
                 }
@@ -369,104 +380,111 @@ export class RestController {
             this.httputils.onUpdate(this.getEndpoint() + data.id, body, data, this.error);
         }
     }
-    public onDelete(id:number,successCallback?,event = null) {
+
+    public onDelete(id: number, successCallback?, event = null) {
         if (event)
             event.preventDefault();
 
-        return this.httputils.onDelete(this.getEndpoint() + id, id, this.getData().list, this.error).then((response=>{
-                if(successCallback)
+        return this.httputils.onDelete(this.getEndpoint() + id, id, this.getData().list, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterDelete',args:response});
+                this.events.emit({type: 'afterDelete', args: response});
             }).bind(this)
         );
     }
-    public onSave(data:FormGroup|Object,successCallback?) {
-        let body:any;
-        if(data instanceof FormGroup)
+
+    public onSave(data: FormGroup | Object, successCallback?) {
+        let body: any;
+        if (data instanceof FormGroup)
             body = JSON.stringify(data.value);
         else
             body = JSON.stringify(data);
 
-        return this.httputils.onSave(this.getEndpoint(), body, this.getData().list, this.error).then((response=>{
-                if(successCallback)
+        return this.httputils.onSave(this.getEndpoint(), body, this.getData().list, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterSave',args:response});
+                this.events.emit({type: 'afterSave', args: response});
             })
         );
     }
 
-    public onPatchObject(body:Object,data:Object,successCallback?) {
-        return (this.httputils.onUpdate(this.getEndpoint()+ data['id'],JSON.stringify(body), data, this.error).then((response=>{
-                if(successCallback)
+    public onPatchObject(body: Object, data: Object, successCallback?) {
+        return (this.httputils.onUpdate(this.getEndpoint() + data['id'], JSON.stringify(body), data, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterPatch',args:response});
+                this.events.emit({type: 'afterPatch', args: response});
             })
         ));
     }
-    public onPatch(field:string, data:Object, value?:string | boolean | number,successCallback?) {
+
+    public onPatch(field: string, data: Object, value?: string | boolean | number, successCallback?) {
         let json = {};
         json[field] = value ? value : !data[field];
         let body = JSON.stringify(json);
-        return (this.httputils.onUpdate(this.getEndpoint() + data['id'], body, data, this.error).then((response=>{
-                if(successCallback)
+        return (this.httputils.onUpdate(this.getEndpoint() + data['id'], body, data, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterPatch',args:response});
+                this.events.emit({type: 'afterPatch', args: response});
             })
         ));
     }
-    public onPatchValue(field:string, data:Object, value=null,successCallback?) {
+
+    public onPatchValue(field: string, data: Object, value = null, successCallback?) {
         let json = {};
         json[field] = value;
-        return (this.httputils.onUpdate(this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response=>{
-                if(successCallback)
+        return (this.httputils.onUpdate(this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterPatch',args:response});
+                this.events.emit({type: 'afterPatch', args: response});
             })
         ));
     }
-    public onPatchNull(data:Object, key:string,successCallback?) {
+
+    public onPatchNull(data: Object, key: string, successCallback?) {
         let json = {};
         json[key] = null;
-        return (this.httputils.onUpdate(this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response=>{
-                if(successCallback)
+        return (this.httputils.onUpdate(this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterPatch',args:response});
+                this.events.emit({type: 'afterPatch', args: response});
             })
         ));
     }
-    public onPatchId(dataRef:Object, key:string, data:Object,successCallback?) {
+
+    public onPatchId(dataRef: Object, key: string, data: Object, successCallback?) {
         let json = {};
         json[key] = data['id'];
-        return (this.httputils.onUpdate(this.getEndpoint() + dataRef['id'], JSON.stringify(json), data, this.error).then((response=>{
-                if(successCallback)
+        return (this.httputils.onUpdate(this.getEndpoint() + dataRef['id'], JSON.stringify(json), data, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterPatch',args:response});
+                this.events.emit({type: 'afterPatch', args: response});
             })
         ));
     }
-    public onPatchProfile(field:string, data:Object, value=null,event?,successCallback?) {
-        if(event)
+
+    public onPatchProfile(field: string, data: Object, value = null, event?, successCallback?) {
+        if (event)
             event.preventDefault();
         let json = {};
         json[field] = value;
-        return (this.httputils.onUpdate('/auto/update', JSON.stringify(json), data, this.error).then((response=>{
-                if(successCallback)
+        return (this.httputils.onUpdate('/auto/update', JSON.stringify(json), data, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterPatch',args:response});
+                this.events.emit({type: 'afterPatch', args: response});
             })
         ));
     }
 
 
-    public onLock(field:string, data:Object, event?,successCallback?) {
+    public onLock(field: string, data: Object, event?, successCallback?) {
         if (event)
             event.preventDefault();
         let json = {};
         json[field] = !data[field];
-        return (this.httputils.onUpdate("/lock" + this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response=>{
-                if(successCallback)
+        return (this.httputils.onUpdate('/lock' + this.getEndpoint() + data['id'], JSON.stringify(json), data, this.error).then((response => {
+                if (successCallback)
                     successCallback(response);
-                this.events.emit({type:'afterLock',args:response});
+                this.events.emit({type: 'afterLock', args: response});
             })
         ));
     }
@@ -474,42 +492,43 @@ export class RestController {
     onEditable(field, data, value, endpoint) {
         let json = {};
         let that = this;
-        if (typeof data[field] === "number")
+        if (typeof data[field] === 'number')
             value = parseFloat(value);
         json[field] = value;
         let body = JSON.stringify(json);
 
         let successCallback = response => {
-            Object.assign(data,response.json());
-            that.httputils.addToast('Notificación','Guardado con éxito');
+            Object.assign(data, response.json());
+            that.httputils.addToast('Notificación', 'Guardado con éxito');
         };
-        if(endpoint == '/auto/update')
-            return (this.httputils.doPut(endpoint,body,successCallback,this.error));
+        if (endpoint == '/auto/update')
+            return (this.httputils.doPut(endpoint, body, successCallback, this.error));
         else
-            return (this.httputils.doPut(endpoint+data.id,body,successCallback,this.error));
+            return (this.httputils.doPut(endpoint + data.id, body, successCallback, this.error));
     }
 
     onEditableRole(field, data, value, endpoint) {
         let json = {};
-        let that=this;
+        let that = this;
         json[field] = value;
         let body = JSON.stringify(json);
         let successCallback = response => {
-            that.httputils.addToast('Notificación','Guardado con éxito');
+            that.httputils.addToast('Notificación', 'Guardado con éxito');
         };
+
         return (this.httputils.doPost(endpoint, body, successCallback, this.error));
     }
 
-    //region get
+    // region get
 
-    public loadData2(endpoint:string,data:Object,isEndpointAbsolute:boolean=false,successCallback) {
-        if(!successCallback)
-            successCallback= response => {
-                Object.assign(data,response);
+    public loadData2(endpoint: string, data: Object, isEndpointAbsolute: boolean = false, successCallback) {
+        if (!successCallback)
+            successCallback = response => {
+                Object.assign(data, response);
             };
-        return this.httputils.doGet(endpoint,successCallback,this.error,isEndpointAbsolute);
+        return this.httputils.doGet(endpoint, successCallback, this.error, isEndpointAbsolute);
     };
 
-    //endregion
+    // endregion
 
 }

@@ -1,9 +1,9 @@
-import {ElementRef, Directive} from "@angular/core";
+import {Directive, ElementRef} from '@angular/core';
 
 let jQuery = require('jquery');
 
 @Directive({
-    selector: "[drap-resize]"
+    selector: '[drap-resize]'
 })
 export class DrapResize {
     constructor(el: ElementRef) {

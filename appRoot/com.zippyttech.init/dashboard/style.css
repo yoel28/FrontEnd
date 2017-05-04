@@ -1,14 +1,23 @@
-.content{
+.content {
     height: 100%;
     position: relative;
-    top:0; bottom: 0; left: 0; right: 0;
-    display:flex;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
     flex-flow: column wrap;
     align-content: center;
     align-items: center;
     justify-content: center;
 }
 
-.btn{ width: 80%; height: 50px; margin-bottom: 10px}
+.btn {
+    width: 80%;
+    height: 50px;
+    margin-bottom: 10px
+}
 
-.fa{ font-size: 32px; }
+.fa {
+    font-size: 32px;
+}

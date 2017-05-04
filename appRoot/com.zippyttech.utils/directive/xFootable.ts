@@ -1,19 +1,16 @@
-import {
-    ElementRef, Directive, Input, OnInit, AfterViewInit, AfterContentInit,
-    AfterContentChecked
-} from "@angular/core";
-import {TablesComponent} from "../../com.zippyttech.ui/components/tables/tables.component";
-declare let jQuery:any;
-declare let Footable:any;
+import {AfterContentInit, Directive, ElementRef} from '@angular/core';
+declare let jQuery: any;
+declare let Footable: any;
 
 @Directive({
-    selector: "[x-footable]"
+    selector: '[x-footable]'
 })
-export class XFootable implements AfterContentInit{
+export class XFootable implements AfterContentInit {
 
-    constructor(private element: ElementRef){}
+    constructor(private element: ElementRef) {
+    }
 
-    ngAfterContentInit(): void{
+    ngAfterContentInit(): void {
         jQuery(this.element.nativeElement).footable();
     }
 }

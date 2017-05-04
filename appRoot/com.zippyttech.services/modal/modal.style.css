@@ -1,8 +1,11 @@
 
-.frame{
+.frame {
     position: fixed !important;
     box-sizing: content-box;
-    top: 0; bottom: 0; left: 0; right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
     display: none !important;
     overflow: hidden;
 
@@ -13,7 +16,7 @@
     z-index: 5000;
 }
 
-.frame>.window{
+.frame > .window {
     position: relative;
     display: flex;
     top: -1000px;
@@ -22,19 +25,37 @@
     border-radius: 5px;
     transition: cubic-bezier(0.31, 0.01, 0.11, 1.26) .3s;
     overflow: hidden;
-    box-shadow: 0px 3px 10px 0 rgba(0,0,0,0.5);
+    box-shadow: 0px 3px 10px 0 rgba(0, 0, 0, 0.5);
     z-index: 10;
 }
-.frame>.window>*{ border-radius: 0px }
-.frame.xs>.window{width: 16.666%;}
-.frame.sm>.window{width: 33.333%;}
-.frame.md>.window{width: 58.333%;}
-.frame.lg>.window{width: 83.333%;}
 
-.frame>.backdrop{
+.frame > .window > * {
+    border-radius: 0px
+}
+
+.frame.xs > .window {
+    width: 16.666%;
+}
+
+.frame.sm > .window {
+    width: 33.333%;
+}
+
+.frame.md > .window {
+    width: 58.333%;
+}
+
+.frame.lg > .window {
+    width: 83.333%;
+}
+
+.frame > .backdrop {
     position: fixed;
-    top: 0; bottom: 0; left: 0; right: 0;
-    background: rgba(3,3,3,.5);
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(3, 3, 3, .5);
     outline: 0;
     opacity: 0;
     transition: linear .3s;
@@ -42,13 +63,14 @@
     z-index: 1;
 }
 
-.frame>.window>.header{
+.frame > .window > .header {
     display: flex;
     border-bottom: 1px solid #dadada;
     padding: 10px;
     font-size: 18px;
 }
-.frame>.window>.header>.title{
+
+.frame > .window > .header > .title {
     font-weight: bold;
     flex: 10 1 auto;
     align-self: flex-start;
@@ -56,7 +78,7 @@
     margin: 0;
 }
 
-.frame>.window>.header>.btn-toolbar>.btn-tool{
+.frame > .window > .header > .btn-toolbar > .btn-tool {
     background: transparent;
     border: none;
     font-size: 18px;
@@ -67,34 +89,41 @@
     align-self: flex-end;
     opacity: .5;
 }
-.frame>.window>.header>.btn-toolbar>.btn-tool:hover{
+
+.frame > .window > .header > .btn-toolbar > .btn-tool:hover {
     opacity: 1;
 }
-.frame>.window>.header>.btn-toolbar>.btn-tool.close {
+
+.frame > .window > .header > .btn-toolbar > .btn-tool.close {
     order: 999999;
     align-self: flex-end;
 }
 
-.frame>.window>.body{ padding: 15px;}
+.frame > .window > .body {
+    padding: 15px;
+}
 
-.frame>.window>.footer{
+.frame > .window > .footer {
     border-top: 1px solid #dadada;
     padding: 10px;
     display: inline-flex;
     flex-flow: column wrap;
 }
 
-.frame>.window>.footer>.btns{
+.frame > .window > .footer > .btns {
     font-weight: bold;
     align-self: flex-end;
 }
 
-
-.frame>.window>.footer>.btns>*{
+.frame > .window > .footer > .btns > * {
     margin: 0 5px;
 }
 
+.frame.show {
+    display: flex !important;
+}
 
-.frame.show{ display: flex !important;}
-
-.frame.shown>.window, .frame.shown>.backdrop{ top:0px !important; opacity: 1 }
+.frame.shown > .window, .frame.shown > .backdrop {
+    top: 0px !important;
+    opacity: 1
+}

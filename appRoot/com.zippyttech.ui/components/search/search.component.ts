@@ -1,63 +1,63 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
-import {IRest, IData} from "../../../com.zippyttech.rest/restController";
-import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
-import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
-import {FormGroup, FormControl} from "@angular/forms";
-import {API} from "../../../com.zippyttech.utils/catalog/defaultAPI";
-import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
+import {IData, IRest} from '../../../com.zippyttech.rest/restController';
+import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase';
+import {ModelRoot} from '../../../com.zippyttech.common/modelRoot';
+import {FormControl, FormGroup} from '@angular/forms';
+import {API} from '../../../com.zippyttech.utils/catalog/defaultAPI';
+import {StaticValues} from '../../../com.zippyttech.utils/catalog/staticValues';
 
-export interface ISearch{
-    model:ModelRoot;
+export interface ISearch {
+    model: ModelRoot;
 }
 
 @Component({
     selector: 'search-view',
     templateUrl: './index.html',
-    styleUrls: [ './style.css'],
-    inputs:['params'],
-    outputs:['output'],
+    styleUrls: ['./style.css'],
+    inputs: ['params'],
+    outputs: ['output'],
 })
-export class SearchComponent implements OnInit{
+export class SearchComponent implements OnInit {
 
-    public params:ISearch;
-    public output:EventEmitter<Object>;
+    public params: ISearch;
+    public output: EventEmitter<Object>;
 
     private _form: FormGroup;
 
 
-    constructor(public db:DependenciesBase) {
+    constructor(public db: DependenciesBase) {
         this.output = new EventEmitter();
     }
 
-    ngOnInit(){
+    ngOnInit() {
         this._initForm();
     }
 
 
-    getDataAll(data){
+    getDataAll(data) {
         this.output.emit(data);
     }
 
-    private get _static():Object{
+    private get _static(): Object {
         return StaticValues;
     }
 
-    private get _search():string{
+    private get _search(): string {
         return this._model.nameClass;
     }
 
 
     // region model
 
-    private get _model():ModelRoot{
+    private get _model(): ModelRoot {
         return this.params.model;
     }
 
-    private get _searchRest():IRest{
+    private get _searchRest(): IRest {
         return this._model.getRest(true);
     }
 
-    private get _searchData():IData{
+    private get _searchData(): IData {
         return this._searchRest.data.value
     }
 
@@ -73,18 +73,18 @@ export class SearchComponent implements OnInit{
         this._model.loadData(page, true);
     }
 
-    private _destroySearch(event?: Event){
+    private _destroySearch(event?: Event) {
         this.db.ms.hideCurrentModal();
     }
 
-    private get _searchPage(){
+    private get _searchPage() {
         if (this._model) {
             return this._model.getCurrentPage(true);
         }
         return -1;
     }
 
-    private _fnSearch(data:Object){
+    private _fnSearch(data: Object) {
         this.output.emit(data);
         this.db.ms.hideCurrentModal();
     }
@@ -93,7 +93,7 @@ export class SearchComponent implements OnInit{
 
     // region form
 
-    private _initForm(){
+    private _initForm() {
 
         let field = new FormControl('');
 

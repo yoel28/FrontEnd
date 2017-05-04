@@ -5,20 +5,22 @@
         </a>
         <div class="bar">
             <span class="btn navMenu" *ngIf="enablesNavMenus.tree" (click)="toggleTreeMenu()"><i class="fa"></i></span>
-            <span class="btn modalMenu" *ngIf="enablesNavMenus.modal" (click)="toggleModalMenu()"><i class="fa fa-list"></i></span>
+            <span class="btn modalMenu" *ngIf="enablesNavMenus.modal" (click)="toggleModalMenu()"><i
+                    class="fa fa-list"></i></span>
             <a class="btn btn-blue glyphicon glyphicon-cog" type="button" title="Cambiar cuenta"
-               *ngIf="getLocalStorage('accountList')" style="font-size: x-large"  (click)='changeAccount($event)'>
+               *ngIf="getLocalStorage('accountList')" style="font-size: x-large" (click)='changeAccount($event)'>
             </a>
         </div>
 
         <div class="user-menu" [class.open]="userDrop">
             <a class="info" (click)=" userDrop = !userDrop">
-                <img  class="image" [attr.src]="db.myglobal.user.image || db.pathElements.robot" alt="User Image">
+                <img class="image" [attr.src]="db.myglobal.user.image || db.pathElements.robot" alt="User Image">
                 <span class="email hidden-xs">{{db.myglobal.user.email}}</span>
             </a>
             <ul class="drop">
                 <li class="image">
-                    <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle" alt="User Image">
+                    <img [attr.src]="db.myglobal.user.image || db.pathElements.robot" class="img-circle"
+                         alt="User Image">
                 </li>
                 <li class="footer">
                     <button class="btn" (click)="onProfile($event)">Perfil</button>
@@ -40,7 +42,7 @@
             <span>En caso de error comunicarse al {{db.myglobal.getParams('PHONE_SUPPORT')}}/{{ replace(db.myglobal.getParams('EMAIL_SUPPORT'))}}</span>
         </div>
         <div>
-            <div class="text-right"> {{db.myglobal.user.account}} </div>
+            <div class="text-right"> {{db.myglobal.user.account}}</div>
             <a href="#" data-target="#termConditions" data-toggle="modal">{{'custom.termConditions' | translate}}</a>
         </div>
     </footer>
@@ -50,39 +52,39 @@
 <modal></modal>
 
 <!--<div *ngIf="enablesNavMenus.modal && false" class="modal fade" id="myMenu" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">-->
-    <!--<div class="modal-dialog" role="document">-->
-        <!--<div class="modal-content">-->
-            <!--<div class="modal-header">-->
-                <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity: 1;">-->
-                    <!--<span aria-hidden="true">&times;</span>-->
-                <!--</button>-->
-                <!--<h4 class="modal-title" id="myModalLabel" style="color:#fff; font-size:15pt;">Men&uacute; Principal</h4>-->
-            <!--</div>-->
-            <!--<div class="modal-body menu-modal">-->
-                <!--<div *ngFor="let item of menuItemsTreeview(menuItems.value)" [class.treeview]="item.treeview">-->
-                    <!--<a *ngIf="item.routerLink" data-dismiss="modal" class="a-menu-modal" href="#" [routerLink]="[item.routerLink]">-->
-                        <!--<i *ngIf="!item.image" class="{{item.icon}}"></i>-->
-                        <!--<img *ngIf="item.image" src="{{item.image}}"/>-->
-                        <!--<p>{{item.title}}</p>-->
-                    <!--</a>-->
-                    <!--<div class="row" *ngIf="item.treeview">-->
-                        <!--<h1 style="color:#ffffff; font-size: 12pt;">{{item.title}}</h1><br/>-->
-                        <!--<div class="col-lg-2 col-md-2" *ngFor="let subItem of menuItemsVisible(item.treeview)">-->
-                            <!--<a *ngIf="subItem.routerLink" data-dismiss="modal" href="#" class="a-menu-modal" [routerLink]="[subItem.routerLink]">-->
-                                <!--<i class="{{subItem.icon}}"></i>-->
-                                <!--<p>{{subItem.title}}</p>-->
-                            <!--</a>-->
-                            <!--<a *ngIf="subItem.modal" data-dismiss="modal" (click)="subItem.function($event)"-->
-                               <!--class="a-menu-modal" data-toggle="modal" [attr.data-target]="subItem.modalId">-->
-                                <!--<i class="{{subItem.icon}}"></i>-->
-                                <!--<p>{{subItem.title}}</p>-->
-                            <!--</a>-->
-                        <!--</div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+<!--<div class="modal-dialog" role="document">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color:#fff; opacity: 1;">-->
+<!--<span aria-hidden="true">&times;</span>-->
+<!--</button>-->
+<!--<h4 class="modal-title" id="myModalLabel" style="color:#fff; font-size:15pt;">Men&uacute; Principal</h4>-->
+<!--</div>-->
+<!--<div class="modal-body menu-modal">-->
+<!--<div *ngFor="let item of menuItemsTreeview(menuItems.value)" [class.treeview]="item.treeview">-->
+<!--<a *ngIf="item.routerLink" data-dismiss="modal" class="a-menu-modal" href="#" [routerLink]="[item.routerLink]">-->
+<!--<i *ngIf="!item.image" class="{{item.icon}}"></i>-->
+<!--<img *ngIf="item.image" src="{{item.image}}"/>-->
+<!--<p>{{item.title}}</p>-->
+<!--</a>-->
+<!--<div class="row" *ngIf="item.treeview">-->
+<!--<h1 style="color:#ffffff; font-size: 12pt;">{{item.title}}</h1><br/>-->
+<!--<div class="col-lg-2 col-md-2" *ngFor="let subItem of menuItemsVisible(item.treeview)">-->
+<!--<a *ngIf="subItem.routerLink" data-dismiss="modal" href="#" class="a-menu-modal" [routerLink]="[subItem.routerLink]">-->
+<!--<i class="{{subItem.icon}}"></i>-->
+<!--<p>{{subItem.title}}</p>-->
+<!--</a>-->
+<!--<a *ngIf="subItem.modal" data-dismiss="modal" (click)="subItem.function($event)"-->
+<!--class="a-menu-modal" data-toggle="modal" [attr.data-target]="subItem.modalId">-->
+<!--<i class="{{subItem.icon}}"></i>-->
+<!--<p>{{subItem.title}}</p>-->
+<!--</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 <!--</div>-->
 
 <!--<div *ngIf="info && (info.permissions.add || info.permissions.update)">-->
@@ -90,7 +92,7 @@
 <!--</div>-->
 
 <!--<modal-view [params]="getIModalTerm()">-->
-    <!--<div body>-->
-        <!--<term-conditions></term-conditions>-->
-    <!--</div>-->
+<!--<div body>-->
+<!--<term-conditions></term-conditions>-->
+<!--</div>-->
 <!--</modal-view>-->

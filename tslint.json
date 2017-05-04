@@ -1,10 +1,12 @@
 {
+  "rulesDirectory": ["./node_modules/tslint-consistent-codestyle/rules"],
   "rules": {
     "class-name": true,
     "comment-format": [
       true,
       "check-space"
     ],
+    "completed-docs":true,
     "curly": true,
     "eofline": true,
     "forin": true,
@@ -12,6 +14,7 @@
       true,
       "spaces"
     ],
+    "interface-name":true,
     "label-position": true,
     "label-undefined": true,
     "max-line-length": [
@@ -25,6 +28,7 @@
       "static-before-instance",
       "variables-before-functions"
     ],
+    "newline-before-return":false,
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [
@@ -33,15 +37,21 @@
       "info",
       "time",
       "timeEnd",
-      "trace"
+      "trace",
+      "log"
     ],
     "no-construct": true,
     "no-debugger": true,
+    "no-duplicate-super":true,
     "no-duplicate-key": true,
     "no-duplicate-variable": true,
     "no-empty": true,
+    "no-empty-interface":true,
     "no-eval": true,
+    "no-floating-promises":true,
     "no-inferrable-types": true,
+    "no-inferred-empty-object-type":true,
+    "no-magic-numbers":true,
     "no-shadowed-variable": true,
     "no-string-literal": false,
     "no-switch-case-fall-through": true,
@@ -59,6 +69,7 @@
       "check-else",
       "check-whitespace"
     ],
+    "prefer-for-of":true,
     "radix": true,
     "quotemark": [
       true,
@@ -79,7 +90,7 @@
         "variable-declaration": "nospace"
       }
     ],
-    "variable-name": false,
+    "variable-name": [true, "ban-keywords", "check-format", "allow-leading-underscore"],
     "whitespace": [
       true,
       "check-branch",
@@ -87,6 +98,47 @@
       "check-operator",
       "check-separator",
       "check-type"
+    ],
+    "naming-convention": [
+      true,
+//      // forbid leading and trailing underscores and enforce camelCase on EVERY name. will be overridden by subtypes if needed
+//      {"type": "default", "format": "camelCase", "leadingUnderscore": "forbid", "trailingUnderscore": "forbid"},
+//      // require all global constants to be camelCase or UPPER_CASE
+//      // all other variables and functions still need to be camelCase
+//      {"type": "variable", "modifiers": ["global", "const"], "format": ["camelCase","UPPER_CASE"]},
+//      // override the above format option for exported constants to allow only UPPER_CASE
+//      {"type": "variable", "modifiers": ["export", "const"], "format": "UPPER_CASE"},
+//      // allow leading underscores for parameters, because `tsc --noUnusedParameters` will not flag underscore prefixed parameters
+//      // all other rules (trailingUnderscore: forbid, format: camelCase) still apply
+//      // since we don't want to inherit this config to `parameterProperties`, we set `final = true`
+//      {"type": "parameter", "leadingUnderscore": "allow", "final": true},
+//      // require leading underscores for private properties and methods, all other rules still apply
+//      {"type": "member", "modifiers": "private", "leadingUnderscore": "require"},
+//      // same for protected
+//      {"type": "member", "modifiers": "protected", "leadingUnderscore": "require"},
+//      // exclicitly disable the format check only for method toJSON
+//      {"type": "method", "filter": "^toJSON$", "format": null},
+//      // enforce UPPER_CASE for all public static readonly(!) properties
+//      {"type": "property", "modifiers": ["public", "static", "const"], "format": "UPPER_CASE"},
+//      // enforce PascalCase for classes, interfaces, enums, etc. Remember, there are still no underscores allowed.
+//      {"type": "type", "format": "PascalCase"},
+//      // abstract classes must have the prefix "Abstract". The following part of the name must be valid PascalCase
+      {"type": "class", "modifiers": "abstract", "prefix": "_1"},
+      {"type": "method", "modifiers": "abstract", "prefix": "_2"},
+      {"type": "variable", "modifiers": "private", "prefix": "_3"},
+      {"type": "property", "modifiers": "private", "prefix": "_4"},
+      {"type": "member", "modifiers": "private", "prefix": "_5"},
+      {"type": "parameter", "modifiers": "private", "prefix": "_6"}
+//      // interface names must start with "I". The following part of the name must be valid PascalCase
+//      {"type": "interface", "prefix": "I"},
+//      // generic type parameters must start with "T"
+//      // most of the time it will only be T, which is totally valid, because an empty string conforms to the PascalCase check
+//      // By convention T, U and V are used for generics. You could enforce that with "regex": "^[TUV]$" and if you are care that much for performance, you could disable every other check by setting a falsy value
+//      {"type": "genericTypeParameter", "prefix": "T"},
+//      // enum members must be in PascalCase. Without this config, enumMember would inherit UPPER_CASE from public static const property
+//      {"type": "enumMember", "format": "PascalCase"}
     ]
   }
+
+
 }

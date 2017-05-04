@@ -4,7 +4,8 @@
             <div class="row">
                 <div class="{{db.classCol()}}">
                     <i *ngIf="(_searchRest && _searchRest.findData); else
-                            noFindData" class="fa fa-spinner fa-pulse fa-fw" [attr.title]="'custom.findData' | translate">
+                            noFindData" class="fa fa-spinner fa-pulse fa-fw"
+                       [attr.title]="'custom.findData' | translate">
                     </i>
                     <ng-template #noFindData>
                         <i class="{{_model.icon}}"></i>
@@ -42,31 +43,31 @@
                     <div class="{{db.classCol()}} table-responsive">
                         <table class="table table-hover">
                             <tbody *ngIf="_searchData && _searchData.list">
-                                <tr *ngFor="let data of _searchData.list" (click)="_fnSearch(data)"
-                                    [attr.title]="'custom.select' | translate" class="cursor-pointer">
-                                    <td class="td-img" style="width: 50px;">
-                                        <img [src]="data.image || _static.pathElements.robot" style="display: inline-block"
-                                             class="img-responsive img-search">
-                                    </td>
-                                    <td>
-                                        <strong>{{_search+'.search.title' | translate}}</strong>
-                                        &nbsp;{{data.title}}<br>
-                                        <strong>{{_search+'.search.detail' | translate}}</strong>
-                                        &nbsp;{{data.detail}}
-                                    </td>
-                                    <td style="vertical-align: middle">
-                                        <i class="btn btn-box-tool text-green fa fa-check"></i>
-                                    </td>
-                                </tr>
+                            <tr *ngFor="let data of _searchData.list" (click)="_fnSearch(data)"
+                                [attr.title]="'custom.select' | translate" class="cursor-pointer">
+                                <td class="td-img" style="width: 50px;">
+                                    <img [src]="data.image || _static.pathElements.robot" style="display: inline-block"
+                                         class="img-responsive img-search">
+                                </td>
+                                <td>
+                                    <strong>{{_search+'.search.title' | translate}}</strong>
+                                    &nbsp;{{data.title}}<br>
+                                    <strong>{{_search+'.search.detail' | translate}}</strong>
+                                    &nbsp;{{data.detail}}
+                                </td>
+                                <td style="vertical-align: middle">
+                                    <i class="btn btn-box-tool text-green fa fa-check"></i>
+                                </td>
+                            </tr>
                             </tbody>
                             <tfoot *ngIf="_searchData && _searchData.page && _searchData.page.length > 1 ">
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="btn-group pull-right">
-                                            <button (click)="_loadDataSearch($event,val)"
-                                                    [class.btn-green]="val == _searchPage"
-                                                    *ngFor="let val of _searchData.page"
-                                                    type="button" class="btn btn-default">
+                            <tr>
+                                <td colspan="3">
+                                    <div class="btn-group pull-right">
+                                        <button (click)="_loadDataSearch($event,val)"
+                                                [class.btn-green]="val == _searchPage"
+                                                *ngFor="let val of _searchData.page"
+                                                type="button" class="btn btn-default">
                                                 <span *ngIf="val == _searchPage">
                                                     <span *ngIf="_searchRest.findData">
                                                         <i class="fa fa-spinner fa-spin"
@@ -76,13 +77,13 @@
                                                         {{val}}
                                                     </span>
                                                 </span>
-                                                <span *ngIf="val != _searchPage">
+                                            <span *ngIf="val != _searchPage">
                                                     {{val}}
                                                 </span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
                             </tfoot>
                         </table>
                     </div>

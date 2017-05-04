@@ -1,6 +1,7 @@
-.grises a,.grises a:hover{
+.grises a, .grises a:hover {
     color: white;
 }
+
 .grises img {
 
     width: 150px;
@@ -20,6 +21,7 @@
     -o-transition: all 0.1s ease;
     transition: all 0.1s ease;
 }
+
 .grises:hover img {
     border: 1px solid white;
     -webkit-filter: grayscale(0%);
@@ -34,39 +36,43 @@
     transition: all 0.1s ease;
 }
 
-.main{
+.main {
     margin-top: 60px;
 }
+
 .secciones {
     position: relative;
     display: block;
     margin: 20px;
-    text-align:center;
+    text-align: center;
 
 }
-h1{
 
-    text-align:center;
+h1 {
+
+    text-align: center;
     letter-spacing: -3px;
     font-weight: bolder;
     color: #fff;
-    display: block!important;
+    display: block !important;
     font-size: 52px !important;
-    font-family: sans-serif!important;
+    font-family: sans-serif !important;
 }
+
 b, optgroup, strong {
     font-weight: 700;
     color: #fff;
     font-size: 20px;
 }
-.b2{
+
+.b2 {
     margin-top: 2px;
     font-weight: 700;
     color: #fff;
     font-size: 25px;
 }
 
-.col-centered{
+.col-centered {
     text-align: -webkit-center;
     width: 20%;
     margin: 20px;
@@ -74,7 +80,7 @@ b, optgroup, strong {
 }
 
 .row {
-    text-align: center!important;
+    text-align: center !important;
 }
 
 div:not(.modal-content), section {
@@ -82,21 +88,24 @@ div:not(.modal-content), section {
     -moz-border-radius: 5px;
     border-radius: 0px;
 }
-.color{
+
+.color {
     background-color: #1b465f;
     height: 100%;
 
 }
-.logoi{
+
+.logoi {
     margin: 10px;
     width: 5%;
 }
 
-div.col{
-    display:table-col;
+div.col {
+    display: table-col;
     padding: 10px;
-    background-color:#eee;
+    background-color: #eee;
 }
-div.col  h1{
-    text-align:center;
+
+div.col h1 {
+    text-align: center;
 }

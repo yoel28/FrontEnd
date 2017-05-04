@@ -1,19 +1,20 @@
-import {IRule, Rule} from "./rule";
-import {StaticValues} from "../../com.zippyttech.utils/catalog/staticValues";
+import {IRule, Rule} from './rule';
+import {StaticValues} from '../../com.zippyttech.utils/catalog/staticValues';
 
-export interface IImage  extends IRule{
-    default?:string;
+export interface IImage extends IRule {
+    default?: string;
 }
-export class ImageRule extends Rule{
+export class ImageRule extends Rule {
 
-    constructor(private rule:IImage){
+    constructor(private rule: IImage) {
         super(rule);
     }
 
-    get default():string{
+    get default(): string {
         return this.attributes.default || StaticValues.pathElements.robot;
     }
-    set default(value:string){
+
+    set default(value: string) {
         this.attributes.default = value;
     }
 

@@ -4,7 +4,8 @@
         <div class="header {{config.header.classes||'bg-primary'}}"> <!--BOOTSTRAP-->
             <h3 class="title">{{config.header.title || ''}}</h3>
             <div class="btn-toolbar">
-                <button class="close" title='cerrar' (click)="visible=false"><i class="fa fa-times"></i></button> <!--BOOTSTRAP-->
+                <button class="close" title='cerrar' (click)="visible=false"><i class="fa fa-times"></i></button>
+                <!--BOOTSTRAP-->
             </div>
         </div>
 
@@ -17,7 +18,7 @@
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'save'">
-                    <save-view  [params]  = "
+                    <save-view [params]="
                     {
                         model: db.ms.params.model,
                         childKey:(db.ms.params.extraParams &&
@@ -32,7 +33,7 @@
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'search'">
-                    <search-view  [params]  = "{model: db.ms.params.model,onAfterClose:null}"></search-view>
+                    <search-view [params]="{model: db.ms.params.model,onAfterClose:null}"></search-view>
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'location'">

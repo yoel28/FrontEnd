@@ -6,8 +6,10 @@
     >
         <h3 class="box-title">
             {{data.model.ruleObject.title}}
-            <a *ngIf="!permissionValid('list')" id="btn-toogle-w" data-widget="collapse"><i class="fa fa-warning"></i></a>
-            <span *ngIf="(existData() && data.model.dataList.count > 0)" class="badge">{{data.model.dataList.count}}</span>
+            <a *ngIf="!permissionValid('list')" id="btn-toogle-w" data-widget="collapse"><i
+                    class="fa fa-warning"></i></a>
+            <span *ngIf="(existData() && data.model.dataList.count > 0)"
+                  class="badge">{{data.model.dataList.count}}</span>
             <span *ngIf="(existData() && data.model.dataList.count <= 0)">
                 <h3>No hay elementos para mostrar</h3>
             </span>
@@ -16,8 +18,10 @@
             </div>
         </h3>
         <div class="box-tools pull-right" *ngIf="permissionValid('list') && existData()">
-            <button type="button" class="btn btn-box-tool" [routerLink]="data.routerLink"><i class="fa fa-external-link"></i></button>
-            <button id="btn-toogle" type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-plus"></i></button>
+            <button type="button" class="btn btn-box-tool" [routerLink]="data.routerLink"><i
+                    class="fa fa-external-link"></i></button>
+            <button id="btn-toogle" type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                    class="fa fa-plus"></i></button>
         </div>
     </div>
 
@@ -25,7 +29,8 @@
         <ul class="list-group" *ngIf="permissionValid('list') && existData() && (data.model.dataList.count>0)">
             <li class="list-group-item list-group-item-heading {{db.classCol(12,12,12,12)}}">
                 <div class="{{db.classCol(11,11,11,11)}} data-detail">
-                    <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}" *ngFor="let key of visibleKeys">
+                    <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}"
+                         *ngFor="let key of visibleKeys">
                         {{data.model.rules[key].title}}
                     </div>
                 </div>
@@ -34,39 +39,47 @@
             <li class="{{db.classCol(12,12,12,12)}} list-group-item" *ngFor="let elem of data.model.dataList.list">
                 <div class="{{db.classCol(12,12,12,12)}} item-content">
                     <div class="{{db.classCol(11,11,11,11)}} data-detail">
-                        <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}" *ngFor="let key of visibleKeys">
+                        <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}"
+                             *ngFor="let key of visibleKeys">
                             <rule-view [key]="key" [data]="elem" [model]="data.model" [disabled]="true"></rule-view>
                         </div>
                     </div>
                     <div class="data-detail-item">
-                        <button *ngIf="data.actions!==undefined && getActionKeys(data.actions).length" class="{{db.classCol(1,1,1,1)}} btn btn-box-tool text-green text-center" (click)="dataSelect = (dataSelect==elem)?{}:elem" data-toggle="collapse" data-target="#edit">
+                        <button *ngIf="data.actions!==undefined && getActionKeys(data.actions).length"
+                                class="{{db.classCol(1,1,1,1)}} btn btn-box-tool text-green text-center"
+                                (click)="dataSelect = (dataSelect==elem)?{}:elem" data-toggle="collapse"
+                                data-target="#edit">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </button>
                     </div>
                 </div>
-                <div id="edit" class="item-content-edit collapse" *ngIf="data.actions!==undefined && (actionSelect==action || getKeys(data.actions).length == 1) && dataSelect == elem">
+                <div id="edit" class="item-content-edit collapse"
+                     *ngIf="data.actions!==undefined && (actionSelect==action || getKeys(data.actions).length == 1) && dataSelect == elem">
                     <ul class="list-actions list-group">
                         <li class="list-actions-item" *ngFor="let action of getActionKeys(data.actions)">
                             <div class="box action">
                                 <div class="box-header action-header">
                                     <h4 class="box-title action-title">{{data.actions[action].title}}</h4>
-                                    <button (click)="actionSelect = (actionSelect==action)?'':action" type="button" class="btn btn-box-tool pull-right" data-widget="collapse" data-toggle="tooltip">
+                                    <button (click)="actionSelect = (actionSelect==action)?'':action" type="button"
+                                            class="btn btn-box-tool pull-right" data-widget="collapse"
+                                            data-toggle="tooltip">
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
                                 <div class="box-body action-body">
                                     <!--&lt;!&ndash;<form-view class="action-form"&ndash;&gt; TODO:Form view-->
-                                               <!--(getInstance)="setForm($event)"-->
-                                               <!--[params]="getModelAction(action).paramsSave"-->
-                                               <!--[rules]="filterRules(action)">-->
-                                        <!--&gt;-->
+                                    <!--(getInstance)="setForm($event)"-->
+                                    <!--[params]="getModelAction(action).paramsSave"-->
+                                    <!--[rules]="filterRules(action)">-->
+                                    <!--&gt;-->
                                     <!--</form-view>-->
                                 </div>
                                 <div class="box-footer action-footer">
                                     <button class="btn btn-green pull-right"
                                             (click)="submit($event,action)"
-                                            [disabled] = "!formValid()"
-                                    >Procesar</button>
+                                            [disabled]="!formValid()"
+                                    >Procesar
+                                    </button>
                                 </div>
                             </div>
                         </li>
@@ -89,9 +102,11 @@
             </button>
         </div>
         <div class="list-pager {{db.classCol(8,8,8,8)}}">
-            <div class="btn-group pull-right" *ngIf="data.model.dataList && data.model.dataList.page && data.model.dataList.page.length > 1">
+            <div class="btn-group pull-right"
+                 *ngIf="data.model.dataList && data.model.dataList.page && data.model.dataList.page.length > 1">
                 <button *ngFor="let val of data.model.dataList.page" type="button" class="btn list-pager-btn"
-                        (click)="data.model.loadData(val)" [class.btn-green]="val==((data.model.rest.offset/data.model.rest.max)+1)"
+                        (click)="data.model.loadData(val)"
+                        [class.btn-green]="val==((data.model.rest.offset/data.model.rest.max)+1)"
                 >
                     {{val}}
                 </button>
@@ -101,6 +116,6 @@
 </div>
 
 <filter-view
-        [model] = "data.model"
+        [model]="data.model"
 >
 </filter-view>

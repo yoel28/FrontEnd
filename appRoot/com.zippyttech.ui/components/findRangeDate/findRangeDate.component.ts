@@ -1,41 +1,45 @@
-import {Component, EventEmitter, OnInit, AfterViewInit, NgModule} from "@angular/core";
-import {FormControl} from "@angular/forms";
-import {StaticValues} from "../../../com.zippyttech.utils/catalog/staticValues";
-import {StaticFunction} from "../../../com.zippyttech.utils/catalog/staticFunction";
-import {DependenciesBase} from "../../../com.zippyttech.common/DependenciesBase";
+import {AfterViewInit, Component, EventEmitter, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {StaticValues} from '../../../com.zippyttech.utils/catalog/staticValues';
+import {StaticFunction} from '../../../com.zippyttech.utils/catalog/staticFunction';
+import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase';
 
 @Component({
     selector: 'find-range-date-view',
     templateUrl: './index.html',
-    styleUrls: [ './style.css'],
-    inputs:['params','control'],
-    outputs:['dateRange'],
+    styleUrls: ['./style.css'],
+    inputs: ['params', 'control'],
+    outputs: ['dateRange'],
 })
-export class FindRangeDateComponent implements OnInit,AfterViewInit {
-    public control:FormControl;
-    public params:any;
-    public dateRange:any;
+export class FindRangeDateComponent implements OnInit, AfterViewInit {
+    public control: FormControl;
+    public params: any;
+    public dateRange: any;
 
     public paramsDate = StaticValues.formatDateDDMMYYYY;
     public itemsDate = StaticValues.itemsDate;
 
-    constructor(public db:DependenciesBase) {
+    constructor(public db: DependenciesBase) {
         this.control = new FormControl('');
         this.dateRange = new EventEmitter();
     }
-    ngOnInit(){
+
+    ngOnInit() {
 
     }
-    ngAfterViewInit(){
+
+    ngAfterViewInit() {
 
     }
-    setFecha(id){
-        if(id!='-1'){
+
+    setFecha(id) {
+        if (id != '-1') {
             this.control.setValue(StaticFunction.getDateRange(id));
             this.dateRange.emit(this.control);
         }
     }
-    assignDate(value){
+
+    assignDate(value) {
         this.control.setValue(value);
     }
 }

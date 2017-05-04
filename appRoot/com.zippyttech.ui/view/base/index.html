@@ -5,9 +5,11 @@
                 <div class="box">
                     <div class="box-header with-border">
                         <h4 class="box-title">
-                            <i class="{{model.icon||'fa fa-list-alt'}}"></i>&nbsp;{{(model.nameClass+'.list' | translate)}}
+                            <i class="{{model.icon||'fa fa-list-alt'}}"></i>&nbsp;{{(model.nameClass+'.list' |
+                            translate)}}
                             <tooltip-view [code]="model.prefix+'_1'"></tooltip-view>
-                            &nbsp;<i *ngIf="model.getRest().findData" class="fa fa-spinner fa-spin" [attr.title]="'custom.pleaseWait' | translate"></i>
+                            &nbsp;<i *ngIf="model.getRest().findData" class="fa fa-spinner fa-spin"
+                                     [attr.title]="'custom.pleaseWait' | translate"></i>
                             <span *ngIf="model.getData().count" class="page-info">
                                 {{('custom.infoPageCount'| translate:{page:getCurrentPage,count:model.getData().count})}}
                             </span>
@@ -15,7 +17,8 @@
                         <div class="box-tools pull-right header-tools">
                             <ng-template [ngIf]="model.filters">
                                 <button *ngFor="let key of getObjectKeys(model.filters)"
-                                        class="btn btn-box-tool {{model.filters[key].view[model.filters[key].status].colorClass}}" type="button"
+                                        class="btn btn-box-tool {{model.filters[key].view[model.filters[key].status].colorClass}}"
+                                        type="button"
                                         [attr.title]="model.filters[key].view[model.filters[key].status].title | translate"
                                         (click)="model.updateModelFilter($event,key)"
                                 >
@@ -29,18 +32,20 @@
                                             (click)="action.callback()"
                                             title="{{action.currentView(model).title}}"
                                             class="btn btn-box-tool {{action.currentView(model).colorClass}}"
-                                            >
+                                    >
                                         <i class="{{action.currentView(model).icon}}"></i>
                                     </button>
                                 </ng-template>
                             </ng-template>
 
                             <div class="btn-group">
-                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="false" [attr.title]="'custom.config'| translate">
+                                <button type="button" class="btn btn-box-tool dropdown-toggle" data-toggle="dropdown"
+                                        aria-expanded="false" [attr.title]="'custom.config'| translate">
                                     <i class="fa fa-wrench"></i>
                                 </button>
                                 <ul class="dropdown-menu submenu-config" role="menu">
-                                    <li *ngFor="let key of getRulesList" class="text-blue flex" [class.check]="model.rules[key].check">
+                                    <li *ngFor="let key of getRulesList" class="text-blue flex"
+                                        [class.check]="model.rules[key].check">
 
                                         <button class="btn btn-box-tool fa"
                                                 [class.fa-eye-slash]="!model.rules[key].permissions.visible"
@@ -50,16 +55,22 @@
                                                 (click)="setVisibleField($event,model.rules[key])"
                                                 title="{{ (model.rules[key].permissions.visible?'custom.view':'custom.hidden') | translate}}">
                                         </button>
-                                        <button (click)="changePosition($event,key,'up')" class="btn btn-box-tool fa fa-angle-up" [attr.title]="'up' | translate"></button>&nbsp;
-                                        <button (click)="changePosition($event,key,'down')" class="btn btn-box-tool fa fa-angle-down" [attr.title]="'down' | translate"></button>&nbsp;
+                                        <button (click)="changePosition($event,key,'up')"
+                                                class="btn btn-box-tool fa fa-angle-up"
+                                                [attr.title]="'up' | translate"></button>&nbsp;
+                                        <button (click)="changePosition($event,key,'down')"
+                                                class="btn btn-box-tool fa fa-angle-down"
+                                                [attr.title]="'down' | translate"></button>&nbsp;
                                         <span class="btn" (click)="setCheckField($event,model.rules[key])">{{'field.'+key+'.title' | translate}}</span>
 
                                     </li>
                                     <li>
-                                        <button (click)="savePreference()" class="btn btn-box-tool" [attr.title]="'save'| translate">
+                                        <button (click)="savePreference()" class="btn btn-box-tool"
+                                                [attr.title]="'save'| translate">
                                             <i class="fa fa-save"></i>&nbsp;{{'custom.savePreferences' | translate}}
                                         </button>
-                                        <button (click)="savePreference(true)"  class="btn btn-box-tool" [attr.title]="'custom.deletedPreferences' | translate">
+                                        <button (click)="savePreference(true)" class="btn btn-box-tool"
+                                                [attr.title]="'custom.deletedPreferences' | translate">
                                             &nbsp;<i class="fa fa-trash"></i>
                                         </button>
                                     </li>
@@ -70,7 +81,7 @@
                     </div>
                     <div *ngIf="model.permissions.list" class="box-body">
                         <div *ngIf="model.getData().count || model.getData().id">
-                            <tables-view  [model]="model" (getInstance)="setInstance($event)"></tables-view>
+                            <tables-view [model]="model" (getInstance)="setInstance($event)"></tables-view>
                         </div>
                         <div *ngIf="model.getData().count == 0 || (!model.getData().id && !model.getData().list )">
                             <div class="alert alert-warning alert-dismissable">
@@ -81,7 +92,9 @@
                     </div>
                     <div *ngIf="!model.permissions.list">
                         <div class="btn-red padding-error">
-                            <h5><i class="fa fa-warning"></i>&nbsp;<strong>{{'custom.warning' | translate}} <tooltip-view [code]="model.prefix+'_3'"></tooltip-view></strong></h5>
+                            <h5><i class="fa fa-warning"></i>&nbsp;<strong>{{'custom.warning' | translate}}
+                                <tooltip-view [code]="model.prefix+'_3'"></tooltip-view>
+                            </strong></h5>
                             {{ ('custom.accessUnauthorized' | translate:{code:model.prefix+'_LIST'}) }}
                         </div>
                     </div>
@@ -92,19 +105,20 @@
             <div id="screen">
                 <div id="course">
                     <div id="hole"></div>
-                    <div id="flag"> <span></span> </div>
+                    <div id="flag"><span></span></div>
                 </div>
                 <div id="ball"></div>
             </div>
         </div>
     </div>
     <div *ngIf="model.permissions.filter">
-        <filter-view [model]="model" ></filter-view>
+        <filter-view [model]="model"></filter-view>
     </div>
 </div>
 
 
-<div [@animation_1]="(modalIn)?'true':'false'" *ngIf="!model.permissions.warning && modalIn" class="modal" [class.in]="modalIn" tabindex="-1" role="dialog"
+<div [@animation_1]="(modalIn)?'true':'false'" *ngIf="!model.permissions.warning && modalIn" class="modal"
+     [class.in]="modalIn" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" [style.display]="modalIn?'block':'none'">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -120,11 +134,13 @@
                 {{'custom.warningBody' | translate}}
             </div>
             <div class="modal-footer">
-                <button (click)="onDashboard($event)" type="button" class="btn btn-outlined btn-red fa fa-close" data-dismiss="modal">
+                <button (click)="onDashboard($event)" type="button" class="btn btn-outlined btn-red fa fa-close"
+                        data-dismiss="modal">
                     &nbsp;{{'custom.exit' | translate}}
                 </button>
 
-                <button (click)="loadPage($event,true)"  data-dismiss="modal" type="button" class="btn btn-red fa fa-check">
+                <button (click)="loadPage($event,true)" data-dismiss="modal" type="button"
+                        class="btn btn-red fa fa-check">
                     &nbsp;{{'custom.warningYes' | translate}}
                 </button>
             </div>

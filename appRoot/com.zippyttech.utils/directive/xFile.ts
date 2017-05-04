@@ -1,4 +1,4 @@
-import {ElementRef, Directive, OnInit} from '@angular/core';
+import {Directive, ElementRef, OnInit} from '@angular/core';
 
 let jQuery = require('jquery');
 let fileinput = require('fileinput');
@@ -6,8 +6,10 @@ let fileinput = require('fileinput');
 @Directive({
     selector: '[x-file]',
 })
-export class XFile implements OnInit{
-    constructor(public el:ElementRef) {}
+export class XFile implements OnInit {
+    constructor(public el: ElementRef) {
+    }
+
     ngOnInit() {
         jQuery(this.el.nativeElement).fileinput({
             browseLabel: '',

@@ -1,9 +1,9 @@
-import {ElementRef, Directive} from "@angular/core";
+import {Directive, ElementRef} from '@angular/core';
 
 let jQuery = require('jquery');
 
 @Directive({
-    selector: "[sm-dropdown]"
+    selector: '[sm-dropdown]'
 })
 export class SmDropdown {
     constructor(el: ElementRef) {

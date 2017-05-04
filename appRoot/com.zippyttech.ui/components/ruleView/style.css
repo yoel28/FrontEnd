@@ -1,23 +1,26 @@
-.buttons-object{
+.buttons-object {
     display: inline-block;
 }
 
-a{
+a {
     cursor: pointer;
 }
 
-.array-item{
+.array-item {
     width: 100%;
 }
-img{
+
+img {
     width: 30px;
     height: 30px;
 }
-.knob-size{
+
+.knob-size {
     width: 30px;
     height: 30px;
     position: relative;
 }
-.title-object{
+
+.title-object {
     display: block;
 }

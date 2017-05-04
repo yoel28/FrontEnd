@@ -1,11 +1,13 @@
 .box.box-primary {
     border-top-color: #0d5628;
 }
+
 .nav-tabs-custom > .nav-tabs > li.active {
     border-top-color: #0d5628;
 }
-.border-bottom{
-    -webkit-box-shadow:0px 1px 11px -9px rgba(0,0,0,0.6);
-    -moz-box-shadow:0px 1px 11px -9px rgba(0,0,0,0.6);
-    box-shadow:0px 1px 11px -9px rgba(0,0,0,0.6);
+
+.border-bottom {
+    -webkit-box-shadow: 0px 1px 11px -9px rgba(0, 0, 0, 0.6);
+    -moz-box-shadow: 0px 1px 11px -9px rgba(0, 0, 0, 0.6);
+    box-shadow: 0px 1px 11px -9px rgba(0, 0, 0, 0.6);
 }

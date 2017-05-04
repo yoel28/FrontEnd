@@ -34,20 +34,24 @@
                                 ENVIAR
                             </button>
 
-                                <button *ngIf="context.company" (click)="loginSocial($event,'fb')" class="btn  btn-green-a80 btn-block"><i
-                                        class="fa fa-facebook"></i>&nbsp;Login con Facebook
-                                </button>
-                                <!--<button *ngIf="context.company" (click)="loginSocial($event,'tw')" class="btn  btn-green-a80 btn-block"><i-->
-                                        <!--class="fa fa-twitter"></i>&nbsp;Login con Twitter-->
-                                <!--</button>-->
-                                <button *ngIf="context.company" (click)="loginSocial($event,'go')" class="btn  btn-green-a80 btn-block"><i
-                                        class="fa fa-google"></i>&nbsp;Login con Google
-                                </button>
+                            <button *ngIf="context.company" (click)="loginSocial($event,'fb')"
+                                    class="btn  btn-green-a80 btn-block"><i
+                                    class="fa fa-facebook"></i>&nbsp;Login con Facebook
+                            </button>
+                            <!--<button *ngIf="context.company" (click)="loginSocial($event,'tw')" class="btn  btn-green-a80 btn-block"><i-->
+                            <!--class="fa fa-twitter"></i>&nbsp;Login con Twitter-->
+                            <!--</button>-->
+                            <button *ngIf="context.company" (click)="loginSocial($event,'go')"
+                                    class="btn  btn-green-a80 btn-block"><i
+                                    class="fa fa-google"></i>&nbsp;Login con Google
+                            </button>
 
                         </fieldset>
                     </form>
-                    <p><a href="#" class="pull-right" (click)="onRecover($event)">{{'custom.recoverPassword' | translate}}</a></p>
-                    <p><a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{'custom.termConditions' | translate}}</a></p>
+                    <p><a href="#" class="pull-right" (click)="onRecover($event)">{{'custom.recoverPassword' |
+                        translate}}</a></p>
+                    <p><a href="#" class="pull-right" data-target="#termConditions" data-toggle="modal">{{'custom.termConditions'
+                        | translate}}</a></p>
                 </div>
             </div>
         </div>

@@ -1,20 +1,20 @@
-import {OnInit, EventEmitter, AfterViewInit} from '@angular/core';
-import {BaseViewComponent} from "./baseView.component";
-import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
+import {AfterViewInit, EventEmitter, OnInit} from '@angular/core';
+import {BaseViewComponent} from './baseView.component';
+import {ModelRoot} from '../../../com.zippyttech.common/modelRoot';
 
-interface IViewOptions{
-    viewActions?:boolean;
+interface IViewOptions {
+    viewActions?: boolean;
 }
 
-export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
+export abstract class BaseViewInstance implements OnInit, AfterViewInit {
 
-    public viewActions:boolean=true;
-    public viewOptions:IViewOptions={};
+    public viewActions: boolean = true;
+    public viewOptions: IViewOptions = {};
 
-    public getInstance:any;
-    public instanceBase:BaseViewComponent;
-    public instance:any={};
-    public model:ModelRoot;
+    public getInstance: any;
+    public instanceBase: BaseViewComponent;
+    public instance: any = {};
+    public model: ModelRoot;
 
 
     constructor() {
@@ -22,28 +22,30 @@ export abstract class BaseViewInstance  implements OnInit,AfterViewInit {
     }
 
     abstract initModel();
-    abstract initViewOptions(params:IViewOptions);
 
-    ngOnInit(){
+    abstract initViewOptions(params: IViewOptions);
+
+    ngOnInit() {
         this.initModel();
         this.initViewOptions(this.viewOptions);
 
         this._loadInstance();
     }
-    ngAfterViewInit():void{
+
+    ngAfterViewInit(): void {
         this.getInstance.emit(this);
     }
 
-    protected _loadInstance(){
-        this.viewOptions['viewActions']=this.viewActions;
+    protected _loadInstance() {
+        this.viewOptions['viewActions'] = this.viewActions;
 
         this.instance = {
-            'model':this.model,
-            'viewOptions':this.viewOptions,
+            'model': this.model,
+            'viewOptions': this.viewOptions,
         };
     }
 
-    public setInstance(instance:BaseViewComponent){
+    public setInstance(instance: BaseViewComponent) {
         this.instanceBase = instance;
     }
 

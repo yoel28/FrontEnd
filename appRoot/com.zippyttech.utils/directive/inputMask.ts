@@ -1,6 +1,6 @@
-import {ElementRef, Directive, OnInit} from "@angular/core";
-import {FormControl} from "@angular/forms";
-import {DependenciesBase} from "../../com.zippyttech.common/DependenciesBase";
+import {Directive, ElementRef, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
+import {DependenciesBase} from '../../com.zippyttech.common/DependenciesBase';
 
 export interface IParamsInputMask {
 
@@ -10,7 +10,7 @@ let mask = require('inputmask');
 let bootstrap = require('bootstrap');
 
 @Directive({
-    selector: "[input-mask]",
+    selector: '[input-mask]',
     inputs: ['control', 'rule', 'params'],
 })
 export class InputMask implements OnInit {
@@ -27,19 +27,19 @@ export class InputMask implements OnInit {
         let currentType = this.rule['type'];
 
         switch (currentType) {
-            case "email" :
+            case 'email' :
                 this.loadTypeEmail();
                 break;
-            case "phone" :
+            case 'phone' :
                 this.loadTypePhone();
                 break;
-            case "combodate" :
-                if(this.rule.date == 'date')
+            case 'combodate' :
+                if (this.rule.date == 'date')
                     this.loadTypeDate();
-                if(this.rule.date == 'datetime')
+                if (this.rule.date == 'datetime')
                     this.loadTypeDateTime();
                 break;
-            case "url" :
+            case 'url' :
                 this.loadTypeUrl();
                 break;
             default :
@@ -55,7 +55,7 @@ export class InputMask implements OnInit {
             this.control.markAsTouched();
             return;
         }
-        this.db.debugLog('Error: oncomplete null',this.rule);
+        this.db.debugLog('Error: oncomplete null', this.rule);
 
     }
 
@@ -79,7 +79,7 @@ export class InputMask implements OnInit {
     }
 
     private loadTypeEmail() {
-        jQuery(this.el.nativeElement).inputmask("A{1,20}@B{1,20}.a{2,3}[.a{1,3}]", {
+        jQuery(this.el.nativeElement).inputmask('A{1,20}@B{1,20}.a{2,3}[.a{1,3}]', {
             definitions: {
                 'A': {validator: '[a-zA-Z0-9_.\-]'},
                 'B': {validator: '[a-zA-Z0-9\-]'},
@@ -90,7 +90,7 @@ export class InputMask implements OnInit {
     }
 
     private loadTypePhone() {
-        jQuery(this.el.nativeElement).inputmask("(99) 9999[9]-9999", {
+        jQuery(this.el.nativeElement).inputmask('(99) 9999[9]-9999', {
             oncomplete: this.oncomplete.bind(this),
             onincomplete: this.onincomplete.bind(this)
         });
@@ -112,19 +112,17 @@ export class InputMask implements OnInit {
         );
     }
 
-    private loadTypeUrl(){
-        jQuery(this.el.nativeElement).inputmask("Regex", {
-            regex:"(http|ftp|https)://[a-z0-9A-Z]+(.)*",
+    private loadTypeUrl() {
+        jQuery(this.el.nativeElement).inputmask('Regex', {
+            regex: '(http|ftp|https)://[a-z0-9A-Z]+(.)*',
             oncomplete: this.oncomplete.bind(this),
             onincomplete: this.onincomplete.bind(this)
         });
     }
 
     private loadTypeDefault() {
-        this.db.debugLog('Error: type not found',this.rule);
+        this.db.debugLog('Error: type not found', this.rule);
     }
-
-
 
 
 }

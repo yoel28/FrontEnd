@@ -1,6 +1,6 @@
 <div *ngIf="_currentModel" class="save-view">
     <div class="save-body">
-        <form-view  (getInstance)="_setForm($event)" [model]="_currentModel"></form-view>
+        <form-view (getInstance)="_setForm($event)" [model]="_currentModel"></form-view>
     </div>
     <div class="save-footer">
         <button *ngIf="existloadDelete()" (click)="loadDelete($event)" class="btn btn-success">

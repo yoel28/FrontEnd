@@ -1,18 +1,19 @@
-import {Editable, IEditable} from "./editable.types";
+import {Editable, IEditable} from './editable.types';
 
-export interface IText extends IEditable{
-    email?:boolean;
+export interface IText extends IEditable {
+    email?: boolean;
 }
-export class TextRule extends Editable{
+export class TextRule extends Editable {
 
-    constructor(private rule:IText){
+    constructor(private rule: IText) {
         super(rule);
     }
 
-    set email(value:boolean){
+    set email(value: boolean) {
         this.attributes.email = value;
     }
-    get email():boolean{
+
+    get email(): boolean {
         return this.attributes.email || false;
     }
 }

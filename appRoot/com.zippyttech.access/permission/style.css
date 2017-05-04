@@ -1,12 +1,14 @@
-.checkbox-inline{
+.checkbox-inline {
     padding-left: 20px;
 }
-.modulo{
+
+.modulo {
     border: 1px solid #ded6d6;
     padding: 10pt;
     border-radius: 5pt;
 }
-.margin-bottom{
+
+.margin-bottom {
     margin-bottom: 10pt;
 }
 
@@ -28,11 +30,12 @@
     content: '';
     height: 16px;
     margin-top: -8px;
-    position:absolute;
+    position: absolute;
     opacity: 0.3;
     transition: all 0.4s ease-in-out;
     width: 40px;
 }
+
 .material-switch > label::after {
     background: rgb(255, 0, 0);
     border-radius: 16px;
@@ -46,18 +49,21 @@
     transition: all 0.3s ease-in-out;
     width: 24px;
 }
+
 .material-switch > input[type="checkbox"]:checked + label::before {
     background: inherit;
     opacity: 0.5;
 }
+
 .material-switch > input[type="checkbox"]:checked + label::after {
     background: inherit;
     left: 20px;
 }
 
-.padding-bottom{
+.padding-bottom {
     padding-bottom: 5pt;
 }
-.padding-error{
+
+.padding-error {
     padding: 5pt;
 }

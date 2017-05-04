@@ -6,7 +6,7 @@
                 <div class="box box-primary">
                     <div class="box-body box-profile">
                         <img class="profile-user-img img-responsive img-circle" src='{{db.myglobal.user["image"]}}'>
-                        <h3 class="profile-username text-center">  <span>{{db.myglobal.user["name"]}}</span></h3>
+                        <h3 class="profile-username text-center"><span>{{db.myglobal.user["name"]}}</span></h3>
                         <p class="text-muted text-center">{{db.myglobal.user["account"]}}</p>
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
@@ -26,8 +26,10 @@
             <div class="{{db.classCol(7,6,12,12)}}">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">{{'custom.basicData' | translate}}</a></li>
-                        <li class=""><a href="#imagen" data-toggle="tab" aria-expanded="false">{{'custom.imageProfile' | translate}}</a></li>
+                        <li class="active"><a href="#settings" data-toggle="tab" aria-expanded="true">{{'custom.basicData'
+                            | translate}}</a></li>
+                        <li class=""><a href="#imagen" data-toggle="tab" aria-expanded="false">{{'custom.imageProfile' |
+                            translate}}</a></li>
                     </ul>
                     <div class="tab-content">
                         <div class="tab-pane active" id="settings">
@@ -35,9 +37,11 @@
                                 <div class="form-group">
                                     <div class="{{db.classCol(10,10,10,10)}}">
                                         <div *ngFor="let key of getObjectKeys(model.rules)" class="border-bottom">
-                                            <p class="psalto" *ngIf="model.rules[key].type != 'boolean' && model.rules[key].type != 'image'">
+                                            <p class="psalto"
+                                               *ngIf="model.rules[key].type != 'boolean' && model.rules[key].type != 'image'">
                                                 <strong>{{model.rules[key].title}}:</strong>&nbsp;&nbsp;
-                                                <rule-view [key]="key" [model]="model" [data]="db.myglobal.user"></rule-view>
+                                                <rule-view [key]="key" [model]="model"
+                                                           [data]="db.myglobal.user"></rule-view>
                                             </p>
                                         </div>
                                     </div>

@@ -1,6 +1,5 @@
 /* PRELOAD!!!! -CAMBIAR A OTRO ARCHIVO */
 
-
 .preload {
     width: 100%;
     height: auto;
@@ -54,6 +53,7 @@
     margin-left: 4px;
     z-index: 10;
 }
+
 #flag:before {
     content: " ";
     position: absolute;
@@ -64,6 +64,7 @@
     width: 4px;
     height: 68px;
 }
+
 #flag span {
     position: absolute;
     background: #FFF;
@@ -75,6 +76,7 @@
     width: 35px;
     height: 28px;
 }
+
 #flag span:before {
     content: " ";
     position: absolute;
@@ -87,6 +89,7 @@
     height: 30px;
     transform: translateY(-120px) translateX(-110px) rotateZ(20deg);
 }
+
 #flag span:after {
     content: " ";
     position: absolute;
@@ -124,6 +127,7 @@
         transform: none;
     }
 }
+
 @keyframes flag-top {
     0% {
         border-bottom-right-radius: 24px 16px;
@@ -132,6 +136,7 @@
         border-bottom-right-radius: 50px 20px;
     }
 }
+
 @keyframes flag-bottom {
     0% {
         border-top-right-radius: 50px 12px;
@@ -140,6 +145,7 @@
         border-top-right-radius: 0 0;
     }
 }
+
 @keyframes ball {
     0% {
         top: 115px;
@@ -169,34 +175,40 @@
     }
 }
 
-.modal-header{
+.modal-header {
     border-radius: 0px !important;
 }
-.header-tools .btn-box-tool{
+
+.header-tools .btn-box-tool {
     font-size: 14px !important;
 }
 
 .header-tools ul.dropdown-menu.submenu-config {
     min-width: 260px;
 }
-.check1{
+
+.check1 {
     background: rgba(13, 86, 40, 0.77) !important;
     color: white !important;
 }
-.check{
+
+.check {
     background: rgba(0, 187, 0, 0.18);
 }
-.deleted-all{
+
+.deleted-all {
     background: rgba(0, 0, 0, 0.38);
     border-radius: 4px !important;
     color: white !important;
 }
-.deleted-only{
+
+.deleted-only {
     background: rgba(0, 0, 0, 0.38);
     border-radius: 4px !important;
     color: red !important;
 }
-.filter-enabled{
+
+.filter-enabled {
     background: rgba(0, 0, 0, 0.38);
     border-radius: 4px !important;
     color: white !important;

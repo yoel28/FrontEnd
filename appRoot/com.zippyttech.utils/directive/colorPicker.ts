@@ -1,30 +1,30 @@
-import {ElementRef, Directive, EventEmitter, OnInit} from "@angular/core";
-import {FormControl} from "@angular/forms";
+import {Directive, ElementRef, EventEmitter, OnInit} from '@angular/core';
+import {FormControl} from '@angular/forms';
 
 let jQuery = require('jquery');
 let colorpicker = require('colorpicker');
 
 @Directive({
-    selector: "[color-picker]",
-    inputs:['hexControl','hexString'],
-    outputs:['color']
+    selector: '[color-picker]',
+    inputs: ['hexControl', 'hexString'],
+    outputs: ['color']
 })
-export class ColorPicker implements OnInit{
-    public hide:any;
-    public hexControl:FormControl;
-    public hexString:String;
-    public color:any;
+export class ColorPicker implements OnInit {
+    public hide: any;
+    public hexControl: FormControl;
+    public hexString: String;
+    public color: any;
 
-    constructor(public element:ElementRef) {
+    constructor(public element: ElementRef) {
         this.hexControl = new FormControl('');
         this.color = new EventEmitter();
     }
-    ngOnInit(){
+
+    ngOnInit() {
         let that = this;
         let _color = (that.hexControl.value || this.hexString);
-        if((_color && _color=='') || !_color)
-        {
-            _color='000000';
+        if ((_color && _color == '') || !_color) {
+            _color = '000000';
         }
 
         jQuery(this.element.nativeElement).ColorPicker({
@@ -40,12 +40,12 @@ export class ColorPicker implements OnInit{
             },
             onChange: function (hsb, hex, rgb) {
                 that.hexControl.setValue(hex);
-                that.hexString=hex;
+                that.hexString = hex;
                 jQuery(that.element.nativeElement).css('backgroundColor', '#' + (that.hexControl.value || this.hexString));
-                jQuery(that.element.nativeElement).val('#'+(that.hexControl.value || this.hexString));
+                jQuery(that.element.nativeElement).val('#' + (that.hexControl.value || this.hexString));
             }
         });
         jQuery(that.element.nativeElement).css('backgroundColor', '#' + _color);
-        jQuery(that.element.nativeElement).val('#'+_color);
+        jQuery(that.element.nativeElement).val('#' + _color);
     }
 }
