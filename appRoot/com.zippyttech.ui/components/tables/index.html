@@ -52,7 +52,7 @@
                 </div>
             </td>
             <td *ngFor="let key of keyVisible" [class.check]="getRule(key).check" [class.parpadea]="data.blockField">
-                <rule-view [key]="key" [data]="data" [model]="model" [paramsData]="paramsData"></rule-view>
+                <rule-view [params]="_getParamsRuleView(key,data)" ></rule-view>
             </td>
         </tr>
         </tbody>
