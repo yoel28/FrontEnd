@@ -83,8 +83,6 @@ export abstract class ModelRoot extends RestController {
 
     evAfterDelete: (args: Object) => void;
 
-    abstract initView1(params: IView);
-
     constructor(public db: DependenciesBase, endpoint: string, useGlobal: boolean = true, prefix?: string) {
         super(db);
         if (prefix)
@@ -332,7 +330,7 @@ export abstract class ModelRoot extends RestController {
                 title: this.db.msg.exportDisabled + this.getParams('REPORT_LIMIT_ROWS_PDF', API.REPORT_LIMIT_ROWS_PDF) + ' ' + this.db.msg.rows
             },
                 {icon: 'fa fa-file-pdf-o', title: this.db.msg.exportPdf, colorClass: 'text-red'}],
-            callback: ((data?, index?) => {
+            callback: (data?, index?) => {
                 if (this.getEnabledReport('PDF')) {
                     let url = localStorage.getItem('urlAPI') + this.endpoint +
                         this.getRestParams() + '&access_token=' +
@@ -340,7 +338,7 @@ export abstract class ModelRoot extends RestController {
                         '&tz=' + moment().format('Z').replace(':', '');
                     window.open(url, '_blank');
                 }
-            }).bind(this),
+            },
             stateEval: 'data.getEnabledReport(\'PDF\')?1:0',
             params: {}
         });
@@ -352,7 +350,7 @@ export abstract class ModelRoot extends RestController {
                 title: this.db.msg.exportDisabled + this.getParams('REPORT_LIMIT_ROWS_XLS', API.REPORT_LIMIT_ROWS_XLS) + ' ' + this.db.msg.rows
             },
                 {icon: 'fa fa-file-excel-o', title: this.db.msg.exportXls, colorClass: 'text-green'}],
-            callback: ((data?, index?) => {
+            callback: (data?, index?) => {
                 if (this.getEnabledReport('XLS')) {
                     let url = localStorage.getItem('urlAPI') + this.endpoint +
                         this.getRestParams() + '&access_token=' +
@@ -360,7 +358,7 @@ export abstract class ModelRoot extends RestController {
                         '&tz=' + moment().format('Z').replace(':', '');
                     window.open(url, '_blank');
                 }
-            }).bind(this),
+            },
             stateEval: 'data.getEnabledReport(\'XLS\')?1:0',
             params: {}
         });
@@ -373,10 +371,9 @@ export abstract class ModelRoot extends RestController {
             views: [
                 {title: 'Buscar', icon: 'fa fa-search', colorClass: 'text-blue'}
             ],
-            callback: ((data?, index?) => {
-                    this.loadData(null, true);
-                }
-            ).bind(this),
+            callback: (data?, index?) => {
+                this.loadData(null, true);
+            },
             stateEval: '0',
             params: {}
         });
@@ -600,12 +597,13 @@ export abstract class ModelRoot extends RestController {
 
     public getIncludeKeys(keys: Array<string>, inSave = false) {
         let data = {};
-        keys.forEach((key => {
+        keys.forEach(key => {
             if (this.rules && this.rules[key]) {
-                if (!inSave || (inSave && this.rules[key].permissions.save))
+                if (!inSave || (inSave && this.rules[key].permissions.save)) {
                     data[key] = this.rules[key];
+                }
             }
-        }).bind(this));
+        });
         return data;
     }
 
@@ -613,8 +611,10 @@ export abstract class ModelRoot extends RestController {
         let data = {};
         Object.keys(this.rules).forEach(key => {
             if (exclude.indexOf(key) < 0) {
-                if (!inSave || (inSave && this.rules[key].permissions.save))
+                if (!inSave || (inSave && this.rules[key].permissions.save)) {
                     data[key] = this.rules[key];
+                }
+
             }
         });
         return data;
@@ -623,8 +623,10 @@ export abstract class ModelRoot extends RestController {
     public setLoadData(data) {
         this.getData().list.unshift(data);
         this.getData().count++;
-        if (this.getData().count > this.getRest().max)
+        if (this.getData().count > this.getRest().max) {
             this.getData().list.pop();
+        }
+
     }
 
     public setUpdateData(data) {

@@ -7,7 +7,6 @@ export interface IModalParams {
     onAfterClose?: () => void;
     extraParams?: ModalParamsType;
 }
-;
 
 export interface IModalConfig {
     id: string;

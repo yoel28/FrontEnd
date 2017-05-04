@@ -165,12 +165,12 @@ export class HttpUtils {
 
     public onSave(endpoint: string, body: string, list: Array<Object>, errorCallback = null, isEndpointAbsolute = false) {
 
-        let successCallback = (response => {
+        let successCallback = response => {
             if (list != null)
                 list.unshift(response);
             if (this.db.toastyService)
                 this.addToast('Notificacion', 'Guardado con éxito');
-        }).bind(this);
+        };
         return this.doPost(endpoint, body, successCallback, errorCallback, isEndpointAbsolute)
     }
 
@@ -182,24 +182,29 @@ export class HttpUtils {
     }
 
     public onDelete(endpoint: string, id: number, list: Array<Object>, errorCallback = null, isEndpointAbsolute = false) {
-        let successCallback = (response => {
+        let successCallback = response => {
             if (list != null) {
                 let index = list.findIndex(obj => obj['id'] == id);
-                if (index != -1)
+                if (index != -1) {
                     list.splice(index, 1);
+                }
+
             }
-            if (this.db.toastyService)
+            if (this.db.toastyService) {
                 this.addToast('Notificacion', 'Borrado con éxito');
-        }).bind(this);
+            }
+
+        };
         return this.doDelete(endpoint, successCallback, errorCallback, isEndpointAbsolute);
     }
 
     public onUpdate(endpoint: string, body: string, data: Object, errorCallback = null, isEndpointAbsolute = false) {
-        let successCallback = (response => {
+        let successCallback = response => {
             Object.assign(data, response);
-            if (this.db.toastyService)
+            if (this.db.toastyService) {
                 this.addToast('Notificacion', 'Actualizado con éxito');
-        }).bind(this);
+            }
+        };
         return this.doPut(endpoint, body, successCallback, errorCallback, isEndpointAbsolute)
     }
 

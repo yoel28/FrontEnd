@@ -445,14 +445,14 @@ export class FilterComponent extends RestController implements OnInit {
                 }
 
             });
-            (rule.join.tracer.reverse()).forEach(((alias, i) => {
+            (rule.join.tracer.reverse()).forEach((alias, i) => {
                 if (!i) {
                     where = Object.assign({}, {code: this.code, 'join': alias, 'where': join});
                 }
                 else {
                     where = {code: this.code, join: alias, where: [where]}
                 }
-            }).bind(this));
+            });
             rule.join.tracer.reverse();
 
         }

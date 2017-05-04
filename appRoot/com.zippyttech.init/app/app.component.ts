@@ -138,7 +138,7 @@ export class AppComponent extends RestController implements OnInit, DoCheck {
         if (event)
             event.preventDefault();
 
-        let successCallback = ((response: any) => {
+        let successCallback = (response: any) => {
             this.db.myglobal.dataSesionInit();
             localStorage.removeItem('bearer');
             localStorage.removeItem('userTemp');
@@ -148,7 +148,7 @@ export class AppComponent extends RestController implements OnInit, DoCheck {
             this.af.auth.logout();
             let link = ['/auth/login', {}];
             this.db.router.navigate(link);
-        }).bind(this);
+        };
         this.httputils.doPost('/logout/', null, successCallback, this.error);
 
     }
@@ -201,14 +201,13 @@ export class AppComponent extends RestController implements OnInit, DoCheck {
     }
 
     getIModalTerm() {
-        let iModalTerm: IModalConfig = {
+        return <IModalConfig> {
             id: 'termConditions',
             size: 'lg',
             header: {
                 title: 'Terminos y condiciones'
             }
         };
-        return iModalTerm;
     }
 
     @HostListener('window:offline') offline() {

@@ -40,18 +40,18 @@ export class ModalComponent implements OnInit {
     private hide() {
         this.db.$elements.app.classList.remove('blur-content');
         this.$frame.classList.remove('shown');
-        setTimeout((() => {
+        setTimeout(() => {
             this._visible = false;
             this.db.ms.hideCurrentModal();
-        }).bind(this), 500);
+        }, 500);
     }
 
     private show() {
         this.config = this.db.ms.configs[this.db.ms.currentModal] || this.db.ms.configs['default'];
         this.db.$elements.app.classList.add('blur-content');
         this._visible = true;
-        setTimeout((() => {
+        setTimeout(() => {
             this.$frame.classList.add('shown');
-        }).bind(this), 100);
+        }, 100);
     }
 }

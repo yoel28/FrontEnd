@@ -52,10 +52,10 @@ export class DataViewComponent implements OnInit {
     private getDataKeys(): string[] {
         let keys: string[] = [];
         if (this.data)
-            Object.keys(this.model.rules).forEach((key => {
+            Object.keys(this.model.rules).forEach(key => {
                 if (this.model.rules[key].permissions.visible)
                     keys.push(key);
-            }).bind(this));
+            });
         return keys;
     }
 

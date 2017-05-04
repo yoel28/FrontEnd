@@ -88,11 +88,11 @@ export class BaseViewComponent extends ControllerBase implements OnInit, AfterVi
 
     private get getRulesList() {
         let keys = [];
-        Object.keys(this.model.rules).forEach((i => {
-            if ((<IRule>this.model.rules[i]).include.list) {
-                keys.push(i);
+        Object.keys(this.model.rules).forEach(key => {
+            if ((<IRule>this.model.rules[key]).include.list) {
+                keys.push(key);
             }
-        }).bind(this));
+        });
         return keys;
     }
 
@@ -135,10 +135,10 @@ export class BaseViewComponent extends ControllerBase implements OnInit, AfterVi
         let temp = {};
         let current;
         current = this.db.myglobal.getPreferenceViewModel(this.model.constructor.name, this.model.rules);
-        current.forEach((obj => {
+        current.forEach(obj => {
             temp[obj.key] = this.model.rules[obj.key];
             (<IRule>temp[obj.key]).permissions.visible = obj.visible;
-        }).bind(this));
+        });
         this.model.rules = {};
         Object.assign(this.model.rules, temp);
     }

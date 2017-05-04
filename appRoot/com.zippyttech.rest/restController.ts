@@ -326,10 +326,10 @@ export class RestController {
         else {
             this._setOffset(this.getData(search), this.getRest(search), offset);
             return this.httputils.onLoadList(this.getEndpoint(search) + this.getRestParams(search), this.data(search), this.error).then(
-                (response => {
+                response => {
                     this.loadPager(search);
                     rest.findData = false;
-                }).bind(this)
+                }
             );
         }
     };
@@ -345,7 +345,7 @@ export class RestController {
         control.setValue(list);
         rest.findData = true;
         return this.httputils.onLoadList(endpoint + '?max=' + rest.max + '&offset=' + rest.offset + this.setWhere(rest.where), control, this.error).then(
-            (response => {
+            response => {
                 if (list['count'] > 0) {
                     data = data.concat(list['list']);
                     if (list['count'] == list['list'].length || list['count'] == data.length) {
@@ -365,8 +365,7 @@ export class RestController {
                         this.getLoadDataAll(data, endpoint, control, rest, successCallback);
                     }
                 }
-
-            }).bind(this)
+            }
         );
     }
 
@@ -385,11 +384,12 @@ export class RestController {
         if (event)
             event.preventDefault();
 
-        return this.httputils.onDelete(this.getEndpoint() + id, id, this.getData().list, this.error).then((response => {
-                if (successCallback)
+        return this.httputils.onDelete(this.getEndpoint() + id, id, this.getData().list, this.error).then(response => {
+                if (successCallback) {
                     successCallback(response);
+                }
                 this.events.emit({type: 'afterDelete', args: response});
-            }).bind(this)
+            }
         );
     }
 

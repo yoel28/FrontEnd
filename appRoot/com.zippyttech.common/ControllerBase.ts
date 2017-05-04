@@ -29,19 +29,10 @@ export abstract class ControllerBase implements OnInit {
     public classCol = StaticFunction.classCol;
     public classOffset = StaticFunction.classOffset;
 
-    constructor(public db: DependenciesBase) {
-        this.initLang();
-    }
+    constructor(public db: DependenciesBase) {}
 
     ngOnInit(): void {
         this.initModel();
-    }
-
-    public initLang() {
-        let userLang = navigator.language.split('-')[0];
-        userLang = /(es|en)/gi.test(userLang) ? userLang : 'es';
-        // this.translate.setDefaultLang('en');
-        // this.translate.use(userLang);
     }
 
     abstract initModel();
@@ -110,9 +101,9 @@ export abstract class ControllerBase implements OnInit {
         if (this.model.permissions.warning || accept) {
             this.modalIn = false;
             if (this.model.permissions.list)
-                return this.model.loadData().then((() => {
+                return this.model.loadData().then(() => {
                     this.model.refreshList();
-                }).bind(this));
+                });
         }
     }
 

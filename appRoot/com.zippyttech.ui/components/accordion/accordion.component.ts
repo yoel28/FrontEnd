@@ -88,7 +88,7 @@ export class AccordionComponent extends RestController implements OnInit, AfterV
         return ((diff < parseFloat(this.db.myglobal.getParams('DATE_MAX_HUMAN', API.DATE_MAX_HUMAN))))
     }
 
-    public getObjectKey(data) {
+    public getObjectKey(data={}):string []{
         return Object.keys(data);
     }
 

@@ -104,7 +104,7 @@ export class ChartViewComponent extends ControllerBase {
                 };
                 Object.assign(ob, newData);
             }
-            this.chartData.options['title'] = {text: this.getTitle()},
+            this.chartData.options['title'] = {text: this.getTitle()};
                 this.chartData.options['xAxis']['categories'] = data.categories;
             this.chartData.options['series'] = data.list;
             this.db.myglobal.rest.findData = false;

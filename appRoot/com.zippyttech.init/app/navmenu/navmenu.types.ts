@@ -1,7 +1,6 @@
 import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase';
 
 export enum NavStatus{ hidden = 0, compact, expand }
-;
 
 interface INavParams {
     permission: boolean;
