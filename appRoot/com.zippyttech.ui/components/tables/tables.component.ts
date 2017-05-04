@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit} from '@angular/core';
 import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase';
-import {IRuleView} from '../ruleView/ruleView.component';
+import {IRuleView, IRuleView1} from '../ruleView/ruleView.component';
 import {Rule} from '../../../com.zippyttech.common/rules/rule';
 import {TRules} from '../../../app-routing.module';
 import {ModelRoot} from '../../../com.zippyttech.common/modelRoot';
@@ -19,7 +19,7 @@ export class TablesComponent implements OnInit {
     public model: ModelRoot;
     private viewActions: boolean = true;
 
-    public paramsData: IRuleView = {
+    public paramsData: IRuleView1 = {
         select: {},
         searchParams: {},
         searchInstances: {},
@@ -46,6 +46,10 @@ export class TablesComponent implements OnInit {
 
     private getRule(key: string): TRules {
         return this.model.rules[key] || {};
+    }
+
+    private _getParamsRuleView(key:string,data:Object):IRuleView{
+        return {key:key, type: 'inline', data:data, model:this.model};
     }
 
     public get currentPage() {
