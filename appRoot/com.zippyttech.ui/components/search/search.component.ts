@@ -5,9 +5,19 @@ import {ModelRoot} from '../../../com.zippyttech.common/modelRoot';
 import {FormControl, FormGroup} from '@angular/forms';
 import {API} from '../../../com.zippyttech.utils/catalog/defaultAPI';
 import {StaticValues} from '../../../com.zippyttech.utils/catalog/staticValues';
+import {ObjectRule} from "../../../com.zippyttech.common/rules/object.rule";
 
+type TEvents = 'data'|'destroy';
 export interface ISearch {
     model: ModelRoot;
+    key?:string;
+    control?:FormControl;
+    notHidden?:boolean;
+    onAfterSelect?:()=>void;
+}
+export interface ISearchEvents{
+    type:TEvents;
+    data?:Object;
 }
 
 @Component({
@@ -20,10 +30,9 @@ export interface ISearch {
 export class SearchComponent implements OnInit {
 
     public params: ISearch;
-    public output: EventEmitter<Object>;
+    public output: EventEmitter<ISearchEvents>;
 
     private _form: FormGroup;
-
 
     constructor(public db: DependenciesBase) {
         this.output = new EventEmitter();
@@ -33,9 +42,9 @@ export class SearchComponent implements OnInit {
         this._initForm();
     }
 
-
-    getDataAll(data) {
-        this.output.emit(data);
+    private set _data(value:Object) {
+        this.output.emit({type:'data',data:value});
+        this._evHidden();
     }
 
     private get _static(): Object {
@@ -46,11 +55,25 @@ export class SearchComponent implements OnInit {
         return this._model.nameClass;
     }
 
+    private _evHidden(){
+        if(!this.params.notHidden) {
+            this.db.ms.hideCurrentModal();
+        }
+    }
 
     // region model
 
     private get _model(): ModelRoot {
-        return this.params.model;
+        let key = this.params.key;
+        let model = this.params.model;
+        if(key) {
+            if(model.rules[key] && model.rules[key] instanceof ObjectRule){
+                return model.rules[key].model;
+            }
+            this.db.debugLog('Error SearchComponent','_model','key in model is not instance of ObjectRule',this.params.model,key);
+            return;
+        }
+        return model;
     }
 
     private get _searchRest(): IRest {
@@ -66,15 +89,16 @@ export class SearchComponent implements OnInit {
     // region search
 
     private _loadDataSearch(event?: Event, page: number = 1) {
-        if (event)
+        if (event) {
             event.preventDefault();
-
+        }
         this._searchRest.id = this._getFormValue();
         this._model.loadData(page, true);
     }
 
     private _destroySearch(event?: Event) {
-        this.db.ms.hideCurrentModal();
+        this.output.emit({type:'destroy'});
+        this._evHidden();
     }
 
     private get _searchPage() {
@@ -84,23 +108,19 @@ export class SearchComponent implements OnInit {
         return -1;
     }
 
-    private _fnSearch(data: Object) {
-        this.output.emit(data);
-        this.db.ms.hideCurrentModal();
-    }
-
     // endregion
 
     // region form
 
     private _initForm() {
 
-        let field = new FormControl('');
+        if(!this.params.control)
+            this.params.control = new FormControl('');
 
         this._form = new FormGroup({});
-        this._form.addControl('value', field);
+        this._form.addControl('value', this.params.control);
 
-        field.valueChanges
+        this.params.control.valueChanges
             .debounceTime(this.db.getParams('WAIT_TIME_SEARCH', API.WAIT_TIME_SEARCH))
             .subscribe((value: string) => {
                 if (value != null) {
