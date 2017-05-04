@@ -177,9 +177,8 @@ export class XEditable implements OnInit {
                 if ((<CombodateRule>rule).date == 'datetime') {
                     return (<CombodateRule>rule).format || 'YYYY-MM-DD HH:mm'
                 }
-            default :
-                return null;
         }
+        return null;
     }
 
     private _getViewFormat(rule: TRules) {
@@ -191,9 +190,8 @@ export class XEditable implements OnInit {
                 if ((<CombodateRule>rule).date == 'datetime') {
                     return (<CombodateRule>rule).viewformat || 'MMM D, YYYY, HH:mm';
                 }
-            default :
-                return null;
         }
+        return null;
     }
 
     private _getTemplate(rule: TRules) {
@@ -206,9 +204,8 @@ export class XEditable implements OnInit {
                 if ((<CombodateRule>rule).date == 'datetime') {
                     return (<CombodateRule>rule).template || 'D MMM YYYY  HH:mm';
                 }
-            default :
-                return null;
         }
+        return null;
 
     }
 
@@ -237,12 +234,14 @@ export class XEditable implements OnInit {
         switch (this._getType(rule)) {
             case 'url' :
                 jQuery(this.el.nativeElement).editable('setValue', 'link', true);
+                break;
             case 'combodate' :
                 if (data)
                     return moment(data);
                 return data;
             default :
                 jQuery(this.el.nativeElement).editable('setValue', ( data || this.data[this.key]), true);
+                break;
         }
     }
 
@@ -269,9 +268,10 @@ export class XEditable implements OnInit {
                 if ((<CombodateRule>rule).date == 'datetime') {
                     return newValue.format('YYYY-MM-DD HH:mmZZ');
                 }
-            default :
-                return newValue;
+                break;
+
         }
+        return newValue;
     }
 
 }
