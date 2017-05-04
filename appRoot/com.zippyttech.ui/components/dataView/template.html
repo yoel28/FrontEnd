@@ -34,8 +34,7 @@
                     <div class="view-item-detail {{db.classCol(10,10,10,10)}}">
                         <div class="view-item-detail-title">{{model.rules[key].title+": "}}</div>
                         <div class="view-item-detail-content">
-                            <rule-view [model]="model" [data]="data" [key]="key"
-                                       [paramsData]="dataParams.ruleViewOptions"></rule-view>
+                            <rule-view [params]="_getParamsRuleView(key,data)" ></rule-view>
                         </div>
                     </div>
                 </div>

@@ -41,7 +41,7 @@
                     <div class="{{db.classCol(11,11,11,11)}} data-detail">
                         <div class="data-detail-item {{db.classCol((12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length),(12/visibleKeys.length))}}"
                              *ngFor="let key of visibleKeys">
-                            <rule-view [key]="key" [data]="elem" [model]="data.model" [disabled]="true"></rule-view>
+                            <rule-view [params]="_getParamsRuleView(key,elem,data.model)" ></rule-view>
                         </div>
                     </div>
                     <div class="data-detail-item">
