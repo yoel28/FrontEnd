@@ -317,7 +317,7 @@
         <!--</div>-->
         <!--</div>-->
         <div class="{{db.classCol()}}" *ngIf="!_search">
-            {{'custom.fieldRequired' | translate}}
+            <p [innerHtml]="'custom.fieldRequired' | translate"></p>
         </div>
     </div>
 </div>
