@@ -1,23 +1,23 @@
-<ng-template [ngIf]="!getDisabledField(data) && !data.blockField">
+<ng-template [ngIf]="!getDisabledField(data) && !_data.blockField">
 
     <i *ngIf="_rule.iconVisible" class="{{_rule.iconVisible}}">&nbsp;</i>
-    <i *ngIf="isCurrentType(['icon'])" class="{{currentValue}}">&nbsp;</i>
+    <i *ngIf="_fnIsType('icon')" class="{{_value}}">&nbsp;</i>
 
-    <ng-template [ngIf]="!isCurrentType(['object'])">
+    <ng-template [ngIf]="!_fnIsType('object')">
 
-        <ng-template [ngIf]="isCurrentType(['text','textarea','number','checklist','select','password','combodate'])">
+        <ng-template [ngIf]="_fnIsType('text','textarea','number','checklist','select','password','combodate')">
 
             <ng-template [ngIf]="getEnabled">
                 <a x-editable
                    [disabled]="false"
-                   [key]="key"
-                   [data]="data"
-                   [model]="model"
-                   [class.notHidden]="isCurrentType(['checklist'])">
+                   [key]="_key"
+                   [data]="_data"
+                   [model]="_model"
+                   [class.notHidden]="_fnIsType('checklist')">
                 </a>
 
-                <ng-template [ngIf]="isCurrentType(['select']) && !_rule.required && currentValue">
-                    <button (click)="model.setNull(data,key)" type="button" class="btn btn-box-tool"
+                <ng-template [ngIf]="_fnIsType('select') && !_rule.required && _value">
+                    <button (click)="_model.setNull(data,key)" type="button" class="btn btn-box-tool"
                             title="Liberar">
                         <i class="fa fa-minus text-red"></i>
                     </button>
@@ -27,52 +27,57 @@
             <ng-template [ngIf]="!getEnabled">
                 <a x-editable
                    [disabled]="true"
-                   [key]="key"
-                   [data]="data"
-                   [model]="model"
-                   [class.notHidden]="isCurrentType(['checklist'])">
+                   [key]="_key"
+                   [data]="_data"
+                   [model]="_model"
+                   [class.notHidden]="_fnIsType('checklist')">
                 </a>
             </ng-template>
         </ng-template>
 
-        <ng-template [ngIf]="isCurrentType(['location'])">
+        <ng-template [ngIf]="_fnIsType('location')">
             <button class="btn btn-box-tool" (click)="showModal('location')"
                     [attr.title]="'custom.viewLocation' | translate">
                 <i class="fa fa-map-marker fa-lg text-red"></i>
             </button>
         </ng-template>
 
-        <ng-template [ngIf]="isCurrentType(['progress'])">
+        <ng-template [ngIf]="_fnIsType('progress')">
             <ng-template [ngIf]="getEnabled">
                 <ng-template [ngIf]="_rule.progress=='knob'">
                     <div class="knob-size">
-                        <input knob type="text" class="dial" [model]="model" [data]="data" [key]="key"
-                               [attr.value]="(currentValue || 0)" data-width="100%"
-                               [attr.title]="_rule.title+': '+(currentValue || 0)">
+                        <input knob type="text" class="dial"
+                               [model]="_model"
+                               [data]="_data"
+                               [key]="_key"
+                               [attr.value]="(_value || 0)" data-width="100%"
+                               [attr.title]="_rule.title+': '+(_value || 0)">
                     </div>
                 </ng-template>
             </ng-template>
 
             <ng-template [ngIf]="!getEnabled">
                 <ng-template [ngIf]="_rule.progress=='knob'">
-                    <input knob type="text" class="dial" [model]="model" [data]="data" [key]="key"
+                    <input knob type="text" class="dial"
+                           [model]="_model"
+                           [data]="_data"
+                           [key]="_key"
                            data-width="100%"
-                           [attr.title]="_rule.title+': '+(currentValue || 0)">
+                           [attr.title]="_rule.title+': '+(_value || 0)">
                 </ng-template>
             </ng-template>
 
         </ng-template>
 
-        <ng-template [ngIf]="_rule && isCurrentType(['image'])">
-            <img [attr.id]="'img'+data.id+'_'+key"
-                 [attr.src]="currentValue || _rule.default"
+        <ng-template [ngIf]="_rule && _fnIsType('image')">
+            <img [attr.id]="'img'+_data.id+'_'+_key"
+                 [attr.src]="_value || _rule.default"
                  class="image-editor"
-                 [attr.title]="_rule.update?'custom.imageEdit':'' | translate"
+                 [attr.title]="(_rule.update?'custom.imageEdit':'') | translate"
                  (click)="showModal('image')"
-            ><!--data-toggle="modal" [attr.data-target]="'#'+data.id+'_'+key"-->
-
+            >
             <!--MODAL NO IMPLEMENT-->
-            <div [attr.id]="data.id+'_'+key" class="modal fade" tabindex="-1" role="dialog"
+            <div [attr.id]="_data.id+'_'+_key" class="modal fade" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-header bg-red text-center">
@@ -86,18 +91,18 @@
                     <div class="modal-content">
                         <ng-template [ngIf]="getEnabled">
                             <image-edit-view
-                                    [image]="currentValue"
+                                    [image]="_value"
                                     [edit]="true"
                                     [default]="_rule.default"
-                                    (out)="model.onPatchValue(key,data, $event)"
+                                    (out)="_model.onPatchValue(key,data, $event)"
                             ></image-edit-view>
                         </ng-template>
                         <ng-template [ngIf]="!getEnabled">
                             <image-edit-view
-                                    [image]="currentValue"
+                                    [image]="_value"
                                     [edit]="false"
                                     [default]="_rule.default"
-                                    (out)="model.onPatchValue(key,data, $event)"
+                                    (out)="_model.onPatchValue(key,data, $event)"
                             ></image-edit-view>
                         </ng-template>
                     </div>
@@ -105,28 +110,28 @@
             </div>
         </ng-template>
 
-        <ng-template [ngIf]="_rule && isCurrentType(['color'])">
+        <ng-template [ngIf]="_rule && _fnIsType('color')">
             <ng-template [ngIf]="getEnabled">
-                <input color-picker class="form-control" readonly [style.background-color]="'#'+currentValue"
-                       [attr.value]="'#'+currentValue" [hexString]="currentValue"
-                       (color)="model.onPatch(key,data,$event)">
+                <input color-picker class="form-control" readonly [style.background-color]="'#'+_value"
+                       [attr.value]="'#'+_value" [hexString]="_value"
+                       (color)="_model.onPatch(key,data,$event)">
             </ng-template>
             <ng-template [ngIf]="!getEnabled">
-                <label [style.background-color]="'#'+currentValue" class="form-control">{{'#'+currentValue}}</label>
+                <label [style.background-color]="'#'+_value" class="form-control">{{'#'+_value}}</label>
             </ng-template>
         </ng-template>
 
-        <ng-template [ngIf]="isCurrentType(['boolean'])">
+        <ng-template [ngIf]="_fnIsType('boolean')">
             <ng-template [ngIf]="getEnabled">
-                <ng-template [ngIf]="key=='enabled'">
-                    <button class="{{getBooleandData.class}}" (click)="model.onLock(key,data, $event)"
+                <ng-template [ngIf]="_key=='enabled'">
+                    <button class="{{getBooleandData.class}}" (click)="_model.onLock(_key,_data, $event)"
                             [disabled]="getBooleandData.disabled"
                             [attr.title]="getBooleandData.title">
                         <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
                     </button>
                 </ng-template>
-                <ng-template [ngIf]="key!='enabled'">
-                    <button class="{{getBooleandData.class}}" (click)="model.onPatch(key,data)"
+                <ng-template [ngIf]="_key!='enabled'">
+                    <button class="{{getBooleandData.class}}" (click)="_model.onPatch(key,data)"
                             [disabled]="getBooleandData.disabled"
                             [attr.title]="getBooleandData.title">
                         <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
@@ -134,24 +139,24 @@
                 </ng-template>
             </ng-template>
             <ng-template [ngIf]="!getEnabled">
-                <ng-template [ngIf]="key=='enabled' || key=='editable'">
-                    <ng-template [ngIf]="key=='enabled'">
-                        <button class="{{getBooleandData.class}}" (click)="model.onLock(key,data, $event)"
-                                [disabled]="getBooleandData.disabled || data.deleted || disabled "
+                <ng-template [ngIf]="_key=='enabled' || _key=='editable'">
+                    <ng-template [ngIf]="_key=='enabled'">
+                        <button class="{{getBooleandData.class}}" (click)="_model.onLock(_key,_data, $event)"
+                                [disabled]="getBooleandData.disabled || _data.deleted || _disabled "
                                 [attr.title]="getBooleandData.title">
                             <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
                         </button>
                     </ng-template>
-                    <ng-template [ngIf]="key=='editable'">
-                        <button class="{{getBooleandData.class}}" (click)="model.onLock(key,data, $event)"
-                                [disabled]="getBooleandData.disabled || data.deleted  || disabled "
+                    <ng-template [ngIf]="_key=='editable'">
+                        <button class="{{getBooleandData.class}}" (click)="_model.onLock(_key,_data, $event)"
+                                [disabled]="getBooleandData.disabled || _data.deleted  || _disabled "
                                 [attr.title]="getBooleandData.title">
                             <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
                         </button>
                     </ng-template>
 
                 </ng-template>
-                <ng-template [ngIf]="key!='enabled' && key!='editable'">
+                <ng-template [ngIf]="_key!='enabled' && _key!='editable'">
                     <button class="{{getBooleandData.class}}" [disabled]="true"
                             [attr.title]="getBooleandData.title">
                         <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
@@ -160,7 +165,7 @@
             </ng-template>
         </ng-template>
 
-        <ng-template [ngIf]="isCurrentType(['time'])">
+        <ng-template [ngIf]="_fnIsType('time')">
             <ng-template [ngIf]="getEnabled">
                 {{formatTimeView}}
             </ng-template>
@@ -169,17 +174,17 @@
             </ng-template>
         </ng-template>
 
-        <ng-template [ngIf]="isCurrentType(['url'])">
+        <ng-template [ngIf]="_fnIsType('url')">
 
             <ng-template [ngIf]="getEnabled">
 
                 <ng-template [ngIf]="_rule.url == 'image'">
-                    <img class="img-responsive" [attr.src]="currentValue"/>
+                    <img class="img-responsive" [attr.src]="_value"/>
                     <a x-editable
                        [disabled]="false"
-                       [key]="key"
-                       [data]="data"
-                       [model]="model">
+                       [key]="_key"
+                       [data]="_data"
+                       [model]="_model">
                     </a>
                 </ng-template>
 
@@ -187,13 +192,13 @@
 
             <ng-template [ngIf]="!getEnabled">
                 <ng-template [ngIf]="_rule.url == 'image'">
-                    <img class="img-responsive" [attr.src]="currentValue"/>
+                    <img class="img-responsive" [attr.src]="_value"/>
                 </ng-template>
             </ng-template>
 
         </ng-template>
 
-        <ng-template [ngIf]="isCurrentType(['eval'])">
+        <ng-template [ngIf]="_fnIsType('eval')">
             <ng-template [ngIf]="getEnabled">
                 {{getTypeEval}}
             </ng-template>
@@ -202,9 +207,9 @@
             </ng-template>
         </ng-template>
 
-        <ng-template [ngIf]="isCurrentType(['array'])">
+        <ng-template [ngIf]="_fnIsType('array')">
             <ng-template [ngIf]="_rule.typeView == 'normal'">
-                <div *ngFor="let item of model.fieldToArray(data,key)" class="array-content">
+                <div *ngFor="let item of _model.fieldToArray(data,key)" class="array-content">
                     <span class="array-item">{{item}}</span>
                 </div>
             </ng-template>
@@ -218,59 +223,59 @@
 
     </ng-template>
 
-    <ng-template [ngIf]="isCurrentType(['object'])">
+    <ng-template [ngIf]="_fnIsType('object')">
 
-        <ng-template [ngIf]="key=='roles'">
+        <ng-template [ngIf]="_key=='roles'">
             <ng-template [ngIf]="getEnabled">
                 <a x-editable class="notHidden"
-                   [disabled]="!_rule.permissions.list || !model.permissions.roleSave"
-                   [key]="key"
-                   [data]="data"
-                   [model]="model"
-                   [endpoint]="'/users/'+data.id+'/roles'">
+                   [disabled]="!_rule.permissions.list || !_model.permissions.roleSave"
+                   [key]="_key"
+                   [data]="_data"
+                   [model]="_model"
+                   [endpoint]="'/users/'+_data.id+'/roles'">
                 </a>
             </ng-template>
             <ng-template [ngIf]="!getEnabled">
                 <a x-editable
                    class="notHidden"
                    [disabled]="true"
-                   [key]="key"
-                   [data]="data"
-                   [model]="model"
-                   [endpoint]="'/users/'+data.id+'/roles'">
+                   [key]="_key"
+                   [data]="_data"
+                   [model]="_model"
+                   [endpoint]="'/users/'+_data.id+'/roles'">
                 </a>
             </ng-template>
         </ng-template>
 
-        <ng-template [ngIf]="key!='roles'">
+        <ng-template [ngIf]="_key!='roles'">
 
-            <ng-template [ngIf]="isCurrentType(['checklist'])">
+            <ng-template [ngIf]="_fnIsType('checklist')">
 
                 <ng-template [ngIf]="getEnabled">
                     <a x-editable
                        class="notHidden"
                        [disabled]="false"
-                       [key]="key"
-                       [data]="data"
-                       [model]="model">
-                        {{currentValue || 'N/A'}}
+                       [key]="_key"
+                       [data]="_data"
+                       [model]="_model">
+                        {{_value || 'N/A'}}
                     </a>
                 </ng-template>
 
                 <ng-template [ngIf]="!getEnabled">
                     <a x-editable
                        [disabled]="true"
-                       [key]="key"
-                       [data]="data"
-                       [model]="model">
-                        {{currentValue || 'N/A'}}</a>
+                       [key]="_key"
+                       [data]="_data"
+                       [model]="_model">
+                        {{_value || 'N/A'}}</a>
                 </ng-template>
 
             </ng-template>
 
-            <ng-template [ngIf]="isCurrentMode(['reference'])">
+            <ng-template [ngIf]="_fnIsMode('reference')">
                 <ng-template [ngIf]="_rule.multiple">
-                    <button *ngIf="currentValue && currentValue.length > 0"
+                    <button *ngIf="_value && _value.length > 0"
                             (click)="setViewListData($event)"
                             type="button" class="btn btn-box-tool"
                             title="Listar" data-toggle="modal"
@@ -285,7 +290,7 @@
                             {{evalExp(data,_rule.eval)}}
                         </ng-template>
                         <ng-template [ngIf]="!_rule.eval">
-                            {{data[_rule.display]}}
+                            {{_data[_rule.display]}}
                         </ng-template>
                     </span>
 
@@ -362,9 +367,9 @@
         </ng-template>
 
         <ng-template [ngIf]="getEnabled">
-                <span *ngFor="let action of _getActionsRule()" (click)="action.callback(this,key);">
+                <span *ngFor="let action of _getActionsRule()" (click)="action.callback(this,_key);">
                     <a class="cursor-pointer {{action.currentView(this).colorClass || ''}}"
-                       [attr.title]="key+'.'+action.currentView(this).title | translate">
+                       [attr.title]="_key+'.'+action.currentView(this).title | translate">
                         <i class="{{action.currentView(this).icon || ''}}"></i>
                     </a>
                 </span>
@@ -379,7 +384,7 @@
 </ng-template>
 
 
-<ng-template [ngIf]="isCurrentType(['newType'])">
+<ng-template [ngIf]="_fnIsType('newType')">
 
     <ng-template [ngIf]="getEnabled"></ng-template>
 
