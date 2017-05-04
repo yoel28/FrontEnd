@@ -32,7 +32,7 @@ export class RecoverComponent extends RestController {
         let successCallback = response => {
             let link = ['/auth/login', {}];
             that.db.router.navigate(link);
-        }
+        };
         this.httputils.doGet(this.endpoint + this.form.value.username, successCallback, this.error, true);
     }
 
