@@ -4,6 +4,8 @@ import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase'
 import {AnimationsManager} from '../../animations/AnimationsManager';
 import {FormComponent} from '../form/form.component';
 import {FormControl} from '@angular/forms';
+import {IRuleView} from "../ruleView/ruleView.component";
+import {ModelRoot} from "../../../com.zippyttech.common/modelRoot";
 
 let moment = require('moment');
 let jQuery = require('jquery');
@@ -114,6 +116,10 @@ export class ListActionComponent extends ControllerBase {
             }
         });
         return newRules;
+    }
+
+    private _getParamsRuleView(key:string,data:Object,model:ModelRoot):IRuleView{
+        return {key:key, type: 'inline', data:data, model:model,disabled:true};
     }
 
     private setForm(form) {
