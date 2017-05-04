@@ -38,4 +38,4 @@ export function appPath(): any {
         'ui': abs() + '/appRoot/com.zippyttech.ui/',
         'baseView': abs() + '/appRoot/com.zippyttech.ui/view/base/'
     }
-};
+}
