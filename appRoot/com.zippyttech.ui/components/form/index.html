@@ -19,7 +19,7 @@
                                         </span>
 
                                         <div *ngIf="!_getList(key); else
-                                                                                noList">
+                                                                                inList">
 
                                             <ng-template
                                                     [ngIf]="_fnContainsType(key,'text','number','email','password')">
@@ -111,7 +111,7 @@
                                             </ng-template>
                                         </div>
 
-                                        <ng-template #noList>
+                                        <ng-template #inList>
                                             <input tags-input type="text"
                                                    [model]="model" [key]="key"
                                                    [control]="_getControl(key)">
@@ -194,128 +194,8 @@
             </div>
         </form>
         <ng-template [ngIf]="_search">
-            <form role="form" [formGroup]="_form">
-                <div class="row">
-                    <div class="{{db.classCol()}}">
-
-                        <i *ngIf="(_searchRest && _searchRest.findData); else
-                            noFindData" class="fa fa-spinner fa-pulse fa-fw"
-                           [attr.title]="'custom.findData' | translate">
-
-                        </i>
-                        <ng-template #noFindData>
-                            <i class="{{_getRule(_search).icon}}"></i>
-                        </ng-template>
-
-                        <strong>&nbsp;{{_search+'.filter' | translate}}&nbsp;</strong>
-                        <span class="page-info" *ngIf="_searchData.count">
-                            {{('custom.infoPageCount'| translate:{page:_searchModel.getCurrentPage(true),count:_searchData.count})}}
-                        </span>
-                    </div>
-                    <div class="{{db.classCol()}}">
-                        <div class="{{db.classCol(11,11,10,10)}}">
-                            <div class="form-group input-icon right">
-                                <i class="{{_getRule(_search).icon}} z-index"></i>
-                                <input class="form-control"
-                                       formControlName="{{_search}}"
-                                       placeholder="{{'field.'+_search+'.placeholder' | translate}}"
-                                       type="text">
-                            </div>
-                        </div>
-                        <div class="{{db.classCol(1,1,2,2)}}">
-                            <span class="input-group-btn">
-                                <button (click)="_loadDataSearch($event)" type="button"
-                                        class="btn btn-green-club btn-box-tool"
-                                        [attr.title]="'custom.find' | translate">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                                <button (click)="_destroySearch($event)" type="button"
-                                        class="btn btn-red-club btn-box-tool" [attr.title]="'custom.close' | translate">
-                                    <i class="fa fa-close"></i>
-                                </button>
-                            </span>
-                        </div>
-                    </div>
-                    <ng-template [ngIf]="_searchData.count">
-                        <div class="{{db.classCol()}} table-responsive">
-                            <table class="table table-hover">
-                                <tbody *ngIf="_searchData && _searchData.list">
-                                <tr *ngFor="let data of _searchData.list" (click)="_fnSaveSearch(_search,data)"
-                                    [attr.title]="'custom.select' | translate" class="cursor-pointer">
-                                    <td class="td-img">
-                                        <img [src]="data.image || _static.pathElements.robot"
-                                             style="display: inline-block" class="img-responsive img-search">
-                                    </td>
-                                    <td>
-                                        <strong>{{_search+'.search.title' | translate}}</strong>
-                                        &nbsp;{{data.title}}<br>
-                                        <strong>{{_search+'.search.detail' | translate}}</strong>
-                                        &nbsp;{{data.detail}}
-                                    </td>
-                                    <td style="vertical-align: middle">
-                                        <i class="btn btn-box-tool text-green fa fa-check"></i>
-                                    </td>
-                                </tr>
-                                </tbody>
-
-                                <tfoot *ngIf="_searchData && _searchData.page && _searchData.page.length > 1 ">
-                                <tr>
-                                    <td colspan="3">
-                                        <div class="btn-group pull-right">
-                                            <button (click)="_loadDataSearch($event,val)"
-                                                    [class.btn-green]="val == _searchPage"
-                                                    *ngFor="let val of _searchData.page" type="button"
-                                                    class="btn btn-default">
-                                                        <span *ngIf="val == _searchPage">
-                                                            <span *ngIf="_searchRest.findData">
-                                                                <i class="fa fa-spinner fa-spin"
-                                                                   [attr.title]="'custom.pleaseWait' | translate"></i>
-                                                            </span>
-                                                            <span *ngIf="!_searchRest.findData">
-                                                                {{val}}
-                                                            </span>
-                                                        </span>
-                                                <span *ngIf="val != _searchPage">
-                                                            {{val}}
-                                                        </span>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tfoot>
-
-                            </table>
-                        </div>
-                    </ng-template>
-                </div>
-            </form>
+            <search-view [params]="_search" (output)="_onEventSearch($event)"></search-view>
         </ng-template>
-        <!--<div class="{{(search.object && searchView)?db.classCol(8,9,10,12):''}}" *ngIf="(search.object && searchView)">-->
-
-        <!--<div *ngIf="findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
-        <!--<i class="fa fa-spinner fa-spin"></i>-->
-        <!--{{db.msg*.findData}}-->
-        <!--</div>-->
-
-        <!--<div *ngIf="!dataList.count && !findData" class="{{db.classCol(10,10,10,10)}}{{db.classOffset(1,1,1,1)}}">-->
-        <!--<span *ngIf="dataList.count==0">-->
-        <!--<i class="fa fa-exclamation-circle"></i>&nbsp;{{db.msg*.notFound}}-->
-        <!--</span>-->
-        <!--<span *ngIf="dataList.count==null">-->
-        <!--<i class="fa fa-keyboard-o fa-lg"></i>&nbsp;{{db.msg*.introValueFind}}-->
-        <!--</span>-->
-        <!--</div>-->
-        <!--<div class="{{db.classCol(12,12,12,12)}}">-->
-        <!--<div *ngIf="dataList.page && dataList.page.length > 1 && dataList.count > 0"-->
-        <!--class="btn-group pull-right">-->
-        <!--<button (click)="loadData(val)" [class.btn-green]="val==((offset/max)+1)"-->
-        <!--*ngFor="let val of dataList.page"-->
-        <!--type="button" class="btn btn-default">-->
-        <!--{{val}}-->
-        <!--</button>-->
-        <!--</div>-->
-        <!--</div>-->
-        <!--</div>-->
         <div class="{{db.classCol()}}" *ngIf="!_search">
             <p [innerHtml]="'custom.fieldRequired' | translate"></p>
         </div>
