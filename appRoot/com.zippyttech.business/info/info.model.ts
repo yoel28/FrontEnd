@@ -76,25 +76,25 @@ export class InfoModel extends ModelBase {
                 {value: 'left', text: 'Izquierda'},
                 {value: 'right', text: 'Derecha'},
             ],
-        }),
+        });
 
-            this.rules['size'] = new SelectRule({
-                required: true,
-                permissions: {
-                    update: this.permissions.update,
-                    search: this.permissions.filter,
-                    visible: this.permissions.visible,
-                },
-                source: [
-                    {value: 'fa', text: 'Normal'},
-                    {value: 'fa-lg', text: 'Lg'},
-                    {value: 'fa-2x', text: '2x'},
-                    {value: 'fa-3x', text: '3x'},
-                    {value: 'fa-4x', text: '4x'},
-                    {value: 'fa-5x', text: '5x'},
+        this.rules['size'] = new SelectRule({
+            required: true,
+            permissions: {
+                update: this.permissions.update,
+                search: this.permissions.filter,
+                visible: this.permissions.visible,
+            },
+            source: [
+                {value: 'fa', text: 'Normal'},
+                {value: 'fa-lg', text: 'Lg'},
+                {value: 'fa-2x', text: '2x'},
+                {value: 'fa-3x', text: '3x'},
+                {value: 'fa-4x', text: '4x'},
+                {value: 'fa-5x', text: '5x'},
 
-                ],
-            });
+            ],
+        });
 
         this.rules['icon'] = new SelectRule({
             exclude: true,
