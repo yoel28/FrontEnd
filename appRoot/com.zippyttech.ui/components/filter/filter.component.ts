@@ -262,8 +262,7 @@ export class FilterComponent extends RestController implements OnInit {
             }
         });
         if (this.params.where && this.params.where.length > 0) {
-            let temp = dataWhere.concat(this.params.where);
-            dataWhere = temp;
+            dataWhere = dataWhere.concat(this.params.where); // TODO: Verificar con un where default
         }
         this.loadWhereFilter(dataWhere);
     }
@@ -424,8 +423,7 @@ export class FilterComponent extends RestController implements OnInit {
                         obj.where = that.parseWhere(obj.rule, obj.where);
                         join_and.and.push(obj.where);
                     });
-                    let data = join.concat(join_and);
-                    join = data;
+                    join = join.concat(join_and); // TODO: Verificar concatenacion.
                 }
                 if (obj.or) {
                     let join_or = {or: []};
@@ -434,14 +432,12 @@ export class FilterComponent extends RestController implements OnInit {
                         obj.where = that.parseWhere(obj.rule, obj.where);
                         join_or.or.push(obj.where);
                     });
-                    let data = join.concat(join_or);
-                    join = data;
+                    join = join.concat(join_or); // TODO: Verificar concatenacion.
                 }
                 if (obj.rule && obj.where) {
                     obj.where.value = where.value;
                     obj.where = that.parseWhere(obj.rule, obj.where);
-                    let data = join.concat(obj.where);
-                    join = data;
+                    join = join.concat(obj.where); // TODO: Verificar concatenacion.
                 }
 
             });
