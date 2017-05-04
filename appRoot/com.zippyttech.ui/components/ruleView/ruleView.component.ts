@@ -16,7 +16,9 @@ import {IIncludeComponents} from '../../../com.zippyttech.common/rules/rule';
  *
  */
 
-export interface IRuleView {
+type TType = 'inline' | 'input';
+
+export interface IRuleView1 {
     select: Object;//objecto que se selecciona
     searchParams: Object,//parametros del search del objecto que se selecciona
     searchInstances: Object,//instancias de todos los search
@@ -25,55 +27,77 @@ export interface IRuleView {
     arrayData: any[];
 }
 
+export interface IRuleView{
+    key:string;
+    type:TType;
+    data:Object;
+    model:ModelRoot;
+    disabled?:boolean;
+}
+
 let moment = require('moment');
 @Component({
     selector: 'rule-view',
     templateUrl: './index.html',
     styleUrls: ['./style.css'],
-    inputs: ['key', 'type', 'data', 'model', 'paramsData', 'disabled'],
-    outputs: ['getInstance'],
+    inputs: ['params'],
+    outputs: ['output'],
 })
 export class RuleViewComponent implements OnInit, AfterViewInit {
 
-    public key: string;
-    public disabled: boolean = false;
-    public model: ModelRoot;
-    public type: string = 'inline' || 'input';
-    public data: any;
+    public params:IRuleView;
+    public output: EventEmitter<RuleViewComponent>;
 
-    public getInstance: any;
-    public configId = moment().valueOf();
 
-    public paramsData: IRuleView;
+    public paramsData: IRuleView1;
 
     constructor(public db: DependenciesBase) {
-        this.getInstance = new EventEmitter();
+        this.output = new EventEmitter();
     }
 
     ngOnInit() {
     }
 
+    ngAfterViewInit() {
+        this.output.emit(this);
+    }
+
+    private get _key():string{
+        return this.params.key;
+    }
+
+    private get _model():ModelRoot{
+        return this.params.model;
+    }
+
+    private get _disabled():boolean{
+        return this.params.disabled;
+    }
+
     private get _rule() {
-        return this.model.rules[this.key];
+        return this._model.rules[this._key];
     }
 
-    private get currentValue() {
-        return this.data[this.key];
+    private get _data():any{
+        return this.params.data;
+    }
+
+    private get _value():any {
+        return this._data[this._key];
     }
 
 
-    public isCurrentType(list: Array<string>): boolean {
+
+    private _fnIsType(...list: string[]): boolean {
         return list.indexOf(this._rule.type) >= 0;
     }
 
-    public isCurrentMode(list: Array<string>): boolean {
+    private _fnIsMode(...list: string[]): boolean {
         return list.indexOf(this._rule.mode) >= 0;
     }
 
 
-    ngAfterViewInit() {
-        this.getInstance.emit(this);
-    }
+
 
 
     private _getActionsRule(): Actions<IIncludeComponents>[] {
@@ -91,11 +115,11 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     get getBooleandData() {
 
         let rule = this._rule;
-        let value = this.currentValue;
+        let value = this._value;
 
         let field = {'class': 'btn btn-orange', 'text': 'n/a', 'disabled': true};
 
-        if (!this.evalExp(this.data, (rule.disabled || 'false'))) {
+        if (!this.evalExp(this._data, (rule.disabled || 'false'))) {
             let index = rule.source.findIndex(obj => (obj.value == value || obj.id == value));
             if (index > -1) {
                 rule.source[index].disabled = !rule.update;
@@ -112,7 +136,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         if (date) {
             if (id && this.formatDateId[id])
                 force = this.formatDateId[id].value;
-            if (this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN', API.DATE_FORMAT_HUMAN) && !force) {
+            if (this.db.myglobal.getParams(this._model.prefix + '_DATE_FORMAT_HUMAN', API.DATE_FORMAT_HUMAN) && !force) {
                 let diff = moment().valueOf() - moment(date).valueOf();
                 if (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN', API.DATE_MAX_HUMAN)) {
                     if (diff < 1800000)//menor a 30min
@@ -132,7 +156,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         let diff = moment().valueOf() - moment(date).valueOf();
         return (
             (diff < this.db.myglobal.getParams('DATE_MAX_HUMAN', API.DATE_MAX_HUMAN)) &&
-            this.db.myglobal.getParams(this.model.prefix + '_DATE_FORMAT_HUMAN', API.DATE_FORMAT_HUMAN)
+            this.db.myglobal.getParams(this._model.prefix + '_DATE_FORMAT_HUMAN', API.DATE_FORMAT_HUMAN)
         );
     }
 
@@ -143,7 +167,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     }
 
     get formatTimeView() {
-        let value = this.currentValue;
+        let value = this._value;
         if (value) {
             if (value < 1800000)//menor a 30min
                 return this.dateHmanizer(value, {units: ['m', 's']});
@@ -165,7 +189,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     setViewListData(event) {
         let that = this;
         let rule = this._rule;
-        let value = this.currentValue;
+        let value = this._value;
 
         if (event)
             event.preventDefault();
@@ -201,35 +225,35 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     loadSaveModal(event) {
         if (event)
             event.preventDefault();
-        this.paramsData.select = this.data;
+        this.paramsData.select = this._data;
     }
 
     loadSearchTable(event) {
         let rule = this._rule;
-        let value = this.currentValue;
+        let value = this._value;
 
         if (event)
             event.preventDefault();
         this.checkAllSearch();
-        this.paramsData.select = this.data;
+        this.paramsData.select = this._data;
         if (rule.multiple) {//TODO:Falta completar el comportamiento
             rule.paramsSearch.multiple = true;
             rule.paramsSearch.valuesData = [];
             rule.paramsSearch.valuesData = value;
             if (rule.paramsSearch.eval)
-                this.evalExp(this.data, rule.paramsSearch.eval);
+                this.evalExp(this._data, rule.paramsSearch.eval);
         }
         this.paramsData.searchParams = Object.assign({}, rule.paramsSearch);
-        this.paramsData.searchParams['field'] = this.key;
+        this.paramsData.searchParams['field'] = this._key;
     }
 
     loadDataFieldReference(setNull = false) {
         let rule = this._rule;
-        let value = this.currentValue;
+        let value = this._value;
 
         this.checkAllSearch();
         this.paramsData.ruleReference = Object.assign({}, rule);
-        this.paramsData.select = this.data;
+        this.paramsData.select = this._data;
         if (setNull)
             this.setDataFieldReference(true);
 
@@ -266,13 +290,13 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
 
     get getTypeEval() {
         let rule = this._rule;
-        return this.evalExp(this.data, this._rule.eval);
+        return this.evalExp(this._data, this._rule.eval);
     }
 
     get getEnabled() {
         let rule = this._rule;
-        let permitUpdate = (this.data.enabled && !this.data.deleted && !this.data.blockField && this.data.editable);
-        return permitUpdate && rule.permissions.update && !this.disabled;
+        let permitUpdate = (this._data.enabled && !this._data.deleted && !this._data.blockField && this._data.editable);
+        return permitUpdate && rule.permissions.update && !this._disabled;
     }
 
     // loadLocationParams(event) {
@@ -308,7 +332,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     // }TODO:IMPLEMENT
 
     showModal(name: ModalName, childKey?: any) {
-        let params: IModalParams = {model: this.model};
+        let params: IModalParams = {model: this._model};
         switch (name) {
             case 'save':
                 params.extraParams = {childKey: childKey};
