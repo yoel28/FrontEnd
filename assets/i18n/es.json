@@ -266,6 +266,10 @@
       "title": "Roles",
       "placeholder": "Ingrese un rol"
     },
+    "role": {
+      "title": "Roles",
+      "placeholder": "Ingrese un rol"
+    },
 
     "size": {
       "title": "Tamaño",
