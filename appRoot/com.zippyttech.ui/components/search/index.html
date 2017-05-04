@@ -43,7 +43,7 @@
                     <div class="{{db.classCol()}} table-responsive">
                         <table class="table table-hover">
                             <tbody *ngIf="_searchData && _searchData.list">
-                            <tr *ngFor="let data of _searchData.list" (click)="_fnSearch(data)"
+                            <tr *ngFor="let data of _searchData.list" (click)="_data=data"
                                 [attr.title]="'custom.select' | translate" class="cursor-pointer">
                                 <td class="td-img" style="width: 50px;">
                                     <img [src]="data.image || _static.pathElements.robot" style="display: inline-block"
