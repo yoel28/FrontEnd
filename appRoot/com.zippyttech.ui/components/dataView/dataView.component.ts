@@ -43,6 +43,10 @@ export class DataViewComponent implements OnInit {
     constructor(public db: DependenciesBase) {
     }
 
+    private _getParamsRuleView(key:string,data:Object):IRuleView{
+        return {key:key, type: 'inline', data:data, model:this.model};
+    }
+
     ngOnInit() {
         if (!this.model) console.error('Model is required in DataViewComponent!');
         if (!this.dataParams.cols) this.dataParams.cols = {lg: 4, md: 3, sm: 2, xs: 1};
