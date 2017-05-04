@@ -61,7 +61,9 @@ export class ObjectRule extends Rule {
             ],
             callback: (rule: RuleViewComponent, key: string) => {
                 rule.model.currentData = rule.data;
-                this.model.db.ms.show('search', {model: this.model});
+                this.model.db.ms.show('search', {model: this.model,onAfterClose:()=>{
+                    // this.model.onPatch(key,rule.data,)//TODO: Callback despues de cerrar el search;
+                }});
             },
             stateEval: '0',
             params: {
