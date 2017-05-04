@@ -1,5 +1,5 @@
 .modal-header {
-    border-radius: 0px !important;
+    border-radius: 0 !important;
 }
 
 th.check {
@@ -28,7 +28,7 @@ table {
 }
 
 .submenu-config {
-    border-radius: 0px 10px 10px 10px !important;
+    border-radius: 0 10px 10px 10px !important;
     transition: .2s !important;
 }
 

@@ -1,6 +1,6 @@
 .image-profile {
     background-color: rgba(128, 128, 128, 0.06);
-    padding: 2pt 0pt 10pt;
+    padding: 2pt 0 10pt;
     border-radius: 5pt;
     margin-bottom: 10pt;
 }
@@ -11,7 +11,7 @@
 }
 
 .rotate button.btn, button.redondo.btn {
-    margin: 0px !important;
+    margin: 0 !important;
 }
 
 .rotate {

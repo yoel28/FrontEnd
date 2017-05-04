@@ -1,7 +1,7 @@
 *:not(.box .box-body .box-header) {
-    border-radius: 0px !important;
-    margin: 0px;
-    padding: 0px;
+    border-radius: 0 !important;
+    margin: 0;
+    padding: 0;
     height: inherit;
 }
 
@@ -19,29 +19,29 @@
 }
 
 .box-body {
-    padding: 0px 30px;
-    margin: 0px;
+    padding: 0 30px;
+    margin: 0;
 }
 
 .box-footer {
-    padding: 0px 35px;
+    padding: 0 35px;
     padding-bottom: 10px;
 }
 
 .box-footer > * {
-    padding: 0px;
+    padding: 0;
 }
 
 /*##########################*/
 
 .list-group {
-    border-radius: 0px !important;
-    margin: 0px !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
 }
 
 .list-group-item {
-    padding: 0px 5px;
-    margin: 0px;
+    padding: 0 5px;
+    margin: 0;
     border: none;
 
 }
@@ -49,13 +49,13 @@
 .list-group-item-heading {
     background: #ecf0f5;
     color: #575757;
-    margin: 0px;
+    margin: 0;
     border-radius: 5px;
 }
 
 .data-detail {
     height: inherit !important;
-    padding: 0px;
+    padding: 0;
 }
 
 .data-detail-item {
@@ -67,13 +67,13 @@
     border: 1px solid #ecf0f5;
     border-bottom: none !important;
     border-top: none !important;
-    border-radius: 0px !important;
+    border-radius: 0 !important;
     padding-top: 7px;
     /*font-size: 8px !important;*/
 }
 
 .btn-box-tool {
-    padding: 0px;
+    padding: 0;
     width: auto;
 }
 
@@ -81,8 +81,8 @@
     border: 1px solid #ecf0f5;
     border-top: none;
     border-bottom: none;
-    border-radius: 0px !important;
-    padding: 0px;
+    border-radius: 0 !important;
+    padding: 0;
 }
 
 .item-content:hover {
@@ -96,7 +96,7 @@
 .item-content-edit {
     padding: 30px;
     border: 1px solid #ecf0f5 !important;
-    border-radius: 0px;
+    border-radius: 0;
     display: inline-block;
     width: 100%;
 }
@@ -117,7 +117,7 @@
 }
 
 .box-header.action-header {
-    padding: 0px 15px;
+    padding: 0 15px;
 }
 
 .action-header {
@@ -146,7 +146,7 @@
 }
 
 .list-tools-btns button {
-    border-radius: 0px 0px 20px 20px !important;
+    border-radius: 0 0 20px 20px !important;
     overflow: hidden;
     border: 1px solid #ecf0f5;
     padding: 5px;
@@ -158,14 +158,14 @@
 }
 
 .list-pager .btn-group {
-    border-radius: 0px 0px 20px 20px !important;
+    border-radius: 0 0 20px 20px !important;
     overflow: hidden;
     border: 1px solid #ecf0f5;
-    padding: 0px;
+    padding: 0;
 }
 
 .list-pager-btn {
-    border-radius: 0px !important;
+    border-radius: 0 !important;
     border: none;
     color: #777777;
     background-color: #ffffff;

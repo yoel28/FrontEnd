@@ -28,9 +28,9 @@
 }
 
 div, table, section, .modal-dialog > .modal-content {
-    -webkit-border-radius: 0px !important;
-    -moz-border-radius: 0px !important;
-    border-radius: 0px !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
 }
 
 .btn-green-a80 {
@@ -39,7 +39,7 @@ div, table, section, .modal-dialog > .modal-content {
 }
 
 .padding-top {
-    padding: 5px 0px;
+    padding: 5px 0;
 }
 
 @media ( max-height: 420px ) {

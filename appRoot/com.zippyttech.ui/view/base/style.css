@@ -24,7 +24,7 @@
     position: absolute;
     background: #0d5628;
     top: 100px;
-    left: 0px;
+    left: 0;
     width: 180px;
     height: 80px;
     border-radius: 0 0 180px 180px !important;
@@ -149,7 +149,7 @@
 @keyframes ball {
     0% {
         top: 115px;
-        left: 0px;
+        left: 0;
     }
     5% {
         top: 40px;
@@ -159,7 +159,7 @@
         left: 115px;
     }
     17% {
-        top: 0px;
+        top: 0;
         left: 112px;
     }
     22% {
@@ -176,7 +176,7 @@
 }
 
 .modal-header {
-    border-radius: 0px !important;
+    border-radius: 0 !important;
 }
 
 .header-tools .btn-box-tool {

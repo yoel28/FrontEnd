@@ -11,10 +11,10 @@
 }
 
 .modal-header {
-    border-radius: 0px !important;
+    border-radius: 0 !important;
 }
 
 .input-group-btn > .btn {
-    border-radius: 0px 5px 5px 0px !important;
+    border-radius: 0 5px 5px 0 !important;
     border: none !important;
 }
