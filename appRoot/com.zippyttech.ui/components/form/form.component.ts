@@ -1,16 +1,15 @@
 import {AfterViewInit, Component, EventEmitter, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {IData, IRest} from '../../../com.zippyttech.rest/restController';
 import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase';
 import {API} from '../../../com.zippyttech.utils/catalog/defaultAPI';
 import {UrlRule} from '../../../com.zippyttech.common/rules/url.rule';
 import {TRules} from '../../../app-routing.module';
 import {ModelRoot} from '../../../com.zippyttech.common/modelRoot';
 import {IIncludeComponents} from '../../../com.zippyttech.common/rules/rule';
-import {ObjectRule} from '../../../com.zippyttech.common/rules/object.rule';
 import {Actions} from '../../../com.zippyttech.init/app/app.types';
 import {ITagsInput} from '../../../com.zippyttech.utils/directive/tagsinput';
 import {StaticValues} from '../../../com.zippyttech.utils/catalog/staticValues';
+import {ISearch, ISearchEvents} from "../search/search.component";
 
 type TTypeAction = 'search' | 'internal';
 type TTypeForm = 'save' | 'filter';
@@ -39,7 +38,7 @@ interface IDataAction {
 export class FormComponent implements OnInit, AfterViewInit {
 
     private _type: TTypeForm = 'save';
-    private _search: string;
+    private _search: ISearch;
     private _actions: IFieldActions = {};
     private _form: FormGroup;
 
@@ -108,85 +107,48 @@ export class FormComponent implements OnInit, AfterViewInit {
         return keys;
     }
 
-    private _includeInForm(key: string[]) {
-
-    }
-
     // endregion
 
     // region search
 
     private _initSearch(key: string) {
         if (this._getRule(key).type == 'object') {
-            this._search = key;
-            this._loadDataSearch();
+            this._search = {
+                model:this.model,
+                key:key,
+                control:this._getControl(key),
+                notHidden:true
+            };
             return;
         }
         this.db.debugLog('FormComponent', 'initSearch', 'not object', this._getRule(key));
     }
 
-    private _destroySearch(event?: Event) {
-        if (event)
-            event.preventDefault();
+    private _onEventSearch(ev:ISearchEvents){
+        switch (ev.type){
+            case 'destroy':
+                this._destroySearch();
+                break;
+            case 'data':
+                this._fnSaveSearch(ev.data);
+                break
+        }
+    }
 
-        if (!this._getAction(this._search).valid)
-            this._fnDisabledAction(this._search);
+    private _destroySearch() {
+        if (this._search && !this._getAction(this._search.key).valid)
+            this._fnDisabledAction(this._search.key);
         this._search = null;
     }
 
-    private _loadDataSearch(event?: Event, page: number = 1) {
-        if (event)
-            event.preventDefault();
-
-        let action = this._getAction(this._search);
-        let rule = this._getRule(this._search);
-
-        if (action.view && action.type == 'search') {
-            (<ObjectRule>rule).model.getRest(true).id = this.getFormValue(this._search);
-            (<ObjectRule>rule).model.loadData(page, true);
+    private _fnSaveSearch(data: any) {
+        if(this._search) {
+            this._addAction(this._search.key, data);
+            this._setFormValue(this._search.key, data.title || data.detail);
+            this._search = null;
+            return;
         }
-    }
-
-    private _fnSearchQuit(event: Event) {
-        if (event)
-            event.preventDefault();
-        this._destroySearch();
-    }
-
-    private _fnSaveSearch(key: string, data: any) {
-        this._addAction(key, data);
-        this._setFormValue(key, data.title || data.detail);
-        this._search = null;
-    }
-
-    private get _searchData(): IData {
-        let rest = this._searchRest;
-        if (rest && rest.data && rest.data.value) {
-            return rest.data.value
-        }
-        return {};
-    }
-
-    private get _searchModel(): ModelRoot {
-        if (this._getRule(this._search) instanceof ObjectRule)
-            return (<ObjectRule>this._getRule(this._search)).model;
-        return null;
-    }
-
-    private get _searchRest(): IRest {
-        let rule = this._getRule(this._search);
-        if (rule && (<ObjectRule>rule).model) {
-            return (<ObjectRule>rule).model.getRest(true);
-        }
-        return null;
-    }
-
-    private get _searchPage(): number {
-        let rule = this._getRule(this._search);
-        if (rule && (<ObjectRule>rule).model) {
-            return (<ObjectRule>rule).model.getCurrentPage(true);
-        }
-        return -1;
+        this.db.debugLog('Error FormComponent','_fnSaveSearch','Error _search not found');
     }
 
 
@@ -288,7 +250,6 @@ export class FormComponent implements OnInit, AfterViewInit {
                                     return;
                                 }
                                 this._fnDisabledAction(key);
-                                this._loadDataSearch();
                             }
                         });
                 }
@@ -445,8 +406,8 @@ export class FormComponent implements OnInit, AfterViewInit {
 
     }
 
-    private _getControl(key) {
-        return this._form.controls[key];
+    private _getControl(key):FormControl {
+        return (<FormControl>this._form.controls[key]);
     }
 
     // endregion
