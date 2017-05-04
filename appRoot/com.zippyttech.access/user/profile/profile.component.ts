@@ -3,6 +3,7 @@ import {ControllerBase} from '../../../com.zippyttech.common/ControllerBase';
 import {UserModel} from '../user.model';
 import {AnimationsManager} from '../../../com.zippyttech.ui/animations/AnimationsManager';
 import {DependenciesBase} from '../../../com.zippyttech.common/DependenciesBase';
+import {IRuleView} from "../../../com.zippyttech.ui/components/ruleView/ruleView.component";
 
 @Component({
     selector: 'user-profile',
@@ -22,7 +23,11 @@ export class ProfileComponent extends ControllerBase implements OnInit {
 
     initModel(): any {
         this.model = new UserModel(this.db);
-        this.model.updateProfile();
+        (<UserModel>this.model).updateProfile();
+    }
+
+    private _getParamsRuleView(key:string,data:Object):IRuleView{
+        return {key:key, type: 'inline', data:data, model:this.model};
     }
 
     saveImage(data) {
