@@ -52,19 +52,18 @@ export class AclComponent extends RestController implements OnInit {
     loadPermissions() {
         if (this.permissionModel.permissions.list) {
             this.permissionModel.rest.max = 1000;
-            this.permissionModel.loadData().then((response => {
+            this.permissionModel.loadData().then( response => {
                 this.permissionsOrder(this.permissionModel.dataList);
-            }).bind(this));
+            });
         }
     }
 
     permissionsOrder(data) {
-        let that = this;
         data.list.forEach(obj => {
-            if (!that.dataPermissionsAll[obj.module]) {
-                that.dataPermissionsAll[obj.module] = [];
+            if (!this.dataPermissionsAll[obj.module]) {
+                this.dataPermissionsAll[obj.module] = [];
             }
-            that.dataPermissionsAll[obj.module].push(obj);
+            this.dataPermissionsAll[obj.module].push(obj);
         });
     }
 
@@ -75,13 +74,13 @@ export class AclComponent extends RestController implements OnInit {
     loadRoles() {
         if (this.roleModel.permissions.list) {
             this.roleModel.rest.max = 1000;
-            this.roleModel.loadData().then((response => {
+            this.roleModel.loadData().then(response => {
                 Object.assign(this.dataRoles, this.roleModel.dataList);
                 this.items = [];
                 this.dataRoles.list.forEach(obj => {
                     this.items.push({id: obj.id, text: obj.authority});
                 });
-            }).bind(this));
+            });
         }
     }
 
