@@ -251,7 +251,7 @@ export class RestController {
             }
             if (maxPage > (initPage + count))
                 list.page.push('>', '>>');
-            if (maxPage > 1)
+            if (maxPage > 1 && !search)
                 list.page.push('#');
         }
         this.data(search).setValue(list);
