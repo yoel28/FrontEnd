@@ -29,7 +29,7 @@ export class UserModel extends ModelBase {
 
     initView(params: IView) {
         params.display = this.nameClass + 'Username';
-        params.eval = this.db.myglobal.getRule('USER_DISPLAY_WEB');
+        params.expression = this.db.myglobal.getRule('USER_DISPLAY_WEB');
     }
 
     initRules() {
@@ -138,6 +138,7 @@ export class UserModel extends ModelBase {
             model: this.role,
             required: false,
             update: this.permissions.update,
+            db:this.db,
             source: [],
             include: {
                 list: true,
