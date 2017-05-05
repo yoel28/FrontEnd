@@ -33,7 +33,7 @@
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'search'">
-                    <search-view [params]="{model: db.ms.params.model,onAfterClose:null}"></search-view>
+                    <search-view [params]="{model: db.ms.params.model}" (output)="_onEvent($event)"></search-view>
                 </ng-template>
 
                 <ng-template [ngSwitchCase]="'location'">
