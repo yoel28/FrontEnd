@@ -3,7 +3,6 @@ import {DependenciesBase} from '../../com.zippyttech.common/DependenciesBase';
 import {IModalConfig} from './modal.types';
 
 let jQuery = require('jquery');
-
 @Component({
     selector: 'modal',
     templateUrl: './template.html',
@@ -53,5 +52,9 @@ export class ModalComponent implements OnInit {
         setTimeout(() => {
             this.$frame.classList.add('shown');
         }, 100);
+    }
+
+    private _onEvent(data){
+        this.db.ms.output = data;
     }
 }
