@@ -9,6 +9,7 @@ import {IIncludeComponents} from '../../../com.zippyttech.common/rules/rule';
 import {TRules} from "../../../app-routing.module";
 import {ObjectRule} from "../../../com.zippyttech.common/rules/object.rule";
 import {BooleanRule} from "../../../com.zippyttech.common/rules/boolean.rule";
+import {IXEditable} from "../../../com.zippyttech.utils/directive/xEditable";
 
 /**
  * @Params API
@@ -79,6 +80,15 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
 
     private _fnIsMode(...list: string[]): boolean {
         return list.indexOf((<ObjectRule>this._rule).mode) >= 0;
+    }
+
+    private _getParamsEditable(disabled=false){
+        return <IXEditable>{
+            model:this.model,
+            data:this.data,
+            key:this._key,
+            disabled:disabled
+        };
     }
 
     private get _key():string {
