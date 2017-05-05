@@ -38,7 +38,7 @@ export interface IView {
     key: string;
     code: string;
     icon?: string;
-    eval?: string;
+    expression?: string;
     visible?: boolean;
     mode?: modeOptions;
     exclude?: boolean;
