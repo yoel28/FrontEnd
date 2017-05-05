@@ -4,6 +4,7 @@ import {Actions} from '../../com.zippyttech.init/app/app.types';
 import {FormComponent} from '../../com.zippyttech.ui/components/form/form.component';
 import {RuleViewComponent} from '../../com.zippyttech.ui/components/ruleView/ruleView.component';
 import {DependenciesBase} from "../DependenciesBase";
+import {TEventOutput} from "../../com.zippyttech.services/modal/modal.types";
 
 interface IObjectSource {
     value: number;
@@ -62,9 +63,9 @@ export class ObjectRule extends Rule {
                 {icon: 'fa fa-search', title: 'search', colorClass: 'text-blue'},
             ],
             callback: (rule: RuleViewComponent, key: string) => {
-                rule.model.currentData = rule.data;
-                this.model.db.ms.show('search', {model: this.model,onAfterClose:()=>{
-                    // this.model.onPatch(key,rule.data,)//TODO: Callback despues de cerrar el search;
+                this.model.db.ms.show('search', {model: this.model,onAfterClose:(output:TEventOutput)=>{
+                    if(output && output.type == 'data')
+                        rule.model.onPatch(key,rule.data,output.data['id']);
                 }});
             },
             stateEval: '0',
@@ -80,14 +81,14 @@ export class ObjectRule extends Rule {
 
     private _initActionRequired() {
         this.attributes.actions.add('no-required', {
-            permission: !this.required,
+            permission: !this.required && this.permissions['update'],
             disabled: (data: any, key: string): boolean => {
                 return data[key];
             },
             views: [{icon: 'fa fa-minus', title: 'notRequired', colorClass: 'text-red'}],
             callback: (rule: RuleViewComponent, key: string) => {
                 rule.model.currentData = rule.data;
-                this.model.onPatchNull(rule.model.currentData, key);
+                rule.model.onPatchNull(rule.model.currentData, key);
             },
             stateEval: (data): number => {
                 return 0;
@@ -114,6 +115,10 @@ export class ObjectRule extends Rule {
 
     set key(value: string) {
         (<IObject>this.attributes).model.view.key = value;
+    }
+
+    get required():boolean {
+        return this.attributes.required;
     }
 
     set required(value: boolean) {
