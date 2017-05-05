@@ -9,13 +9,7 @@
         <ng-template [ngIf]="_fnIsType('text','textarea','number','checklist','select','password','combodate')">
 
             <ng-template [ngIf]="_enabled">
-                <a x-editable
-                   [disabled]="false"
-                   [key]="_key"
-                   [data]="data"
-                   [model]="model"
-                   [class.notHidden]="_fnIsType('checklist')">
-                </a>
+                <a x-editable [params]="_getParamsEditable()" [class.notHidden]="_fnIsType('checklist')"></a>
 
                 <ng-template [ngIf]="_fnIsType('select') && !_rule.required && _value">
                     <button (click)="model.setNull(data,_key)" type="button" class="btn btn-box-tool"
@@ -26,13 +20,7 @@
 
             </ng-template>
             <ng-template [ngIf]="!_enabled">
-                <a x-editable
-                   [disabled]="true"
-                   [key]="_key"
-                   [data]="data"
-                   [model]="model"
-                   [class.notHidden]="_fnIsType('checklist')">
-                </a>
+                <a x-editable [params]="_getParamsEditable(true)" [class.notHidden]="_fnIsType('checklist')"></a>
             </ng-template>
         </ng-template>
 
@@ -156,12 +144,7 @@
             <ng-template [ngIf]="_enabled">
                 <ng-template [ngIf]="_rule.url == 'image'">
                     <img class="img-responsive" [attr.src]="_value"/>
-                    <a x-editable
-                       [disabled]="false"
-                       [key]="_key"
-                       [data]="data"
-                       [model]="model">
-                    </a>
+                    <a x-editable [params]="_getParamsEditable()"></a>
                 </ng-template>
             </ng-template>
             <ng-template [ngIf]="!_enabled">
@@ -185,20 +168,12 @@
         <ng-template [ngIf]="_key=='roles'">
             <ng-template [ngIf]="_enabled">
                 <a x-editable class="notHidden"
-                   [disabled]="!_rule.permissions.list || !model.permissions.roleSave"
-                   [key]="_key"
-                   [data]="data"
-                   [model]="model"
+                   [params]="_getParamsEditable(!_rule.permissions.list || !model.permissions.roleSave)"
                    [endpoint]="'/users/'+data.id+'/roles'">
                 </a>
             </ng-template>
             <ng-template [ngIf]="!_enabled">
-                <a x-editable
-                   class="notHidden"
-                   [disabled]="true"
-                   [key]="_key"
-                   [data]="data"
-                   [model]="model"
+                <a x-editable class="notHidden" [params]="_getParamsEditable(true)"
                    [endpoint]="'/users/'+data.id+'/roles'">
                 </a>
             </ng-template>
@@ -207,22 +182,10 @@
         <ng-template [ngIf]="_key!='roles'">
             <ng-template [ngIf]="_fnIsType('checklist')">
                 <ng-template [ngIf]="_enabled">
-                    <a x-editable
-                       class="notHidden"
-                       [disabled]="false"
-                       [key]="_key"
-                       [data]="data"
-                       [model]="model">
-                        {{_value || 'N/A'}}
-                    </a>
+                    <a x-editable class="notHidden" [params]="_getParamsEditable()">{{_value || 'N/A'}}</a>
                 </ng-template>
                 <ng-template [ngIf]="!_enabled">
-                    <a x-editable
-                       [disabled]="true"
-                       [key]="_key"
-                       [data]="data"
-                       [model]="model">
-                        {{_value || 'N/A'}}</a>
+                    <a x-editable [params]="_getParamsEditable(true)">{{_value || 'N/A'}}</a>
                 </ng-template>
             </ng-template>
             <ng-template [ngIf]="_fnIsMode('reference')">
