@@ -10,6 +10,7 @@ interface ISource {
     class?: string;
     icon?: string;
     title: string;
+    disabled?:boolean;
 }
 
 export class BooleanRule extends Rule {
