@@ -139,6 +139,7 @@ export class UserModel extends ModelBase {
             required: false,
             update: this.permissions.update,
             db:this.db,
+            mode: 'checklist',
             source: [],
             include: {
                 list: true,
