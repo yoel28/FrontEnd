@@ -18,8 +18,6 @@ interface IDataActionParams {
 interface IModelActionParams {
 }
 
-export type modeOptions = 'reference' | 'checklist';
-
 export interface IModelFilter {
     [key: string]: {
         view: [{
@@ -40,7 +38,6 @@ export interface IView {
     icon?: string;
     expression?: string;
     visible?: boolean;
-    mode?: modeOptions;
     exclude?: boolean;
     components?: IComponents
 }
