@@ -127,7 +127,7 @@
         <ng-template [ngIf]="_fnIsType('boolean')">
             <ng-template [ngIf]="_enabled">
                 <button class="{{_booleanData.class}}"
-                        (click)="model.onPatch(key,data)"
+                        (click)="model.onPatch(_key,data)"
                         [disabled]="_booleanData.disabled"
                         [attr.title]="_booleanData.title">
                     <i class="{{_booleanData.icon}}"></i>
