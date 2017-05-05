@@ -70,11 +70,19 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         return this.params.data;
     }
 
-    private get _key():string{
+    private _fnIsType(...list: string[]): boolean {
+        return list.indexOf(this._rule.type) >= 0;
+    }
+
+    private _fnIsMode(...list: string[]): boolean {
+        return list.indexOf(this._rule.mode) >= 0;
+    }
+
+    private get _key():string {
         return this.params.key;
     }
 
-    private get _disabled():boolean{
+    private get _disabled():boolean {
         return this.params.disabled;
     }
 
@@ -86,40 +94,26 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         return this.data[this._key];
     }
 
-
-
-    private _fnIsType(...list: string[]): boolean {
-        return list.indexOf(this._rule.type) >= 0;
-    }
-
-    private _fnIsMode(...list: string[]): boolean {
-        return list.indexOf(this._rule.mode) >= 0;
-    }
-
-
-
-
-
-    private _getActionsRule(): Actions<IIncludeComponents>[] {
+    private get _actionsRule(): Actions<IIncludeComponents>[] {
         let keys = [];
         if (this._rule.actions) {
             Object.keys(this._rule.actions.getAll).forEach(key => {
-                if (this._rule.actions.get(key).params['list'] && this._rule.actions.get(key).permission)
+                if (this._rule.actions.get(key).params['list'] && this._rule.actions.get(key).permission) {
                     keys.push(this._rule.actions.get(key));
+                }
             })
         }
         return keys;
     }
 
-
-    get getBooleandData() {
+    private get _booleanData() {
 
         let rule = this._rule;
         let value = this._value;
 
         let field = {'class': 'btn btn-orange', 'text': 'n/a', 'disabled': true};
 
-        if (!this.evalExp(this.data, (rule.disabled || 'false'))) {
+        if (!this.db.evalMe(this.data, (rule.disabled || 'false'))) {
             let index = rule.source.findIndex(obj => (obj.value == value || obj.id == value));
             if (index > -1) {
                 rule.source[index].disabled = !rule.update;
@@ -127,6 +121,16 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
             }
         }
         return field;
+    }
+
+    private get _disabledField():boolean {
+        return this.db.evalMe(this.data, (this._rule.disabled || 'false'));
+    }
+
+    private get _enabled():boolean {
+        let rule = this._rule;
+        let enabled = (this.data.enabled && !this.data.deleted && !this.data.blockField && this.data.editable);
+        return enabled && rule.permissions.update && !this._disabled;
     }
 
     public formatDateId = {};
@@ -182,9 +186,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
 
     }
 
-    private get _disabledField():boolean {
-        return this.evalExp(this.data, (this._rule.disabled || 'false'));
-    }
+
 
     setViewListData(event) {
         let that = this;
@@ -214,14 +216,6 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         }
     }
 
-    evalExp(data, exp) {
-        try {
-            return eval(exp);
-        } catch (exception) {
-            this.db.debugLog('Error evalExp: ', exception, data);
-        }
-    }
-
     loadSaveModal(event) {
         if (event)
             event.preventDefault();
@@ -241,7 +235,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
             rule.paramsSearch.valuesData = [];
             rule.paramsSearch.valuesData = value;
             if (rule.paramsSearch.eval)
-                this.evalExp(this.data, rule.paramsSearch.eval);
+                this.db.evalMe(this.data, rule.paramsSearch.eval);
         }
         this.paramsData.searchParams = Object.assign({}, rule.paramsSearch);
         this.paramsData.searchParams['field'] = this._key;
@@ -288,16 +282,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         })
     }
 
-    get getTypeEval() {
-        let rule = this._rule;
-        return this.evalExp(this.data, this._rule.eval);
-    }
 
-    private get _enabled():boolean {
-        let rule = this._rule;
-        let enabled = (this.data.enabled && !this.data.deleted && !this.data.blockField && this.data.editable);
-        return enabled && rule.permissions.update && !this._disabled;
-    }
 
     // loadLocationParams(event) {
     //     if (event)
