@@ -1,10 +1,12 @@
+import {ISearchEvents} from "../../com.zippyttech.ui/components/search/search.component";
 export type ModalName = 'delete' | 'save' | 'filter' | 'location' | 'search';
 
 export type ModalParamsType = any;
+export type TEventOutput = ISearchEvents;
 
 export interface IModalParams {
     model: any;
-    onAfterClose?: () => void;
+    onAfterClose?: (data:TEventOutput) => void;
     extraParams?: ModalParamsType;
 }
 
