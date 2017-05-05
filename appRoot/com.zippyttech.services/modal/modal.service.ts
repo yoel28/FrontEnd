@@ -1,12 +1,15 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {IModalConfig, IModalParams, ModalName} from './modal.types';
+import {IModalConfig, IModalParams, ModalName, TEventOutput} from './modal.types';
 
 @Injectable()
 export class ModalService {
-    private _currentModal = 'none';
+
     public params: IModalParams;
     public onVisible: EventEmitter<boolean>;
     public configs: { [key: string]: IModalConfig };
+    public output:TEventOutput;
+
+    private _currentModal = 'none';
 
     public readonly modalID: string = 'modal-service';
 
@@ -32,7 +35,7 @@ export class ModalService {
             this._currentModal = 'none';
             this.onVisible.emit(false);
             if (this.params.onAfterClose)
-                this.params.onAfterClose();
+                this.params.onAfterClose(this.output);
         }
     }
 
