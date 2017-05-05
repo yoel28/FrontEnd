@@ -52,7 +52,7 @@ export class DependenciesBase {
         return typeof (value);
     }
 
-    public evalMe(data: any, exp) {
+    public evalMe(data: Object, exp:string) {
         try {
             return eval(exp);
         } catch (exception) {
