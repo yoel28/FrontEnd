@@ -6,6 +6,9 @@ import {IModalParams, ModalName} from '../../../com.zippyttech.services/modal/mo
 import {API} from '../../../com.zippyttech.utils/catalog/defaultAPI';
 import {Actions} from '../../../com.zippyttech.init/app/app.types';
 import {IIncludeComponents} from '../../../com.zippyttech.common/rules/rule';
+import {TRules} from "../../../app-routing.module";
+import {ObjectRule} from "../../../com.zippyttech.common/rules/object.rule";
+import {BooleanRule} from "../../../com.zippyttech.common/rules/boolean.rule";
 
 /**
  * @Params API
@@ -75,7 +78,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     }
 
     private _fnIsMode(...list: string[]): boolean {
-        return list.indexOf(this._rule.mode) >= 0;
+        return list.indexOf((<ObjectRule>this._rule).mode) >= 0;
     }
 
     private get _key():string {
@@ -86,7 +89,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         return this.params.disabled;
     }
 
-    private get _rule() {
+    private get _rule():TRules {
         return this.model.rules[this._key];
     }
 
@@ -114,10 +117,10 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         let field = {'class': 'btn btn-orange', 'text': 'n/a', 'disabled': true};
 
         if (!this.db.evalMe(this.data, (rule.disabled || 'false'))) {
-            let index = rule.source.findIndex(obj => (obj.value == value || obj.id == value));
+            let index = (<BooleanRule>rule).source.findIndex(obj => (obj.value == value));
             if (index > -1) {
-                rule.source[index].disabled = !rule.update;
-                return rule.source[index];
+                (<BooleanRule>rule).source[index].disabled = !this.model.permissions['update'];
+                return (<BooleanRule>rule).source[index];
             }
         }
         return field;
@@ -130,7 +133,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     private get _enabled():boolean {
         let rule = this._rule;
         let enabled = (this.data.enabled && !this.data.deleted && !this.data.blockField && this.data.editable);
-        return enabled && rule.permissions.update && !this._disabled;
+        return enabled && rule.permissions['update'] && !this._disabled;
     }
 
     public formatDateId = {};
@@ -186,34 +189,32 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
 
     }
 
-
-
     setViewListData(event) {
-        let that = this;
-        let rule = this._rule;
-        let value = this._value;
-
-        if (event)
-            event.preventDefault();
-        this.paramsData.viewListData['title'] = rule.title;
-        this.paramsData.viewListData['label'] = {};
-
-        if (typeof value == 'object' && value.length > 0) {
-            Object.keys(value[0]).forEach(subkey => {
-                if (rule.rulesSave[subkey])
-                    that.paramsData.viewListData['label'][subkey] = rule.rulesSave[subkey].title;
-            });
-        }
-        this.paramsData.viewListData['data'] = value;
-        if (typeof value === 'string') {
-            try {
-                this.paramsData.viewListData['data'] = JSON.parse(value);
-            }
-            catch (exception) {
-                this.paramsData.viewListData['data'] = [];
-                this.db.debugLog('Error: setViewListData', exception);
-            }
-        }
+        // let that = this;
+        // let rule = this._rule;
+        // let value = this._value;
+        //
+        // if (event)
+        //     event.preventDefault();
+        // this.paramsData.viewListData['title'] = rule.title;
+        // this.paramsData.viewListData['label'] = {};
+        //
+        // if (typeof value == 'object' && value.length > 0) {
+        //     Object.keys(value[0]).forEach(subkey => {
+        //         if (rule.rulesSave[subkey])
+        //             that.paramsData.viewListData['label'][subkey] = rule.rulesSave[subkey].title;
+        //     });
+        // }
+        // this.paramsData.viewListData['data'] = value;
+        // if (typeof value === 'string') {
+        //     try {
+        //         this.paramsData.viewListData['data'] = JSON.parse(value);
+        //     }
+        //     catch (exception) {
+        //         this.paramsData.viewListData['data'] = [];
+        //         this.db.debugLog('Error: setViewListData', exception);
+        //     }
+        // }
     }
 
     loadSaveModal(event) {
@@ -223,22 +224,22 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     }
 
     loadSearchTable(event) {
-        let rule = this._rule;
-        let value = this._value;
-
-        if (event)
-            event.preventDefault();
-        this.checkAllSearch();
-        this.paramsData.select = this.data;
-        if (rule.multiple) {//TODO:Falta completar el comportamiento
-            rule.paramsSearch.multiple = true;
-            rule.paramsSearch.valuesData = [];
-            rule.paramsSearch.valuesData = value;
-            if (rule.paramsSearch.eval)
-                this.db.evalMe(this.data, rule.paramsSearch.eval);
-        }
-        this.paramsData.searchParams = Object.assign({}, rule.paramsSearch);
-        this.paramsData.searchParams['field'] = this._key;
+        // let rule = this._rule;
+        // let value = this._value;
+        //
+        // if (event)
+        //     event.preventDefault();
+        // this.checkAllSearch();
+        // this.paramsData.select = this.data;
+        // if (rule.multiple) {//TODO:Falta completar el comportamiento
+        //     rule.paramsSearch.multiple = true;
+        //     rule.paramsSearch.valuesData = [];
+        //     rule.paramsSearch.valuesData = value;
+        //     if (rule.paramsSearch.eval)
+        //         this.db.evalMe(this.data, rule.paramsSearch.eval);
+        // }
+        // this.paramsData.searchParams = Object.assign({}, rule.paramsSearch);
+        // this.paramsData.searchParams['field'] = this._key;
     }
 
     loadDataFieldReference(setNull = false) {
@@ -282,9 +283,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
         })
     }
 
-
-
-    // loadLocationParams(event) {
+    loadLocationParams(event) {
     //     if (event)
     //         event.preventDefault();
     //
@@ -314,7 +313,7 @@ export class RuleViewComponent implements OnInit, AfterViewInit {
     //         lng: rule.lng
     //     }
     //     this.paramsData.locationParams.address = this.getEnabled;
-    // }TODO:IMPLEMENT
+     } // TODO:IMPLEMENT
 
     showModal(name: ModalName, childKey?: any) {
         let params: IModalParams = {model: this.model};
