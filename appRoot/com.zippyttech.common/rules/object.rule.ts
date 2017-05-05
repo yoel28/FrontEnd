@@ -3,6 +3,7 @@ import {IComponents, ModelRoot, modeOptions} from '../modelRoot';
 import {Actions} from '../../com.zippyttech.init/app/app.types';
 import {FormComponent} from '../../com.zippyttech.ui/components/form/form.component';
 import {RuleViewComponent} from '../../com.zippyttech.ui/components/ruleView/ruleView.component';
+import {DependenciesBase} from "../DependenciesBase";
 
 interface IObjectSource {
     value: number;
@@ -11,7 +12,8 @@ interface IObjectSource {
 export interface IObject extends IRule {
     model: ModelRoot;
     update?: boolean;
-    source?: Array<IObjectSource>
+    source?: Array<IObjectSource>;
+    db:DependenciesBase;
 }
 export class ObjectRule extends Rule {
 
@@ -98,6 +100,14 @@ export class ObjectRule extends Rule {
 
 
     // region Overwrite methods to access object attributes
+
+    getValue(data:Object):string{
+        if(this.eval) {
+            return this.db.evalMe(data,this.eval)
+        }
+        return data[this.display];
+    }
+
     get key(): string {
         return (<IObject>this.attributes).model.view.key || 'keyDefault';
     }
@@ -105,7 +115,6 @@ export class ObjectRule extends Rule {
     set key(value: string) {
         (<IObject>this.attributes).model.view.key = value;
     }
-
 
     set required(value: boolean) {
         this.attributes.required = value;
@@ -136,15 +145,16 @@ export class ObjectRule extends Rule {
         this.attributes.actions = value;
     }
 
+
     // endregion
 
     // region Access object attributes
     get eval(): string {
-        return (<IObject>this.attributes).model.view.eval || null;
+        return (<IObject>this.attributes).model.view.expression || null;
     }
 
     set eval(value: string) {
-        (<IObject>this.attributes).model.view.eval = value;
+        (<IObject>this.attributes).model.view.expression = value;
     }
 
     get code(): string {
@@ -202,6 +212,14 @@ export class ObjectRule extends Rule {
 
     set source(value: Array<IObjectSource>) {
         this.attributes.source = value;
+    }
+
+    get db(): DependenciesBase {
+        return (<IObject>this.attributes).db;
+    }
+
+    set db(value: DependenciesBase) {
+        (<IObject>this.attributes).db = value;
     }
 
 }
