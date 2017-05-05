@@ -24,17 +24,21 @@ let editable = require('editable');
  *
  */
 
+export interface IXEditable {
+    model:ModelRoot;
+    key:string;
+    data:Object;
+    disabled?:boolean;
+    endpoint?:((data:Object)=>string)|string;
+}
+
 @Directive({
     selector: '[x-editable]',
-    inputs: ['model', 'key', 'data', 'disabled', 'endpoint'],
+    inputs: ['params','endpoint'],
 })
 export class XEditable implements OnInit {
 
-    public disabled: boolean;
-    public model: ModelRoot;
-    public key: string;
-    public data: Object;
-    public endpoint: string;
+    public params:IXEditable;
 
     constructor(public el: ElementRef, public db: DependenciesBase) {
     }
@@ -68,9 +72,9 @@ export class XEditable implements OnInit {
                 else {
                     newValue = this._fnParseValueValidate(currentRule, newValue);
 
-                    this.model.onPatch(this.key, this.data, newValue).then(
+                    this._model.onPatch(this._key, this._data, newValue).then(
                         (value) => {
-                            this._evSetValue(currentRule, value[this.key]);
+                            this._evSetValue(currentRule, value[this._key]);
                         },
                         (reason) => {
                             this._evSetValue(currentRule);
@@ -82,8 +86,30 @@ export class XEditable implements OnInit {
         });
     }
 
+    private get _model():ModelRoot {
+        return this.params.model;
+    }
+    private get _key():string {
+        return this.params.key;
+    }
+    private get _disabled():boolean {
+        return this.params.disabled;
+    }
+    private get _data():Object {
+        return this.params.data;
+    }
+    private get _endpoint():string{
+        if(typeof this.params.endpoint === 'string' ) {
+            return this.params.endpoint;
+        }
+        if(typeof  this.params.endpoint === 'function'){
+            return this.params.endpoint(this._data);
+        }
+    }
+
+
     private get getRule(): TRules {
-        return this.model.rules[this.key];
+        return this._model.rules[this._key];
     }
 
     private _getType(rule: TRules): string {
@@ -93,6 +119,8 @@ export class XEditable implements OnInit {
                 return 'url';
             case 'object':
                 return (<ObjectRule>rule).mode;
+            // case 'textarea':
+            //     return'wysihtml5';
             default :
                 return type || 'text'
         }
@@ -101,15 +129,15 @@ export class XEditable implements OnInit {
     private _getValue(rule: TRules) {
         switch (this._getType(rule)) {
             case 'combodate' :
-                if (this.data[this.key])
-                    return moment(this.data[this.key]);
-                return this.data[this.key];
+                if (this._data[this._key])
+                    return moment(this._data[this._key]);
+                return this._data[this._key];
             case 'password' :
                 return '';
             case 'url' :
                 return 'link';
             default :
-                return this.data[this.key];
+                return this._data[this._key];
         }
     }
 
@@ -129,7 +157,7 @@ export class XEditable implements OnInit {
     }
 
     private _getDisabled(rule: TRules) {
-        return this.disabled;
+        return this._disabled;
     }
 
     private _getShowbuttons(rule: TRules) {
@@ -240,7 +268,7 @@ export class XEditable implements OnInit {
                     return moment(data);
                 return data;
             default :
-                jQuery(this.el.nativeElement).editable('setValue', ( data || this.data[this.key]), true);
+                jQuery(this.el.nativeElement).editable('setValue', ( data || this._data[this._key]), true);
                 break;
         }
     }
