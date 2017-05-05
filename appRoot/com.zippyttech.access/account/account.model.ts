@@ -28,7 +28,7 @@ export class AccountModel extends ModelRoot {
 
     initView(params: IView) {
         params.display = this.nameClass + 'Name';
-        params.eval = this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB');
+        params.expression = this.db.myglobal.getRule('ACCOUNT_DISPLAY_WEB');
     }
 
     initRules() {
