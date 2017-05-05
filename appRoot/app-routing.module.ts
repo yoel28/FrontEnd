@@ -54,6 +54,7 @@ import {ListRule} from './com.zippyttech.common/rules/list.rule';
 import {TranslateModule} from '@ngx-translate/core';
 import {Rule} from './com.zippyttech.common/rules/rule';
 import {Editable} from './com.zippyttech.common/rules/editable.types';
+import {LocationRule} from "./com.zippyttech.common/rules/location.rule";
 
 interface MyRoute extends Route {
     menuOptions?: {
@@ -169,6 +170,7 @@ export type TRules =
     | TextareaRule
     | UrlRule
     | ListRule
+    | LocationRule
     | Rule
     | Editable;
 
