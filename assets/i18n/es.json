@@ -329,6 +329,7 @@
   "custom": {
     "orderRow": "Ordenar por la columna {{row}}",
     "pleaseWait": "Por favor espere.",
+    "setFree":"Liberar",
     "infoPageCount": "Pagina {{page}}, cerca de {{count}} resultados",
     "hidden":"Oculto",
     "view":"Ver",
