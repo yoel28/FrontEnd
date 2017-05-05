@@ -1,10 +1,12 @@
 import {IIncludeComponents, IRule, Rule} from './rule';
-import {IComponents, ModelRoot, modeOptions} from '../modelRoot';
+import {IComponents, ModelRoot} from '../modelRoot';
 import {Actions} from '../../com.zippyttech.init/app/app.types';
 import {FormComponent} from '../../com.zippyttech.ui/components/form/form.component';
 import {RuleViewComponent} from '../../com.zippyttech.ui/components/ruleView/ruleView.component';
 import {DependenciesBase} from "../DependenciesBase";
 import {TEventOutput} from "../../com.zippyttech.services/modal/modal.types";
+
+type TMode = 'reference' | 'checklist';
 
 interface IObjectSource {
     value: number;
@@ -15,6 +17,7 @@ export interface IObject extends IRule {
     update?: boolean;
     source?: Array<IObjectSource>;
     db:DependenciesBase;
+    mode?:TMode
 }
 export class ObjectRule extends Rule {
 
@@ -99,7 +102,6 @@ export class ObjectRule extends Rule {
         });
     }
 
-
     // region Overwrite methods to access object attributes
 
     getValue(data:Object):string{
@@ -178,12 +180,12 @@ export class ObjectRule extends Rule {
         (<IObject>this.attributes).model.permissions = value;
     }
 
-    get mode(): modeOptions {
-        return (<IObject>this.attributes).model.view.mode || 'reference';
+    get mode(): TMode {
+        return (<IObject>this.attributes).mode || 'reference';
     }
 
-    set mode(value: modeOptions) {
-        (<IObject>this.attributes).model.view.mode = value;
+    set mode(value: TMode) {
+        (<IObject>this.attributes).mode = value;
     }
 
     get componentsForm(): IComponents {
@@ -209,7 +211,6 @@ export class ObjectRule extends Rule {
     set update(value: boolean) {
         (<IObject>this.attributes).update = value;
     }
-
 
     get source(): Array<IObjectSource> { //TODO:Eliminar y usar data en el objecto
         return this.attributes.source || null;
