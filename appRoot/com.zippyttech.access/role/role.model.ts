@@ -26,7 +26,6 @@ export class RoleModel extends ModelRoot {
 
     initView(params: IView) {
         params.display = this.nameClass + 'Authority';
-        params.mode = 'checklist';
         params.exclude = true;
     }
 
