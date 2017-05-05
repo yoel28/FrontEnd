@@ -26,8 +26,8 @@
         </thead>
         <tbody>
         <tr *ngFor="let data of model.getData().list; let i=index" [class.deleted]="data.deleted">
-            <td>
-                <div *ngIf="viewActions && model.dataActions" class="data-actions notHidden">
+            <td class="notHidden">
+                <div *ngIf="viewActions && model.dataActions" class="data-actions">
                     <div *ngIf="model.dataActions.length == 1 && model.dataActions.getFirst(data)">
                         <a (click)="model.dataActions.getFirst(data).callback(data,i);">
                             <i class="{{model.dataActions.getFirst(data).view[0].icon}}"></i>
