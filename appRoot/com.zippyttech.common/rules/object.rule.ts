@@ -44,7 +44,7 @@ export class ObjectRule extends Rule {
             views: [{icon: 'fa fa-plus', title: 'save', colorClass: 'text-green'}],
             callback: (rule: RuleViewComponent, key: string) => {
                 rule.model.currentData = rule.data;
-                this.model.db.ms.show('save', {model: rule.model, extraParams: {childKey: rule.key}});
+                this.model.db.ms.show('save', {model: rule.model, extraParams: {childKey: key}});
             },
             stateEval: (data): number => {
                 return 0;
