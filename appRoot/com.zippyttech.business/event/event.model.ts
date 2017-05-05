@@ -86,6 +86,7 @@ export class EventModel extends ModelBase {
             model: new RuleModel(this.db),
             required: true,
             update: this.permissions.update,
+            db:this.db
         });
 
         this.rules['target'] = new TextRule({
