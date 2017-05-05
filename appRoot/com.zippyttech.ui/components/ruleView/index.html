@@ -1,4 +1,5 @@
-<ng-template [ngIf]="!getDisabledField(data) && !_data.blockField">
+<div *ngIf="(!_disabledField && !data.blockField);else
+                                                        disableField">
 
     <i *ngIf="_rule.iconVisible" class="{{_rule.iconVisible}}">&nbsp;</i>
     <i *ngIf="_fnIsType('icon')" class="{{_value}}">&nbsp;</i>
@@ -7,48 +8,48 @@
 
         <ng-template [ngIf]="_fnIsType('text','textarea','number','checklist','select','password','combodate')">
 
-            <ng-template [ngIf]="getEnabled">
+            <ng-template [ngIf]="_enabled">
                 <a x-editable
                    [disabled]="false"
                    [key]="_key"
-                   [data]="_data"
-                   [model]="_model"
+                   [data]="data"
+                   [model]="model"
                    [class.notHidden]="_fnIsType('checklist')">
                 </a>
 
                 <ng-template [ngIf]="_fnIsType('select') && !_rule.required && _value">
-                    <button (click)="_model.setNull(data,key)" type="button" class="btn btn-box-tool"
-                            title="Liberar">
+                    <button (click)="model.setNull(data,_key)" type="button" class="btn btn-box-tool"
+                            [attr.title]="'custom.setFree' | translate">
                         <i class="fa fa-minus text-red"></i>
                     </button>
                 </ng-template>
 
             </ng-template>
-            <ng-template [ngIf]="!getEnabled">
+            <ng-template [ngIf]="!_enabled">
                 <a x-editable
                    [disabled]="true"
                    [key]="_key"
-                   [data]="_data"
-                   [model]="_model"
+                   [data]="data"
+                   [model]="model"
                    [class.notHidden]="_fnIsType('checklist')">
                 </a>
             </ng-template>
         </ng-template>
 
-        <ng-template [ngIf]="_fnIsType('location')">
-            <button class="btn btn-box-tool" (click)="showModal('location')"
-                    [attr.title]="'custom.viewLocation' | translate">
-                <i class="fa fa-map-marker fa-lg text-red"></i>
-            </button>
-        </ng-template>
+        <!--<ng-template [ngIf]="_fnIsType('location')">-->
+            <!--<button class="btn btn-box-tool" (click)="showModal('location')"-->
+                    <!--[attr.title]="'custom.viewLocation' | translate">-->
+                <!--<i class="fa fa-map-marker fa-lg text-red"></i>-->
+            <!--</button>-->
+        <!--</ng-template>-->
 
         <ng-template [ngIf]="_fnIsType('progress')">
-            <ng-template [ngIf]="getEnabled">
+            <ng-template [ngIf]="_enabled">
                 <ng-template [ngIf]="_rule.progress=='knob'">
                     <div class="knob-size">
                         <input knob type="text" class="dial"
-                               [model]="_model"
-                               [data]="_data"
+                               [model]="model"
+                               [data]="data"
                                [key]="_key"
                                [attr.value]="(_value || 0)" data-width="100%"
                                [attr.title]="_rule.title+': '+(_value || 0)">
@@ -56,11 +57,11 @@
                 </ng-template>
             </ng-template>
 
-            <ng-template [ngIf]="!getEnabled">
+            <ng-template [ngIf]="!_enabled">
                 <ng-template [ngIf]="_rule.progress=='knob'">
                     <input knob type="text" class="dial"
-                           [model]="_model"
-                           [data]="_data"
+                           [model]="model"
+                           [data]="data"
                            [key]="_key"
                            data-width="100%"
                            [attr.title]="_rule.title+': '+(_value || 0)">
@@ -70,14 +71,13 @@
         </ng-template>
 
         <ng-template [ngIf]="_rule && _fnIsType('image')">
-            <img [attr.id]="'img'+_data.id+'_'+_key"
+            <img [attr.id]="'img'+data.id+'_'+_key"
                  [attr.src]="_value || _rule.default"
                  class="image-editor"
                  [attr.title]="(_rule.update?'custom.imageEdit':'') | translate"
                  (click)="showModal('image')"
             >
-            <!--MODAL NO IMPLEMENT-->
-            <div [attr.id]="_data.id+'_'+_key" class="modal fade" tabindex="-1" role="dialog"
+            <div [attr.id]="data.id+'_'+_key" class="modal fade" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel">
                 <div class="modal-dialog" role="document">
                     <div class="modal-header bg-red text-center">
@@ -89,20 +89,20 @@
                         </h4>
                     </div>
                     <div class="modal-content">
-                        <ng-template [ngIf]="getEnabled">
+                        <ng-template [ngIf]="_enabled">
                             <image-edit-view
                                     [image]="_value"
                                     [edit]="true"
                                     [default]="_rule.default"
-                                    (out)="_model.onPatchValue(key,data, $event)"
+                                    (out)="model.onPatchValue(key,data, $event)"
                             ></image-edit-view>
                         </ng-template>
-                        <ng-template [ngIf]="!getEnabled">
+                        <ng-template [ngIf]="!_enabled">
                             <image-edit-view
                                     [image]="_value"
                                     [edit]="false"
                                     [default]="_rule.default"
-                                    (out)="_model.onPatchValue(key,data, $event)"
+                                    (out)="model.onPatchValue(key,data, $event)"
                             ></image-edit-view>
                         </ng-template>
                     </div>
@@ -111,283 +111,215 @@
         </ng-template>
 
         <ng-template [ngIf]="_rule && _fnIsType('color')">
-            <ng-template [ngIf]="getEnabled">
-                <input color-picker class="form-control" readonly [style.background-color]="'#'+_value"
-                       [attr.value]="'#'+_value" [hexString]="_value"
-                       (color)="_model.onPatch(key,data,$event)">
+            <ng-template [ngIf]="_enabled">
+                <input color-picker readonly
+                       class="form-control"
+                       [style.background-color]="'#'+_value"
+                       [attr.value]="'#'+_value"
+                       [hexString]="_value"
+                       (color)="model.onPatch(key,data,$event)">
             </ng-template>
-            <ng-template [ngIf]="!getEnabled">
+            <ng-template [ngIf]="!_enabled">
                 <label [style.background-color]="'#'+_value" class="form-control">{{'#'+_value}}</label>
             </ng-template>
         </ng-template>
 
         <ng-template [ngIf]="_fnIsType('boolean')">
-            <ng-template [ngIf]="getEnabled">
-                <ng-template [ngIf]="_key=='enabled'">
-                    <button class="{{getBooleandData.class}}" (click)="_model.onLock(_key,_data, $event)"
-                            [disabled]="getBooleandData.disabled"
-                            [attr.title]="getBooleandData.title">
-                        <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
-                    </button>
-                </ng-template>
-                <ng-template [ngIf]="_key!='enabled'">
-                    <button class="{{getBooleandData.class}}" (click)="_model.onPatch(key,data)"
-                            [disabled]="getBooleandData.disabled"
-                            [attr.title]="getBooleandData.title">
-                        <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
-                    </button>
-                </ng-template>
+            <ng-template [ngIf]="_enabled">
+                <button class="{{_booleanData.class}}"
+                        (click)="model.onPatch(key,data)"
+                        [disabled]="_booleanData.disabled"
+                        [attr.title]="_booleanData.title">
+                    <i class="{{_booleanData.icon}}"></i>
+                    &nbsp;{{_booleanData.text}}
+                </button>
             </ng-template>
-            <ng-template [ngIf]="!getEnabled">
-                <ng-template [ngIf]="_key=='enabled' || _key=='editable'">
-                    <ng-template [ngIf]="_key=='enabled'">
-                        <button class="{{getBooleandData.class}}" (click)="_model.onLock(_key,_data, $event)"
-                                [disabled]="getBooleandData.disabled || _data.deleted || _disabled "
-                                [attr.title]="getBooleandData.title">
-                            <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
-                        </button>
-                    </ng-template>
-                    <ng-template [ngIf]="_key=='editable'">
-                        <button class="{{getBooleandData.class}}" (click)="_model.onLock(_key,_data, $event)"
-                                [disabled]="getBooleandData.disabled || _data.deleted  || _disabled "
-                                [attr.title]="getBooleandData.title">
-                            <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
-                        </button>
-                    </ng-template>
-
-                </ng-template>
-                <ng-template [ngIf]="_key!='enabled' && _key!='editable'">
-                    <button class="{{getBooleandData.class}}" [disabled]="true"
-                            [attr.title]="getBooleandData.title">
-                        <i class="{{getBooleandData.icon}}"></i>&nbsp;{{getBooleandData.text}}
-                    </button>
-                </ng-template>
+            <ng-template [ngIf]="!_enabled">
+                <button class="{{_booleanData.class}}" [disabled]="true"
+                        [attr.title]="_booleanData.title">
+                    <i class="{{_booleanData.icon}}"></i>
+                    &nbsp;{{_booleanData.text}}
+                </button>
             </ng-template>
         </ng-template>
 
         <ng-template [ngIf]="_fnIsType('time')">
-            <ng-template [ngIf]="getEnabled">
+            <ng-template [ngIf]="_enabled">
                 {{formatTimeView}}
             </ng-template>
-            <ng-template [ngIf]="!getEnabled">
+            <ng-template [ngIf]="!_enabled">
                 {{formatTimeView}}
             </ng-template>
         </ng-template>
 
         <ng-template [ngIf]="_fnIsType('url')">
-
-            <ng-template [ngIf]="getEnabled">
-
+            <ng-template [ngIf]="_enabled">
                 <ng-template [ngIf]="_rule.url == 'image'">
                     <img class="img-responsive" [attr.src]="_value"/>
                     <a x-editable
                        [disabled]="false"
                        [key]="_key"
-                       [data]="_data"
-                       [model]="_model">
+                       [data]="data"
+                       [model]="model">
                     </a>
                 </ng-template>
-
             </ng-template>
-
-            <ng-template [ngIf]="!getEnabled">
+            <ng-template [ngIf]="!_enabled">
                 <ng-template [ngIf]="_rule.url == 'image'">
                     <img class="img-responsive" [attr.src]="_value"/>
                 </ng-template>
             </ng-template>
-
         </ng-template>
 
         <ng-template [ngIf]="_fnIsType('eval')">
-            <ng-template [ngIf]="getEnabled">
-                {{getTypeEval}}
+            <ng-template [ngIf]="_enabled">
+                {{_rule.getValue(data)}}
             </ng-template>
-            <ng-template [ngIf]="!getEnabled">
-                {{getTypeEval}}
-            </ng-template>
-        </ng-template>
-
-        <ng-template [ngIf]="_fnIsType('array')">
-            <ng-template [ngIf]="_rule.typeView == 'normal'">
-                <div *ngFor="let item of _model.fieldToArray(data,key)" class="array-content">
-                    <span class="array-item">{{item}}</span>
-                </div>
-            </ng-template>
-            <ng-template [ngIf]="_rule.typeView=='modal'">
-                <a (click)="showModal('rule')">
-                    <!--(click)="paramsData.select.title=model.rules[key].title; paramsData.arrayData=model.fieldToArray(data,key)"-->
-                    <i class="fa fa-list fa-lg text-info"></i>
-                </a>
+            <ng-template [ngIf]="!_enabled">
+                {{_rule.getValue(data)}}
             </ng-template>
         </ng-template>
-
     </ng-template>
 
     <ng-template [ngIf]="_fnIsType('object')">
-
         <ng-template [ngIf]="_key=='roles'">
-            <ng-template [ngIf]="getEnabled">
+            <ng-template [ngIf]="_enabled">
                 <a x-editable class="notHidden"
-                   [disabled]="!_rule.permissions.list || !_model.permissions.roleSave"
+                   [disabled]="!_rule.permissions.list || !model.permissions.roleSave"
                    [key]="_key"
-                   [data]="_data"
-                   [model]="_model"
-                   [endpoint]="'/users/'+_data.id+'/roles'">
+                   [data]="data"
+                   [model]="model"
+                   [endpoint]="'/users/'+data.id+'/roles'">
                 </a>
             </ng-template>
-            <ng-template [ngIf]="!getEnabled">
+            <ng-template [ngIf]="!_enabled">
                 <a x-editable
                    class="notHidden"
                    [disabled]="true"
                    [key]="_key"
-                   [data]="_data"
-                   [model]="_model"
-                   [endpoint]="'/users/'+_data.id+'/roles'">
+                   [data]="data"
+                   [model]="model"
+                   [endpoint]="'/users/'+data.id+'/roles'">
                 </a>
             </ng-template>
         </ng-template>
 
         <ng-template [ngIf]="_key!='roles'">
-
             <ng-template [ngIf]="_fnIsType('checklist')">
-
-                <ng-template [ngIf]="getEnabled">
+                <ng-template [ngIf]="_enabled">
                     <a x-editable
                        class="notHidden"
                        [disabled]="false"
                        [key]="_key"
-                       [data]="_data"
-                       [model]="_model">
+                       [data]="data"
+                       [model]="model">
                         {{_value || 'N/A'}}
                     </a>
                 </ng-template>
-
-                <ng-template [ngIf]="!getEnabled">
+                <ng-template [ngIf]="!_enabled">
                     <a x-editable
                        [disabled]="true"
                        [key]="_key"
-                       [data]="_data"
-                       [model]="_model">
+                       [data]="data"
+                       [model]="model">
                         {{_value || 'N/A'}}</a>
                 </ng-template>
-
             </ng-template>
-
             <ng-template [ngIf]="_fnIsMode('reference')">
                 <ng-template [ngIf]="_rule.multiple">
                     <button *ngIf="_value && _value.length > 0"
                             (click)="setViewListData($event)"
                             type="button" class="btn btn-box-tool"
                             title="Listar" data-toggle="modal"
-                            data-target="#dataMultiple"
-                    >
+                            data-target="#dataMultiple">
                         <i class="fa fa-list text-red"></i>
                     </button>
                 </ng-template>
-
                 <span class="title-object">
-                        <ng-template [ngIf]="_rule.eval">
-                            {{evalExp(data,_rule.eval)}}
-                        </ng-template>
-                        <ng-template [ngIf]="!_rule.eval">
-                            {{_data[_rule.display]}}
-                        </ng-template>
-                    </span>
-
-                <span class="buttons-object">
-
-                        <ng-template [ngIf]="getEnabled">
-
-                            <!--<ng-template [ngIf]="!_rule.reference">-->
-
-                            <!--<button *ngIf="_rule.paramsSave && _rule.permissions.add"-->
-                            <!--type="button" class="btn btn-box-tool"-->
-                            <!--(click)="showModal('save',_rule.model)" title="Asignar nuevo">-->
-                            <!--<i class="fa fa-plus text-green"></i>-->
-                            <!--</button>-->
-
-                            <!--<button *ngIf="_rule.paramsSearch && _rule.permissions.search"-->
-                            <!--type="button" class="btn btn-box-tool"-->
-                            <!--(click)="showModal('searh')" title="Buscar">-->
-                            <!--<i class="fa fa-search text-blue"></i>-->
-                            <!--</button>-->
-
-                            <!--<button *ngIf="data[_rule.code] && !_rule.required"-->
-                            <!--(click)="model.setNull(data,key)"-->
-                            <!--type="button" class="btn btn-box-tool"-->
-                            <!--title="Liberar">-->
-                            <!--<i class="fa fa-minus text-red"></i>-->
-                            <!--</button>-->
-
-                            <!--</ng-template>-->
-
-                            <!--<ng-template [ngIf]="_rule.reference">-->
-
-                            <!--<button (click)="loadDataFieldReference()"-->
-                            <!--*ngIf="model.permissions.update && _rule.permissions.add"-->
-                            <!--data-toggle="modal"-->
-                            <!--[attr.data-target]="'#'+_rule.paramsSave.idModal"-->
-                            <!--type="button" class="btn btn-box-tool"-->
-                            <!--title="Asignar nuevo">-->
-                            <!--<i class="fa fa-plus text-green"></i>-->
-                            <!--</button>-->
-
-                            <!--<button (click)="loadDataFieldReference()"-->
-                            <!--*ngIf="model.permissions.update && _rule.permissions.search && !_rule.pathLocal"-->
-                            <!--data-toggle="modal"-->
-                            <!--[attr.data-target]="'#'+_rule.paramsSearch.idModal"-->
-                            <!--type="button" class="btn btn-box-tool"-->
-                            <!--title="Asignar">-->
-                            <!--<i class="fa fa-search text-blue"></i>-->
-                            <!--</button>-->
-
-                            <!--<button *ngIf="_rule.paramsSearch && _rule.permissions.search && _rule.pathLocal"-->
-                            <!--type="button" class="btn btn-box-tool"-->
-                            <!--(click)="loadSearchTable($event)" title="Buscar"-->
-                            <!--data-toggle="modal"-->
-                            <!--[attr.data-target]="'#'+_rule.paramsSearch.idModal">-->
-                            <!--<i class="fa fa-search text-blue"></i>-->
-                            <!--</button>-->
-
-                            <!--<button *ngIf="model.permissions.update && !_rule.required && data[_rule.code]"-->
-                            <!--(click)="loadDataFieldReference(true)"-->
-                            <!--type="button" class="btn btn-box-tool"-->
-                            <!--title="Liberar">-->
-                            <!--<i class="fa fa-minus text-red"></i>-->
-                            <!--</button>-->
-
-                            <!--</ng-template>-->
-
-                        </ng-template>
-
-                    </span>
-
-            </ng-template>
-
-        </ng-template>
-
-        <ng-template [ngIf]="getEnabled">
-                <span *ngFor="let action of _getActionsRule()" (click)="action.callback(this,_key);">
-                    <a class="cursor-pointer {{action.currentView(this).colorClass || ''}}"
-                       [attr.title]="_key+'.'+action.currentView(this).title | translate">
-                        <i class="{{action.currentView(this).icon || ''}}"></i>
-                    </a>
+                    {{_rule.getValue(data)}}
                 </span>
+                <span class="buttons-object">
+                    <ng-template [ngIf]="_enabled">
+                        <!--<ng-template [ngIf]="!_rule.reference">-->
+
+                        <!--<button *ngIf="_rule.paramsSave && _rule.permissions.add"-->
+                        <!--type="button" class="btn btn-box-tool"-->
+                        <!--(click)="showModal('save',_rule.model)" title="Asignar nuevo">-->
+                        <!--<i class="fa fa-plus text-green"></i>-->
+                        <!--</button>-->
+
+                        <!--<button *ngIf="_rule.paramsSearch && _rule.permissions.search"-->
+                        <!--type="button" class="btn btn-box-tool"-->
+                        <!--(click)="showModal('searh')" title="Buscar">-->
+                        <!--<i class="fa fa-search text-blue"></i>-->
+                        <!--</button>-->
+
+                        <!--<button *ngIf="data[_rule.code] && !_rule.required"-->
+                        <!--(click)="model.setNull(data,key)"-->
+                        <!--type="button" class="btn btn-box-tool"-->
+                        <!--title="Liberar">-->
+                        <!--<i class="fa fa-minus text-red"></i>-->
+                        <!--</button>-->
+
+                        <!--</ng-template>-->
+
+                        <!--<ng-template [ngIf]="_rule.reference">-->
+
+                        <!--<button (click)="loadDataFieldReference()"-->
+                        <!--*ngIf="model.permissions.update && _rule.permissions.add"-->
+                        <!--data-toggle="modal"-->
+                        <!--[attr.data-target]="'#'+_rule.paramsSave.idModal"-->
+                        <!--type="button" class="btn btn-box-tool"-->
+                        <!--title="Asignar nuevo">-->
+                        <!--<i class="fa fa-plus text-green"></i>-->
+                        <!--</button>-->
+
+                        <!--<button (click)="loadDataFieldReference()"-->
+                        <!--*ngIf="model.permissions.update && _rule.permissions.search && !_rule.pathLocal"-->
+                        <!--data-toggle="modal"-->
+                        <!--[attr.data-target]="'#'+_rule.paramsSearch.idModal"-->
+                        <!--type="button" class="btn btn-box-tool"-->
+                        <!--title="Asignar">-->
+                        <!--<i class="fa fa-search text-blue"></i>-->
+                        <!--</button>-->
+
+                        <!--<button *ngIf="_rule.paramsSearch && _rule.permissions.search && _rule.pathLocal"-->
+                        <!--type="button" class="btn btn-box-tool"-->
+                        <!--(click)="loadSearchTable($event)" title="Buscar"-->
+                        <!--data-toggle="modal"-->
+                        <!--[attr.data-target]="'#'+_rule.paramsSearch.idModal">-->
+                        <!--<i class="fa fa-search text-blue"></i>-->
+                        <!--</button>-->
+
+                        <!--<button *ngIf="model.permissions.update && !_rule.required && data[_rule.code]"-->
+                        <!--(click)="loadDataFieldReference(true)"-->
+                        <!--type="button" class="btn btn-box-tool"-->
+                        <!--title="Liberar">-->
+                        <!--<i class="fa fa-minus text-red"></i>-->
+                        <!--</button>-->
+
+                        <!--</ng-template>-->
+                    </ng-template>
+                </span>
+            </ng-template>
         </ng-template>
 
+        <ng-template [ngIf]="_enabled">
+            <span *ngFor="let action of _actionsRule" (click)="action.callback(this,_key);">
+                <a class="cursor-pointer {{action.currentView(this).colorClass || ''}}"
+                   [attr.title]="_key+'.'+action.currentView(this).title | translate">
+                    <i class="{{action.currentView(this).icon || ''}}"></i>
+                </a>
+            </span>
+        </ng-template>
     </ng-template>
+</div>
 
-</ng-template>
-
-<ng-template [ngIf]="getDisabledField(data)">
+<ng-template #disableField>
     <label class="label label-orange">N/A</label>
 </ng-template>
 
-
 <ng-template [ngIf]="_fnIsType('newType')">
-
-    <ng-template [ngIf]="getEnabled"></ng-template>
-
-    <ng-template [ngIf]="!getEnabled"></ng-template>
-
+    <ng-template [ngIf]="_enabled"></ng-template>
+    <ng-template [ngIf]="!_enabled"></ng-template>
 </ng-template>
